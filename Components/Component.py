@@ -1,17 +1,16 @@
 import asyncio
 
 
-class Driver:
+class Component:
     def __init__(self, name, delay):
         self.delay = delay
         self.name = name
 
-    def read(self):
+    def update(self, context):
         pass
 
     async def run(self, context, lock):
         while True:
-            reading = self.read()
             async with lock:
-                context[self.name] = reading
+                self.update(context)
             await asyncio.sleep(self.delay)

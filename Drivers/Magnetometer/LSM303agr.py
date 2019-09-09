@@ -24,8 +24,8 @@ import struct
 from Drivers.Driver import Driver
 
 # Minimal constants carried over from Arduino library:
-LSM303_ADDRESS_ACCEL = (0x32 >> 1)  # 0011001x
-LSM303_ADDRESS_MAG = (0x3C >> 1)  # 0011110x
+LSM303_ADDRESS_ACCEL = 0x32 >> 1  # 0011001x
+LSM303_ADDRESS_MAG = 0x3C >> 1  # 0011110x
 # Default    Type
 LSM303_REGISTER_ACCEL_CTRL_REG1_A = 0x20  # 00000111   rw
 LSM303_REGISTER_ACCEL_CTRL_REG4_A = 0x23  # 00000000   rw
@@ -47,8 +47,14 @@ LSM303_MAGGAIN_8_1 = 0xE0  # +/- 8.1
 class Magnetometer(Driver):
     """LSM303 accelerometer & magnetometer."""
 
-    def __init__(self, hires=True, accel_address=LSM303_ADDRESS_ACCEL,
-                 mag_address=LSM303_ADDRESS_MAG, i2c=None, **kwargs):
+    def __init__(
+        self,
+        hires=True,
+        accel_address=LSM303_ADDRESS_ACCEL,
+        mag_address=LSM303_ADDRESS_MAG,
+        i2c=None,
+        **kwargs
+    ):
         """Initialize the LSM303 accelerometer & magnetometer.  The hires
         boolean indicates if high resolution (12-bit) mode vs. low resolution
         (10-bit, faster and lower power) mode should be used.
@@ -56,6 +62,7 @@ class Magnetometer(Driver):
         # Setup I2C interface for accelerometer and magnetometer.
         if i2c is None:
             import Adafruit_GPIO.I2C as I2C
+
             i2c = I2C
         self._accel = i2c.get_i2c_device(accel_address, **kwargs)
         self._mag = i2c.get_i2c_device(mag_address, **kwargs)
@@ -80,12 +87,12 @@ class Magnetometer(Driver):
         """
         # Read the accelerometer as signed 16-bit little endian values.
         accel_raw = self._accel.readList(LSM303_REGISTER_ACCEL_OUT_X_L_A | 0x80, 6)
-        accel = struct.unpack('<hhh', accel_raw)
+        accel = struct.unpack("<hhh", accel_raw)
         # Convert to 12-bit values by shifting unused bits.
         accel = (accel[0] >> 4, accel[1] >> 4, accel[2] >> 4)
         # Read the magnetometer.
         mag_raw = self._mag.readList(LSM303_REGISTER_MAG_OUT_X_H_M, 6)
-        mag = struct.unpack('>hhh', mag_raw)
+        mag = struct.unpack(">hhh", mag_raw)
         return accel, mag
 
     def set_mag_gain(self, gain=LSM303_MAGGAIN_1_3):
