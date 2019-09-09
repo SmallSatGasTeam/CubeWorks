@@ -21,6 +21,8 @@
 # SOFTWARE.
 import struct
 
+from Drivers.Driver import Driver
+
 # Minimal constants carried over from Arduino library:
 LSM303_ADDRESS_ACCEL = (0x32 >> 1)  # 0011001x
 LSM303_ADDRESS_MAG = (0x3C >> 1)  # 0011110x
@@ -42,7 +44,7 @@ LSM303_MAGGAIN_5_6 = 0xC0  # +/- 5.6
 LSM303_MAGGAIN_8_1 = 0xE0  # +/- 8.1
 
 
-class LSM303(object):
+class Magnetometer(Driver):
     """LSM303 accelerometer & magnetometer."""
 
     def __init__(self, hires=True, accel_address=LSM303_ADDRESS_ACCEL,
@@ -68,6 +70,8 @@ class LSM303(object):
             self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0)
         # Enable the magnetometer
         self._mag.write8(LSM303_REGISTER_MAG_MR_REG_M, 0x00)
+
+        super().__init__("Magnetometer", 1)
 
     def read(self):
         """Read the accelerometer and magnetometer value.  A tuple of tuples will
