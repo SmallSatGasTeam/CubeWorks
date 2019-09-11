@@ -1,15 +1,19 @@
 import asyncio
 
-from Drivers import *
 from Components import *
+from Drivers import *
 
 
 async def startLoop():
     context = {}
     lock = asyncio.Lock()
+    drivers = [Magnetometer(), ContextPrinter()]
     await asyncio.gather(
-        *[d.run(context, lock) for d in [Magnetometer(), ContextPrinter()]]
+        *[d.run(context, lock) for d in drivers]
     )
 
 
-asyncio.run(startLoop())
+try:
+    asyncio.run(startLoop())
+except KeyboardInterrupt:
+    pass
