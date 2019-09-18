@@ -11,7 +11,7 @@ class DummyMagnetometer(Driver):
 
     def read(self):
         # Trying to simulate a slow spin, using a periodic function.
-        # While spinning, the x and y axes should read between -1 and 1.
+        # While spinning, the x and y axes should read between -1g and 1g.
 
         # f(x) = A*sin(Bx + C) -> A is the amplitude, 2π/B is the period, C is offset
         x = (datetime.now() - self.initial_time).seconds
