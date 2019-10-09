@@ -48,12 +48,12 @@ class Magnetometer(Driver):
     """LSM303 accelerometer & magnetometer."""
 
     def __init__(
-            self,
-            hires=True,
-            accel_address=LSM303_ADDRESS_ACCEL,
-            mag_address=LSM303_ADDRESS_MAG,
-            i2c=None,
-            **kwargs
+        self,
+        hires=True,
+        accel_address=LSM303_ADDRESS_ACCEL,
+        mag_address=LSM303_ADDRESS_MAG,
+        i2c=None,
+        **kwargs
     ):
         """Initialize the LSM303 accelerometer & magnetometer.  The hires
         boolean indicates if high resolution (12-bit) mode vs. low resolution

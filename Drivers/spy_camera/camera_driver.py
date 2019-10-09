@@ -1,17 +1,14 @@
-class spy_camera:
+from Drivers.Driver import Driver
+
+
+class SpyCamera(Driver):
     def __init__(self):
-        pass # prolly hardware specific stuff
+        super().__init__("Camera")
+        self.latest_picture = "/path/to/file"
 
-    def take_picture():
+    def read(self):
+        return self.latest_picture
 
-        filename = ''; # prolly something like <photoNumber>-<timeTaken>.ext
-        try:
-            # takePicture code here
-            # write file to filename in filesystem
-            pass
-        except:
-            # if picture take fails return NULL
-            pass
-        return filename;
-        
-
+    def take_picture(self):
+        # TODO: Code to operate the PiCamera to take a picture
+        self.latest_picture = "/path/to/new/picture"
