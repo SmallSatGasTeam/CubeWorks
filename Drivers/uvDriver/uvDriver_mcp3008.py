@@ -1,5 +1,5 @@
 from Drivers.Driver import Driver
-from Drivers.adc.Driver import adc as ADC
+from Drivers.adc.Driver import adc
     
 class uvSensor(Driver):
     def __init__(self):
@@ -8,6 +8,7 @@ class uvSensor(Driver):
     #adcData is a 12 bit binary string
     def read(self):
         # calculate the output voltage from UV sensor
+        ADC = adc()
         voltage = ADC.read(3)
 
         # calculate the uvPower
