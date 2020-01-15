@@ -26,3 +26,14 @@ class adc(Driver):
             list of int: the readings from each of the channels of the ADC
         """
         return [self.mcp.read_adc(i) for i in range(self.channels)]
+
+    def read(self, channel: int) -> int:
+        """Read from the ADC
+
+        Args:
+            channel (int): the channel to read from 
+
+        Returns: 
+            int: the reading from the specified channel
+        """
+        return self.mcp.read_adc(channel)
