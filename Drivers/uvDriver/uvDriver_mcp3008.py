@@ -1,5 +1,5 @@
 from Drivers.Driver import Driver
-
+from Drivers.adc.Driver import adc as ADC
     
 class uvSensor(Driver):
     def __init__(self):
@@ -7,15 +7,8 @@ class uvSensor(Driver):
 
     #adcData is a 12 bit binary string
     def read(self):
-        # adc lsb found by Vrefin / 4096 which is 5V / 4096
-        voltageStep = 0.001220703125
-
-        # converts the 12 bit binary number to decimal
-        #TODO Find how to get the adc data
-        numberOfSteps = int('''adcfunctioncall''', 2)
-
         # calculate the output voltage from UV sensor
-        voltage = numberOfSteps * voltageStep
+        voltage = ADC.read(3)
 
         # calculate the uvPower
         uvPower = voltage * 1000 / 485.9
