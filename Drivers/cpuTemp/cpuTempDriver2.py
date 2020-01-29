@@ -7,5 +7,7 @@ class cpuTemp(Driver):
 	
 	def read(self):
 		temp = os.popen("vcgencmd measure_temp").readline()
-        	return (temp.replace("temp=",""))
+		temp = float(temp.replace("temp="," ").replace("\'C"," ").replace("\n"," "))
+		return temp
+
 	
