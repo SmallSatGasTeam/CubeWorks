@@ -36,9 +36,8 @@ class UnitTests(unittest.TestCase):
         self.assertEqual(self.testCam.camera.resolution, (1024, 1024))
 
     def testTakePicture(self):
-        filename = str(trunc(time())) + '.jpg'
+        # Take a picture, see if there is a file where it should have put it
         self.testCam.take_picture()
-        print(self.testCam.latest_capture)
         self.assertTrue(os.path.isfile(self.testCam.latest_capture))
 
         
