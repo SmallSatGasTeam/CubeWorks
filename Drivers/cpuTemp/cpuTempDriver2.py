@@ -3,9 +3,9 @@ import os
 
 class cpuTemp(Driver):
 	def __init__(self):
-		super().name = "cpuTemp"
+		super().__inti__("cpuTemp")
 	
 	def read(self):
 		temp = os.popen("vcgencmd measure_temp").readline()
-        	return (temp.replace("temp=",""))
-	
+		temp = float(temp.replace("temp="," ").replace("\'C"," ").replace("\n"," "))
+		return temp
