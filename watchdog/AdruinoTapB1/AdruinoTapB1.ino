@@ -36,8 +36,9 @@
 
 //the  button
 #define BUTTON 11
-//MOSFIT pin
-#define MOSFIT 13
+//MOSFIT pin, make sure not to use the #define function here. The #define actually repalces code in 
+//beetle and this will cause the digital pin not to initialize incorrectly. 
+const int MOSFIT = 10;
 //The pi delay const
 #define PI_CHECK 4000
 
@@ -72,6 +73,7 @@ void loop()
   //This is where you want to enable the watchdog, just be careful not to set the frequency too low. 
   //If it dose get set too low you will have to hold the pins and then up load a new sketch. This will
   //take servel trys as it is a timing game. 
+  //Note: The wdt_enable does reset the watchdog timer. 
   wdt_enable(WDTO_8S);
 
   //call the watchdogProtocol, this is taken form the adruinoTap2 code.
