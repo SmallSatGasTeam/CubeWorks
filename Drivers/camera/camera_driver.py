@@ -12,7 +12,7 @@ class Camera(Driver):
         2592 x 1944 pixels,  may crash the driver.
         """
         super().__init__("Camera")
-        self.latest_capture = "/path/to/file"
+        self.latest_capture = "/default/path"
         self.camera = PiCamera()
         self.camera.resolution = (1024, 1024) # Max (2592, 1944)
 

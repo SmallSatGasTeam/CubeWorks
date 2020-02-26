@@ -29,7 +29,7 @@ class UnitTests(unittest.TestCase):
     ###########################################
     def testCameraInitFilePath(self):
         # Test the initial file path 
-        self.assertEqual(self.testCam.latest_capture, "/path/to/file")
+        self.assertEqual(self.testCam.latest_capture, "/default/path")
 
     def testCameraInitResolution(self):
         # Test the initial camera resolution
