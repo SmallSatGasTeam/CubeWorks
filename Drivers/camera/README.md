@@ -52,6 +52,14 @@ The `Camera` module was tested using the test cases defined in `unit_tests.py` a
 		- The test fails if this assertion fails
 		- This is the best we can do to test the picture without using computer vision to analyze the picture.  
 
-These tests were run on February 25, 2020 and all passed. 
+These tests were run on February 25, 2020 and all passed with the following ouptut:
+```
+tCameraInitFilePath (__main__.UnitTests) ... ok
+testCameraInitResolution (__main__.UnitTests) ... ok
+testTakePicture (__main__.UnitTests) ... ok
 
+----------------------------------------------------------------------
+Ran 3 tests in 0.614s
 
+OK
+```
