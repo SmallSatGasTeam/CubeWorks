@@ -54,7 +54,7 @@ The `Camera` module was tested using the test cases defined in `unit_tests.py` a
 
 These tests were run on February 25, 2020 and all passed with the following ouptut:
 ```
-tCameraInitFilePath (__main__.UnitTests) ... ok
+testCameraInitFilePath (__main__.UnitTests) ... ok
 testCameraInitResolution (__main__.UnitTests) ... ok
 testTakePicture (__main__.UnitTests) ... ok
 
