@@ -60,7 +60,7 @@ void setup()
 
  //set up the pins
  pinMode(MOSFIT, OUTPUT);
- pinMode(BUTTON, INPUT_PULLUP);
+ pinMode(BUTTON, INPUT);
  pinMode(LED, OUTPUT);
 
  //turns the pi on
@@ -112,7 +112,10 @@ bool watchdogProtocol()
   {
     //get time actual
     long time_actual = millis();
-   
+
+    //check for int overflow 
+    intOverflow(&timer, &time_actual);
+    
     //this logic test is the timer 
     if(PI_CHECK > time_actual - timer)
     {
@@ -155,5 +158,19 @@ void turn(bool check)
     digitalWrite(MOSFIT, HIGH);
     //delay to give the pi time to boot, it will have a max of 5 seconds to boot
     delay(BOOT_DELAY);
+  }
+}
+
+
+//this methood queck for int overflow to make sure that the clock dose not exceed the long int limit
+void intOverflow(long *time1, long *time2)
+{
+  //check for over flow
+  if (*time1 > *time2)
+  {
+    //if so delay one second and reset the times
+    delay(1000);
+    *time1 = millis();
+    *time2 = millis();
   }
 }
