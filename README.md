@@ -1,5 +1,5 @@
 # GASPACS
-Flight software for the GASPACS mission written in Python
+Flight software for the GASPACS mission written in Python, with some compents in c.
 
 ## Introduciton
 The Get Away Special Passive Attitude Control Satellite (GASPACS) is an experimental 1U cubesat in development by Utah State University's Get Away Special team.  The purpose of the experiment is to test the viability of an inflatable aero-stablization boom deployable component in Low Earth Orbit (LEO).  This repository contains the flight software for the satellite.
