@@ -48,4 +48,4 @@ GASPACS
 
 ## Class Structure
 
-![GASPACS_UML](docs\GASPACS_UML.png)
+![GASPACS_UML](httsp://github.com/SmallSatGasTeam/GASPACS/docs/GASPACS_UML.png)
