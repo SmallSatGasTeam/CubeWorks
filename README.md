@@ -1,11 +1,11 @@
 # GASPACS
 Flight software for the GASPACS mission written in Python, with some compents in c.
 
-## Introduciton
-The Get Away Special Passive Attitude Control Satellite (GASPACS) is an experimental 1U cubesat in development by Utah State University's Get Away Special team.  The purpose of the experiment is to test the viability of an inflatable aero-stablization boom deployable component in Low Earth Orbit (LEO).  This repository contains the flight software for the satellite.
+## Introduction
+The Get Away Special Passive Attitude Control Satellite (GASPACS) is an experimental 1U cubesat in development by Utah State University's Get Away Special team.  The purpose of the experiment is to test the viability of an inflatable aero-stabilization boom deployable component in Low Earth Orbit (LEO).  This repository contains the flight software for the satellite.
 
 ## Objectives
-GASPACS is intended to be a robust, modular, and fault tolerant software framework for small satellites, with minimal barrier to entry.  The experienced developer may be asking, "Why write the entire framework in python and not a more performant languate with closer hardware interaction?"  The answer is because the framework is designed to be accessable to newer developers who want to get into space research.  The software isn't as performant as an equivelant solution written in, say, c++ but it isn't designed to be.   
+GASPACS is intended to be a robust, modular, and fault tolerant software framework for small satellites, with minimal barrier to entry.  The experienced developer may be asking, "Why write the entire framework in python and not a more performant language with closer hardware interaction?"  The answer is because the framework is designed to be accessible to newer developers who want to get into space research.  The software isn't as performant as an equivalent solution written in, say, c++ but it isn't designed to be.   
 
 Framework components are designed to be modular, and easy to add to and remove from a given system.  All that is needed is to define a driver that interacts with your hardware components and inherits from the built in `Component` class, and include it in the main file.  
 
@@ -45,3 +45,7 @@ GASPACS
 ├── unit_tests.py
 └── watchdog
 ```
+
+## Class Structure
+
+![GASPACS_UML](docs\GASPACS_UML.png)
