@@ -1,6 +1,5 @@
 import asyncio
 
-
 class Driver:
     def __init__(self, name, delay=1, initial_delay=0):
         self.name = name

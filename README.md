@@ -16,6 +16,8 @@ The GASPACS software module is designed to run on a Raspberry Pi Zero W running 
 4. Image a Raspberry Pi with Raspbian and boot the Pi
 5. Once booted, install the following dependencies:
 	- Python3
+		- Adafruit_GPIO
+		- Adafruit_MCP3008
 	- TODO: compile list of dependencies
 6. Clone this repository onto the pi
 7. To run the project, `cd` into the GASPACS directory and run: `python3 main.py`

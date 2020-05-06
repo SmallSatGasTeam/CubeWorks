@@ -1,6 +1,5 @@
 import asyncio
 
-
 class Component:
     def __init__(self, name, delay, initial_delay=0):
         self.name = name
