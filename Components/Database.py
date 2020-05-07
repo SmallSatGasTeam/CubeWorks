@@ -6,11 +6,15 @@ class Database(Component):
     A database class that implements database creation and methods to read and write from the database.  
     """
     def __init__(self):
+        """
+        Initializes a Database object, calls the parent constructor, and connects to a sqlite3 database.
+        """
         super().__init__("Database", 1)
         self.connection = sqlite3.connect('db.sqlite3')
 
     def update(self, context):
         """
+        Concrete implementation of Component.update().
         Takes a dictionary (context) as a parameter, and writes it to a new row in the database.  
         """
         print(context)
