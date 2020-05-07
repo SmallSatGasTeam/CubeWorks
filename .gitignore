@@ -106,5 +106,8 @@ venv.bak/
 # pycharm
 .idea/
 
+# vim
+*.swp
+
 # images
 *.jpg
