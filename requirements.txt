@@ -1,3 +1,4 @@
 Adafruit_GPIO
 Adafruit_MCP3008
 picamera
+pdoc3
