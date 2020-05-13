@@ -1,6 +1,6 @@
 import unittest
 
-from tests import unit_testing_example
+from tests import unit_testing_example, testCamera
 
 def run():
     """
@@ -8,7 +8,7 @@ def run():
     """
     suite = unittest.TestSuite()
 
-    tests = [unit_testing_example.DemoTest]
+    tests = [unit_testing_example.DemoTest, testCamera.TestCamera]
 
     for test in tests:
         suite.addTest(unittest.makeSuite(test))
