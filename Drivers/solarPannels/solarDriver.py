@@ -6,20 +6,29 @@ class solarPanel:
     def __init__(self)
         spi = spidev.SpiDev()
         
+    #this func will return an array of the tempatures from the solar panels. (there will always be 2)
+    def run_solar():
+        temps = []
+        temps.append(self.__getSolarTemp())
+        temps.append(self.__getSolartemp2())
+        return temps
 
-    def getSolarTemp():
+    #this guys go and get the temp from the respective panales. 
+    def __getSolarTemp():
         super().__init__("solarPanel")
         spi.open(0, 24)
         #not sure what bond rate or what command to send well try this for now
         spi.max_speed_hz = 1000000
         spi.xfer(0x01)
+        spi.xfer2(buildReadCommand(19))
 
-    def getSolarGyro():
+    def __getSolartemp2():
         super().__init__("solarPanel")
         spi.open(0, 26)
         #not sure what bond rate or what command to send well try this for now
         spi.max_speed_hz = 1000000
         spi.xfer(0x01)
-        
+        pi.xfer2(buildReadCommand(19))
+
 #Notes: I still need to read from teh spi port
 #       I also need to do the value convertion, that is if the temp sensors return a value that needs to be converted. 
