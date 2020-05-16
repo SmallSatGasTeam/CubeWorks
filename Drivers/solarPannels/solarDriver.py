@@ -30,5 +30,5 @@ class solarPanel:
         spi.xfer(0x01)
         pi.xfer2(buildReadCommand(19))
 
-#Notes: I still need to read from teh spi port
+#Notes: 
 #       I also need to do the value convertion, that is if the temp sensors return a value that needs to be converted. 
