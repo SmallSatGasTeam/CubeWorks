@@ -1,6 +1,5 @@
 #Not done or tested as of yet, I am doing more research on the panels to get some more info on them. This is just the ground work for now. 
 
-import Adafruit_GPIO.SPI as SPI
 import spidev
 class solarPanel:
     def __init__(self)
