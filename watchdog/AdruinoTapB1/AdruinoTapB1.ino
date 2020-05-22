@@ -55,8 +55,8 @@ void setup()
  pinMode(MOSFIT, OUTPUT);
  pinMode(BUTTON, INPUT_PULLUP);
 
- //Star the serial monitor. I haven't been able to look into the serial moniter much however
- //it might help if we run the beelte on a lower serial input. 
+ //Star the serial monitor. I haven't been able to look into the serial monitor much however
+ //it might help if we run the beetle on a lower serial input.
  Serial.begin(9600);
 
  Serial.println("Starting>>>");
@@ -72,14 +72,14 @@ void loop()
 {
   //This is where you want to enable the watchdog, just be careful not to set the frequency too low. 
   //If it dose get set too low you will have to hold the pins and then up load a new sketch. This will
-  //take servel trys as it is a timing game. 
+  //take several trys as it is a timing game.
   //Note: The wdt_enable does reset the watchdog timer. 
   wdt_enable(WDTO_8S);
 
   //call the watchdogProtocol, this is taken form the adruinoTap2 code.
   bool Reset = watchdogProtocol();
 
-  //call the turn fuction
+  //call the turn function
   turn(Reset);
   
 
