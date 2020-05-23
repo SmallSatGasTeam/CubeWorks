@@ -6,29 +6,46 @@ from Components import *
 from Drivers import *
 from mission_modes import *
 
-# Time in seconds to sleep before initializing drivers
-SLEEP_DURATION = 1#30 * 60
-
-# TODO: Query database for initial time
-initial_time = None
-
-if initial_time is None:
-    initial_time = datetime.now()
-    # TODO: Record initial boot time in database
-
-delta = datetime.now() - initial_time
-if delta.seconds < SLEEP_DURATION:
-    sleep(SLEEP_DURATION - delta.seconds)
-
-
 async def startLoop():
+    """
+    Creates a context dictionary to contain values,
+    Creates a lock to prevent race conditions when running drivers,
+    Initializes all drivers in a list,
+    Starts gathering from Driver.run() on loop
+    """
     context = {"MissionMode": MissionMode.PRE_TX}
     lock = asyncio.Lock()
-    drivers = [ContextPrinter(), Magnetometer(), Camera(), cpuTemp(), adc(), uvSensor()]
+    drivers = [ContextPrinter(), Camera(), cpuTemp()]
     await asyncio.gather(*[d.run(context, lock) for d in drivers])
 
+if __name__ == '__main__':
+    """
+    The main entry point for CubeWorks.  Performs the following tasks:
+    1. Sets the sleep duration before beginning operations
+    2. Initializes the database
+    3. Computes the time to wait before beginning operations in case of reboot
+    4. Waits if the sleep duration has not elapsed
+    5. Begins the main asyncio loop
+    """
+    # Time in seconds to sleep before initializing drivers
+    SLEEP_DURATION = 1#30 * 60
 
-try:
-    asyncio.run(startLoop())
-except KeyboardInterrupt:
-    pass
+    # Initialilze database
+    db = Database()
+
+    # Query database for initial time
+    initial_time = db.getFirstBoot()
+
+    if initial_time is None:
+        # Record initial boot time in database
+        initial_time = datetime.now()
+        db.setFirstBoot(initial_time)
+
+    delta = datetime.now() - initial_time
+    if delta.seconds < SLEEP_DURATION:
+        sleep(SLEEP_DURATION - delta.seconds)
+
+    try:
+        asyncio.run(startLoop())
+    except KeyboardInterrupt:
+        pass
