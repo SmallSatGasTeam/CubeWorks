@@ -3,7 +3,7 @@
 #esp for the last two.) 
 import smbus
 
-class ESP:
+class EpS:
     #this sets up i2c commincation. 
     def __init__(self):
         self.__DEVICE_BUS = 1
