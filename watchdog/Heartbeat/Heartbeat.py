@@ -20,7 +20,7 @@ def setUp():
 
 # this function sends a single pulse
 def singlePulse():
-    waitTime = 4
+    waitTime = 1
     setUp()
     # wait a four seconds.
     sleep(waitTime)
