@@ -6,7 +6,7 @@ from Components import *
 from Drivers import *
 from mission_modes import *
 
-async def startLoop():
+async def startLoop(db):
     """
     Creates a context dictionary to contain values,
     Creates a lock to prevent race conditions when running drivers,
@@ -15,8 +15,17 @@ async def startLoop():
     """
     context = {"MissionMode": MissionMode.PRE_TX}
     lock = asyncio.Lock()
-    drivers = [ContextPrinter(), Camera(), cpuTemp()]
+    drivers = [ContextPrinter(), db, Camera(), cpuTemp()]
     await asyncio.gather(*[d.run(context, lock) for d in drivers])
+
+
+def UTCTime():
+    """
+    Returns the UTC time in microseconds since the Unix epoch.
+    The integer returned should be 32 bytes in size and be on the order of 1500000000000000.
+    """
+    return int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds() * 1000000)
+
 
 if __name__ == '__main__':
     """
@@ -27,6 +36,7 @@ if __name__ == '__main__':
     4. Waits if the sleep duration has not elapsed
     5. Begins the main asyncio loop
     """
+    print(UTCTime())
     # Time in seconds to sleep before initializing drivers
     SLEEP_DURATION = 1#30 * 60
 
@@ -46,6 +56,6 @@ if __name__ == '__main__':
         sleep(SLEEP_DURATION - delta.seconds)
 
     try:
-        asyncio.run(startLoop())
+        asyncio.run(startLoop(db))
     except KeyboardInterrupt:
         pass

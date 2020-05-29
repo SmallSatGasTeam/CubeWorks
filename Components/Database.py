@@ -4,7 +4,12 @@ from datetime import datetime
 
 class Database(Component):
     """
-    A database class that implements database creation and methods to read and write from the database.  
+    A database class that implements database creation and methods to read and write from the database. Creates the following tables: 
+    1. firstBoot
+    2. picture
+    3. attitudeDetermination
+    4. data
+    5. housekeeping
     """
     def __init__(self):
         """
@@ -19,10 +24,10 @@ class Database(Component):
         Concrete implementation of Component.update().
         Takes a dictionary (context) as a parameter, and writes it to a new row in the database.  
         """
-        print(context)
-        cursor = self.connection.cursor()
+        print('writing to database')
+        #cursor = self.connection.cursor()
         # TODO: write context to database
-        self.connection.commit()
+        #self.connection.commit()
 
 
     def getFirstBoot(self):
