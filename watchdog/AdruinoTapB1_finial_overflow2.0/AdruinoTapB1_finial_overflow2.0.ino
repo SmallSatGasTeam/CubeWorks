@@ -106,6 +106,8 @@ bool watchdogProtocol()
   //if the PI state is HIGH then it has sent the heartbeat and we reset the count, if not we continue adding to time_actual until we exceed 4,000 in which case the pi will be reset. 
   while(time_check == true)
   {
+    //set this to false to start with the default is a reboot is needed
+    bool W_D_PI = false;
     //get time actual
     long time_actual = millis();
 
@@ -124,11 +126,11 @@ bool watchdogProtocol()
    
 
    //check to see if in what condition the button is in
-   //if it is LOW we break the loop
-   if(buttonState == LOW)
+   //if the state goes form LOW to HIGH we break the loop
+   if(buttonState == HIGH)
    {
-    while(buttonState == digitalRead(BUTTON)){};
-    //set the pi watch dog to true
+//    while(buttonState == digitalRead(BUTTON)){};
+    //set the pi watch dog to true, meaning no rest is needed
     W_D_PI = true;
     //break the while loop
     time_check = false;
