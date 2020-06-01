@@ -35,3 +35,4 @@ class TestCamera(unittest.TestCase):
         """
         self.testCam.take_picture()
         self.assertTrue(os.path.isfile(self.testCam.latest_capture))
+        self.assertEqual(self.testCam.read(), self.testCam.latest_capture)

@@ -21,10 +21,10 @@ async def startLoop(db):
 
 def UTCTime():
     """
-    Returns the UTC time in microseconds since the Unix epoch.
-    The integer returned should be 32 bytes in size and be on the order of 1500000000000000.
+    Returns the UTC time in miliseconds since the Unix epoch.
+    The integer returned should be 32 bytes in size and be on the order of 1500000000000.
     """
-    return int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds() * 1000000)
+    return int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds() * 1000)
 
 
 if __name__ == '__main__':
@@ -37,8 +37,8 @@ if __name__ == '__main__':
     5. Begins the main asyncio loop
     """
     print(UTCTime())
-    # Time in seconds to sleep before initializing drivers
-    SLEEP_DURATION = 1#30 * 60
+    # Time in miliseconds to sleep before initializing drivers
+    SLEEP_DURATION = 10 * 1000#30 * 60
 
     # Initialilze database
     db = Database()
@@ -48,12 +48,14 @@ if __name__ == '__main__':
 
     if initial_time is None:
         # Record initial boot time in database
-        initial_time = datetime.now()
+        print('initial time not found: assuming first boot')
+        initial_time = UTCTime()
         db.setFirstBoot(initial_time)
 
-    delta = datetime.now() - initial_time
-    if delta.seconds < SLEEP_DURATION:
-        sleep(SLEEP_DURATION - delta.seconds)
+    delta = UTCTime() - initial_time
+    if delta < SLEEP_DURATION:
+        print(f'wait time not elapsed.  waiting {delta}')
+        sleep((SLEEP_DURATION - delta) / 1000)
 
     try:
         asyncio.run(startLoop(db))

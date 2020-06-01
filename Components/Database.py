@@ -39,7 +39,7 @@ class Database(Component):
         rows = cursor.fetchall()
         if len(rows) == 0:
             return None
-        return datetime.strptime(rows[0][0], '%Y-%m-%d %H:%M:%S.%f')
+        return rows[0][0]
 
 
     def setFirstBoot(self, time):
@@ -65,26 +65,16 @@ class Database(Component):
 
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS firstBoot
-            (time timestamp PRIMARY KEY)''')
+            (time int PRIMARY KEY)''')
 
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS picture
-            (time timestamp PRIMARY KEY,
-            packet_type int,
-            mission_mode int,
-            reboot_count int,
-            payload_size int,
-            payload_count int,
+            (time int PRIMARY KEY,
             filepath text)''')
 
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS attitudeDetermination
-            (time timestamp PRIMARY KEY,
-            packet_type int,
-            mission_mode int,
-            reboot_count int,
-            payload_size int,
-            payload_count int,
+            (time int PRIMARY KEY,
             ss_1 float,
             ss_2 float,
             ss_3 float,
@@ -95,12 +85,11 @@ class Database(Component):
             mf_z float,
             la_x float,
             la_y float,
-            la_z float,
-            powermode int)''')
+            la_z float)''')
 
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS data
-            (time timestamp PRIMARY KEY,
+            (time int PRIMARY KEY,
             uvintensity float,
             boomdeployed bool,
             magx float,
@@ -116,13 +105,11 @@ class Database(Component):
             therm3 float,
             therm4 float,
             therm5 float,
-            therm6 float,
-            powermode int)''')
+            therm6 float)''')
 
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS housekeeping
-            (time timestamp PRIMARY KEY,
-            packet_type int,
+            (time int PRIMARY KEY,
             mission_mode int,
             reboot_count int,
             payload_size int,
