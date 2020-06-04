@@ -53,4 +53,9 @@ Command 1 will give the battery voltage from the EPS as a 12 bit number (0-4096)
 Multiply this by 0.0023394775 to get the voltage.
 The raw battery bus should read between 3.5 - 4.12 V
 
-
+## Solar Panel Temperature Sensors
+The accuracy of the Temperature sensors are:
+| Condition | Error margin |
+| --- | --- |
+| -25°C to 85°C | ±1.5°C |
+| -55°C to 125°C | ±2.0°C |
