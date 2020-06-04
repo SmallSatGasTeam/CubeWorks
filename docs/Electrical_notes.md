@@ -81,3 +81,23 @@ The accuracy of the Temperature sensors are:
 | --- | --- |
 | -25°C to 85°C | ±1.5°C |
 | -55°C to 125°C | ±2.0°C |
+
+## Chronodot
+The chronodot is connected to the Pi on the I2C bus, along with a reset pin, an interrupt, and a 32kHz square wave
+
+Pins:
+| Name | GPIO number | Pin Number|
+| --- | --- | --- |
+| SDA | 2 | 3 |
+| SCL | 3 | 5 |
+| RST | 22 | 15 |
+| INT | 23 | 16 |
+| 32kHz | 27 | 13 |
+*The RST pin is active low, setting the RST pin low will cause the chronodot to reset
+*The INT pin is also active low. 
+
+The RST pin acts as both an external reset button, but also an internal reset indicator. The RST pin will go low if the suply voltage for the chronodot goes too low and the chronodot resets. This can indicate a comprimised clock.
+
+The INT pin acts like an alarm. A specific time can be set, and at that time, the chronodot will set the INT pin low. Otherwise this pin is high.
+
+The accuracy of the clock is ±2 minutes/year of operation 
