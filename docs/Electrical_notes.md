@@ -93,6 +93,7 @@ Pins:
 | RST | 22 | 15 |
 | INT | 23 | 16 |
 | 32kHz | 27 | 13 |
+
 *The RST pin is active low, setting the RST pin low will cause the chronodot to reset
 *The INT pin is also active low. 
 
