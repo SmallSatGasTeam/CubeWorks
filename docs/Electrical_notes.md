@@ -2,7 +2,7 @@
 
 ## Magnetometer/Accelerometer
 Pins:
-| Name | GPIO number | Number|
+| Name | GPIO number | Pin Number|
 | --- | --- | --- |
 | SDA | 2 | 3 |
 | SCL | 3 | 5 |
@@ -19,7 +19,7 @@ If lying flat, the Z values should be similar to those above.
 
 ## ADC
 Pins:
-| Name | GPIO number | Number|
+| Name | GPIO number | Pin Number|
 | --- | --- | --- |
 | MISO | 9 | 21 |
 | MOSI | 10 | 19 |
@@ -49,7 +49,7 @@ When the sensor is exposed to UV light, it should read around 3.3V.
 The Sun sensors have almost the exact same circuit as the UV sensor, except that they are tuned so that the max amount of sunlight the sensor can read corresponds to just below 3.3V in the circuit.
 
 ## EPS
-Command 1 will give u the battery voltage from the EPS as a 12 bit number (0-4096).
+Command 1 will give the battery voltage from the EPS as a 12 bit number (0-4096).
 Multiply this by 0.0023394775 to get the voltage.
 The raw battery bus should read between 3.5 - 4.12 V
 
