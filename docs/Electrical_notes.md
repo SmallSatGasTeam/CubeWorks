@@ -95,6 +95,7 @@ Pins:
 | 32kHz | 27 | 13 |
 
 *The RST pin is active low, setting the RST pin low will cause the chronodot to reset
+
 *The INT pin is also active low. 
 
 The RST pin acts as both an external reset button, but also an internal reset indicator. The RST pin will go low if the suply voltage for the chronodot goes too low and the chronodot resets. This can indicate a comprimised clock.
