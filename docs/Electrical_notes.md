@@ -49,11 +49,33 @@ When the sensor is exposed to UV light, it should read around 3.3V.
 The Sun sensors have almost the exact same circuit as the UV sensor, except that they are tuned so that the max amount of sunlight the sensor can read corresponds to just below 3.3V in the circuit.
 
 ## EPS
+The EPS module is connected on the I2C bus, with a seperate pin for an EPS reset.
+
+Pins:
+| Name | GPIO number | Pin Number|
+| --- | --- | --- |
+| SDA | 2 | 3 |
+| SCL | 3 | 5 |
+| EPS_RST | 6 | 31 |
+
+*EPS_RST is active low, setting the pin low will reset the EPS
+
 Command 1 will give the battery voltage from the EPS as a 12 bit number (0-4096).
 Multiply this by 0.0023394775 to get the voltage.
 The raw battery bus should read between 3.5 - 4.12 V
 
 ## Solar Panel Temperature Sensors
+The solar panels are connected to the Pi on the SPI bus.
+
+Pins:
+| Name | GPIO number | Pin Number|
+| --- | --- | --- |
+| MISO | 9 | 21 |
+| MOSI | 10 | 19 |
+| SCLK | 11 | 23 |
+| Panel_1_Temp_CS | 7 | 26 |
+| Panel_2_Temp_CS | 8 | 24 |
+
 The accuracy of the Temperature sensors are:
 | Condition | Error margin |
 | --- | --- |
