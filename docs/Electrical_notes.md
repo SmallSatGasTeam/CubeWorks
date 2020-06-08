@@ -103,3 +103,18 @@ The RST pin acts as both an external reset button, but also an internal reset in
 The INT pin acts like an alarm. A specific time can be set, and at that time, the chronodot will set the INT pin low. Otherwise this pin is high.
 
 The accuracy of the clock is ±2 minutes/year of operation 
+
+## Wire cutters
+The wire cutters have an on switch as two inhibits. 
+
+Pins:
+| Name | GPIO number | Pin Number|
+| --- | --- | --- |
+| WC1_on | 4 | 7 |
+| WC1_safety1 | 20 | 38 |
+| WC1_safety2 | 16 | 36 |
+| WC2_on | 5 | 29 |
+| WC2_safety1 | 26 | 37 |
+| WC2_safety2 | 19 | 35 |
+
+The inhibits must be set High and the on pin must be set Low to turn the wire cutters on.
