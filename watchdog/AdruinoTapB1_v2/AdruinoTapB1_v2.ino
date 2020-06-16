@@ -93,8 +93,8 @@ void loop()
   //if we are then keep checking our time delay. 
   if(bootInProgress)
   {
-    time2 = millis()
-    longWait = wait(&time1, &time2, bootLongWait)
+    time2 = millis();
+    longWait = wait(&time1, &time2, bootLongWait);
   }
   
 
@@ -198,10 +198,10 @@ void OFF(void)
 }
 
 //this is a custom wait function that we will use to aviod the problem of the watchdog timming out.
-bool wait(long *time1, long *ime2, int delayTime)
+bool wait(long *time1, long *time2, int delayTime)
 {
   //check for overflow
-  inOverflow(time1, time2);
+  intOverflow(time1, time2);
   //check the time delay 
   if((*time2 - *time1) > delayTime)
   {
