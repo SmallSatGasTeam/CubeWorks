@@ -4,7 +4,6 @@ from time import sleep
 
 # this is the heart beat code. objectives are:
 # 1) A function that sends one pulse
-#   A)
 
 
 def setUp():
