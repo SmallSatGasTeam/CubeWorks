@@ -38,6 +38,8 @@
 //MOSFIT pin, make sure not to use the #define function here. The #define actually repalces code in 
 //beetle and this will cause the digital pin not to initialize incorrectly. 
 const int MOSFIT = 10;
+//This is the delay for the pi to boot up. It will get a little more the 5 seconds. (BOOT_DEALY + PI_CHECK)
+const int BOOT_DELAY = 1000;
 //The pi delay const
 #define PI_CHECK 4000
 //set LED to high
@@ -73,11 +75,15 @@ void setup()
 
 void loop() 
 {  
+  Serial.println("Starting loop ----------------");
   //This is where you want to enable the watchdog, just be careful not to set the frequency too low. 
   //If it does get set too low you will have to hold the pins and then upload a new sketch. This will
   //take several tries as it is a timing game. 
   //Note: The wdt_enable does reset the watchdog timer. 
   wdt_enable(WDTO_8S);
+  
+  Serial.print("longWait: ");
+  Serial.println(longWait);
   //if we are not waiting on a boot prosses
   if(!longWait)
   {
@@ -95,6 +101,7 @@ void loop()
     longWait = wait(&time1, &time2, bootLongWait);
   }
   
+  Serial.println("Ending loop ----------------");
 
 }
 
@@ -111,20 +118,23 @@ bool watchdogProtocol()
   //this code runs so that we can see the board is working
   //read the button
   int buttonState = digitalRead(BUTTON);
+  Serial.print("buttonState: ");
   Serial.println(buttonState);  
 
   //record the time that we start the loop
   long time_actual = millis();
   
+  Serial.println("Entering time_check loop");
+  
   //if the PI state is HIGH then it has sent the heartbeat and we reset the count, if not we continue adding to time_actual until we exceed 4,000 in which case the pi will be reset. 
   while(time_check == true)
   {
+    Serial.println("In time_check loop, time_actual: " + time_actual);
     //get time actual
-    long time_actual = millis();
+    time_actual = millis();
 
     //check for int overflow 
-    //NOTE: this func takes small, big, I had it back words I think that might have been our problem. 
-    intOverflow(&time_actual, &timer);
+    intOverflow(&timer, &time_actual);
     
     //this logic test is the timer 
     if(PI_CHECK > time_actual - timer)
@@ -153,30 +163,30 @@ bool watchdogProtocol()
     buttonState = digitalRead(BUTTON);
    }
   }
+  Serial.println("Exited time_check loop");
   return W_D_PI;
 }
 
 //this fuc reboots the pi
 void turn(bool check, bool *startBoot)
 {
+  Serial.println("Starting turn function");
   if(check == false)
   {
     //reset pi
     //pi off
     digitalWrite(MOSFIT, HIGH);
-    ///BEN I Think that these delays are tripping the beetle internal watchdog, i think we should go over one second and we should just use the wait func instead of delay
     delay(1000);
     //pi on
     digitalWrite(MOSFIT, LOW);
-    ///BEN I Think that these delays are tripping the beetle internal watchdog, i think we should go over one second and we should just use the wait func instead of delay
-    delay(1000);
+    //delay to give the pi time to boot, it will have a max of 5 seconds to boot
+    delay(BOOT_DELAY);
   }
   *startBoot = true;
 }
 
 
 //this method quick for int overflow to make sure that the clock does not exceed the long int limit
-//takes small big
 void intOverflow(long *time1, long *time2)
 {
   //check for over flow
@@ -189,6 +199,9 @@ void intOverflow(long *time1, long *time2)
   }
 }
 
+//this method is to check and see if we have received any communication over UART and then calls the OFF func
+///////////////////////////TODO/////////////////////////////////////////
+
 //this method turns the pi off
 void OFF(void)
 {
@@ -198,6 +211,7 @@ void OFF(void)
 //this is a custom wait function that we will use to aviod the problem of the watchdog timming out.
 bool wait(long *time1, long *time2, int delayTime)
 {
+  Serial.println("Starting wait function");
   //check for overflow
   intOverflow(time1, time2);
   //check the time delay 
