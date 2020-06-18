@@ -15,14 +15,14 @@ async def startLoop(db):
     """
     context = {"MissionMode": MissionMode.PRE_TX}
     lock = asyncio.Lock()
-    drivers = [ContextPrinter(), db, Camera(), cpuTemp()]
+    drivers = [ContextPrinter(), RTC(), db, Camera(), cpuTemp()]
     await asyncio.gather(*[d.run(context, lock) for d in drivers])
 
 
 def UTCTime():
     """
     Returns the UTC time in miliseconds since the Unix epoch.
-    The integer returned should be 32 bytes in size and be on the order of 1500000000000.
+    The integer returned should be 64 bits in size and be on the order of 1500000000000.
     """
     return int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds() * 1000)
 
