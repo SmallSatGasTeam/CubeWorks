@@ -2,6 +2,7 @@
 #up you should just be able to copy the getCurrent func change the name, the command, and the convertion factor. (See the i2c data sheet for 
 #esp for the last two.) 
 import smbus
+#circurt bus??? maybe use that
 
 class EpS:
     #this sets up i2c commincation. 
