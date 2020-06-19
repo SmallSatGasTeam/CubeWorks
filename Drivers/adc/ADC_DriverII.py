@@ -19,9 +19,9 @@ spi.open(0, spi_ch)
 class ADC(Driver):
     # these are the pins for miso, mosi, cs, clk.
     # these are were the board is hooked up
-    clkPin = 18
-    misoPin = 23
-    mosiPin = 24
+    clkPin = 11
+    misoPin = 9
+    mosiPin = 10
     csPin = 25
 
     LOW = GPIO.LOW
@@ -30,9 +30,6 @@ class ADC(Driver):
     numOfChannels = 5
     # this
     adcList = []
-
-    def __init__(self):
-        super().__init__("adc")
 
     def setupPins(self):
         # this method sets up all the pins to communicate with the ADC
@@ -65,11 +62,20 @@ class ADC(Driver):
         GPIO.output(self.clkPin, self.HIGH)
         return reply
 
-    def read(self):
+    def calculate(self, unconvertedNum):
+        voltageStep = 0.000805664062
+
+        # converts the 12 bit binary number to decimal
+        numberOfSteps = float(unconvertedNum * 10000)
+
+        # calculate the output voltage from UV sensor
+        voltage = numberOfSteps * voltageStep
+        return voltage
+
+    def read(self, channel):
         # setup the GPIO pins for the adc
         self.setupPins()
-        # send signal to the slave
-        for i in range(0, 5):
-            self.adcList.append(self.sendAndRecivBits(i))
+        # send signal to and receive from the slave
+        adcChannelOutput = self.calculate(self.sendAndRecivBits(channel))
         GPIO.cleanup()
-        return self.adcList
+        return adcChannelOutput
