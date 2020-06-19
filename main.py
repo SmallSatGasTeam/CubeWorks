@@ -36,7 +36,6 @@ if __name__ == '__main__':
     4. Waits if the sleep duration has not elapsed
     5. Begins the main asyncio loop
     """
-    print(UTCTime())
     # Time in miliseconds to sleep before initializing drivers
     SLEEP_DURATION = 10 * 1000#30 * 60
 
