@@ -12,3 +12,4 @@ class uvSensor(ADC):
         voltage = super().read(self.adcChannel)
 
         return voltage
+

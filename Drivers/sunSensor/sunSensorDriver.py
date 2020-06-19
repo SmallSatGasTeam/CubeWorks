@@ -1,7 +1,7 @@
 from Drivers.adc.ADC_DriverII import ADC
 
 
-class solarTemp(ADC):
+class sunSensor(ADC):
 
     adcChannel = [5, 4, 2, 3, 0]
     adcReadingsInV = []
