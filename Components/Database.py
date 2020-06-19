@@ -19,6 +19,7 @@ class Database(Component):
         self.connection = sqlite3.connect('db.sqlite3')
         self.initdb()
 
+
     def update(self, context):
         """
         Concrete implementation of Component.update().
@@ -29,9 +30,6 @@ class Database(Component):
         self.commitTTNC(context)
         self.commitBoomDeploy(context)
         self.commitAttitude(context)
-        #cursor = self.connection.cursor()
-        # TODO: write context to database
-        #self.connection.commit()
 
 
     def getFirstBoot(self):
@@ -69,16 +67,102 @@ class Database(Component):
 
     def commitTTNC(self, context):
         """
-        Parses context and commits relevant TT&C data to db.
+        Parses context and commits relevant TT&C (Telemetry, Tracking, and Command) data to db.
         """
         print('commit TT&C data')
-    
+        time = 0
+        packet_type = 0
+        mission_mode = 0
+        reboot_count = 0
+        boombox_uv = 0.0
+        sp_x_pos_temp0= 0.0
+        sp_z_pos_temp1= 0.0
+        raspi_temp = 0.0
+        eps_mcu_temp = 0.0
+        batt_temp_cell0 = 0.0
+        batt_temp_cell1 = 0.0
+        batt_temp_cell2 = 0.0
+        batt_temp_cell3 = 0.0
+        batt_voltage = 0.0
+        batt_current = 0.0
+        bcr_voltage = 0.0
+        bcr_current = 0.0
+        eps_3v3_current = 0.0
+        eps_5v_current = 0.0
+        sp_x_voltage = 0.0
+        sp_x_pos_current = 0.0
+        sp_x_neg_current = 0.0
+        sp_y_voltage = 0.0
+        sp_y_pos_current = 0.0
+        sp_y_neg_current = 0.0
+        sp_z_voltage = 0.0
+
+        if ('rtc' in context):
+            time = context['rtc']
+
+        self.connection.execute("INSERT INTO ttnc (time, packet_type, mission_mode, reboot_count, boombox_uv, sp_x_pos_temp0, sp_z_pos_temp1, raspi_temp, eps_mcu_temp, batt_temp_cell0, batt_temp_cell1, batt_temp_cell2, batt_temp_cell3, batt_voltage, batt_current, bcr_voltage, bcr_current, eps_3v3_current, eps_5v_current, sp_x_voltage, sp_x_pos_current, sp_x_neg_current, sp_y_voltage, sp_y_pos_current, sp_y_neg_current, sp_z_voltage)VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (
+            time,
+            packet_type,
+            mission_mode,
+            reboot_count,
+            boombox_uv,
+            sp_x_pos_temp0,
+            sp_z_pos_temp1,
+            raspi_temp,
+            eps_mcu_temp,
+            batt_temp_cell0,
+            batt_temp_cell1,
+            batt_temp_cell2,
+            batt_temp_cell3,
+            batt_voltage,
+            batt_current,
+            bcr_voltage,
+            bcr_current,
+            eps_3v3_current,
+            eps_5v_current,
+            sp_x_voltage,
+            sp_x_pos_current,
+            sp_x_neg_current,
+            sp_y_voltage,
+            sp_y_pos_current,
+            sp_y_neg_current,
+            sp_z_voltage))
+        self.connection.commit()
+
+  
+
     def commitBoomDeploy(self, context):
         """
         Parses context and commits relevant boom deployment data to db.
         """
         print('commit boom deploy data')
-        self.connection.execute("INSERT INTO boom_deploy (time, packet_type, boombox_uv, la_x, la_y, la_z) VALUES (?, ?, ?, ?, ?, ?)", (context['rtc'], 0, 0.0, 0.0, 0.0, 0.0))
+        time = 0
+        packet_type = 0
+        boombox_uv = 0.0
+        la_x = 0.0
+        la_y = 0.0
+        la_z = 0.0
+
+        if ('rtc' in context):
+            time = context['rtc']
+        if ('packet_type' in context):
+            pass
+        if ('boombox_uv' in context):
+            pass
+        if ('la_x' in context):
+            pass
+        if ('la_y' in context):
+            pass
+        if ('la_z' in context):
+            pass
+        
+        self.connection.execute("INSERT INTO boom_deploy (time, packet_type, boombox_uv, la_x, la_y, la_z) VALUES (?,?,?,?,?,?)", (
+            time, 
+            packet_type, 
+            boombox_uv, 
+            la_x, 
+            la_y, 
+            la_z))
         self.connection.commit()
 
 
@@ -87,6 +171,33 @@ class Database(Component):
         Parses context and commits relevant attatude data to db.
         """
         print('commit attitude data')
+        time = 0
+        packet_type = 0
+        ss_0 = 0.0
+        ss_1 = 0.0
+        ss_2 = 0.0
+        ss_3 = 0.0
+        ss_4 = 0.0
+        mf_x = 0.0
+        mf_y = 0.0
+        mf_z = 0.0
+
+        if ('rtc' in context):
+            time = context['rtc']
+        # Sorry this is ugly.  SQLite3 expects a string literal that can't be broken up.
+        self.connection.execute("INSERT INTO attitude (time, packet_type, ss_0, ss_1, ss_2, ss_3, ss_4, mf_x, mf_y, mf_z) VALUES (?,?,?,?,?,?,?,?,?,?)", (
+            time, 
+            packet_type, 
+            ss_0, 
+            ss_1, 
+            ss_2, 
+            ss_3, 
+            ss_4, 
+            mf_x, 
+            mf_y, 
+            mf_z))
+        self.connection.commit()
+
 
 
     def initdb(self):
@@ -131,7 +242,7 @@ class Database(Component):
             bcr_voltage float,
             bcr_current float,
             eps_3v3_current float,
-            eps_5v current float,
+            eps_5v_current float,
             sp_x_voltage float,
             sp_x_pos_current float,
             sp_x_neg_current float,
