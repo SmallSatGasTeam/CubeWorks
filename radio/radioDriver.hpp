@@ -1,6 +1,8 @@
 #ifndef RADIO_DRIVER_HPP
 #define RADIO_DRIVER_HPP
 
+#include "components.hpp"
+
 #include <vector>
 
 class RadioDriver {
@@ -8,7 +10,7 @@ class RadioDriver {
 		RadioDriver(int duration);
 		void transmit();
 		std::vector<std::vector<int>> receive();
-		std::vector<std::vector<int>> queryDB(bool pic);
+		std::vector<Components> queryDB(bool pic); //do we want a second function that only returns picture stuff instead of the whole class of unasigned values?
 		void packetize();
 		void packetizePic();
 
@@ -16,9 +18,8 @@ class RadioDriver {
 			int m_lastTransTime; // in constructor set this to first boot time
 			int m_duration;  
 			std::vector<std::vector<int>> m_txWindows; //Change if necessary
-			void unPacketizedData;
-			std::vector<std::vector<int>> m_packets; //change if necessary, make class? maybe a std::variant
-
+			//void m_unPacketizedData; // must define data type
+			std::vector<Components> m_packets; //change if necessary, make class? maybe a std::variant
 
 };
 
