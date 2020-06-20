@@ -4,6 +4,7 @@
 #include "components.hpp"
 
 #include <vector>
+#include <string>
 
 class RadioDriver {
 	public:
@@ -18,7 +19,7 @@ class RadioDriver {
 			int m_lastTransTime; // in constructor set this to first boot time
 			int m_duration;  
 			std::vector<std::vector<int>> m_txWindows; //Change if necessary
-			//void m_unPacketizedData; // must define data type
+			std::vector<std::vector<std::string>> m_unPacketizedData; // must define data type
 			std::vector<Components> m_packets; //change if necessary, make class? maybe a std::variant
 
 };

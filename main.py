@@ -15,7 +15,7 @@ async def startLoop(db):
     """
     context = {"MissionMode": MissionMode.PRE_TX}
     lock = asyncio.Lock()
-    drivers = [ContextPrinter(), RTC(), db, Camera(), cpuTemp()]
+    drivers = [ContextPrinter(), RTC(), db]
     await asyncio.gather(*[d.run(context, lock) for d in drivers])
 
 
