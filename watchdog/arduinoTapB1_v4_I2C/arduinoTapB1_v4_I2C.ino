@@ -141,6 +141,14 @@ void receiveEvent(int howMany){
         bootCustomWait = DELAY3;
         turn(false, &customBootInProgress);
         break;
+
+       //I added this in case we need to dealy for an hour, 6 hours, 12 hours, or even a day. This are last resort times in case of safe mode. 
+       case 10, case 60, case 120, case 240:
+          long newDealy = (long) selection * 6000 * 60 * 60;
+          customBootInProgress = newDealy;
+          turn(false, &customBootInProgress);
+        break;
+        
       default:
         break;
     }
@@ -246,7 +254,7 @@ void intOverflow(long *time1, long *time2)
   {
     Serial.println("Int overflow tripped, resetting timers");
     //if so delay one second and reset the times
-    delay(1000);
+    delay(10);
     *time1 = millis();
     *time2 = millis();
   }
