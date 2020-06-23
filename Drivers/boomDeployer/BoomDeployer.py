@@ -18,21 +18,21 @@ class BoomDeployer(Driver):
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BOARD)
 
-	#First Wirecutter
-	self.wireCutter1_high1 = 36
-	self.wireCutter1_high2 = 38
-	self.wireCutter1_low1 = 7
+        #First Wirecutter
+        self.wireCutter1_high1 = 11
+        self.wireCutter1_high2 = 12
+        self.wireCutter1_low1 = 16
         GPIO.setup(self.wireCutter1_high1, GPIO.OUT, initial=GPIO.LOW)
-	GPIO.setup(self.wireCutter1_high2,GPIO.OUT, initial=GPIO.LOW)
-	GPIO.setup(self.wireCutter1_low1,GPIO.OUT, initial=GPIO.HIGH)
+        GPIO.setup(self.wireCutter1_high2,GPIO.OUT, initial=GPIO.LOW)
+        GPIO.setup(self.wireCutter1_low1,GPIO.OUT, initial=GPIO.HIGH)
 
-	#Second Wirecutter
-	self.wireCutter2_high1 = 35
-	self.wireCutter2_high2 = 37
-	self.wireCutter2_low1 = 29
+        #Second Wirecutter
+        self.wireCutter2_high1 = 13
+        self.wireCutter2_high2 = 15
+        self.wireCutter2_low1 = 18
         GPIO.setup(self.wireCutter2_high1, GPIO.OUT, initial=GPIO.LOW)
-	GPIO.setup(self.wireCutter2_high2,GPIO.OUT, initial=GPIO.LOW)
-	GPIO.setup(self.wireCutter2_low1,GPIO.OUT, initial=GPIO.HIGH)
+        GPIO.setup(self.wireCutter2_high2,GPIO.OUT, initial=GPIO.LOW)
+        GPIO.setup(self.wireCutter2_low1,GPIO.OUT, initial=GPIO.HIGH)
 
 
     def deploy(self):
@@ -45,29 +45,28 @@ class BoomDeployer(Driver):
             GPIO.output(self.wireCutter1_high1, GPIO.HIGH)
             GPIO.output(self.wireCutter1_high2, GPIO.HIGH)
             GPIO.output(self.wireCutter1_low1, GPIO.LOW)
-	    #Burn for set number of seconds
-	    sleep(self.burnTime)
-	    #Turn off Wire Cutter 1
-	    GPIO.output(self.wireCutter1_high1, GPIO.LOW)
+            #Burn for set number of seconds
+            sleep(self.burnTime)
+            #Turn off Wire Cutter 1
+            GPIO.output(self.wireCutter1_high1, GPIO.LOW)
             GPIO.output(self.wireCutter1_high2, GPIO.LOW)
             GPIO.output(self.wireCutter1_low1, GPIO.HIGH)
-	    #Wait
-	    sleep(self.waitTime)
+            #Wait
+            sleep(self.waitTime)
 
-
-	    #Turn on Wire Cutter 2
+            #Turn on Wire Cutter 2
             GPIO.output(self.wireCutter2_high1, GPIO.HIGH)
             GPIO.output(self.wireCutter2_high2, GPIO.HIGH)
             GPIO.output(self.wireCutter2_low1, GPIO.LOW)
-	    #Burn for set number of seconds
-	    sleep(self.burnTime)
-	    #Turn off Wire Cutter 2
-	    GPIO.output(self.wireCutter2_high1, GPIO.LOW)
+            #Burn for set number of seconds
+            sleep(self.burnTime)
+            #Turn off Wire Cutter 2
+            GPIO.output(self.wireCutter2_high1, GPIO.LOW)
             GPIO.output(self.wireCutter2_high2, GPIO.LOW)
             GPIO.output(self.wireCutter2_low1, GPIO.HIGH)
-	    #Wait
-	    sleep(self.waitTime)
-	GPIO.cleanup()
+            #Wait
+            sleep(self.waitTime)
+        GPIO.cleanup()
     def read(self):
         """
         Left undefined as no data is collected by this component
