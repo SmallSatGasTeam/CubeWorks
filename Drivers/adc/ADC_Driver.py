@@ -24,6 +24,14 @@ class ADC(Driver):
     HIGH = GPIO.HIGH
     # there are 0-5 channels with this variable be sure to include 0
     numOfChannels = 5
+    spi_ch = 0
+    spi = spidev.SpiDev()
+    # spi.open(bus, device)
+    spi.open(0, spi_ch)
+    # disable spidev's chip select. we need to manage this manually
+    spi.no_cs = True
+    # cs = chip select
+         
     def __init__ (self):
         # these are the pins for miso, mosi, cs, clk.
         # these are were the board is hooked up
@@ -38,14 +46,6 @@ class ADC(Driver):
         # clk = serial clock
         GPIO.setup(self.clkPin, GPIO.OUT)
         GPIO.setup(self.csPin, GPIO.OUT, initial=GPIO.HIGH)
-         
-        spi_ch = 0
-        spi = spidev.SpiDev()
-        # spi.open(bus, device)
-        spi.open(0, spi_ch)
-        # disable spidev's chip select. we need to manage this manually
-        spi.no_cs = True
-        # cs = chip select
 
     def sendAndRecivBits(self, adcChannel):
         """
@@ -60,7 +60,7 @@ class ADC(Driver):
         msg = ((msg << 1) + adcChannel) << 5
         msg = [msg, 0b00000000]
         # the followin
-        reply = spi.xfer2(msg)
+        reply = self.spi.xfer2(msg)
 
         # set the clock and chip select to high to end message
         GPIO.output(self.csPin, self.HIGH)
