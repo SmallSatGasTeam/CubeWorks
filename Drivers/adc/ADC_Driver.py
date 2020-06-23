@@ -71,6 +71,7 @@ class ADC(Driver):
         """
         Converts the 12 bit reply from the ADC to the voltage value between 0 and 3.3
         """
+        print(unconvertedNum)
         voltageStep = 0.000805664062
 
         # converts the 12 bit binary number to decimal
