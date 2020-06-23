@@ -19,25 +19,20 @@ class ADC(Driver):
     """
     This class interfaces with the ADC to read a specified channel
     """
-    # these are the pins for miso, mosi, cs, clk.
-    # these are were the board is hooked up
-    clkPin = 11
-    misoPin = 9
-    mosiPin = 10
-    csPin = 25
+    def __init__ (self):
+        # these are the pins for miso, mosi, cs, clk.
+        # these are were the board is hooked up
+        super().__init__("ADC")
+        clkPin = 11
+        misoPin = 9
+        mosiPin = 10
+        csPin = 25
 
-    LOW = GPIO.LOW
-    HIGH = GPIO.HIGH
-    # there are 0-5 channels with this variable be sure to include 0
-    numOfChannels = 5
-    # this
-    adcList = []
-
-    def setupPins(self):
-        """
-        This function setup the pins to communicate with the ADc and gives initial states for some of the pins
-        """
-        # this method sets up all the pins to communicate with the ADC
+        LOW = GPIO.LOW
+        HIGH = GPIO.HIGH
+        # there are 0-5 channels with this variable be sure to include 0
+        numOfChannels = 5
+    
         GPIO.setmode(GPIO.BOARD)
         # mosi = master out slave in
         GPIO.setup(self.mosiPin, GPIO.OUT)
@@ -87,9 +82,7 @@ class ADC(Driver):
         """
         Calls functions to set up the pins for communication, read the 12 bit value from the ADC, and converts the value to a voltage float. Returns the float.
         """
-        # setup the GPIO pins for the adc
-        self.setupPins()
         # send signal to and receive from the slave
         adcChannelOutput = self.calculate(self.sendAndRecivBits(channel))
-        GPIO.cleanup()
+        #GPIO.cleanup()
         return adcChannelOutput
