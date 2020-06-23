@@ -67,19 +67,11 @@ class ADC(Driver):
         GPIO.output(self.clkPin, self.HIGH)
         return reply
 
-    def calculate(self, unconvertedNum):
+    def calculate(self, inputBytes):
         """
         Converts the 12 bit reply from the ADC to the voltage value between 0 and 3.3
         """
-        print(unconvertedNum)
-        voltageStep = 0.000805664062
-
-        # converts the 12 bit binary number to decimal
-        numberOfSteps = float(unconvertedNum * 10000)
-
-        # calculate the output voltage from UV sensor
-        voltage = numberOfSteps * voltageStep
-        return voltage
+        return(inputBytes[0] + (inputBytes[1] * 512))*(3.3/4096)   #Converts the 12 bit serial signal to the voltage between 0V and 3.3V. 
 
     def read(self, channel):
         """
