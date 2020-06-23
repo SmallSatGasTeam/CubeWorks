@@ -9,29 +9,26 @@ import RPi.GPIO as GPIO
     that. Same with the bus in spi.open(). i just made the best judgment 
     call i could.
 """
-spi_ch = 0
-spi = spidev.SpiDev()
-# spi.open(bus, device)
-spi.open(0, spi_ch)
 
 
 class ADC(Driver):
     """
     This class interfaces with the ADC to read a specified channel
     """
+    clkPin = 11
+    misoPin = 9
+    mosiPin = 10
+    csPin = 25
+      
+    LOW = GPIO.LOW
+    HIGH = GPIO.HIGH
+    # there are 0-5 channels with this variable be sure to include 0
+    numOfChannels = 5
     def __init__ (self):
         # these are the pins for miso, mosi, cs, clk.
         # these are were the board is hooked up
         super().__init__("ADC")
-        clkPin = 11
-        misoPin = 9
-        mosiPin = 10
-        csPin = 25
-
-        LOW = GPIO.LOW
-        HIGH = GPIO.HIGH
-        # there are 0-5 channels with this variable be sure to include 0
-        numOfChannels = 5
+        
     
         GPIO.setmode(GPIO.BOARD)
         # mosi = master out slave in
@@ -40,9 +37,6 @@ class ADC(Driver):
         GPIO.setup(self.misoPin, GPIO.IN)
         # clk = serial clock
         GPIO.setup(self.clkPin, GPIO.OUT)
-        # disable spidev's chip select. we need to manage this manually
-        spi.no_cs = True
-        # cs = chip select
         GPIO.setup(self.csPin, GPIO.OUT, initial=GPIO.HIGH)
 
     def sendAndRecivBits(self, adcChannel):
@@ -82,6 +76,14 @@ class ADC(Driver):
         """
         Calls functions to set up the pins for communication, read the 12 bit value from the ADC, and converts the value to a voltage float. Returns the float.
         """
+        spi_ch = 0
+        spi = spidev.SpiDev()
+        # spi.open(bus, device)
+        spi.open(0, spi_ch)
+        # disable spidev's chip select. we need to manage this manually
+        spi.no_cs = True
+        # cs = chip select
+         
         # send signal to and receive from the slave
         adcChannelOutput = self.calculate(self.sendAndRecivBits(channel))
         #GPIO.cleanup()
