@@ -2,14 +2,6 @@ from Drivers.Driver import Driver
 import spidev
 import RPi.GPIO as GPIO
 
-"""
-    ***IMPORTANT***
-    NOTE: Ben, I believe that spi_ch is the correct value of the channel
-    if it is not just send me a message with the value and i can fix 
-    that. Same with the bus in spi.open(). i just made the best judgment 
-    call i could.
-"""
-
 
 class ADC(Driver):
     """
@@ -20,8 +12,6 @@ class ADC(Driver):
     mosiPin = 19
     csPin = 22
       
-    LOW = GPIO.LOW
-    HIGH = GPIO.HIGH
     # there are 0-5 channels with this variable be sure to include 0
     numOfChannels = 5
     spi_ch = 0
@@ -47,13 +37,13 @@ class ADC(Driver):
         GPIO.setup(self.clkPin, GPIO.OUT)
         GPIO.setup(self.csPin, GPIO.OUT, initial=GPIO.HIGH)
 
-    def sendAndRecivBits(self, adcChannel):
+    def read(self, channel):
         """
         Sends a read command with a specified channel and then returns the reply from the ADC
         """
         # Start the read with both clock and chip select low
-        GPIO.output(self.csPin, self.LOW)
-        GPIO.output(self.clkPin, self.LOW)
+        GPIO.output(self.csPin, GPIO.LOW)
+        GPIO.output(self.clkPin, GPIO.LOW)
 
         # the following creates a message to send to the slave
         msg = 0b11
@@ -63,22 +53,10 @@ class ADC(Driver):
         reply = self.spi.xfer2(msg)
 
         # set the clock and chip select to high to end message
-        GPIO.output(self.csPin, self.HIGH)
-        GPIO.output(self.clkPin, self.HIGH)
-        return reply
-
-    def calculate(self, inputBytes):
-        """
-        Converts the 12 bit reply from the ADC to the voltage value between 0 and 3.3
-        """
-        return(inputBytes[0] + (inputBytes[1] * 512))*(3.3/4096)   #Converts the 12 bit serial signal to the voltage between 0V and 3.3V. 
-
-    def read(self, channel):
-        """
-        Calls functions to set up the pins for communication, read the 12 bit value from the ADC, and converts the value to a voltage float. Returns the float.
-        """
+        GPIO.output(self.csPin, GPIO.HIGH)
+        GPIO.output(self.clkPin, GPIO.HIGH)
          
-        # send signal to and receive from the slave
-        adcChannelOutput = self.calculate(self.sendAndRecivBits(channel))
-        #GPIO.cleanup()
-        return adcChannelOutput
+        # convert the reply from 12 bits stored in two bytes to a voltage
+        # 12 bit data:  byte 1 [0 0 0 0 MSB d11 d10 d9] byte 0 [d8 d7 d6 d5 d4 d3 d2 LSB]
+        # Each LSB represents 3.3/4096 volts
+        return(reply[0] + (reply[1] * 512))*(3.3/4096)
