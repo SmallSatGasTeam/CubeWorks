@@ -1,33 +1,95 @@
 from Drivers.Driver import Driver
-from typing import List, Tuple
-import time
+import spidev
+import RPi.GPIO as GPIO
 
-# Import SPI library (for hardware SPI) and MCP3008 library.
-import Adafruit_GPIO.SPI as SPI
-import Adafruit_MCP3008
-    
-class adc(Driver):
-    def __init__(self):
-        """Constructor for the ADC driver
+"""
+    ***IMPORTANT***
+    NOTE: Ben, I believe that spi_ch is the correct value of the channel
+    if it is not just send me a message with the value and i can fix 
+    that. Same with the bus in spi.open(). i just made the best judgment 
+    call i could.
+"""
+spi_ch = 0
+spi = spidev.SpiDev()
+# spi.open(bus, device)
+spi.open(0, spi_ch)
 
-        Todo:
-            * Change the number of numChannels
+
+class ADC(Driver):
+    """
+    This class interfaces with the ADC to read a specified channel
+    """
+    # these are the pins for miso, mosi, cs, clk.
+    # these are were the board is hooked up
+    clkPin = 11
+    misoPin = 9
+    mosiPin = 10
+    csPin = 25
+
+    LOW = GPIO.LOW
+    HIGH = GPIO.HIGH
+    # there are 0-5 channels with this variable be sure to include 0
+    numOfChannels = 5
+    # this
+    adcList = []
+
+    def setupPins(self):
         """
-        super().__init__("adc")
-        self.SPI_PORT: int   = 0
-        self.SPI_DEVICE: int = 0
-        self.numChannels: int   = 8
-        self.mcp = Adafruit_MCP3008.MCP3008(spi=SPI.SpiDev(self.SPI_PORT, self.SPI_DEVICE))
-
-    def read(self, channel: int = -1) -> List[int]:
-        """Read from the ADC
-
-        Returns: 
-            list of int: the readings from each of the numChannels of the ADC
+        This function setup the pins to communicate with the ADc and gives initial states for some of the pins
         """
+        # this method sets up all the pins to communicate with the ADC
+        GPIO.setmode(GPIO.BOARD)
+        # mosi = master out slave in
+        GPIO.setup(self.mosiPin, GPIO.OUT)
+        # miso = master in slave out
+        GPIO.setup(self.misoPin, GPIO.IN)
+        # clk = serial clock
+        GPIO.setup(self.clkPin, GPIO.OUT)
+        # disable spidev's chip select. we need to manage this manually
+        spi.no_cs = True
+        # cs = chip select
+        GPIO.setup(self.csPin, GPIO.OUT, initial=GPIO.HIGH)
 
-        if channel > -1:
-            return self.mcp.read_adc(channel)
-        else:
-            return [self.mcp.read_adc(i) for i in range(self.numChannels)]
+    def sendAndRecivBits(self, adcChannel):
+        """
+        Sends a read command with a specified channel and then returns the reply from the ADC
+        """
+        # Start the read with both clock and chip select low
+        GPIO.output(self.csPin, self.LOW)
+        GPIO.output(self.clkPin, self.LOW)
 
+        # the following creates a message to send to the slave
+        msg = 0b11
+        msg = ((msg << 1) + adcChannel) << 5
+        msg = [msg, 0b00000000]
+        # the followin
+        reply = spi.xfer2(msg)
+
+        # set the clock and chip select to high to end message
+        GPIO.output(self.csPin, self.HIGH)
+        GPIO.output(self.clkPin, self.HIGH)
+        return reply
+
+    def calculate(self, unconvertedNum):
+        """
+        Converts the 12 bit reply from the ADC to the voltage value between 0 and 3.3
+        """
+        voltageStep = 0.000805664062
+
+        # converts the 12 bit binary number to decimal
+        numberOfSteps = float(unconvertedNum * 10000)
+
+        # calculate the output voltage from UV sensor
+        voltage = numberOfSteps * voltageStep
+        return voltage
+
+    def read(self, channel):
+        """
+        Calls functions to set up the pins for communication, read the 12 bit value from the ADC, and converts the value to a voltage float. Returns the float.
+        """
+        # setup the GPIO pins for the adc
+        self.setupPins()
+        # send signal to and receive from the slave
+        adcChannelOutput = self.calculate(self.sendAndRecivBits(channel))
+        GPIO.cleanup()
+        return adcChannelOutput
