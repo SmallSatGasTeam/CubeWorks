@@ -12,7 +12,7 @@ class Camera(Driver):
 
         self.highRes = (3280, 2464)
         self.lowRes = (640, 480)
-        self.pictureDirectoryPath = "/"
+        self.pictureDirectoryPath = "~/Pictures"
 
     def takePicture(self):
         """
@@ -21,13 +21,13 @@ class Camera(Driver):
         #the way to count folders in directory is len(os.listdir(path of directory to count in))
         #you have to import OS
         #This also counts files in the total, but with the file structure we came up with this shouldn't be a problem
-        numPictures = len(listdir(self.pictureDirectoryPath) #count number of folders in directory
+        pictureNumber = len(listdir(self.pictureDirectoryPath)+1 #count number of folders in directory, add 1 for current pic #
         camera = PiCamera()
         camera.resolution = self.lowRes
         sleep(2)
-        camera.capture(#count+1/LowRes/'LowResOriginal.jpg')
+        camera.capture(self.pictureDirectoryPath+"/"+str(pictureNumber)+"/LowRes/'LowResOriginal.jpg'")
         camera.resolution = self.highRes
-        camera.capture(#count+1/HighRes/'HighResOriginal.jpg')
+        camera.capture(self.pictureDirectoryPath+"/"+str(pictureNumber)+"/HighRes/'HighResOriginal.jpg'")
 
     def compress(self):
         """
