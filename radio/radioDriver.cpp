@@ -59,10 +59,3 @@ void RadioDriver::packetize() {
 void RadioDriver::packetizePic() {
 	// packetize the picture 
 }
-
-static int callback(void* data, int numRows, char** rows, char** colNames) {
-	for (int i = 0; i < numRows; ++i) {
-		std::cout << colNames[i] << " = " << rows[i] << std::endl;
-	}
-	return 0;
-}
