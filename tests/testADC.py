@@ -16,5 +16,6 @@ from Drivers.adc import ADC_Driver
     
 #if __name__ == '__main__':
 adc = ADC_Driver.ADC()
-print(adc.read(1))
+for i in range(0,6):
+    print(adc.read(i))
     #unittest.main()

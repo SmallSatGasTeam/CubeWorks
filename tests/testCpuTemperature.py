@@ -6,4 +6,4 @@ from time import sleep
 cpu = CpuTemperature()
 while True:
     print(cpu.read())
-    sleep(1)
+    sleep(0.3)
