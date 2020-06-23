@@ -14,7 +14,7 @@ from Drivers.adc import ADC_Driver
     
 
     
-if __name__ == '__main__':
-    adc = ADC()
-    print(adc.read(1))
+#if __name__ == '__main__':
+adc = ADC_Driver.ADC()
+print(adc.read(1))
     #unittest.main()
