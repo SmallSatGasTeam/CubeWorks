@@ -15,10 +15,10 @@ class ADC(Driver):
     """
     This class interfaces with the ADC to read a specified channel
     """
-    clkPin = 11
-    misoPin = 9
-    mosiPin = 10
-    csPin = 25
+    clkPin = 23
+    misoPin = 21
+    mosiPin = 19
+    csPin = 22
       
     LOW = GPIO.LOW
     HIGH = GPIO.HIGH
