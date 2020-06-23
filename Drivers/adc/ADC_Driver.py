@@ -47,7 +47,7 @@ class ADC(Driver):
 
         # the following creates a message to send to the slave
         msg = 0b11
-        msg = ((msg << 1) + adcChannel) << 5
+        msg = ((msg << 1) + channel) << 5
         msg = [msg, 0b00000000]
         # the followin
         reply = self.spi.xfer2(msg)
