@@ -38,6 +38,14 @@ class ADC(Driver):
         # clk = serial clock
         GPIO.setup(self.clkPin, GPIO.OUT)
         GPIO.setup(self.csPin, GPIO.OUT, initial=GPIO.HIGH)
+         
+        spi_ch = 0
+        spi = spidev.SpiDev()
+        # spi.open(bus, device)
+        spi.open(0, spi_ch)
+        # disable spidev's chip select. we need to manage this manually
+        spi.no_cs = True
+        # cs = chip select
 
     def sendAndRecivBits(self, adcChannel):
         """
@@ -76,13 +84,6 @@ class ADC(Driver):
         """
         Calls functions to set up the pins for communication, read the 12 bit value from the ADC, and converts the value to a voltage float. Returns the float.
         """
-        spi_ch = 0
-        spi = spidev.SpiDev()
-        # spi.open(bus, device)
-        spi.open(0, spi_ch)
-        # disable spidev's chip select. we need to manage this manually
-        spi.no_cs = True
-        # cs = chip select
          
         # send signal to and receive from the slave
         adcChannelOutput = self.calculate(self.sendAndRecivBits(channel))
