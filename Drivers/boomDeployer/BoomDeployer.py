@@ -10,26 +10,25 @@ class BoomDeployer(Driver):
         """
         super().__init__("BoomDeployer")
         # Initial values
-        self.burnTime = 4
-        self.waitTime = 10
+        self.burnTime = 1
+        self.waitTime = 3
         self.numTimes = 3
 
-        # Set up the GPIO 8 for use
-        GPIO.setwarnings(False)
+        # Set up the GPIO pins for use
         GPIO.setmode(GPIO.BOARD)
 
         #First Wirecutter
-        self.wireCutter1_high1 = 11
-        self.wireCutter1_high2 = 12
-        self.wireCutter1_low1 = 16
+        self.wireCutter1_high1 = 36
+        self.wireCutter1_high2 = 38
+        self.wireCutter1_low1 = 7
         GPIO.setup(self.wireCutter1_high1, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.wireCutter1_high2,GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.wireCutter1_low1,GPIO.OUT, initial=GPIO.HIGH)
 
         #Second Wirecutter
-        self.wireCutter2_high1 = 13
-        self.wireCutter2_high2 = 15
-        self.wireCutter2_low1 = 18
+        self.wireCutter2_high1 = 35
+        self.wireCutter2_high2 = 37
+        self.wireCutter2_low1 = 29
         GPIO.setup(self.wireCutter2_high1, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.wireCutter2_high2,GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.wireCutter2_low1,GPIO.OUT, initial=GPIO.HIGH)
@@ -72,5 +71,4 @@ class BoomDeployer(Driver):
         Left undefined as no data is collected by this component
         """
         pass
-
 
