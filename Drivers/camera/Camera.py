@@ -1,6 +1,7 @@
 from Drivers.Driver import Driver
 from time import sleep
 from picamera import PiCamera
+from os import listdir
 
 class Camera(Driver):
     def __init__(self):
@@ -11,6 +12,7 @@ class Camera(Driver):
 
         self.highRes = (3280, 2464)
         self.lowRes = (640, 480)
+        self.pictureDirectoryPath = "/"
 
     def takePicture(self):
         """
@@ -19,7 +21,7 @@ class Camera(Driver):
         #the way to count folders in directory is len(os.listdir(path of directory to count in))
         #you have to import OS
         #This also counts files in the total, but with the file structure we came up with this shouldn't be a problem
-        numPictures = #count number of folders in directory
+        numPictures = len(listdir(self.pictureDirectoryPath) #count number of folders in directory
         camera = PiCamera()
         camera.resolution = self.lowRes
         sleep(2)
