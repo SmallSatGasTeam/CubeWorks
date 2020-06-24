@@ -12,7 +12,7 @@ class AntennaDoor(Driver):
         self.RegisterADR = 0x00 # I do not know what this means or what it should be
         self.bus = smbus.SMBus(self.DEVICE_BUS)
       
-    def readDoorStatus():
+    def readDoorStatus(self):
       #returns the status of all 4 antenna doors
       doorStatus = bus.read_i2c_block_data(self.DEVICE_ADDR, self.RegisterADR, 1)
       return doorStatus
