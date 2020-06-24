@@ -1,23 +1,22 @@
 #.
-
+from Drivers.Driver import Driver
 import smbus
 #circurt bus??? maybe use that
 
-class EpS:
+class EPS(Driver):
     #this sets up i2c commincation. 
     def __init__(self):
+        super().__init__("EPS") #Calls parent constructor
+        
+        #Setup I2C bus for communication
         self.__DEVICE_BUS = 1
         self.__DEVICE_ADDR = 0x18
         self.__RegisterADR = 0x00
         self.__bus = smbus.SMBus(DEVICE_BUS)
     
-    #we will write many getters simular to this one they will call the startRead func and then pass the right command to it so we can start 
-    #the commication. It will then return the two bits it reads. 
-    def getCurrent():
-        super().__init__("ESP")
-        return __startRead(1) * 0.0023394775#this is the convertion value. See the data sheet. 
 
-    #this starts read commands to the ESP, will package the command for us. 
+
+    #This method sends read commands to the EPS. Shawn wrote it, I assume it's correct 
     def __startRead(command)
     #this code starts the command prosses, for read commands it is address bit shifted left by one, then the command, and then address bit 
     #shifted right by one.
@@ -29,3 +28,65 @@ class EpS:
         bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, tempAddress)
         #the read command always retruns two bytes. 
         return bus.read_i2c_block_data(self.__DEVICE_ADDR, self.__RegisterADR, 2)
+    
+    #Getter calls read method, returns converdated data
+    def getMCUTemp():
+        return __startRead(1) * 0.0023394775 #Reads data of specified type, sets up conversion factor 
+        #super().__init__("ESP") <-- Shawn had this in here, I don't understand why it's here so I'm commenting it out and leaving it out of other ones
+
+    def getMCUTemp():
+        temp = startRead(18)
+        temp = ((temp *0.0006103516)– 0.986)/0.00355
+        return temp #done with multiple lines because of complicated conversion
+    
+    def getCell1Temp():
+        return __startRead(19)*0.00390625 #Reads data of specified type, sets up conversion factor to 'C
+    
+    def getCell2Temp():
+        return __startRead(20)*0.00390625 #Reads data of specified type, sets up conversion factor to 'C
+    
+    def getCell3Temp():
+        return __startRead(21)*0.00390625 #Reads data of specified type, sets up conversion factor to 'C
+    
+    def getCell4Temp():
+        return __startRead(22)*0.00390625 #Reads data of specified type, sets up conversion factor to 'C
+    
+    def getBusVoltage():
+        return __startRead(1) * 0.0023394775 #Reads data of specified type, sets up conversion factor to V
+    
+    def getBusCurrent():
+        return __startRead(2) * 0.0030517578 #Reads data of specified type, sets up conversion factor to A
+    
+    def getBCRVoltage():
+        return __startRead(3) * 0.0023394775 #Reads data of specified type, sets up conversion factor to V
+    
+    def getBCRCurrent():
+        return __startRead(4) * 0.0015258789 #Reads data of specified type, sets up conversion factor to A
+    
+    def get3V3Current():
+        return __startRead(14) * 0.0020345052 #Reads data of specified type, sets up conversion factor to A
+    
+    def get5VCurrent():
+        return __startRead(15) * 0.0020345052 #Reads data of specified type, sets up conversion factor to A
+    
+    def getSPXVoltage():
+        return __startRead(5) * 0.0024414063 #Reads data of specified type, sets up conversion factor to V
+    
+    def getSPXMinusCurrent():
+        return __startRead(6) * 0.0006103516 #Reads data of specified type, sets up conversion factor to A
+    
+    def getSPXPlusCurrent():
+        return __startRead(7) * 0.0006103516 #Reads data of specified type, sets up conversion factor to A
+    
+    def getSPYVoltage():
+        return __startRead(8) * 0.0024414063 #Reads data of specified type, sets up conversion factor to V
+    
+    def getSPYMinusCurrent():
+        return __startRead(9) * 0.0006103516 #Reads data of specified type, sets up conversion factor to A
+    
+    def getSPYPlusCurrent():
+        return __startRead(10) * 0.0006103516 #Reads data of specified type, sets up conversion factor to A
+    
+    def getSPZVoltage():
+        return __startRead(11) * 0.0024414063 #Reads data of specified type, sets up conversion factor to V
+    
