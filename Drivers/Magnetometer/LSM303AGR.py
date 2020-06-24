@@ -15,7 +15,7 @@ import busio
 #for LSM303DLH
 import adafruit_lsm303dlh_mag
 
-def Magnetometer(Driver):
+class Magnetometer(Driver):
   #Set up I2C link
   i2c = busio.I2C(board.SCL, board.SDA)
     
