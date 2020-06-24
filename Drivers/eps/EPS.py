@@ -9,28 +9,28 @@ class EPS(Driver):
         super().__init__("EPS") #Calls parent constructor
 
         #Setup I2C bus for communication
-        self.__DEVICE_BUS = 1
-        self.__DEVICE_ADDR = 0x18
-        self.__RegisterADR = 0x00
-        self.__bus = smbus.SMBus(DEVICE_BUS)
+        self.DEVICE_BUS = 1
+        self.DEVICE_ADDR = 0x18
+        self.RegisterADR = 0x00
+        self.bus = smbus.SMBus(DEVICE_BUS)
 
-    def enableRaw():
+    def enableRaw(self):
         #This method enables RAW battery output from the EPS
         #The command is 3 bytes device address left-shifted by one bit, the command, and the state
         tempAddress = self.__DEVICE_ADDR << 1
-        bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, tempAddress)
-        bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, 0x01) #Battery Raw BUS
-        bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, 0x03) #Forced ON state
+        self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, tempAddress)
+        self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, 0x01) #Battery Raw BUS
+        self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, 0x03) #Forced ON state
 
-    def disableRaw():
+    def disableRaw(self):
         #This method disables RAW battery output from the EPS
         #The command is 3 bytes device address left-shifted by one bit, the command, and the state
-        tempAddress = self.__DEVICE_ADDR << 1
-        bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, tempAddress)
-        bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, 0x01) #Battery Raw BUS
-        bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, 0x02) #Forced OFF state <-- Do we want to use Forced OFF/ON or Auto OFF/ON?
-        
-    def read():
+        tempAddress = self.DEVICE_ADDR << 1
+        self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, tempAddress)
+        self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, 0x01) #Battery Raw BUS
+        self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, 0x02) #Forced OFF state <-- Do we want to use Forced OFF/ON or Auto OFF/ON?
+
+    def read(self):
         #returns nothing since there are so many different things we could read, use other methods instead
         return
 
@@ -39,13 +39,13 @@ class EPS(Driver):
         #this code starts the command process, for read commands it is address bit shifted left by one, then the command, and then address bit
         #shifted right by one.
         #Note: you may have to wait for an acknowledge bit, but this is stander i2c proticol so I'm not sure if python does it automatically.
-        tempAddress = self.__DEVICE_ADDR << 1
-        bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, tempAddress)
-        bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, command) # do you need do convert the int to hex somehow?
-        tempAddress = self.__DEVICE_ADDR >> 1
-        bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, tempAddress)
+        tempAddress = self.DEVICE_ADDR << 1
+        self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, tempAddress)
+        self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, command) # do you need do convert the int to hex somehow?
+        tempAddress = self.DEVICE_ADDR >> 1
+        self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, tempAddress)
         #the read command always returns two bytes.
-        return bus.read_i2c_block_data(self.__DEVICE_ADDR, self.__RegisterADR, 2)
+        return self.bus.read_i2c_block_data(self.__DEVICE_ADDR, self.__RegisterADR, 2)
 
     #Getter calls read method, returns converted data - all values are converted 12 bits, even though 2 bytes returned
     def getMCUTemp():
