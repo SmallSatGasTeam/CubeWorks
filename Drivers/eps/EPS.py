@@ -29,6 +29,10 @@ class EPS(Driver):
         bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, tempAddress)
         bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, 0x01) #Battery Raw BUS
         bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, 0x02) #Forced OFF state <-- Do we want to use Forced OFF/ON or Auto OFF/ON?
+        
+    def read():
+        #returns nothing since there are so many different things we could read, use other methods instead
+        return
 
     def __startRead(command):
         #This method sends read commands to the EPS. Shawn wrote it, I assume it's correct --Logan
