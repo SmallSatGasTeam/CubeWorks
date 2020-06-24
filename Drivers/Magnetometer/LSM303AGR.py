@@ -28,3 +28,4 @@ class Magnetometer(Driver):
     #mag = adafruit_lis2mdl.LIS2MDL(self.i2c)
     #for LSM303DLH
     mag = adafruit_lsm303dlh_mag.LSM303DLH_Mag(self.i2c)
+    return mag.magnetic
