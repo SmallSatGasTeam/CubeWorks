@@ -14,6 +14,6 @@ class AntennaDoor(Driver):
       
     def readDoorStatus(self):
       #returns the status of all 4 antenna doors
-      doorStatus = bus.read_i2c_block_data(self.DEVICE_ADDR, self.RegisterADR, 1)
+      doorStatus = self.bus.read_i2c_block_data(self.DEVICE_ADDR, self.RegisterADR, 1)
       return doorStatus
 
