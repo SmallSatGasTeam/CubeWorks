@@ -17,7 +17,7 @@ class EPS(Driver):
     def enableRaw(self):
         #This method enables RAW battery output from the EPS
         #The command is 3 bytes device address left-shifted by one bit, the command, and the state
-        tempAddress = self.__DEVICE_ADDR << 1
+        tempAddress = self.DEVICE_ADDR << 1
         self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, tempAddress)
         self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, 0x01) #Battery Raw BUS
         self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, 0x03) #Forced ON state
@@ -45,12 +45,12 @@ class EPS(Driver):
         tempAddress = self.DEVICE_ADDR >> 1
         self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, tempAddress)
         #the read command always returns two bytes.
-        return self.bus.read_i2c_block_data(self.__DEVICE_ADDR, self.__RegisterADR, 2)
+        return self.bus.read_i2c_block_data(self.DEVICE_ADDR, self.RegisterADR, 2)
 
     #Getter calls read method, returns converted data - all values are converted 12 bits, even though 2 bytes returned
     def getMCUTemp():
         #super().__init__("ESP") <-- Shawn had this in here, I don't understand why it's here so I'm commenting it out and leaving it out of other ones
-        temp = startRead(18)
+        temp = __startRead(18)
         temp = ((temp *0.0006103516) - 0.986)/0.00355
         return temp #done with multiple lines because of complicated conversion
     def getCell1Temp():
