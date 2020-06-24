@@ -17,7 +17,7 @@ class TransceiverConfig(Driver):
     ser = serial.Serial ("/dev/ttyAMA0")               #Open named port 
     ser.baudrate = 115200                              #Set baud rate to 9600
     data = "a"                              #Set data to the character 'a', 0x61 or 01100001
-    ser.write(serialcmd.encode(data))                                    #Send the data
+    ser.write(data.encode())                                    #Send the data
     ser.close()
   
   def setBeaconOff(self):
