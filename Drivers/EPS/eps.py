@@ -14,16 +14,30 @@ class EPS(Driver):
         self.__RegisterADR = 0x00
         self.__bus = smbus.SMBus(DEVICE_BUS)
 
-
-
-    #This method sends read commands to the EPS. Shawn wrote it, I assume it's correct
-    def __startRead(command)
-    #this code starts the command process, for read commands it is address bit shifted left by one, then the command, and then address bit
-    #shifted right by one.
-    #Note: you may have to wait for an acknowledge bit, but this is stander i2c proticol so I'm not sure if python does it automatically.
+    def enableRaw():
+        #This method enables RAW battery output from the EPS
+        #The command is 3 bytes device address left-shifted by one bit, the command, and the state
         tempAddress = self.__DEVICE_ADDR << 1
         bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, tempAddress)
-        bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, command)
+        bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, 0x01) #Battery Raw BUS
+        bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, 0x03) #Forced ON state
+
+    def disableRaw():
+        #This method disables RAW battery output from the EPS
+        #The command is 3 bytes device address left-shifted by one bit, the command, and the state
+        tempAddress = self.__DEVICE_ADDR << 1
+        bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, tempAddress)
+        bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, 0x01) #Battery Raw BUS
+        bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, 0x02) #Forced OFF state <-- Do we want to use Forced OFF/ON or Auto OFF/ON?
+        
+    def __startRead(command):
+        #This method sends read commands to the EPS. Shawn wrote it, I assume it's correct
+        #this code starts the command process, for read commands it is address bit shifted left by one, then the command, and then address bit
+        #shifted right by one.
+        #Note: you may have to wait for an acknowledge bit, but this is stander i2c proticol so I'm not sure if python does it automatically.
+        tempAddress = self.__DEVICE_ADDR << 1
+        bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, tempAddress)
+        bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, command) # do you need do convert the int to hex somehow?
         tempAddress = self.__DEVICE_ADDR >> 1
         bus.write_byte_data(self.__DEVICE_ADDR, self.__RegisterADR, tempAddress)
         #the read command always returns two bytes.
