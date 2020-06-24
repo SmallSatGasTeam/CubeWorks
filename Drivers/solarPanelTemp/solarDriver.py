@@ -19,7 +19,7 @@ class TempSensor(Driver):
     def __init__ (self):
         super().__init__("ADC")
 
-    def read(self, channel):
+    def read(self):
         """
         Sends a read command with a specified channel and then returns the reply from the ADC
         """
