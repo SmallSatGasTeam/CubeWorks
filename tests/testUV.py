@@ -5,4 +5,4 @@ from Drivers.UV import UVDriver
 
     
 uv = UVDriver()
-print(uv.read)
+print(uv.read())
