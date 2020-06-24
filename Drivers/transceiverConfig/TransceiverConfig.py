@@ -21,7 +21,7 @@ class TransceiverConfig(Driver):
     while True:
               sleep(.15)
               data = "Hello there"
-              ser.write(data.encode() #Send the data
+              ser.write(data.encode()) #Send the data
 
     ser.close()
   
