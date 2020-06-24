@@ -15,6 +15,4 @@ class UVDriver(Driver):
     """
     This function calls the read function of the ADC with the channel for the uv sensor
     """
-    value = self.adc.read(1)
-    print(value)
     return self.adc.read(self.uv_channel)
