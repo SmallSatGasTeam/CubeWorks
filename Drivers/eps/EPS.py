@@ -32,7 +32,7 @@ class EPS(Driver):
 
     def read(self):
         #returns nothing since there are so many different things we could read, use other methods instead
-        return
+        pass
 
     def __startRead(command):
         #This method sends read commands to the EPS. Shawn wrote it, I assume it's correct --Logan
