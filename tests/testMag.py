@@ -2,7 +2,7 @@ import unittest
 import sys
 sys.path.append("../")
 
-from Drivers.Magnetometer import LSM303AGR
+from Drivers.Magnetometer import Magnetometer
 
 #class ADCTest(unittest.TestCase):
 #    """
@@ -15,6 +15,6 @@ from Drivers.Magnetometer import LSM303AGR
 
     
 #if __name__ == '__main__':
-mag = LSM303AGR.Magnetometer()
+mag = Magnetometer()
 print(mag.read())
     #unittest.main()

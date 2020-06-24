@@ -2,7 +2,7 @@ import unittest
 import sys
 sys.path.append("../")
 
-from Drivers.Accelerometer import LSM303AGR
+from Drivers.Accelerometer import Accelerometer
 
 #class ADCTest(unittest.TestCase):
 #    """
@@ -15,6 +15,6 @@ from Drivers.Accelerometer import LSM303AGR
 
     
 #if __name__ == '__main__':
-accel = LSM303AGR.Accelerometer()
+accel = Accelerometer()
 print(accel.read())
     #unittest.main()
