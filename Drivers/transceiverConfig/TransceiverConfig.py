@@ -33,7 +33,7 @@ class TransceiverConfig(Driver):
     Binary SCW: 11001101000001
     Hex SCW: 3341
     """
-    writeData("ES+W23003341")
+    self.writeData("ES+W23003341")
   
   def setBeaconOff(self):
     """
@@ -41,17 +41,17 @@ class TransceiverConfig(Driver):
     Binary SCW: 11001100000001
     Hex SCW: 3301
     """
-    writeData("ES+W23003301")
+    self.writeData("ES+W23003301")
 
   def setLowPowerMode(self):
     """
     Turns on Low Power Mode. Note: Any ESTTC command can be used to bring the transceiver out of low power mode
     """
-    writeData("ES+W23F4")
+    self.writeData("ES+W23F4")
 
   def read(self):
     """
     Returns the temperature from the transceiver internal temp sensor
     """
-    temp = writeData("ES+R230A")
+    temp = self.writeData("ES+R230A")
     return temp
