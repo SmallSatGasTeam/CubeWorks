@@ -1,6 +1,5 @@
-#this is the foundation code for the esp driver. It NEEDS to be tested and we need to add in some more getters. The way the code is set
-#up you should just be able to copy the getCurrent func change the name, the command, and the convertion factor. (See the i2c data sheet for 
-#esp for the last two.) 
+#.
+
 import smbus
 #circurt bus??? maybe use that
 
