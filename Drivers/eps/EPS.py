@@ -59,12 +59,6 @@ class EPS(Driver):
     def getCell2Temp():
         return __startRead(20)*0.00390625 #Reads data of specified type, sets up conversion factor to 'C
 
-    def getCell3Temp():
-        return __startRead(21)*0.00390625 #Reads data of specified type, sets up conversion factor to 'C
-
-    def getCell4Temp():
-        return __startRead(22)*0.00390625 #Reads data of specified type, sets up conversion factor to 'C
-
     def getBusVoltage():
         return __startRead(1) * 0.0023394775 #Reads data of specified type, sets up conversion factor to V
 
