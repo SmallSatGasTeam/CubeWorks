@@ -51,7 +51,7 @@ class EPS(Driver):
     def getMCUTemp():
         #super().__init__("ESP") <-- Shawn had this in here, I don't understand why it's here so I'm commenting it out and leaving it out of other ones
         temp = startRead(18)
-        temp = ((temp *0.0006103516)– 0.986)/0.00355
+        temp = ((temp *0.0006103516) - 0.986)/0.00355
         return temp #done with multiple lines because of complicated conversion
     def getCell1Temp():
         return __startRead(19)*0.00390625 #Reads data of specified type, sets up conversion factor to 'C
