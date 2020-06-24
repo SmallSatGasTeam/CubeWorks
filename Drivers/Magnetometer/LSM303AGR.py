@@ -19,12 +19,12 @@ def Magnetometer(Driver):
   #Set up I2C link
   i2c = busio.I2C(board.SCL, board.SDA)
     
-    def __init__ :
-      super().__init__("Magnetometer")
+  def __init__ :
+    super().__init__("Magnetometer")
     
-    def read(self) :
-      #Set up link to magnetometer
-      #for LSM303AGR
-      #mag = adafruit_lis2mdl.LIS2MDL(self.i2c)
-      #for LSM303DLH
-      mag = adafruit_lsm303dlh_mag.LSM303DLH_Mag(self.i2c)
+  def read(self) :
+    #Set up link to magnetometer
+    #for LSM303AGR
+    #mag = adafruit_lis2mdl.LIS2MDL(self.i2c)
+    #for LSM303DLH
+    mag = adafruit_lsm303dlh_mag.LSM303DLH_Mag(self.i2c)
