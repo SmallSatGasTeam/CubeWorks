@@ -18,12 +18,14 @@ class TransceiverConfig(Driver):
     """
     Writes the input to the transceiver over UART
     """
-    ser = serial.Serial ("/dev/ttyAMA0")               #Open named port 
+    ser = serial.Serial("/dev/ttyAMA0")               #Open named port 
     ser.baudrate = 115200                              #Set baud rate to 9600
     data = input                              #Set data to the character 'a', 0x61 or 01100001
     ser.write(data.encode()) #Send the data
+    response = ser.read(128)
     ser.close()
-    
+    return response
+  
   def setBeaconOn(self):
     """
     Turns on the morse beacon. Leaves all values at default except beacon.
@@ -50,5 +52,5 @@ class TransceiverConfig(Driver):
     """
     Returns the temperature from the transceiver internal temp sensor
     """
-    writeData("ES+R230A")
+    temp = writeData("ES+R230A")
     return temp
