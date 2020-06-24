@@ -20,6 +20,7 @@ class TransceiverConfig(Driver):
     """
     ser = serial.Serial("/dev/ttyAMA0")               #Open named port 
     ser.baudrate = 115200                              #Set baud rate to 9600
+    ser.timeout = 1
     data = input                              #Set data to the character 'a', 0x61 or 01100001
     ser.write(data.encode()) #Send the data
     response = ser.read(128)
