@@ -1,33 +1,38 @@
-#Not done or tested as of yet, I am doing more research on the panels to get some more info on them. This is just the ground work for now. 
-
+from Drivers.Driver import Driver
 import spidev
-class solarPanel:
-    def __init__(self)
-        spi = spidev.SpiDev()
-        
-    #this func will return an array of the tempatures from the solar panels. (there will always be 2)
-    def run_solar():
-        temps = []
-        temps.append(self.__getSolarTemp())
-        temps.append(self.__getSolartemp2())
-        return temps
+import RPi.GPIO as GPIO
 
-    #this guys go and get the temp from the respective panales. 
-    def __getSolarTemp():
-        super().__init__("solarPanel")
-        spi.open(0, 24)
-        #not sure what bond rate or what command to send well try this for now
-        spi.max_speed_hz = 1000000
-        return spi.xfer(0x01)
-        
 
-    def __getSolartemp2():
-        super().__init__("solarPanel")
-        spi.open(0, 26)
-        #not sure what bond rate or what command to send well try this for now
-        spi.max_speed_hz = 1000000
-        return spi.xfer(0x01)
-        
+class TempSensor(Driver):
+    """
+    This class interfaces with the ADC to read a specified channel
+    """
+      
+    spi0 = spidev.SpiDev()
+    # open SPI to Temp sensor0
+    spi0.open(0, 0)
+    
+    spi1 = spidev.SpiDev()
+    # open SPI to Temp sensor1
+    spi1.open(0, 1)
+         
+    def __init__ (self):
+        super().__init__("ADC")
 
-#Notes: 
-#       I also need to do the value convertion, that is if the temp sensors return a value that needs to be converted. 
+    def read(self, channel):
+        """
+        Sends a read command with a specified channel and then returns the reply from the ADC
+        """
+        temp0_raw = spi0.readbytes(2)  #We need just the first 13 bits, as the last three bits of the 16 bit(2 byte) word are not used
+
+        #This function converts the two bytes to the temperature value. The data is stored as two bytes where T13 is the most significant bit
+        #| T13 T12 T11 T10 T9 T8 T7 T6 |  | T5 T4 T3 T2 T1 1 1 1 |
+        temp0 = ((temp0_raw[0] * 64) + (temp0_raw[1] >> 3))* 0.0625
+        
+        temp1_raw = spi1.readbytes(2)  #We need just the first 13 bits, as the last three bits of the 16 bit(2 byte) word are not used
+
+        #This function converts the two bytes to the temperature value. The data is stored as two bytes where T13 is the most significant bit
+        #| T13 T12 T11 T10 T9 T8 T7 T6 |  | T5 T4 T3 T2 T1 1 1 1 |
+        temp1 = ((temp1_raw[0] * 64) + (temp1_raw[1] >> 3))* 0.0625
+        
+        return [temp0, temp1]
