@@ -12,7 +12,7 @@ class EPS(Driver):
         self.DEVICE_BUS = 1
         self.DEVICE_ADDR = 0x18
         self.RegisterADR = 0x00
-        self.bus = smbus.SMBus(DEVICE_BUS)
+        self.bus = smbus.SMBus(self.DEVICE_BUS)
 
     def enableRaw(self):
         #This method enables RAW battery output from the EPS
