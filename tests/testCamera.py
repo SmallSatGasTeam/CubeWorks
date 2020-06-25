@@ -24,6 +24,7 @@ class TestCamera(unittest.TestCase):
     def testCameraInitResolution(self):
         """
         Asserts that the camera resolution is set to 1024x1024 pixels.
+        TODO: change default resolution so support new camera
         """
         self.assertEqual(self.testCam.camera.resolution, (1024, 1024))
 
@@ -34,3 +35,4 @@ class TestCamera(unittest.TestCase):
         """
         self.testCam.take_picture()
         self.assertTrue(os.path.isfile(self.testCam.latest_capture))
+        self.assertEqual(self.testCam.read(), self.testCam.latest_capture)
