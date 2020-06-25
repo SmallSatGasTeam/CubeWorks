@@ -1,7 +1,32 @@
 import sys
 import sqlite3
+import struct
 
-def pacetize():
+def packetize(dataList, isPic):
+    # dataList = [tup = ()]
+	"""
+	 Takes an list((tuple(data))) from the database and writes a binary stream to a file
+	"""
+    if isPic == true {
+        ### LOCATE PICTURE FILE AND REPORT THAT TO SHAWN'S PROGRAM
+    }
+
+    else {
+        f = open("FILENAME.txt", "a")
+
+        linesTotal = 0
+
+        for tup in dataList:
+            for value in dataList[tup]:
+                ba = bytearray(struct.pack("f", datalist[tup:value]))
+                t = ""
+                for b in ba:
+                    t = "0x%02" % b
+                f.write(t)
+            f.write('\n')
+            linesTotal += 1
+    }
+    return linesTotal
     pass
 
 def getPackets(pacType, numPackets):
