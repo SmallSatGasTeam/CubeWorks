@@ -1,4 +1,4 @@
 #!/bin.bash
 #TXISR CONFIG DISABLE
-# sed ‘/^enable_uart=/{h;s/=.*/=0/}${x;/^$/{s//enable_uart=0/;H};x}’ /boot/config.txt
-#systemctl reatart serial-getty@ttyAMA0.service
+sed ‘/^enable_uart=/{h;s/=.*/=0/}${x;/^$/{s//enable_uart=0/;H};x}’ /boot/config.txt
+systemctl reatart serial-getty@ttyAMA0.service
