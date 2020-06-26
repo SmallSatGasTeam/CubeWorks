@@ -20,7 +20,7 @@ def packetize(isPic, *dataList):
                 ba = bytearray(struct.pack("f", value))
                 t = ""
                 for b in ba:
-                    t = ("0x%02x" % b)
+                    t = "0x%02x" % b
                 f.write(t)
                 
                 #print(t)
