@@ -35,7 +35,7 @@ def getPackets(pacType, numPackets):
     """
     lastTransmitted = 0
     connection = sqlite3.connect('../db.sqlite3')
-    cursor = connection.execute(f'select * from {pacType} where time > {lastTransmitted}')
+    cursor = connection.execute(f'SELECT * FROM {pacType} WHERE time > {lastTransmitted} ORDER BY time DESC LIMIT {numPackets}')
     rows = cursor.fetchall()
     return rows
     
@@ -61,7 +61,10 @@ if __name__ == '__main__':
     Usage: command [-flag optional] [options]
     no flag: [<packet_type> <tx_window> <number_of_packets>]
     -a: [<sql_statement>]
-    -p: [<picture> <resolution>]
+    -p: [<picture_number> <resolution>]
+
+    flags: -a, execute arbitrary sql.  Must be followed by a valid sqlite statement.
+           -p, get picture.  <picture_number> is a non-negative integer, <resolution> is the size of the picture to prepare.
     """
     data = []
     if sys.argv[1] == '-a':
