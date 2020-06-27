@@ -24,6 +24,7 @@ def packetize(isPic, *dataList):
                 hexNum = num_to_hex(value)			   
 	        f.write(hexNum)
             f.write('\n')
+        f.write(';')
             linesTotal += 1
     return linesTotal
 
