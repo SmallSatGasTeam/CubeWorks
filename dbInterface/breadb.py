@@ -17,17 +17,26 @@ def packetize(isPic, *dataList):
 
         for tup in dataList:
             for value in tup:
-                ba = bytearray(struct.pack("f", value))
-                t = ""
-                for b in ba:
-                    t = "0x%02x" % b
-                f.write(t)
-                
-                #print(t)
+                #ba = bytearray(struct.pack("f", value))
+                #t = ""
+                #for b in ba:
+                #    t = "0x%02x" % b
+                hexNum = num_to_hex(value)			   
+				f.write(hexNum)
             f.write('\n')
-            #print('\n')
             linesTotal += 1
     return linesTotal
+
+def num_to_hex(n):
+    return hex(struct.unpack('<I', struct.pack('<f', n))[0])
+
+### USE THIS METHOD TO DECODE THE HEX STREAM WHEN RECIEVED ON THE GROUND:
+'''
+def hex_to_num(h):
+    h = str(h)
+	h = h.replace("0x", "")
+	return struct.unpack('!f', h.decode('hex'))[0]
+'''
 
 def getPackets(pacType, numPackets):
     """
