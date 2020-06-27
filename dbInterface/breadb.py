@@ -22,7 +22,7 @@ def packetize(isPic, *dataList):
                 #for b in ba:
                 #    t = "0x%02x" % b
                 hexNum = num_to_hex(value)			   
-				f.write(hexNum)
+	        f.write(hexNum)
             f.write('\n')
             linesTotal += 1
     return linesTotal
