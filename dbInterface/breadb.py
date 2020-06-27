@@ -11,21 +11,21 @@ def packetize(isPic, *dataList):
         ### LOCATE PICTURE FILE AND REPORT THAT TO SHAWN'S PROGRAM
         pass
     elif isPic == False:
-       # f = open("FILENAME.txt", "a")
+        f = open("FILENAME.txt", "a")
 
         linesTotal = 0
 
         for tup in dataList:
             for value in tup:
-                #ba = bytearray(struct.pack("f", value))
-                #t = ""
-                #for b in ba:
-                #    t = ("0x%02" % b)
-                #f.write(t)
+                ba = bytearray(struct.pack("f", value))
+                t = ""
+                for b in ba:
+                    t = "0x%02x" % b
+                f.write(t)
                 
-                print(t)
-            #f.write('\n')
-            print('\n')
+                #print(t)
+            f.write('\n')
+            #print('\n')
             linesTotal += 1
     return linesTotal
 
