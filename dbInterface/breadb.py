@@ -22,10 +22,10 @@ def packetize(isPic, *dataList):
                 #for b in ba:
                 #    t = "0x%02x" % b
                 hexNum = num_to_hex(value)			   
-	        f.write(hexNum)
+                f.write(hexNum)
             f.write('\n')
         f.write(';')
-            linesTotal += 1
+        linesTotal += 1
     return linesTotal
 
 def num_to_hex(n):
@@ -83,4 +83,5 @@ if __name__ == '__main__':
         data = getPicture(sys.argv[2], sys.argv[3])
     else:
         data = getPackets(sys.argv[1], sys.argv[3])
+        data.reverse()
     print(data)
