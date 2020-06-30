@@ -125,6 +125,9 @@ void main(int argc,char* argv[])
     //set up the uart 
     setUpUart();
 
+    //write to the radio
+    wrtie(txPort, "ES+W23003321", 13);
+
     //read in all the lines of a file
     char ch = fgetc(txFile);
     //set up array for tx, the max is 128, so we better not exceed that anyways so using an array of 128 is fine.
