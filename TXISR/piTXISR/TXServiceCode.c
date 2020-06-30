@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <time.h>
 //Take just the DEBUG line out when your are done debugging and leave debug.h
 #define DEBUG
 #include "debug.h"
@@ -16,10 +17,19 @@
 #define FORMAT_FILE "./temp.txt" //this is the file that dallan will creat
 #define UART_PORT "/dev/serial0" //this is serial port name, make sure this is correct for the final code
 
+//this is our time delay
+#define DELAY_tx 120
+
 //this sets control of the settings for our serial port
 struct termios options;
 
 void setUpUart();
+
+//returns ms since the epoch
+long millis()
+{
+    return time(NULL) * 1000;
+}
 
 
 /*******************************************************************************************
@@ -41,16 +51,16 @@ void main(int argc,char* argv[])
 
     /////TODO/////
     /*
-    *Make a make file that compiles the program and compiles the bash scripts
-    *Add in the time check on transmissionWindow 
-    *Add in the wait after each transmission 
+    *debug the time check on transmissionWindow 
+    *debug the wait after each transmission 
     *Write the time to the flags file
     *Add in any set up commucation to the radio
-    *find the uart name
-    *talk to dallan about formatting of both files, where he is going to put the time 
-    *   and passing me the transmission window.
     * TEST, UART, and the bash commands
     */
+    long startTime = millis();
+    long currentTime = millis();
+    long startTimeTX = 0;
+    long currentTimeTX = 0; 
     int numOfRecords = argv[1];
     int dataType = argv[2];
     long transmissionWindow = argv[3];
@@ -63,6 +73,38 @@ void main(int argc,char* argv[])
         exit(1);
     }
 
+    FILE *recordFile;
+    if (!(recordFile = fopen(FLAG_FILE,"r+")))
+    {
+        //if we fail exit
+        DEBUG_P(Failed to open the flags file)
+        exit(1);
+    }
+
+    //this is where we will store the last transmission
+    //5 data types, the type and the last sent time, 6 chars of time so 4 by 7;
+    int flags[5][7];
+    //pop the data types
+    for (int i =0; i < 5; )
+    {
+        char temp = fgetc(recordFile);
+        if(temp != " ") 
+        {
+            flags[i][0] = temp;
+            i++;
+        }
+    }
+
+    for (int i =0; i < 5; )
+    {
+        char temp = fgetc(recordFile);
+        //this populatest he flags array
+        for(int k = 0; temp != ' '; k++)
+        {
+            flags[i][k] = temp;
+            temp = fgetc(recordFile);
+        }   
+    }         
     //config linuxs to give us the pins
     int enable = system(ENABLE);
     //if we fail reboot
@@ -87,18 +129,71 @@ void main(int argc,char* argv[])
     char ch = fgetc(txFile);
     //set up array for tx, the max is 128, so we better not exceed that anyways so using an array of 128 is fine.
     char line[128] = {0};
+    char *timeStamp;
+
     DEBUG_P(Printing file>>>);
     while(ch != EOF)
     {
+        
+        //this checks the transmission window
+        currentTime = millis();
+        if((currentTime - startTime) < transmissionWindow) 
+        {
+            for(int g = 1; g < 7; g++)
+            {
+                flags[dataType][g] = timeStamp[g];
+            }
+            //pop the types
+            for(int y = 0; y < 5; y++)
+            {
+                fputc(recordFile, flags[y][0]);
+            }
+            fputc(recordFile, "\n");
+            //wrtie time stamps
+            for(int i = 0; i < 5; i++)
+            {
+                for(int g = 0; g < 6; g++)
+                {
+                    fputc(recordFile, flags[dataType][g]);
+                }
+                fputc(recordFile, " ");
+            }
+            break;
+        }
+        PRINT_DEBUG(currentTime - startTime)
+
         PRINT_DEBUG_CHAR('\n')
         //get the size of each line in the file
         int charCount = 0;
+
+        //this will be our timp stamp array,
+        //NOTE: we will use malloc to resize this array foreach time varible we get
+        //NOTE: Because this array will be very small it is ok to use malloc it will not
+        //      cause major delays.
+        
+        int end = 0;
+        int charTimeCount = 1;
         for (int i = 0; i < 128; i++)
         {
             line[i] = "0";
         }
         while(ch != 10 && ch != EOF)
         {
+            //this collects the time stamp
+            if(!end)
+            {
+                timeStamp = malloc(++charTimeCount);
+                if(timeStamp == NULL)
+                {
+                    DEBUG_P(failed malloc)
+                    exit(1);
+                }
+                timeStamp[charTimeCount - 2] = ch;
+            }
+            else if (ch == 58)
+            {
+                end = 1;
+            }
             //save all the data in that line
             line[charCount++] = ch;
             ch = fgetc(txFile);
@@ -112,10 +207,44 @@ void main(int argc,char* argv[])
             PRINT_DEBUG_CHAR('\n')
         #endif
         //this line of code sends things out on the tx line
+        //start the transmition time
+        startTime = millis();
         write(txPort, line, charCount);
+        //delay the right amount of time for the radio
+        while((currentTimeTX - startTime) < DELAY_tx) currentTimeTX = millis();
+        PRINT_DEBUG(currentTimeTX)
+        PRINT_DEBUG(startTime)
+
         if(ch == 10 && ch != EOF)
         {
             ch = fgetc(txFile);
+        }
+
+        free(timeStamp);
+
+
+        //save the last sent time
+        if(ch == EOF)
+        {
+            for(int g = 1; g < 7; g++)
+            {
+                flags[dataType][g] = timeStamp[g];
+            }
+            //pop the types
+            for(int y = 0; y < 5; y++)
+            {
+                fputc(recordFile, flags[y][0]);
+            }
+            fputc(recordFile, "\n");
+            //wrtie time stamps
+            for(int i = 0; i < 5; i++)
+            {
+                for(int g = 0; g < 6; g++)
+                {
+                    fputc(recordFile, flags[dataType][g]);
+                }
+                fputc(recordFile, " ");
+            }
         }
     } 
 
@@ -142,3 +271,4 @@ void setUpUart()
     options.c_cflag &= ~CSIZE;
     options.c_cflag |= CS8;
 }
+
