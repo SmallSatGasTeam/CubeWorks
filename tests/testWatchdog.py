@@ -6,4 +6,4 @@ sys.path.append('../watchdog/Heartbeat')
 from Heartbeat import longTap
 
 # Run the heartbeat code that sends a pulse every 4 seconds
-Heartbeat.longTap()
+longTap()
