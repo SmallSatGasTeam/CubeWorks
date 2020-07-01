@@ -25,7 +25,6 @@ class Database(Component):
         Concrete implementation of Component.update().
         Takes a dictionary (context) as a parameter, and writes it to a new row in the database.  
         """
-        print('writing to database')
         self.commitPicture(context)
         self.commitTTNC(context)
         self.commitBoomDeploy(context)
@@ -62,14 +61,12 @@ class Database(Component):
         3. else, put a default value in the string
         4. commit string
         """
-        print('commit picture data')
 
 
     def commitTTNC(self, context):
         """
         Parses context and commits relevant TT&C (Telemetry, Tracking, and Command) data to db.
         """
-        print('commit TT&C data')
         time = 0
         packet_type = 0
         mission_mode = 0
@@ -135,7 +132,6 @@ class Database(Component):
         """
         Parses context and commits relevant boom deployment data to db.
         """
-        print('commit boom deploy data')
         time = 0
         packet_type = 0
         boombox_uv = 0.0
@@ -170,7 +166,6 @@ class Database(Component):
         """
         Parses context and commits relevant attatude data to db.
         """
-        print('commit attitude data')
         time = 0
         packet_type = 0
         ss_0 = 0.0
