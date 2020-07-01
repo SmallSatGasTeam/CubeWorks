@@ -149,17 +149,17 @@ void main(int argc,char* argv[])
             //pop the types
             for(int y = 0; y < 5; y++)
             {
-                fputc(recordFile, flags[y][0]);
+                fputc(flags[y][0], recordFile);
             }
-            fputc(recordFile, '\n');
+            fputc('\n', recordFile);
             //wrtie time stamps
             for(int i = 0; i < 5; i++)
             {
                 for(int g = 0; g < 11; g++)
                 {
-                    fputc(recordFile, flags[dataType][g]);
+                    fputc(flags[dataType][g], recordFile);
                 }
-                fputc(recordFile, ' ');
+                fputc(' ', recordFile);
             }
             break;
         }
@@ -236,17 +236,17 @@ void main(int argc,char* argv[])
             //pop the types
             for(int y = 0; y < 5; y++)
             {
-                fputc(recordFile, flags[y][0]);
+                fputc(flags[y][0], recordFile);
             }
-            fputc(recordFile, '\n');
+            fputc('\n', recordFile);
             //wrtie time stamps
             for(int i = 0; i < 5; i++)
             {
                 for(int g = 0; g < 6; g++)
                 {
-                    fputc(recordFile, flags[dataType][g]);
+                    fputc(flags[dataType][g], recordFile);
                 }
-                fputc(recordFile, ' ');
+                fputc(' ', recordFile);
             }
         }
     } 
