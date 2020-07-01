@@ -1,3 +1,14 @@
+<<<<<<< HEAD
+import sys
+sys.path.append('../')
+from Drivers.camera import Camera
+cameraObject = Camera()
+cameraObject.takePicture()
+cameraObject.compressLowResToFiles(19)
+print("Low Res Done")
+#cameraObject.compressHighResToFiles(18)
+#print("High Res Done")
+=======
 import unittest
 
 import Drivers.camera.camera_driver as cam
@@ -36,3 +47,4 @@ class TestCamera(unittest.TestCase):
         self.testCam.take_picture()
         self.assertTrue(os.path.isfile(self.testCam.latest_capture))
         self.assertEqual(self.testCam.read(), self.testCam.latest_capture)
+>>>>>>> master
