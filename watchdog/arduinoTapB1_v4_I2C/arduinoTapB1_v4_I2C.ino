@@ -143,7 +143,10 @@ void receiveEvent(int howMany){
         break;
 
        //I added this in case we need to dealy for an hour, 6 hours, 12 hours, or even a day. This are last resort times in case of safe mode. 
-       case 10, case 60, case 120, case 240:
+      case 10: 
+      case 60: 
+      case 120: 
+      case 240:
           long newDealy = (long) selection * 6000 * 60 * 60;
           customBootInProgress = newDealy;
           turn(false, &customBootInProgress);
