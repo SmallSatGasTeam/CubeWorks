@@ -119,7 +119,7 @@ void main(int argc,char* argv[])
     if (txPort == -1)
     {
         printf ("Error no is : %d\n", errno);
-        printf("Error description is : %s\n",strerror(errno));
+        printf("Error opening serial port");
         exit(1);
     }
     //set up the uart 
