@@ -1,4 +1,4 @@
-//#include <unistd.d>
+#include <unistd.h>
 #include <fcntl.h>
 #include <termios.h>
 #include <stdio.h>
@@ -88,7 +88,7 @@ void main(int argc,char* argv[])
     for (int i =0; i < 5; )
     {
         char temp = fgetc(recordFile);
-        if(temp != " ") 
+        if(temp != ' ') 
         {
             flags[i][0] = temp;
             i++;
@@ -126,7 +126,7 @@ void main(int argc,char* argv[])
     setUpUart();
 
     //write to the radio
-    wrtie(txPort, "ES+W23003321", 13);
+    write(txPort, "ES+W23003321", 13);
 
     //read in all the lines of a file
     char ch = fgetc(txFile);
@@ -151,7 +151,7 @@ void main(int argc,char* argv[])
             {
                 fputc(recordFile, flags[y][0]);
             }
-            fputc(recordFile, "\n");
+            fputc(recordFile, '\n');
             //wrtie time stamps
             for(int i = 0; i < 5; i++)
             {
@@ -159,7 +159,7 @@ void main(int argc,char* argv[])
                 {
                     fputc(recordFile, flags[dataType][g]);
                 }
-                fputc(recordFile, " ");
+                fputc(recordFile, ' ');
             }
             break;
         }
@@ -178,7 +178,7 @@ void main(int argc,char* argv[])
         int charTimeCount = 1;
         for (int i = 0; i < 128; i++)
         {
-            line[i] = "0";
+            line[i] = '0';
         }
         while(ch != 10 && ch != EOF)
         {
@@ -238,7 +238,7 @@ void main(int argc,char* argv[])
             {
                 fputc(recordFile, flags[y][0]);
             }
-            fputc(recordFile, "\n");
+            fputc(recordFile, '\n');
             //wrtie time stamps
             for(int i = 0; i < 5; i++)
             {
@@ -246,7 +246,7 @@ void main(int argc,char* argv[])
                 {
                     fputc(recordFile, flags[dataType][g]);
                 }
-                fputc(recordFile, " ");
+                fputc(recordFile, ' ');
             }
         }
     } 
