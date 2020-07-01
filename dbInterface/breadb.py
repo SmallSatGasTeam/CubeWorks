@@ -6,6 +6,7 @@ import calendar
 import time
 
 ### TODO: pass file location to Radio TX EXE
+NombreDelArchivo = "test.txt"
 
 def driver (packType, winStart, winDur, dataType, picNum):
     '''
