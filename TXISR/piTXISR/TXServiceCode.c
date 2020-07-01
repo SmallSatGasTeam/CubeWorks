@@ -48,7 +48,6 @@ long millis()
  *******************************************************************************************/
 void main(int argc,char* argv[])
 {
-    DEBUG_P(Hello)
     /////TODO/////
     /*
     *debug the time check on transmissionWindow 
