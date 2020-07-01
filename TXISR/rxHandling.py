@@ -43,7 +43,7 @@ class TXISR:
 
     def sendTobreadb(self):
         if self.rxData[4].compareTo(None):
-            breadb.driver(self.rxData[0], self.rxData[1], self.rxData[2], self.rxData[3])
+            breadb.drivePic(self.rxData[0], self.rxData[1], self.rxData[2], self.rxData[3])
         else:
-            breadb.driver(self.rxData[0], self.rxData[1], self.rxData[2], self.rxData[3], self.rxData[4])
+            breadb.driveDataType(self.rxData[0], self.rxData[1], self.rxData[2], self.rxData[3], self.rxData[4])
 
