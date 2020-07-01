@@ -32,7 +32,6 @@
 
 //include the wd proticol
 #include<avr/wdt.h>
-<<<<<<< HEAD:watchdog/arduinoTapB1_v4_I2C/arduinoTapB1_v4_I2C.ino
 #include <Wire.h>
 
 //the  button
@@ -58,20 +57,6 @@ bool bootInProgress = false;
 bool longWait = false;
 long time1 = 0;
 long time2 = 0;
-=======
-
-//the  button
-#define BUTTON 11
-//MOSFIT pin, make sure not to use the #define function here. The #define actually repalces code in 
-//beetle and this will cause the digital pin not to initialize incorrectly. 
-const int MOSFIT = 10;
-//This is the delay for the pi to boot up. It will get a little more the 5 seconds. (BOOT_DEALY + PI_CHECK)
-const int BOOT_DELAY = 1000;
-//The pi delay const
-#define PI_CHECK 4000
-//set LED to high
-const int LED = 13;
->>>>>>> a496c535363ef6e2358ae12ebf83489129c4545e:watchdog/AdruinoTapB1_finial_overflow2.0/AdruinoTapB1_finial_overflow2.0.ino
 
 void setup() 
 {
@@ -93,12 +78,8 @@ void setup()
  //Turn on led so that we can see the beetle working
  digitalWrite(LED, HIGH);
 
-<<<<<<< HEAD:watchdog/arduinoTapB1_v4_I2C/arduinoTapB1_v4_I2C.ino
   Wire.begin(8);                // join i2c bus with address #0x08
   Wire.onReceive(receiveEvent); // register event
-=======
-
->>>>>>> a496c535363ef6e2358ae12ebf83489129c4545e:watchdog/AdruinoTapB1_finial_overflow2.0/AdruinoTapB1_finial_overflow2.0.ino
 }
 
 void loop() 
@@ -108,7 +89,6 @@ void loop()
   //take several tries as it is a timing game. 
   //Note: The wdt_enable does reset the watchdog timer. 
   wdt_enable(WDTO_8S);
-<<<<<<< HEAD:watchdog/arduinoTapB1_v4_I2C/arduinoTapB1_v4_I2C.ino
   //if we are not waiting on a boot prosses
   if(!longWait)
   {
@@ -173,16 +153,6 @@ void receiveEvent(int howMany){
         break;
     }
   }
-=======
-
-  //call the watchdog protocol, this is taken from the adruinoTap2 code.
-  bool Reset = watchdogProtocol();
-
-  //call the turn fuction
-  turn(Reset);
-  
-
->>>>>>> a496c535363ef6e2358ae12ebf83489129c4545e:watchdog/AdruinoTapB1_finial_overflow2.0/AdruinoTapB1_finial_overflow2.0.ino
 }
 
 bool watchdogProtocol()
@@ -202,7 +172,6 @@ bool watchdogProtocol()
 
   //record the time that we start the loop
   long time_actual = millis();
-<<<<<<< HEAD:watchdog/arduinoTapB1_v4_I2C/arduinoTapB1_v4_I2C.ino
 
   Serial.println("Entering time_check loop");
   //if the PI state is HIGH then it has sent the heartbeat and we reset the count, if not we continue adding to time_actual until we exceed 4,000 in which case the pi will be reset. 
@@ -220,18 +189,6 @@ bool watchdogProtocol()
 
     //check for int overflow 
     //NOTE: this func takes small, big, I had it back words I think that might have been our problem. 
-=======
-  
-  //if the PI state is HIGH then it has sent the heartbeat and we reset the count, if not we continue adding to time_actual until we exceed 4,000 in which case the pi will be reset. 
-  while(time_check == true)
-  {
-    //set this to false to start with the default is a reboot is needed
-    bool W_D_PI = false;
-    //get time actual
-    long time_actual = millis();
-
-    //check for int overflow 
->>>>>>> a496c535363ef6e2358ae12ebf83489129c4545e:watchdog/AdruinoTapB1_finial_overflow2.0/AdruinoTapB1_finial_overflow2.0.ino
     intOverflow(&timer, &time_actual);
     
     //this logic test is the timer 
@@ -246,7 +203,6 @@ bool watchdogProtocol()
    
 
    //check to see if in what condition the button is in
-<<<<<<< HEAD:watchdog/arduinoTapB1_v4_I2C/arduinoTapB1_v4_I2C.ino
    //if it is LOW we break the loop
    if(buttonState == LOW)
    {
@@ -255,13 +211,6 @@ bool watchdogProtocol()
     };
     Serial.println("Pi is alive");
     //set the pi watch dog to true
-=======
-   //if the state goes form LOW to HIGH we break the loop
-   if(buttonState == HIGH)
-   {
-//    while(buttonState == digitalRead(BUTTON)){};
-    //set the pi watch dog to true, meaning no rest is needed
->>>>>>> a496c535363ef6e2358ae12ebf83489129c4545e:watchdog/AdruinoTapB1_finial_overflow2.0/AdruinoTapB1_finial_overflow2.0.ino
     W_D_PI = true;
     //break the while loop
     time_check = false;
@@ -276,7 +225,6 @@ bool watchdogProtocol()
 }
 
 //this fuc reboots the pi
-<<<<<<< HEAD:watchdog/arduinoTapB1_v4_I2C/arduinoTapB1_v4_I2C.ino
 void turn(bool check, bool *startBoot)
 {
   if(check == false)
@@ -293,59 +241,30 @@ void turn(bool check, bool *startBoot)
     delay(1000);
     Serial.println("Pi is rebooted");
     *startBoot = true;
-=======
-void turn(bool check)
-{
-  if(check == false)
-  {
-    //reset pi
-    //pi off
-    digitalWrite(MOSFIT, HIGH);
-    delay(5000);
-    //pi on
-    digitalWrite(MOSFIT, LOW);
-    //delay to give the pi time to boot, it will have a max of 5 seconds to boot
-    delay(BOOT_DELAY);
->>>>>>> a496c535363ef6e2358ae12ebf83489129c4545e:watchdog/AdruinoTapB1_finial_overflow2.0/AdruinoTapB1_finial_overflow2.0.ino
   }
 }
 
 
 //this method quick for int overflow to make sure that the clock does not exceed the long int limit
-<<<<<<< HEAD:watchdog/arduinoTapB1_v4_I2C/arduinoTapB1_v4_I2C.ino
 //takes small big
-=======
->>>>>>> a496c535363ef6e2358ae12ebf83489129c4545e:watchdog/AdruinoTapB1_finial_overflow2.0/AdruinoTapB1_finial_overflow2.0.ino
 void intOverflow(long *time1, long *time2)
 {
   //check for over flow
   if (*time1 > *time2)
   {
-<<<<<<< HEAD:watchdog/arduinoTapB1_v4_I2C/arduinoTapB1_v4_I2C.ino
     Serial.println("Int overflow tripped, resetting timers");
     //if so delay one second and reset the times
     delay(10);
-=======
-    //if so delay one second and reset the times
-    delay(1000);
->>>>>>> a496c535363ef6e2358ae12ebf83489129c4545e:watchdog/AdruinoTapB1_finial_overflow2.0/AdruinoTapB1_finial_overflow2.0.ino
     *time1 = millis();
     *time2 = millis();
   }
 }
 
-<<<<<<< HEAD:watchdog/arduinoTapB1_v4_I2C/arduinoTapB1_v4_I2C.ino
-=======
-//this method is to check and see if we have received any communication over UART and then calls the OFF func
-///////////////////////////TODO/////////////////////////////////////////
-
->>>>>>> a496c535363ef6e2358ae12ebf83489129c4545e:watchdog/AdruinoTapB1_finial_overflow2.0/AdruinoTapB1_finial_overflow2.0.ino
 //this method turns the pi off
 void OFF(void)
 {
   digitalWrite(MOSFIT, HIGH);
 }
-<<<<<<< HEAD:watchdog/arduinoTapB1_v4_I2C/arduinoTapB1_v4_I2C.ino
 
 //this is a custom wait function that we will use to aviod the problem of the watchdog timming out.
 bool wait(long *time1, long *time2, unsigned long delayTime)
@@ -369,5 +288,3 @@ bool wait(long *time1, long *time2, unsigned long delayTime)
     return true;
   } 
 }
-=======
->>>>>>> a496c535363ef6e2358ae12ebf83489129c4545e:watchdog/AdruinoTapB1_finial_overflow2.0/AdruinoTapB1_finial_overflow2.0.ino
