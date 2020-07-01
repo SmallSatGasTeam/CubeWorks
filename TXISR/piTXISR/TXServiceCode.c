@@ -98,7 +98,7 @@ void main(int argc,char* argv[])
     for (int i =0; i < 5; )
     {
         char temp = fgetc(recordFile);
-        //this populatest he flags array
+        //this populatest The flags array
         for(int k = 0; temp != ' '; k++)
         {
             flags[i][k] = temp;
