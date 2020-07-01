@@ -5,16 +5,6 @@ from time import sleep
 
 epsTest = EPS()
 
-#Test battery raw disable/enable
-epsTest.enableRaw()
-print("Raw Battery Voltage Enabled for 10 seconds")
-sleep(10)
-epsTest.disableRaw()
-print("Raw Battery Voltage Disabled for 10 seconds")
-sleep(10)
-epsTest.enableRaw()
-print("Raw Battery Voltage Re-enabled")
-
 #Test all read functions
 print("MCU Temp in C: "+str(epsTest.getMCUTemp()))
 print("Cell 1 Temp in C: "+str(epsTest.getCell1Temp()))

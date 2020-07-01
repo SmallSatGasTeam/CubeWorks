@@ -48,6 +48,7 @@ long millis()
  *******************************************************************************************/
 void main(int argc,char* argv[])
 {
+
     /////TODO/////
     /*
     *debug the time check on transmissionWindow 
@@ -94,17 +95,16 @@ void main(int argc,char* argv[])
         }
     }
 
-    for (int i =0; i < 5; i++)
+    for (int i =0; i < 5; )
     {
         char temp = fgetc(recordFile);
-        //this populatest The flags array
+        //this populatest he flags array
         for(int k = 0; temp != ' '; k++)
         {
             flags[i][k] = temp;
             temp = fgetc(recordFile);
-        }
-
-    }
+        }   
+    }         
     //config linuxs to give us the pins
     int enable = system(ENABLE);
     //if we fail reboot
@@ -112,14 +112,14 @@ void main(int argc,char* argv[])
     {
         DEBUG_P(Failed to connect to tx pin)
         exit(1);
-    }
+    } 
 
     //open the serial ports
     int txPort = open(UART_PORT, O_RDWR | O_NOCTTY ); 
     if (txPort == -1)
     {
         printf ("Error no is : %d\n", errno);
-        printf("Error opening serial port\n");
+        printf("Error description is : %s\n",stror(errno));
         exit(1);
     }
     //set up the uart 
