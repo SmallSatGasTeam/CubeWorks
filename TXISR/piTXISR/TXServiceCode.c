@@ -82,8 +82,8 @@ void main(int argc,char* argv[])
     }
 
     //this is where we will store the last transmission
-    //5 data types, the type and the last sent time, 6 chars of time so 4 by 7;
-    int flags[5][7];
+    //5 data types, the type and the last sent time, 10 chars of time so 4 by 7;
+    int flags[5][11];
     //pop the data types
     for (int i =0; i < 5; )
     {
@@ -142,7 +142,7 @@ void main(int argc,char* argv[])
         currentTime = millis();
         if((currentTime - startTime) < transmissionWindow) 
         {
-            for(int g = 1; g < 7; g++)
+            for(int g = 1; g < 11; g++)
             {
                 flags[dataType][g] = timeStamp[g];
             }
@@ -155,7 +155,7 @@ void main(int argc,char* argv[])
             //wrtie time stamps
             for(int i = 0; i < 5; i++)
             {
-                for(int g = 0; g < 6; g++)
+                for(int g = 0; g < 11; g++)
                 {
                     fputc(recordFile, flags[dataType][g]);
                 }
