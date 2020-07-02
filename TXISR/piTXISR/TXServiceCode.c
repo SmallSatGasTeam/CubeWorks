@@ -10,8 +10,8 @@
 #include "debug.h"
 
 //enable and disable are set up in the make file,
-#define ENABLE "./conifPinTXISR"
-#define DISABLE "./conifPinTXISRDone"
+#define ENABLE "./configPinsTXISR"
+#define DISABLE "./configPinsTXISRDone"
 
 #define FLAG_FILE "./out.txt" //change this later for the real program
 #define FORMAT_FILE "./temp.txt" //this is the file that dallan will creat
