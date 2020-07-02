@@ -1,3 +1,4 @@
+import numpy as np
 import unittest
 import sys
 sys.path.append("../")
@@ -16,5 +17,5 @@ from Drivers.Accelerometer import Accelerometer
     
 #if __name__ == '__main__':
 accel = Accelerometer()
-print(accel.read())
     #unittest.main()
+print(np.linalg.norm(accel.read()))
