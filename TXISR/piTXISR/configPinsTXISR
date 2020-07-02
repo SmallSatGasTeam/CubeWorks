@@ -1,0 +1,10 @@
+#!/bin.bash
+#TXISR CONFIG DISABLE
+
+## TODO: Ensure that /boot/config.txt is the correct to edit on the PI
+
+filename="/boot/config.txt"
+
+# if enable_uart is found in the file, set it to 0. if it is not, append enable_uart=0. Use ternary operator
+grep -q 'enable_uart.*=' ${filename} && sed -i 's/^enable_uart.*=.*/enable_uart=0/' ${filename} || echo 'enable_uart=0' >> ${filename}
+systemctl restart serial-getty@ttyAMA0.service
