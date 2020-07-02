@@ -52,7 +52,7 @@ bool customBootInProgress = false;
 
 //set LED to high
 const int LED = 13;
-unsigned long bootLongWait = 120000;
+unsigned long bootLongWait = 200000;
 bool bootInProgress = false;
 bool longWait = false;
 long time1 = 0;
@@ -206,9 +206,12 @@ bool watchdogProtocol()
    //if it is LOW we break the loop
    if(buttonState == LOW)
    {
-    while(buttonState == digitalRead(BUTTON)){
-        //Serial.println("Waiting for Pi response");
-    };
+    //I think this line of code might be causing problems for us, it was old code used to create a debounce for the button I was using, with a pin plus we shouldn't need it
+    //this is more then enough time for the pin to go high to low so it works well as a debounce.
+    delay(1);
+//    while(buttonState == digitalRead(BUTTON)){
+//        //Serial.println("Waiting for Pi response");
+//    };
     Serial.println("Pi is alive");
     //set the pi watch dog to true
     W_D_PI = true;
