@@ -6,8 +6,13 @@ import struct
 import subprocess
 import calendar
 import time
+#we need import jacks camera code from the drivers
+#we need import the boom deployer code from the drivers
 
 ### TODO: pass file location to Radio TX EXE
+        ###import the camera driver
+        ###import the boom driver
+        ###import the command to tell the pi to turn off (watchdog)
 
 class TXISR:
     '''
@@ -29,7 +34,13 @@ class TXISR:
     def __init__(self):
         self.TX = io.open("/dev/tty/AMA0", 'r')
         self.readTX()
-
+        #this varible is used to check if we can transmit or not (getter = getCanTX)
+        canTX = True
+        #inizalize cammera driver
+        #photo = camera()
+        #inizalize boom driver
+        #boom = boomDeployer()
+        
         # not sure what im getting back
         # self.sendTosrCheck()
 
@@ -242,3 +253,27 @@ class TXISR:
             data.reverse()
         print(data)
         '''
+
+    ### This part of the code checks to see if we are reciving a command to do something. 
+    def commandRecived(self):
+        if(self.rxData[0] == 0):
+            return
+        else :
+            #turn off tx
+            if(self.rxData[1] == 0):
+                canTX = False
+            #take pic
+            else if(self.rxData[2] == 1) :
+                #photo.Camera()
+            #deploy boom
+            else if(self.rxData[3] == 1) :
+                #boom.boomDeployer()
+            else if(self.rxData[4] == 1) :
+                #reboot pi, send command to adruino
+            else :
+                return
+                
+
+    def getCanTX(self):
+        return self.canTX
+
