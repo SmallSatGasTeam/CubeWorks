@@ -6,6 +6,7 @@ import struct
 import subprocess
 import calendar
 import time
+
 #we need import jacks camera code from the drivers
 #we need import the boom deployer code from the drivers
 
@@ -30,7 +31,8 @@ class TXISR:
     '''
     rxData = []
     NombreDelArchivo = "test.txt"
-
+    TxExe = "WHATEVER SHAWN CALLS THIS"
+    
     def __init__(self):
         self.TX = io.open("/dev/tty/AMA0", 'r')
         self.readTX()
@@ -43,9 +45,8 @@ class TXISR:
         
         # not sure what im getting back
         # self.sendTosrCheck()
-
-    def interrupt(self):
-        pass
+        
+        ## TODO :: START DRIVING THE SOFTWARE FROM HERE
 
     def readTX(self):
         for i in range(5):
@@ -132,7 +133,7 @@ class TXISR:
         ### TODO: TEST SUBPROCESS CALL METHOD ON EXE
 
         FNULL = open(os.devnull, 'w')
-        args = "<PATH_TO_FILE> -<ARGUMENTS>"
+        args = TxExe "-<ARGUMENTS>"
         subprocess.call(args, stdout=FNULL, stderr=FNULL, shell=False)
         #subprocess.call(["<PATH_TO_TX_EXE>"])
         #subprocess.run(["<PATH_TO_FILE>", "-arg1 numRecords", "-dt dataType", "-tw txWindow"])
@@ -159,7 +160,7 @@ class TXISR:
             for tup in dataList:
                 for value in tup:
                 
-                    ### TODO: STRING METHOD:
+                    ### STRING METHOD:
                     f.write(str(value))
                     f.write(',')
                      
