@@ -65,7 +65,7 @@ void RadioDriver::packetize() {
 	// check 3: Check and set transmission windows 
 	// check 4: How many bytes are we going to transmit 
 
-	// datatype, transmission windows, bytes will be passed in as command line arguments.
+	// datatype, transmission windows, and ifPic will be passed in as command line arguments.
 	// call delay function to delay until we hit trasmission window. 5 seconds before call shawn's function
 	// pass to shawn datatype and how many lines we are trasmitting from the file. 
 	// Communicate with shawn the exact file path and the file name. 

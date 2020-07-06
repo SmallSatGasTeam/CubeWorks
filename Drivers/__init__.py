@@ -4,4 +4,4 @@ from .Driver import *
 #from .cpuTemp import *
 #from .adc import *
 #from .uvDriver import *
-#from .rtc import *
+from .rtc import *
