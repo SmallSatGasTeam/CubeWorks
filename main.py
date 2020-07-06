@@ -5,7 +5,7 @@ from time import sleep
 from Components import *
 from Drivers import *
 from mission_modes import *
-from missionLogic import *
+from mission_logic import *
 
 async def startLoop(db):
     """
