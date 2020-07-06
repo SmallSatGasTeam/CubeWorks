@@ -5,6 +5,7 @@ from time import sleep
 from Components import *
 from Drivers import *
 from mission_modes import *
+from missionLogic import *
 
 async def startLoop(db):
     """
@@ -14,10 +15,9 @@ async def startLoop(db):
     Starts gathering from Driver.run() on loop
     """
     context = {"MissionMode": MissionMode.PRE_TX}
-    print(context)
     lock = asyncio.Lock()
     drivers = [ContextPrinter(), RTC(), db]
-    await asyncio.gather(*[d.run(context, lock) for d in drivers])
+    await asyncio.gather(*[d.run(context, lock) for d in drivers], runLogic(drivers, context, lock))
 
 
 def UTCTime():
