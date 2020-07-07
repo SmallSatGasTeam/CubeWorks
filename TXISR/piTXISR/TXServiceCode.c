@@ -184,7 +184,7 @@ void main(int argc,char* argv[])
         {
             line[i] = '0';
         }
-        while(ch != 10)
+        while(ch != 10 && ch != EOF)
         {
             //this collects the time stamp
             if(!end && ch != EOF)
@@ -199,7 +199,6 @@ void main(int argc,char* argv[])
             line[charCount++] = ch;
             PRINT_DEBUG(charCount)
             if(ch != EOF) ch = fgetc(txFile);
-            if(ch == EOF) break ;
         }
         //transmit the data
         #ifdef DEBUG
@@ -211,12 +210,15 @@ void main(int argc,char* argv[])
         #endif
         //this line of code sends things out on the tx line
         //start the transmition time
-        startTime = millis();
+        startTimeTX = millis();
         write(txPort, line, charCount);
         //delay the right amount of time for the radio
-        while((currentTimeTX - startTime) < DELAY_tx) currentTimeTX = millis();
+        while((currentTimeTX - startTimeTX) < DELAY_tx) currentTimeTX = millis();
         PRINT_DEBUG(currentTimeTX)
+        PRINT_DEBUG(startTimeTX)
+        PRINT_DEBUG(currentTime)
         PRINT_DEBUG(startTime)
+        currentTime = millis();
 
         if(ch == 10 && ch != EOF)
         {
