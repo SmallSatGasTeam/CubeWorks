@@ -142,6 +142,7 @@ void main(int argc,char* argv[])
     DEBUG_P(Printing file>>>)
     while(ch != EOF)
     {
+        DEBUG_P(Sending>>>)
         //this checks the transmission window
         currentTime = millis();
         if((currentTime - startTime) < transmissionWindow) 
