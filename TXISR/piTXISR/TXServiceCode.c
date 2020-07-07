@@ -218,7 +218,7 @@ void main(int argc,char* argv[])
         PRINT_DEBUG(currentTimeTX)
         PRINT_DEBUG(startTime)
 
-        if(ch == 10)
+        if(ch == 10 && ch != EOF)
         {
             ch = fgetc(txFile);
         }
@@ -227,25 +227,26 @@ void main(int argc,char* argv[])
         //save the last sent time
         if(ch == EOF)
         {
-            for(int g = 1; g < 7; g++)
+            for(int g = 1; g < 11; g++)
             {
                 flags[dataType][g] = timeStamp[g];
             }
             //pop the types
             for(int y = 0; y < 5; y++)
             {
-                fputc(flags[y][0], recordFile);
+               fputc(flags[y][0], recordFile);
             }
             fputc('\n', recordFile);
             //wrtie time stamps
             for(int i = 0; i < 5; i++)
             {
-                for(int g = 0; g < 6; g++)
+                for(int g = 0; g < 11; g++)
                 {
                     fputc(flags[dataType][g], recordFile);
                 }
                 fputc(' ', recordFile);
             }
+            break;
         }
     } 
 
