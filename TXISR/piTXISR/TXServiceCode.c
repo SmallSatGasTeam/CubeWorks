@@ -165,10 +165,7 @@ void main(int argc,char* argv[])
             }
             break;
         }
-        else
-        {
-            break;
-        }
+
         
         PRINT_DEBUG(currentTime - startTime)
 
