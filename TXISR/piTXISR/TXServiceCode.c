@@ -72,8 +72,8 @@ void main(int argc,char* argv[])
     }
 
     //get tx time
-//    fscanf(txFile, "%d", &transmissionWindow);
-//    PRINT_DEBUG(transmissionWindow)
+    fscanf(txFile, "%d", &transmissionWindow);
+    PRINT_DEBUG(transmissionWindow)
 
     FILE *recordFile;
     if (!(recordFile = fopen(FLAG_FILE,"r+")))
