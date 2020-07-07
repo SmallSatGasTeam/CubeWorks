@@ -10,3 +10,4 @@ grep -q 'enable_uart.*=' ${filename} && sed -i 's/^enable_uart.*=.*/enable_uart=
 systemctl restart serial-getty@ttyAMA0.service
 
 # Either get around authentication or remove need to reboot
+echo "Done"
