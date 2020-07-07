@@ -143,7 +143,7 @@ void main(int argc,char* argv[])
         
         //this checks the transmission window
         currentTime = millis();
-        if((currentTime - startTime) < transmissionWindow) 
+        if((currentTime - startTime) > transmissionWindow) 
         {
             for(int g = 1; g < 11; g++)
             {
@@ -166,6 +166,11 @@ void main(int argc,char* argv[])
             }
             break;
         }
+        else
+        {
+            break;
+        }
+        
         PRINT_DEBUG(currentTime - startTime)
 
         PRINT_DEBUG_CHAR('\n')
