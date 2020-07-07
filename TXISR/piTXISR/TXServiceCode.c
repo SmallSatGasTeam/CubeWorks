@@ -140,7 +140,6 @@ void main(int argc,char* argv[])
     DEBUG_P(Printing file>>>)
     while(ch != EOF)
     {
-        
         //this checks the transmission window
         currentTime = millis();
         if((currentTime - startTime) > transmissionWindow) 
@@ -152,7 +151,7 @@ void main(int argc,char* argv[])
             //pop the types
             for(int y = 0; y < 5; y++)
             {
-                fputc(flags[y][0], recordFile);
+               fputc(flags[y][0], recordFile);
             }
             fputc('\n', recordFile);
             //wrtie time stamps
