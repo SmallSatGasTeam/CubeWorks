@@ -255,8 +255,6 @@ void main(int argc,char* argv[])
         }
     } 
 
-    free(timeStamp);
-
     //give control of the port back to linuxs
     // int disable = system(DISABLE);
     // //if we fail reboot
