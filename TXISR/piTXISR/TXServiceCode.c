@@ -140,12 +140,10 @@ void main(int argc,char* argv[])
     DEBUG_P(Printing file>>>)
     while(ch != EOF)
     {
-        
-       //this checks the transmission window
-       currentTime = millis();
-       if((currentTime - startTime) < transmissionWindow)
-       {
-DEBUG_P(GOT TO HERE)
+        //this checks the transmission window
+        currentTime = millis();
+        if((currentTime - startTime) > transmissionWindow) 
+        {
             for(int g = 1; g < 11; g++)
             {
                 flags[dataType][g] = timeStamp[g];
@@ -167,6 +165,11 @@ DEBUG_P(GOT TO HERE)
             }
             break;
         }
+        else
+        {
+            break;
+        }
+        
         PRINT_DEBUG(currentTime - startTime)
 
         PRINT_DEBUG_CHAR('\n')
