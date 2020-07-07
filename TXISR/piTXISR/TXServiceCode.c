@@ -56,13 +56,12 @@ void main(int argc,char* argv[])
     *Add in any set up commucation to the radio
     * TEST, UART, and the bash commands
     */
-    long startTime = millis();
-    long currentTime = millis();
-    long startTimeTX = 0;
-    long currentTimeTX = 0; 
-    int numOfRecords = argv[1];
-    int dataType = argv[2];
-    long transmissionWindow = argv[3];
+    int startTime = millis();
+    int currentTime = millis();
+    int startTimeTX = 0;
+    int currentTimeTX = 0; 
+    int dataType = argv[1];
+    int transmissionWindow = 0;
 
     FILE *txFile;
     if (!(txFile = fopen(FORMAT_FILE,"r")))
@@ -71,6 +70,10 @@ void main(int argc,char* argv[])
         DEBUG_P(Failed to open file)
         exit(1);
     }
+
+    //get tx time
+    fscanf(txFile, "%d", &transmissionWindow);
+    PRINT_DEBUG(transmissionWindow)
 
     FILE *recordFile;
     if (!(recordFile = fopen(FLAG_FILE,"r+")))
@@ -134,7 +137,7 @@ void main(int argc,char* argv[])
     char line[128] = {0};
     char *timeStamp;
 
-    DEBUG_P(Printing file>>>);
+    DEBUG_P(Printing file>>>)
     while(ch != EOF)
     {
         
