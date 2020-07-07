@@ -218,7 +218,7 @@ void main(int argc,char* argv[])
         PRINT_DEBUG(currentTimeTX)
         PRINT_DEBUG(startTime)
 
-        if(ch == 10 && ch != EOF)
+        if(ch == 10)
         {
             ch = fgetc(txFile);
         }
