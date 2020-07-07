@@ -132,7 +132,7 @@ void main(int argc,char* argv[])
     PRINT_DEBUG_c(ch)
     //set up array for tx, the max is 128, so we better not exceed that anyways so using an array of 128 is fine.
     char line[128] = {0};
-    char *timeStamp;
+    char timeStamp[10];
     //get tx time
     fscanf(txFile, "%d", &transmissionWindow);
     PRINT_DEBUG(transmissionWindow)
@@ -191,12 +191,6 @@ void main(int argc,char* argv[])
             //this collects the time stamp
             if(!end)
             {
-                timeStamp = malloc(++charTimeCount);
-                if(timeStamp == NULL)
-                {
-                    DEBUG_P(failed malloc)
-                    exit(1);
-                }
                 timeStamp[charTimeCount - 2] = ch;
             }
             else if (ch == 58)
