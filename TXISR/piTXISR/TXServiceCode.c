@@ -141,10 +141,11 @@ void main(int argc,char* argv[])
     while(ch != EOF)
     {
         
-        //this checks the transmission window
-        currentTime = millis();
-        if((currentTime - startTime) < transmissionWindow) 
-        {
+       //this checks the transmission window
+       currentTime = millis();
+       if((currentTime - startTime) < transmissionWindow)
+       {
+DEBUG_P(GOT TO HERE)
             for(int g = 1; g < 11; g++)
             {
                 flags[dataType][g] = timeStamp[g];
@@ -152,7 +153,7 @@ void main(int argc,char* argv[])
             //pop the types
             for(int y = 0; y < 5; y++)
             {
-                fputc(flags[y][0], recordFile);
+               fputc(flags[y][0], recordFile);
             }
             fputc('\n', recordFile);
             //wrtie time stamps
