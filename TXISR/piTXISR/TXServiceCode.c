@@ -141,7 +141,7 @@ void main(int argc,char* argv[])
     DEBUG_P(Printing file>>>)
     while(ch != EOF)
     {
-        DEBUG_P(Sending>>>)
+        DEBUG_P(\nSending>>>)
         //this checks the transmission window
         currentTime = millis();
         if((currentTime - startTime) < transmissionWindow) 
@@ -176,9 +176,7 @@ void main(int argc,char* argv[])
         int charCount = 0;
 
         //this will be our timp stamp array,
-        //NOTE: we will use malloc to resize this array foreach time varible we get
-        //NOTE: Because this array will be very small it is ok to use malloc it will not
-        //      cause major delays.
+
         
         int end = 0;
         int charTimeCount = 1;
@@ -200,6 +198,7 @@ void main(int argc,char* argv[])
             //save all the data in that line
             line[charCount++] = ch;
             ch = fgetc(txFile);
+            if(ch == EOF) break ;
         }
         //transmit the data
         #ifdef DEBUG
