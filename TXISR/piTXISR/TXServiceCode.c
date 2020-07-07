@@ -186,10 +186,10 @@ void main(int argc,char* argv[])
         {
             line[i] = '0';
         }
-        while(ch != 10 || ch != EOF)
+        while(ch != 10)
         {
             //this collects the time stamp
-            if(!end)
+            if(!end && ch != EOF)
             {
                 timeStamp[charTimeCount - 2] = ch;
             }
