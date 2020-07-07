@@ -11,9 +11,9 @@ from Drivers.Driver import Driver
 import board
 import busio
 #for LSM303AGR
-#import adafruit_lis2mdl
+import adafruit_lis2mdl
 #for LSM303DLH
-import adafruit_lsm303dlh_mag
+#import adafruit_lsm303dlh_mag
 
 class Magnetometer(Driver):
   #Set up I2C link
@@ -25,7 +25,7 @@ class Magnetometer(Driver):
   def read(self) :
     #Set up link to magnetometer
     #for LSM303AGR
-    #mag = adafruit_lis2mdl.LIS2MDL(self.i2c)
+    mag = adafruit_lis2mdl.LIS2MDL(self.i2c)
     #for LSM303DLH
-    mag = adafruit_lsm303dlh_mag.LSM303DLH_Mag(self.i2c)
+    #mag = adafruit_lsm303dlh_mag.LSM303DLH_Mag(self.i2c)
     return mag.magnetic
