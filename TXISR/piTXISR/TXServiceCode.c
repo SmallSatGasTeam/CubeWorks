@@ -186,7 +186,7 @@ void main(int argc,char* argv[])
         {
             line[i] = '0';
         }
-        while(ch != 10 && ch != EOF)
+        while(ch != 10 || ch != EOF)
         {
             //this collects the time stamp
             if(!end)
