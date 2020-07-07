@@ -71,11 +71,6 @@ void main(int argc,char* argv[])
         exit(1);
     }
 
-    //get tx time
-    fscanf(txFile, "%d", &transmissionWindow);
-    PRINT_DEBUG(transmissionWindow)
-    fgetc(txFile);
-
     FILE *recordFile;
     if (!(recordFile = fopen(FLAG_FILE,"r+")))
     {
@@ -138,6 +133,10 @@ void main(int argc,char* argv[])
     //set up array for tx, the max is 128, so we better not exceed that anyways so using an array of 128 is fine.
     char line[128] = {0};
     char *timeStamp;
+    //get tx time
+    fscanf(txFile, "%d", &transmissionWindow);
+    PRINT_DEBUG(transmissionWindow)
+    fgetc(txFile);
 
     DEBUG_P(Printing file>>>)
     while(ch != EOF)
