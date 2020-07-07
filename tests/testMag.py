@@ -17,5 +17,6 @@ from Drivers.Magnetometer import Magnetometer
     
 #if __name__ == '__main__':
 mag = Magnetometer()
+print(mag.read())
 print(np.linalg.norm(mag.read()))
     #unittest.main()

@@ -18,4 +18,5 @@ from Drivers.Accelerometer import Accelerometer
 #if __name__ == '__main__':
 accel = Accelerometer()
     #unittest.main()
+print(accel.read())
 print(np.linalg.norm(accel.read()))
