@@ -197,7 +197,8 @@ void main(int argc,char* argv[])
             }
             //save all the data in that line
             line[charCount++] = ch;
-            ch = fgetc(txFile);
+            PRINT_DEBUG(charCount)
+            if(ch != EOF) ch = fgetc(txFile);
             if(ch == EOF) break ;
         }
         //transmit the data
