@@ -133,6 +133,7 @@ void main(int argc,char* argv[])
 
     //read in all the lines of a file
     char ch = fgetc(txFile);
+    PRINT_DEBUG_c(ch)
     //set up array for tx, the max is 128, so we better not exceed that anyways so using an array of 128 is fine.
     char line[128] = {0};
     char *timeStamp;
@@ -203,6 +204,7 @@ void main(int argc,char* argv[])
             }
             //save all the data in that line
             line[charCount++] = ch;
+            PRINT_DEBUG_c(ch)
             ch = fgetc(txFile);
         }
         //transmit the data
