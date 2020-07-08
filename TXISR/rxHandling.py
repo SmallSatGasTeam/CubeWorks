@@ -15,6 +15,11 @@ import time
         ###import the boom driver
         ###import the command to tell the pi to turn off (watchdog)
         
+        
+### TODO: Write the Epoch time stamp (miliseconds) at the beginning of the transmission
+### TODO: Pass Datatype to shawn's code 
+### TODO: flag last tramission
+        
 '''
 Processes:
     #1. Read Trasmission
@@ -26,7 +31,7 @@ Processes:
     #7. Packetize data and write to a file 
     #8. Wait until 5 seconds before the tx window starts
     #9. Call Shawn's Code
-    #10. Exit (this will close interrupts if made)
+    #10. Exit (close interrupts if made)
 
 '''
 
@@ -48,21 +53,26 @@ class TXISR:
         self.readTX()
         #this varible is used to check if we can transmit or not (getter = getCanTX)
         canTX = True
-        #inizalize cammera driver
-        #photo = camera()
-        #inizalize boom driver
-        #boom = boomDeployer()
         
-        # not sure what im getting back
-        # self.sendTosrCheck()
-        
-        '''
-        Process #5
-        '''
-        if self.rxData[4].compareTo(None):
-            self.driveDataType(self.rxData[0], self.rxData[1], self.rxData[2], self.rxData[3])
+        self.commandRecived()
+        if getCanTX == False:
+            # Run recieved commands
         else:
-            self.drivePic(self.rxData[0], self.rxData[1], self.rxData[2], self.rxData[3], self.rxData[4])
+            #inizalize cammera driver
+            #photo = camera()
+            #inizalize boom driver
+            #boom = boomDeployer()
+            
+            # not sure what im getting back
+            # self.sendTosrCheck()
+            
+            '''
+            Process #5
+            '''
+            if self.rxData[4].compareTo(None):
+                self.driveDataType(self.rxData[0], self.rxData[1], self.rxData[2], self.rxData[3])
+            else:
+                self.drivePic(self.rxData[0], self.rxData[1], self.rxData[2], self.rxData[3], self.rxData[4])
 
     def readTX(self):
         '''
@@ -196,7 +206,7 @@ class TXISR:
                 
                 f.write('\n')
                 linesTotal += 1
-            f.write(';')
+            f.write('@')
             f.write('\n')
         f.write(str(linesTotal))
         f.close()
