@@ -14,13 +14,23 @@ import time
         ###import the camera driver
         ###import the boom driver
         ###import the command to tell the pi to turn off (watchdog)
+        
+'''
+Processes:
+    #1. Read Trasmission
+    #2. Decode Transmission (from hex)
+    #3. Produce rxData list from decoded TX
+    #4. Determine the type of request recieved (database query or command)
+    #5. Decide if transmitting DataType or Picture
+    #6. Get packets or picture from the database
+    #7. Packetize data and write to a file 
+    #8. Wait until 5 seconds before the tx window starts
+    #9. Call Shawn's Code
+    #10. Exit (this will close interrupts if made)
+
+'''
 
 class TXISR:
-    '''
-    TODO:
-        interrupt
-    '''
-
     '''
     rxData holds the values gotten from the grounds transmission. (see Flight Logic doc appendix c table 5)
     0 = packet type
@@ -46,25 +56,31 @@ class TXISR:
         # not sure what im getting back
         # self.sendTosrCheck()
         
-        ## TODO :: START DRIVING THE SOFTWARE FROM HERE
+        '''
+        Process #5
+        '''
+        if self.rxData[4].compareTo(None):
+            self.driveDataType(self.rxData[0], self.rxData[1], self.rxData[2], self.rxData[3])
+        else:
+            self.drivePic(self.rxData[0], self.rxData[1], self.rxData[2], self.rxData[3], self.rxData[4])
 
     def readTX(self):
+        '''
+        Process #1 & #3
+        '''
         for i in range(5):
             currentData = self.TX.readline()
             currentData = self.decodeTX(currentData)
             self.rxData.append(currentData)
 
     def decodeTX(self, hexMessage):
+        '''
+        Process #2
+        '''
         return bytes.fromhex(hexMessage).decode('utf-8')
 
     def sendTosrCheck(self):
         Check(self.rxData[3], self.rxData[1], self.rxData[2])
-
-    def sendTobreadb(self):
-        if self.rxData[4].compareTo(None):
-            self.driveDataType(self.rxData[0], self.rxData[1], self.rxData[2], self.rxData[3])
-        else:
-            self.drivePic(self.rxData[0], self.rxData[1], self.rxData[2], self.rxData[3], self.rxData[4])
     
     def drivePic (self, packType, winStart, winDur, dataType, picNum):
         '''
@@ -207,6 +223,7 @@ class TXISR:
     def getPackets(self, pacType, numPackets):
         """
         Constructs an sql query based on pacType and numPackets, returns the result.
+        Process #6
         """
         lastTransmitted = 0
         connection = sqlite3.connect('../db.sqlite3')
@@ -218,6 +235,7 @@ class TXISR:
     def getPicture(self, picNum, res):
         """
         ... Actually, I don't know what this should do yet...
+        Process #6
         """
         pass
 
@@ -257,6 +275,9 @@ class TXISR:
 
     ### This part of the code checks to see if we are reciving a command to do something. 
     def commandRecived(self):
+    '''
+    Process #4
+    '''
         if(self.rxData[0] == 0):
             return
         else :
