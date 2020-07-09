@@ -30,8 +30,9 @@ void setUpUart();
 //returns ms since the epoch
 long millis()
 {
-    time_t a;
-    gettimeofday(&a, NULL);
+    struct timeval current_time;
+    gettimeofday(&current_time, NULL);
+    int a = current_time.tv_usec;
     return a;
 }
 
@@ -60,10 +61,10 @@ void main(int argc,char* argv[])
     *Add in any set up commucation to the radio
     * TEST, UART, and the bash commands
     */
-    time_t startTime = millis();
-    time_t currentTime = millis();
-    time_t startTimeTX = 0;
-    time_t currentTimeTX = 0; 
+    long startTime = millis();
+    long currentTime = millis();
+    long startTimeTX = 0;
+    long currentTimeTX = 0; 
     int dataType = argv[1];
     int transmissionWindow = 0;
 
@@ -223,10 +224,10 @@ void main(int argc,char* argv[])
             PRINT_TIME(currentTimeTX)
             PRINT_TIME(startTimeTX)
         }
-        PRINT_TIME(currentTimeTX)
-        PRINT_TIME(startTimeTX)
-        PRINT_TIME(currentTime)
-        PRINT_TIME(startTime)
+        PRINT_LONG(currentTimeTX)
+        PRINT_LONG(startTimeTX)
+        PRINT_LONG(currentTime)
+        PRINT_LONG(startTime)
         currentTime = millis();
 
         if(ch == 10 && ch != EOF)
