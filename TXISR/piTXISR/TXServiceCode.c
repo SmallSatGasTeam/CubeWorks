@@ -184,7 +184,7 @@ void main(int argc,char* argv[])
         {
             line[i] = '0';
         }
-        while(ch != 10 && ch != EOF)
+        while(ch != 10 && ch != '@')
         {
             //this collects the time stamp
             if(!end && ch != EOF)
@@ -198,7 +198,7 @@ void main(int argc,char* argv[])
             //save all the data in that line
             line[charCount++] = ch;
             PRINT_DEBUG(charCount)
-            //if(ch != EOF) ch = fgetc(txFile);
+            Sif(ch != EOF) ch = fgetc(txFile);
         }
         //transmit the data
         #ifdef DEBUG
@@ -253,13 +253,13 @@ void main(int argc,char* argv[])
     } 
 
     //give control of the port back to linuxs
-    // int disable = system(DISABLE);
-    // //if we fail reboot
-    // if(disable == -1) 
-    // {
-    //     DEBUG_P(Failed to release tx uart pin)
-    //     exit(1);
-    // } 
+    int disable = system(DISABLE);
+    //if we fail reboot
+    if(disable == -1) 
+    {
+        DEBUG_P(Failed to release tx uart pin)
+        exit(1);
+    } 
 }
 
 /*******************************************************************************************
