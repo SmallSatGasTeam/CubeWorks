@@ -216,7 +216,12 @@ void main(int argc,char* argv[])
         startTimeTX = millis();
         write(txPort, line, charCount);
         //delay the right amount of time for the radio
-        while((currentTimeTX - startTimeTX) < DELAY_tx) currentTimeTX = millis();
+        while((currentTimeTX - startTimeTX) < DELAY_tx)
+        { 
+            currentTimeTX = millis();
+            PRINT_TIME(currentTimeTX)
+            PRINT_TIME(startTimeTX)
+        }
         PRINT_TIME(currentTimeTX)
         PRINT_TIME(startTimeTX)
         PRINT_TIME(currentTime)
