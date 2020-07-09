@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include <sys/time.h>
 #include <fcntl.h>
 #include <termios.h>
 #include <stdio.h>
