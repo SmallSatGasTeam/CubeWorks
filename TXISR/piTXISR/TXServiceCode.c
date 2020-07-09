@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <time.h>
+#include <stdint.h>
 //Take just the DEBUG line out when your are done debugging and leave debug.h
 #define DEBUG
 #include "debug.h"
@@ -28,7 +29,9 @@ void setUpUart();
 //returns ms since the epoch
 long millis()
 {
-    return time(NULL) * 1000;
+    time_t a;
+    time(&a) * 1000;
+    return a;
 }
 
 
@@ -56,10 +59,10 @@ void main(int argc,char* argv[])
     *Add in any set up commucation to the radio
     * TEST, UART, and the bash commands
     */
-    int startTime = millis();
-    int currentTime = millis();
-    int startTimeTX = 0;
-    int currentTimeTX = 0; 
+    time_t startTime = millis();
+    time_t currentTime = millis();
+    time_t startTimeTX = 0;
+    time_t currentTimeTX = 0; 
     int dataType = argv[1];
     int transmissionWindow = 0;
 
@@ -139,7 +142,7 @@ void main(int argc,char* argv[])
     fgetc(txFile);
 
     DEBUG_P(Printing file>>>)
-    while(ch != EOF)
+    while(ch != '@')
     {
         DEBUG_P(\nSending>>>)
         //this checks the transmission window
@@ -214,10 +217,10 @@ void main(int argc,char* argv[])
         write(txPort, line, charCount);
         //delay the right amount of time for the radio
         while((currentTimeTX - startTimeTX) < DELAY_tx) currentTimeTX = millis();
-        PRINT_DEBUG(currentTimeTX)
-        PRINT_DEBUG(startTimeTX)
-        PRINT_DEBUG(currentTime)
-        PRINT_DEBUG(startTime)
+        PRINT_TIME(currentTimeTX)
+        PRINT_TIME(startTimeTX)
+        PRINT_TIME(currentTime)
+        PRINT_TIME(startTime)
         currentTime = millis();
 
         if(ch == 10 && ch != EOF)

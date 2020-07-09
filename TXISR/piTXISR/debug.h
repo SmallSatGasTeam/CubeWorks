@@ -6,6 +6,7 @@
 #define DEBUG_REST(n) printf(#n" Has been rest\n");
 #define DEBUG_P(n) printf(#n"\n");
 #define PRINT_DEBUG_CHAR(n) putchar(n);
+#define PRINT_TIME(n) printf("%jd seconds\n", (intmax_t)n);
 #else
 #define PRINT_DEBUG(n)
 #define PRINT_DEBUG_f(n) 
@@ -13,4 +14,5 @@
 #define DEBUG_REST(n) 
 #define DEBUG_P(n)
 #define PRINT_DEBUG_CHAR(n) 
+#define PRINT_TIME(n)
 #endif
