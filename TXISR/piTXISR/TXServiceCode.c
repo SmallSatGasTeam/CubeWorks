@@ -221,7 +221,6 @@ void main(int argc,char* argv[])
         { 
             currentTimeTX = millis();
             PRINT_TIME(currentTimeTX)
-            PRINT_TIME(startTimeTX)
         }
         PRINT_LONG(currentTimeTX)
         PRINT_LONG(startTimeTX)
@@ -284,4 +283,17 @@ void setUpUart()
     options.c_cflag &= ~CSIZE;
     options.c_cflag |= CS8;
 }
+
+// int changeCharToInt(char a)
+// {
+//     switch(a)
+//     {
+//     case:
+//     case:
+//     case:
+//     case:
+//     case:
+//     break:
+//     }
+// }
 
