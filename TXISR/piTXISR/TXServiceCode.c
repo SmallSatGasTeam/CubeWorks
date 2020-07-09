@@ -30,7 +30,7 @@ void setUpUart();
 long millis()
 {
     time_t a;
-    time(&a) * 1000;
+    gettimeofday(&a, NULL);
     return a;
 }
 
