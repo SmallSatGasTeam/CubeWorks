@@ -309,3 +309,21 @@ class TXISR:
     def getCanTX(self):
         return self.canTX
 
+#this class handles the tx files
+class txWindows
+    def __init__(self, startTime)
+        self.tx = open(txSchedual)
+        self.startTime = startTime
+
+    #this func will add the window to our tx file
+    def creatTXSchedual(self, schedual):
+        self.tx.append(schedual)
+
+    def waitForTx(self):
+        window = self.tx.readline
+        while((self.startTime + time.time()) != window)
+        {}
+        
+
+
+
