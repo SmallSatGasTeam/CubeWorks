@@ -22,6 +22,11 @@
 //this is our time delay
 #define DELAY_tx 120
 
+//this is the end of file key we are using it can be changed without effecting the program much
+//NOTE: this char may not appear in the file more then once, and it must be the last char in the 
+//  input file
+#define END_KEY '@'
+
 //this sets control of the settings for our serial port
 struct termios options;
 
@@ -64,8 +69,9 @@ void main(int argc,char* argv[])
     long startTime = millis();
     long currentTime = millis();
     long startTimeTX = 0;
-    long currentTimeTX = 0; 
-    int dataType = argv[1];
+    long currentTimeTX = 0;
+    //gather user input
+    int dataType = changeCharToInt(argv[1]);
     int transmissionWindow = 0;
 
     FILE *txFile;
@@ -144,7 +150,7 @@ void main(int argc,char* argv[])
     fgetc(txFile);
 
     DEBUG_P(Printing file>>>)
-    while(ch != '@')
+    while(ch != END_KEY)
     {
         DEBUG_P(\nSending>>>)
         //this checks the transmission window
@@ -179,17 +185,13 @@ void main(int argc,char* argv[])
         PRINT_DEBUG_CHAR('\n')
         //get the size of each line in the file
         int charCount = 0;
-
-        //this will be our timp stamp array,
-
-        
         int end = 0;
         int charTimeCount = 1;
         for (int i = 0; i < 128; i++)
         {
             line[i] = '0';
         }
-        while(ch != 10 && ch != '@')
+        while(ch != 10 && ch != END_KEY)
         {
             //this collects the time stamp
             if(!end && ch != EOF)
@@ -235,27 +237,28 @@ void main(int argc,char* argv[])
 
 
         //save the last sent time
-        if(ch == EOF)
+        for(int g = 1; g < 11; g++)
         {
-            for(int g = 1; g < 11; g++)
+            flags[dataType][g] = timeStamp[g];
+        }
+        //pop the types
+        for(int y = 0; y < 5; y++)
+        {
+            fputc(flags[y][0], recordFile);
+        }
+        fputc('\n', recordFile);
+        //wrtie time stamps
+        for(int i = 0; i < 5; i++)
+        {
+            for(int g = 0; g < 11; g++)
             {
-                flags[dataType][g] = timeStamp[g];
+                fputc(flags[dataType][g], recordFile);
             }
-            //pop the types
-            for(int y = 0; y < 5; y++)
-            {
-               fputc(flags[y][0], recordFile);
-            }
-            fputc('\n', recordFile);
-            //wrtie time stamps
-            for(int i = 0; i < 5; i++)
-            {
-                for(int g = 0; g < 11; g++)
-                {
-                    fputc(flags[dataType][g], recordFile);
-                }
-                fputc(' ', recordFile);
-            }
+            fputc(' ', recordFile);
+        }
+        //this is the end of file char we have if we see it we will break the loop
+        if(ch == END_KEY)
+        {
             break;
         }
     } 
@@ -284,16 +287,32 @@ void setUpUart()
     options.c_cflag |= CS8;
 }
 
-// int changeCharToInt(char a)
-// {
-//     switch(a)
-//     {
-//     case:
-//     case:
-//     case:
-//     case:
-//     case:
-//     break:
-//     }
-// }
+/*******************************************************************************************
+ * setUpUart
+ * this func will convert a char in to an int (works for 0 though 5)
+ * if it fails to convert the vaule it exits the program and sends an error message.
+ *******************************************************************************************/
+int changeCharToInt(char a)
+{
+    switch(a)
+    {
+        case 48:
+            return 0;
+        case 49:
+            return 1;
+        case 50:
+            return 2;
+        case 51:
+            return 3;
+        case 52:
+            return 4;
+        case 53:
+            return 5;
+        default :
+            {
+                DEBUG_P(invaild data type)
+                exit(1);
+            }
+    }
+}
 
