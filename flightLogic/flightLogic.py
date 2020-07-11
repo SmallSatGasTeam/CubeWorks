@@ -9,6 +9,9 @@ import asyncio
 #this imports the file we need from the TXISR
 from TXISR import interrupt
 
+#NOTE: The TXISR needs to run as serpreate thread and not a async io
+import thread
+
 ##################################################################################################################
 #Main()
 ##################################################################################################################
@@ -187,5 +190,5 @@ def recordData():
 ##################################################################################################################
 def startTXISR():
     #this sets up the interupt on the uart pin that triggers when we get commincation over uart
-    asyncio.run(interrupt.watchReceptions())
+    thread.start(interrupt.watchReceptions)
             
