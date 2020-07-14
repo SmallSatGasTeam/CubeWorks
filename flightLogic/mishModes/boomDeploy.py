@@ -7,7 +7,7 @@ import Drivers.camera.Camera
 class boomMode:
 	def __init__(self):
 		None
-	def run(self):
+	async def run(self):
 		#Setting up background processes
 		ttncData = TTNCData()
 		attitudeData = AttitudeData()
