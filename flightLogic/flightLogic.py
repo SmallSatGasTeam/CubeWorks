@@ -90,7 +90,7 @@ def main ():
             #IMPORTANT NOTE: How are we going to check to make sure that we in space to deloy here?
             #AKA: so we dont deploy in the the box.
             if not antennaDeployed :
-                #delay for 3o mins
+                #delay for 3o mins #change to 35
                 sleep(1800)
                 #how do we check if the antenna doors are open?
                 #TODO, check of antenna doors are open
