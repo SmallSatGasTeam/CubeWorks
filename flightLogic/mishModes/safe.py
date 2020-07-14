@@ -29,7 +29,8 @@ class safe:
         self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, time)
         
     async def thresholdCheck(self):
-        epsVoltage = eps.getBusVoltage()
+        await while True:
+		epsVoltage = eps.getBusVoltage()
 		if epsVoltage < self.thresholdVoltage:
 			run(10) #1 hour
 		await asyncio.sleep(1) #check voltage every second    
