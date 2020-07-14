@@ -27,6 +27,9 @@
 //  input file
 #define END_KEY '@'
 
+
+int changeCharToInt(char a);
+
 //this sets control of the settings for our serial port
 struct termios options;
 
