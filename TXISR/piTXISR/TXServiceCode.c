@@ -121,7 +121,7 @@ void main(int argc,char* argv[])
     //config linuxs to give us the pins
     int enable = system(ENABLE);
     //if we fail reboot
-    if(enable == -1) 
+    if(enable != 0) 
     {
         DEBUG_P(Failed to connect to tx pin)
         exit(1);
