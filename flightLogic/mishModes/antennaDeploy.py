@@ -26,7 +26,7 @@ class antennaMode:
 		await while True:
 			epsVoltage = EPS.getBusVoltage()
 			if epsVoltage < self.criticalVoltage:
-                safeMode.run(10) #1 hour
+                		safeMode.run(10) #1 hour
 			await asyncio.sleep(1) #check voltage every second
             
         #Perform tasks for antenna deployment
