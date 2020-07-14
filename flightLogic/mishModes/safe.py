@@ -1,5 +1,6 @@
 import smbus
-
+import Drivers.eps.EPS as EPS
+import asyncio
 #####################################################################################
 #All this class does is tell the adruino to shut off the pi for the spesified amout 
 #of time. 
@@ -19,8 +20,18 @@ class safe:
         self.__beetle = 0x08
         self.RegisterADR = 0x00
         self.bus = smbus.SMBus(self.DEVICE_BUS)
+        eps = EPS()
+        self.thresholdVoltage = 3.33 #Threshold Voltage
 
 
-    def run(time):
+    def run(self, time):
         #send message to the adruino to power off the pi
         self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, time)
+        
+    async def thresholdCheck(self):
+        epsVoltage = eps.getBusVoltage()
+		if epsVoltage < self.thresholdVoltage:
+			run(10) #1 hour
+		await asyncio.sleep(1) #check voltage every second    
+        
+        
