@@ -1,37 +1,47 @@
 import time
 import Drivers.backupAntennaDeployer.BackupAntennaDeployer as antennaDeploy
 import Drivers.antennaDoor.AntennaDoor as antennaStatus
+import Drivers.eps.EPS as EPS
+import asyncio
+from safe import safe
+from getDriverData import *
 
 
 class antennaMode:
 
     def __init__(self):
-        '''
-           TODO:
-               Figure out how to get the following values (they are not zero). some may be contained in the main file
-               via the "context" variable in missionLogic.py.
-        '''
-        self.timeOut = 0
-        self.epsValue = 0
-        self.timeOut = 0
-        self.critPower = 0
+        self.thresholdVoltage = 5 #Threshold voltage to deploy
+        self.maximumWaitTime = 30 #Maximum time to wait for deployment before going to SAFE
+        self.timeWaited = 0 #Time already waited - zero
+        self.criticalVoltage = 3.3 #modify
 
-    def run(self):
-
-        timeElapsed = 0  # this will be minuets. if timeElapsed = 3 that means 3 minutes
-
-        while timeElapsed < self.timeOut:
-            if self.epsValue > self.critPower:
-                if antennaStatus.readDoorStatus == False:
-                    self.deployment()
-                else:
-                    return -1  # this is supposed to be a flag saying that the antennas are deployed
+    async def run(self):
+        #Attitude Data - copied from jack's flight logic. will need to change
+        ttncData = TTNCData()
+        attitudeData = AttitudeData()
+		asyncio.run(ttncData.collectTTNCData(), attitudeData.collectAttitudeData())
+        safeMode = safe()
+            
+        #Check battery conditions - changed from jack's flight logic based on returning structure - will return to 
+		await while True:
+			epsVoltage = EPS.getBusVoltage()
+			if epsVoltage < self.criticalVoltage:
+                safeMode.run(10) #1 hour
+			await asyncio.sleep(1) #check voltage every second
+            
+        #Perform tasks for antenna deployment
+        eps = EPS() #creating EPS object
+        
+        await while True:
+            if (eps.getBusVoltage()>self.thresholdVoltage):
+                antennaDeploy.deploy()
+                if doorStatus == (0,0,0,0): #probably need to change this to actually work
+                    #Doors are open
+                    return True
             else:
-                time.sleep(60)
-                timeElapsed += 1
-        if timeElapsed < self.timeOut:
-            print("TODO: call SAFE")  # this may need to be made into a flag as well
-
-    def deployment(self):
-        antennaDeploy.deploy()
-
+                if(self.timeWaited > self.maximumWaitTime):
+                    safeMode.run(10) #1 hour
+                else:
+                    #Wait 1 minute
+                    self.timeWaited = self.timeWaited+1
+                    await asyncio.sleep(60)
