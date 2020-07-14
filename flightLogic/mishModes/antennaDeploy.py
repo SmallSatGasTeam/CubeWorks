@@ -19,7 +19,7 @@ class antennaMode:
         #Attitude Data - copied from jack's flight logic. will need to change
         ttncData = TTNCData()
         attitudeData = AttitudeData()
-		asyncio.run(ttncData.collectTTNCData(), attitudeData.collectAttitudeData())
+	asyncio.run(ttncData.collectTTNCData(), attitudeData.collectAttitudeData())
         safeMode = safe()
             
         #Check battery conditions - changed from jack's flight logic based on returning structure - will return to 
