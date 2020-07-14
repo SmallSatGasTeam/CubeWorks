@@ -57,6 +57,11 @@ class TTNCData():
                 		self.__TTNC_File.write(i)
 		#writes all TTNC data to file
         	#this func will save our ttnc data in the corrisponding file
+	async def collectTTNCData(self, mMode): #sets up the loop to collect data. Easiest way to do this, since you'll only have to run 1-3 functions in each mission mode
+		await while True:
+			#Get TTNC data @ 0.0083Hz
+			getData(mMode)
+			await asyncio.sleep(120)
 
 
 class DeployData():
@@ -73,7 +78,7 @@ class DeployData():
 		#save the data for later
         	self.__data2 = [timestamp, packetType, boombox_uv, accel]
         	#call the write func
-        	writeData(,self.__data2)
+        	writeData(self.__data2)
 
 	async def writeData(self,data):
 		#writes Boom Deployment data to file
@@ -84,6 +89,11 @@ class DeployData():
 				temp += 1
 			else:
 				self.__Deploy_File.write(i)
+	async def collectDeployData(self): #sets up the loop to collect data. Easiest way to do this, since you'll only have to run 1-3 functions in each mission mode
+		await while True:
+			#Get TTNC data @ 20Hz
+			getData()
+			await asyncio.sleep(0.05)
 
 class AttitudeData():
 	def __init__(self):
@@ -110,3 +120,8 @@ class AttitudeData():
                 		temp += 1
             		else:
                			self.__AttitudeData.write(i)
+	async def collectAttitudeData(self): #sets up the loop to collect data. Easiest way to do this, since you'll only have to run 1-3 functions in each mission mode
+		await while True:
+			#Get TTNC data @ 1Hz
+			getData()
+			await asyncio.sleep(1)
