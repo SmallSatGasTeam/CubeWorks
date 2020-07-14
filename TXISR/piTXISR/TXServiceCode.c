@@ -74,7 +74,7 @@ void main(int argc,char* argv[])
     long startTimeTX = 0;
     long currentTimeTX = 0;
     //gather user input
-    int dataType = changeCharToInt(argv[1]);
+    int dataType = changeCharToInt(*argv[1]);
     int transmissionWindow = 0;
 
     FILE *txFile;
