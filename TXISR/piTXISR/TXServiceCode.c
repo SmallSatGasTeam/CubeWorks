@@ -129,7 +129,7 @@ void main(int argc,char* argv[])
 
     //open the serial ports
     int txPort = open(UART_PORT, O_RDWR | O_NOCTTY ); 
-    if (txPort != 0)
+    if (txPort == -1)
     {
         printf ("Error no is : %d\n", errno);
         printf("Error opening serial port\n");
