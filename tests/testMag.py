@@ -5,13 +5,14 @@ sys.path.append("../")
 
 from Drivers.Magnetometer import Magnetometer
 
-#class ADCTest(unittest.TestCase):
-#    """
-#    A test case containing sets of assertions in the form of class methods.
-#    """
-    #def testDivTwo(self):
-    #    """Asserts that 4 / 2 == 2.  Assertion should pass"""
-    #    self.assertEqual(divByTwo(4), 2)
+class ADCTest(unittest.TestCase):
+    mag = Magnetometer()
+    """
+    A test case containing sets of assertions in the form of class methods.
+    """
+    def testMag(self):
+        """Asserts that the magnitutde of the vector is between 64 and 66.  Assertion should pass"""
+        self.assertTrue(np.linalg.norm(mag.read()) >= 64 && np.linalg.norm(mag.read()) <= 66)
     
 
     
