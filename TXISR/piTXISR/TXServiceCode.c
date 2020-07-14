@@ -311,6 +311,7 @@ int changeCharToInt(char a)
         default :
             {
                 DEBUG_P(invaild data type)
+                PRINT_DEBUG_c(a)
                 exit(1);
             }
     }
