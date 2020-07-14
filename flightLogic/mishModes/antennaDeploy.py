@@ -22,7 +22,7 @@ class antennaMode:
 	asyncio.run(ttncData.collectTTNCData(), attitudeData.collectAttitudeData())
         safeMode = safe()
 	eps = EPS() #creating EPS object    
-        #Check battery conditions - changed from jack's flight logic based on returning structure - will return to 
+        #Check battery conditions, run safe mode if battery drops below safe level 
 	await while True:
 		epsVoltage = eps.getBusVoltage()
 		if epsVoltage < self.criticalVoltage:
