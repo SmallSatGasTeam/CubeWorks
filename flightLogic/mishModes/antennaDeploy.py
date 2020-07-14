@@ -21,17 +21,10 @@ class antennaMode:
         attitudeData = AttitudeData()
 	asyncio.run(ttncData.collectTTNCData(), attitudeData.collectAttitudeData())
         safeMode = safe()
+	asyncio.run(safeMode.thresholdCheck()) #Check battery conditions, run safe mode if battery drops below safe level 
 	eps = EPS() #creating EPS object    
-        #Check battery conditions, run safe mode if battery drops below safe level 
-	await while True:
-		epsVoltage = eps.getBusVoltage()
-		if epsVoltage < self.criticalVoltage:
-			safeMode.run(10) #1 hour
-		await asyncio.sleep(1) #check voltage every second
-            
-        #Perform tasks for antenna deployment
 
-        
+        #Perform tasks for antenna deployment
         await while True:
             if (eps.getBusVoltage()>self.thresholdVoltage):
                 antennaDeploy.deploy()
