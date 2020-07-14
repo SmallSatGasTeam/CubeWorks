@@ -16,7 +16,6 @@ class antennaMode:
         self.criticalVoltage = 3.3 #modify
 
     async def run(self):
-        #Attitude Data - copied from jack's flight logic. will need to change
         ttncData = TTNCData()
         attitudeData = AttitudeData()
 	asyncio.run(ttncData.collectTTNCData(), attitudeData.collectAttitudeData())
