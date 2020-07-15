@@ -12,7 +12,7 @@ class boomMode:
 		ttncData = TTNCData()
 		attitudeData = AttitudeData()
 		deployData = DeployData()
-		asyncio.run(ttncData.collectTTNCData(4), attitudeData.collectAttitudeData(), deployData.collectDeployData()) #Boom deploy is mode 4
+		asyncio.run(ttncData.collectTTNCData(3), attitudeData.collectAttitudeData(), deployData.collectDeployData()) #Boom deploy is mode 3
 		safeMode = safe()
 		asyncio.run(safeMode.thresholdCheck())
 		
