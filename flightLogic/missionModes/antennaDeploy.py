@@ -18,7 +18,7 @@ class antennaMode:
     async def run(self):
         ttncData = TTNCData()
         attitudeData = AttitudeData()
-	asyncio.run(ttncData.collectTTNCData(), attitudeData.collectAttitudeData())
+	asyncio.run(ttncData.collectTTNCData(2), attitudeData.collectAttitudeData()) #Antenna Deploy is mission mode 2
         safeMode = safe()
 	asyncio.run(safeMode.thresholdCheck()) #Check battery conditions, run safe mode if battery drops below safe level 
 	eps = EPS() #creating EPS object    
