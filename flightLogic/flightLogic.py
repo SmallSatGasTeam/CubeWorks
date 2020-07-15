@@ -3,7 +3,7 @@
 #   or tuseday at the latest.
 
 #this is the main file where everything happens. 
-#this code will check to see witch entry conditions are meet and then call and run the corrisponding flight mode
+#this code will check to see which entry conditions are met and then call and run the corresponding flight mode
 import mishModes 
 from asyncio import *
 #this imports the file we need from the TXISR
@@ -12,14 +12,14 @@ from getDriverData import *
 import time
 import Drivers.antennaDoor as antennaDoor
 
-#NOTE: The TXISR needs to run as serpreate thread and not a async io
+#NOTE: The TXISR needs to run as a separate thread, and is not asyncio
 import thread
 
 ##################################################################################################################
 #Main()
 ##################################################################################################################
-#This python file is what we call when we boot, it starts off the entier process of out our flight logic.
-#Fist thing it does is set up the TXISR
+#This python file is what we call when we boot, it starts off the entire process of out our flight logic.
+#First thing it does is set up the TXISR
 #then it check the previous boot conditions
 #then it will enter into a forever loop that will constently check conditions and flags that have been set on the
 #pi. It will use these conditions to decided where or not to call mission modes. 
