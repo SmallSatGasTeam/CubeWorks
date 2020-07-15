@@ -4,7 +4,7 @@
 
 #this is the main file where everything happens. 
 #this code will check to see which entry conditions are met and then call and run the corresponding flight mode
-import mishModes 
+import missionModes
 from asyncio import *
 #this imports the file we need from the TXISR
 from TXISR import interrupt
@@ -30,7 +30,7 @@ import thread
 #NOTE: DO NOTE, record safe mode in the bootRecords files this is beacuse we want the program to pick up on the 
 #   same mode it left off on when it boots up again time
 ##################################################################################################################
-Dealy = 126000 #seconds that we are going to delay. (total of 35 mins)
+delay = 126000 #seconds that we are going to delay. (total of 35 mins)
 bootCount = 0
 firstBoot = 0
 antennaDeployed = 0
@@ -61,10 +61,10 @@ def main ():
     #   modes. 
     #NOTE: boot logic will be defined in this doc, as it is easier just to write it here. This is because boot
     #   must be call the antenna deploy mission mode 
-    antennaDeploy = mishModes.antennaDeployed()
-    preboomDeploy = mishModes.preboomDeploy()
-    postBoomDeploy = mishModes.postBoomDeploy()
-    boomDeploy = mishModes.boomDeploy()
+    antennaDeploy = missionModes.antennaDeployed()
+    preboomDeploy = missionModes.preboomDeploy()
+    postBoomDeploy = missionModes.postBoomDeploy()
+    boomDeploy = missionModes.boomDeploy()
 
     #bootRecords file format
     #Line 1 = boot count
@@ -196,16 +196,16 @@ def startTXISR():
 ##################################################################################################################
 async def  getTTNC() :
     ttnc = TTNCData()
-    startTime = round(time.tiem() * 1000) #this is to get the milliseconds
+    startTime = round(time.time() * 1000) #this is to get the milliseconds
     while True:
-        currentTime = round(time.tiem() * 1000)
+        currentTime = round(time.time() * 1000)
         #boot is a flag that is set when the program starts, once we leave boot mode it is set to false and we
         #stop collecting the datta
         if not boot:
-            break;     
+            break
         #this will let us wait 120 milliseconds untill we get the data again. 
         if((startTime - currentTime) == 120) :
-            startTime = round(time.tiem() * 1000)
+            startTime = round(time.time() * 1000)
             ttnc.getData()
 
 ##################################################################################################################
@@ -220,7 +220,7 @@ async def getAttitude() :
         #boot is a flag that is set when the program starts, once we leave boot mode it is set to false and we
         #stop collecting the datta
         if not boot:
-            break;  
-        attitude.getData()   
+            break
+        attitude.getData()
         #this will let us wait 1 seconds untill we get the data again.    
-        await asyncio.sleep(1) 
+        await asyncio.sleep(1)
