@@ -10,6 +10,7 @@ from asyncio import *
 from TXISR import interrupt
 from getDriverData import *
 import time
+import Drivers.antennaDoor as antennaDoor
 
 #NOTE: The TXISR needs to run as serpreate thread and not a async io
 import thread
@@ -110,7 +111,12 @@ def main ():
 
         #how do we check if the antenna doors are open?
         #TODO, check of antenna doors are open
-        if True :
+        doorOpen = True
+        status = antennaDoor.readDoorStauts()
+        #this checks the bytes returned by the antennaDoor if any are 0 then doorOpen gets set to false
+        if not status & 0xf0:
+            doorOpen = False
+        if doorOpen :
             #this test to see if we have deployed the antenna correctly or not
             #NOTE: will antennaDeploy fail if it cannot deploy the antenna or should
             #   we have it return a value? (T/F)
