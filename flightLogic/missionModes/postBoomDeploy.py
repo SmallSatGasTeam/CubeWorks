@@ -10,7 +10,7 @@ class postBoomMode:
 		#Set up background processes
 		ttncData = TTNCData()
 		attitudeData = AttitudeData()
-		asyncio.run(ttncData.collectTTNCData(), attitudeData.collectAttitudeData())
+		asyncio.run(ttncData.collectTTNCData(4), attitudeData.collectAttitudeData())#Post-boom is mode 4
 		safeMode = safe()
 		asyncio.run(safeMode.thresholdCheck())
 		
