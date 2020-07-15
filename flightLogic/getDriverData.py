@@ -11,8 +11,8 @@ import saveTofiles
 
 class TTNCData():
 	def __init__(self):
-		self.__TTNC_File = open("TTNC_Data.txt", "w+")
-        	self.__data = []
+		save = saveToFile.saveFileTTNC()
+        self.__data = []
 
 	async def getData(self, missionMode):
 		#gets all TTNC data - need to pass in missionMode when calling it
@@ -40,34 +40,21 @@ class TTNCData():
 		SP_Y_Plus_Current = EPS.getSPYPlusCurrent()
 		SP_Y_Minus_Current = EPS.getSPYMinusCurrent()
 		SP_Z_Voltage = EPS.getSPZVoltage()
-        	#this is a temp arry to pass the data into the print, this will save the data for later
-        	self.__data = [timestamp,packetType, mode, reboot_count, boombox_uv, SP_X_Plus_Temp, SP_Z_Plus_Temp, piTemp, EPSMCUTemp,
-            		Cell1Temp, BattVoltage, BCRCurrent, EPS3V3Current, EPS5VCurrent, SP_X_Voltage, SP_X_Plus_Current, SP_X_Minus_Current,
-            		SP_Y_Voltage, SP_Y_Plus_Current, SP_Y_Minus_Current , SP_Z_Voltage] 
-        	#call the write data methood
-        	writeData(self.__data)
-		
-	async def writeData(self, data): #moved method from saveTofiles.py into this class
-		temp = 0
-       		for i in data:
-            		if temp == 0:
-                		self.__TTNC_File.write(i + ":")
-                		temp += 1
-            		else:
-                		self.__TTNC_File.write(i)
+        #this is a temp arry to pass the data into the print, this will save the data for later
+        self.__data = [timestamp,packetType, mode, reboot_count, boombox_uv, SP_X_Plus_Temp, SP_Z_Plus_Temp, piTemp, EPSMCUTemp,
+            Cell1Temp, BattVoltage, BCRCurrent, EPS3V3Current, EPS5VCurrent, SP_X_Voltage, SP_X_Plus_Current, SP_X_Minus_Current,
+            SP_Y_Voltage, SP_Y_Plus_Current, SP_Y_Minus_Current , SP_Z_Voltage] 
+        #call the write data methood
+        writeData()
+	async def writeData(self):
 		#writes all TTNC data to file
-        	#this func will save our ttnc data in the corrisponding file
-	async def collectTTNCData(self, mMode): #sets up the loop to collect data. Easiest way to do this, since you'll only have to run 1-3 functions in each mission mode
-		await while True:
-			#Get TTNC data @ 0.0083Hz
-			getData(mMode)
-			await asyncio.sleep(120)
-
+        #this func will save our ttnc data in the corrisponding file
+        save.writeTTNC(self.__data)
 
 class DeployData():
 	def __init__(self):
-		self.__Deploy_File = open("Deploy_Data.txt", "w+")
-        	self.__data2 = []
+		save = saveToFile.saveFileDeploy()
+        self.__data2 = []
 
 	async def getData(self):
 		#gets all Boom Deployment data
@@ -76,29 +63,18 @@ class DeployData():
 		boombox_uv = await UVDriver.read()
 		accel = await Accelerometer.read() #note this returns the acceleration for all 3 axes in an array. Needs to be split into 3 separate values.
 		#save the data for later
-        	self.__data2 = [timestamp, packetType, boombox_uv, accel]
-        	#call the write func
-        	writeData(self.__data2)
+        self.__data2 = [timestamp, packetType, boombox_uv, accel]
+        #call the write func
+        writeData()
 
-	async def writeData(self,data):
+	async def writeData(self):
 		#writes Boom Deployment data to file
-		temp = 0
-		for i in data:
-			if temp == 0:
-				self.__Deploy_File.write(i + ":")
-				temp += 1
-			else:
-				self.__Deploy_File.write(i)
-	async def collectDeployData(self): #sets up the loop to collect data. Easiest way to do this, since you'll only have to run 1-3 functions in each mission mode
-		await while True:
-			#Get TTNC data @ 20Hz
-			getData()
-			await asyncio.sleep(0.05)
+        save.writeDeploy(self.__data2)
 
 class AttitudeData():
 	def __init__(self):
-		self.__AttitudeData = open("Attitude_Data.txt", "w+")
-        	self.__data3 = []
+		save = saveToFile.saveFileAttitude()
+        self.__data3 = []
 
 	async def getData(self):
 		#gets all Attitude data
@@ -106,22 +82,11 @@ class AttitudeData():
 		packetType = 0
 		sunSensor = sunSensor.read() #note this returns all 5 sun sensor values. Needs to be split into individual values
 		mag = Magnetometer.read() #note this returns all 3 mag values. Needs to be split into individual values
-        	#save the data for latter
+        #save the data for latter
 		self.__data3 = [timestamp, packetType, sunSensor, mag]
-        	#call the write func 
-        	writeData(self.__data3)
+        #call the write func 
+        writeData()
 
-	async def writeData(self, data):
+	async def writeData(self):
 		#writes Attitude Data to file
-        	temp = 0
-        	for i in data:
-            		if temp == 0:
-                		self.__AttitudeData.write(i + ":")
-                		temp += 1
-            		else:
-               			self.__AttitudeData.write(i)
-	async def collectAttitudeData(self): #sets up the loop to collect data. Easiest way to do this, since you'll only have to run 1-3 functions in each mission mode
-		await while True:
-			#Get TTNC data @ 1Hz
-			getData()
-			await asyncio.sleep(1)
+        save.writeAttitude(self.__data3) 

@@ -21,10 +21,14 @@ class saveFileTTNC:
         temp = 0
         for i in data:
             if temp == 0:
-                self.__TTNC_File.write(i + ":")
+                self.__TTNC_File.write(i + ": ")
                 temp += 1
             else :
                 self.__TTNC_File.write(i)
+
+    #this func will read the data form our file and then return that data
+    def getTTNC(self):
+        return self.__TTNC_File.readLines()
 
 class saveFileDeploy:
     def __init__(self):
@@ -38,10 +42,13 @@ class saveFileDeploy:
         temp = 0
         for i in data:
             if temp == 0:
-                self.__TTNC_File.write(i + ":")
+                self.__TTNC_File.write(i + ": ")
                 temp += 1
             else :
                 self.__TTNC_File.write(i)
+    #this func will read the data form our file and then return that data
+    def getDeploy(self):
+        return self.__Deploy_File.readLines()
 
 class saveFileAttitude:
     def __init__(self):
@@ -55,7 +62,11 @@ class saveFileAttitude:
         temp = 0
         for i in data:
             if temp == 0:
-                self.__TTNC_File.write(i + ":")
+                self.__TTNC_File.write(i + ": ")
                 temp += 1
             else :
                 self.__TTNC_File.write(i)
+
+    #this func will read the data form our file and then return that data
+    def getAttitudeData(self):
+        return self__AttitudeData.readLines()

@@ -5,9 +5,11 @@
 #this is the main file where everything happens. 
 #this code will check to see witch entry conditions are meet and then call and run the corrisponding flight mode
 import mishModes 
-import asyncio
+from asyncio import *
 #this imports the file we need from the TXISR
 from TXISR import interrupt
+from getDriverData import *
+import time
 
 #NOTE: The TXISR needs to run as serpreate thread and not a async io
 import thread
@@ -27,11 +29,23 @@ import thread
 #NOTE: DO NOTE, record safe mode in the bootRecords files this is beacuse we want the program to pick up on the 
 #   same mode it left off on when it boots up again time
 ##################################################################################################################
-def main ():
-    boot = True
+Dealy = 126000 #seconds that we are going to delay. (total of 35 mins)
+bootCount = 0
+firstBoot = 0
+antennaDeployed = 0
+lastMode = 0
+boot = True
 
+def __main__():
+    main()
+
+def main ():
     #start txisr
     startTXISR()
+
+    #start data collection for boot mode
+    getAttitude()
+    getTTNC()
 
     #initialize all mission mode
     #the mission mode should be named like the following
@@ -46,7 +60,7 @@ def main ():
     #   modes. 
     #NOTE: boot logic will be defined in this doc, as it is easier just to write it here. This is because boot
     #   must be call the antenna deploy mission mode 
-    bootMode = mishModes.antennaDeployed()
+    antennaDeploy = mishModes.antennaDeployed()
     preboomDeploy = mishModes.preboomDeploy()
     postBoomDeploy = mishModes.postBoomDeploy()
     boomDeploy = mishModes.boomDeploy()
@@ -59,14 +73,14 @@ def main ():
     #the try except is a why to back up our files if one get correputed then we will read from
     #anthor file and recreate the first
     try :
-        bootFile = open(bootRecords, "r")
+        bootFile = open("bootRecords", "r")
         bootCount = bootFile.readline()
         firstBoot = bootFile.readline()
         antennaDeployed = bootFile.readline()
         lastMode = bootFile.readline()
         bootFile.close()
     except :
-        bootFile = open(backupBootRecords, "r")
+        bootFile = open("backupBootRecords", "r")
         bootCount = bootFile.readline()
         firstBoot = bootFile.readline()
         antennaDeployed = bootFile.readline()
@@ -83,76 +97,52 @@ def main ():
     #add to the boot count
     bootCount += 1
     recordData()
-    
     #this is the boot mode, beacues boot should only happen on start up it is best to leave it out of the loop
     #however should we decided that this is not the case we can put it in the loop with no problems
-        if boot:
-            #IMPORTANT NOTE: How are we going to check to make sure that we in space to deloy here?
-            #AKA: so we dont deploy in the the box.
-            if not antennaDeployed :
-                #delay for 3o mins #change to 35
-                sleep(1800)
-                #how do we check if the antenna doors are open?
-                #TODO, check of antenna doors are open
-                if True :
-                    #this test to see if we have deployed the antenna correctly or not
-                    #NOTE: will antennaDeploy fail if it cannot deploy the antenna or should
-                    #   we have it return a value? (T/F)
-                    try :
-                        bootMode.run()
-                        antennaDeployed = True
-                        #save it into the files 
-                        recordData()
-                    else :
-                        antennaDeployed = False
-            else if lastMode == "post boom deploy" 
-                postBoomDeploy.run()
-            else :
-                preboomDeploy.run()
+    #IMPORTANT NOTE: How are we going to check to make sure that we in space to deloy here?
+    #AKA: so we dont deploy in the the box.
+    if not antennaDeployed :
+        #delay for 35 mins #change to 35
+        startTime = time.time()
+        currentTime =time.time()
+        while((startTime - currentTime) < Dealy):
+            currentTime = time.time()
+
+        #how do we check if the antenna doors are open?
+        #TODO, check of antenna doors are open
+        if True :
+            #this test to see if we have deployed the antenna correctly or not
+            #NOTE: will antennaDeploy fail if it cannot deploy the antenna or should
+            #   we have it return a value? (T/F)
+            antennaDeploy.run()
+            antennaDeployed = True
+            #save it into the files
+            recordData()
+    elif lastMode == "post boom deploy" :
+        postBoomDeploy.run()
+    else :
+        preboomDeploy.run()
+    #turn off boot mode, which will stop collecting data
+    boot = False
 
     #this loop will check the mission modes the rest of the mission modes to keep things running.
     while True :
         if antennaDeployed == True and lastMode != "post boom deploy":
             lastMode = "pre boom deploy"
             recordData()
-            preboomDeploy.run()
-            #once we finish this mode it is time to got to post boom deploy
+            #if successful move on to next mission mode
+            if(preboomDeploy.run()):
+                #once we finish this mode it is time to got to post boom deploy
+                lastMode = "boom deploy"
+                recordData()
+        elif antennaDeployed == True and lastMode == "boom deploy":
             lastMode = "boom deploy"
             recordData()
-        else if antennaDeployed == True and lastMode == "boom deploy":
-            lastMode = "boom deploy"
-            recordData()
-            boomDeploy.run()
-            #once we finish it is time to satrt post boom deploy mode
-            lastMode = "post boom deploy"
-            recordData()
-        else if antennaDeployed == True and lastMode == "post boom deploy":
-            #NOTE: There is no need to save the post boom deploy mode bacues it is
-            #   not possilbe to make it here with out it being saved, however I will
-            # do it to be reduntant
-            lastMode = "post boom deploy"
-            recordData()
-            postBoomDeploy.run()
-            lastMode = "post boom deploy"
-            recordData()
-        else antennaDeploy == False:
-            #NOTE : What is to be done if antennaDeploy is not succesfull?
-            #   right now I am just goind to run it again
-            #how do we check if the antenna doors are open?
-                #TODO, check of antenna doors are open
-                if True :
-                    #this test to see if we have deployed the antenna correctly or not
-                    #NOTE: will antennaDeploy fail if it cannot deploy the antenna or should
-                    #   we have it return a value? (T/F)
-                    try :
-                        bootMode.run()
-                        antennaDeployed = True
-                        #save it into the files 
-                        recordData()
-                    else :
-                        antennaDeployed = False
-        else :
-            #NOTE: what should we do if none of the conditions are meet?
+            #if successful move on to next mission mode
+            if(boomDeploy.run()):
+                #once we finish it is time to satrt post boom deploy mode
+                lastMode = "post boom deploy"
+                recordData()
             
 
         
@@ -167,7 +157,7 @@ def main ():
 def recordData():
     #write to the boot file, 
     #NOTE: "w" errase all previous lines in the file
-    new = open(bootRecords, "w")
+    new = open("bootRecords", "w")
     new.write(bootCount)
     new.write(firstBoot)
     new.write(antennaDeployed)
@@ -175,7 +165,7 @@ def recordData():
     new.close()
 
     #write to the the back up file
-    new = open(backupBootRecords, "w")
+    new = open("backupBootRecords", "w")
     new.write(bootCount)
     new.write(firstBoot)
     new.write(antennaDeployed)
@@ -191,4 +181,40 @@ def recordData():
 def startTXISR():
     #this sets up the interupt on the uart pin that triggers when we get commincation over uart
     thread.start(interrupt.watchReceptions)
-            
+
+##################################################################################################################
+#get ttnc 
+##################################################################################################################
+#gets the ttnc data for boot mode
+#it does so every 120 milliseconds
+##################################################################################################################
+async def  getTTNC() :
+    ttnc = TTNCData()
+    startTime = round(time.tiem() * 1000) #this is to get the milliseconds
+    while True:
+        currentTime = round(time.tiem() * 1000)
+        #boot is a flag that is set when the program starts, once we leave boot mode it is set to false and we
+        #stop collecting the datta
+        if not boot:
+            break;     
+        #this will let us wait 120 milliseconds untill we get the data again. 
+        if((startTime - currentTime) == 120) :
+            startTime = round(time.tiem() * 1000)
+            ttnc.getData()
+
+##################################################################################################################
+#get attitude
+##################################################################################################################
+#gets the attitude data,
+#it does so once persecond
+##################################################################################################################
+async def getAttitude() :
+    attitude= AttitudeData()
+    while True:
+        #boot is a flag that is set when the program starts, once we leave boot mode it is set to false and we
+        #stop collecting the datta
+        if not boot:
+            break;  
+        attitude.getData()   
+        #this will let us wait 1 seconds untill we get the data again.    
+        await asyncio.sleep(1) 
