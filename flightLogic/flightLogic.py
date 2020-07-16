@@ -116,7 +116,7 @@ def main ():
         #this checks the bytes returned by the antennaDoor if any are 0 then doorOpen gets set to false
         if not status & 0xf0:
             doorOpen = False
-        if doorOpen :
+        if not doorOpen :
             #this test to see if we have deployed the antenna correctly or not
             #NOTE: will antennaDeploy fail if it cannot deploy the antenna or should
             #   we have it return a value? (T/F)

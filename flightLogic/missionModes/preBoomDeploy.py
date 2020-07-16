@@ -6,7 +6,7 @@ import Drivers.eps.EPS as EPS
 class preBoomMode:
 	def __init__(self):
 		self.thresholdVoltage = 5 #Threshold voltage to deploy AeroBoom. 
-        	self.criticalVoltage = 3.3 #Critical voltage, below this go to SAFE
+        self.criticalVoltage = 3.3 #Critical voltage, below this go to SAFE
 		self.darkVoltage = 1 #Average voltage from solar panels that, if below this, indicates GASPACS is in darkness
 		self.darkMinutes = 5 #How many minutes GASPACS must be on the dark side for before moving forward
 		self.lightMinimumMinutes = 5 #Minimum amount of time GASPACS must be on light side of orbit before deploying
