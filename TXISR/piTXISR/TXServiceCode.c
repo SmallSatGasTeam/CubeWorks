@@ -17,7 +17,7 @@
 
 #define FLAG_FILE "./out.txt" //change this later for the real program
 #define FORMAT_FILE "./temp.txt" //this is the file that dallan will creat
-#define UART_PORT "/dev/serial0" //this is serial port name, make sure this is correct for the final code
+#define UART_PORT "/dev/ttyAMA0" //this is serial port name, make sure this is correct for the final code
 
 //this is our time delay
 #define DELAY_tx 120
@@ -121,7 +121,7 @@ void main(int argc,char* argv[])
     //config linuxs to give us the pins
     int enable = system(ENABLE);
     //if we fail reboot
-    if(enable == -1) 
+    if(enable != 0) 
     {
         DEBUG_P(Failed to connect to tx pin)
         exit(1);
@@ -266,14 +266,14 @@ void main(int argc,char* argv[])
         }
     } 
 
-    // //give control of the port back to linuxs
-    // int disable = system(DISABLE);
-    // //if we fail reboot
-    // if(disable == -1) 
-    // {
-    //     DEBUG_P(Failed to release tx uart pin)
-    //     exit(1);
-    // } 
+     //give control of the port back to linuxs
+     int disable = system(DISABLE);
+     //if we fail reboot
+     if(disable != 0) 
+     {
+         DEBUG_P(Failed to release tx uart pin)
+         exit(1);
+     } 
 }
 
 /*******************************************************************************************
