@@ -4,10 +4,12 @@ from machine import Pin
 #import rxHandling.py
 import rxHandling
 
+voltage = 1.5
+
 def watchReceptions(btn):
     ## I think this is how this works...
-    if btn.value() >= 1.5
-       x = rxHandling.rxHandling()
+    if btn.value() >= voltage
+       x = rxHandling.TXISR()
 
 
 # Part of inturrupt method 1:
@@ -16,3 +18,5 @@ btn = Pin(0, Pin.IN)
 
 # Create inturrupt
 btn.irq(watchReceptions(btn))
+
+# TODO: watch tx windows, if we hit one, call Shawn's code

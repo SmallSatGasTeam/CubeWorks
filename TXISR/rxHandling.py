@@ -1,6 +1,6 @@
 import io
-import Check
 import sys
+# import Check - DOESN'T EXIST
 import sqlite3
 import struct
 import subprocess
@@ -32,7 +32,6 @@ Processes:
     #8. Wait until 5 seconds before the tx window starts
     #9. Call Shawn's Code
     #10. Exit (close interrupts if made)
-
 '''
 
 class TXISR:
@@ -44,36 +43,13 @@ class TXISR:
     3 = data type
     4 = picture number (if applicable)
     '''
-    rxData = []
-    NombreDelArchivo = "test.txt"
-    TxExe = "WHATEVER SHAWN CALLS THIS"
+    rxData = ['#']
+    outputFile = "test.txt"
+    # commented for testing purposes
+    # inputFile = "/dev/tty/AMA0"
+    inputFile = "C:/Users/Get Away Special/Desktop/Build RX H/transTestAttitude.txt"
     
-    def __init__(self):
-        self.TX = io.open("/dev/tty/AMA0", 'r')
-        self.readTX()
-        #this varible is used to check if we can transmit or not (getter = getCanTX)
-        canTX = True
-        
-        self.commandRecived()
-        if getCanTX == False:
-            # Run recieved commands
-        else:
-            #inizalize cammera driver
-            #photo = camera()
-            #inizalize boom driver
-            #boom = boomDeployer()
-            
-            # not sure what im getting back
-            # self.sendTosrCheck()
-            
-            '''
-            Process #5
-            '''
-            if self.rxData[4].compareTo(None):
-                self.driveDataType(self.rxData[0], self.rxData[1], self.rxData[2], self.rxData[3])
-            else:
-                self.drivePic(self.rxData[0], self.rxData[1], self.rxData[2], self.rxData[3], self.rxData[4])
-
+   
     def readTX(self):
         '''
         Process #1 & #3
@@ -82,19 +58,31 @@ class TXISR:
             currentData = self.TX.readline()
             currentData = self.decodeTX(currentData)
             self.rxData.append(currentData)
-
+            
     def decodeTX(self, hexMessage):
         '''
         Process #2
         '''
-        return bytes.fromhex(hexMessage).decode('utf-8')
+        # USE THIS IN ACTUAL CODE:::
+        # return bytes.fromhex(hexMessage).decode('utf-8')
+        # testing RETURN VALUE FOR RECIEVING A STRING:
+        return int(hexMessage, 0)
+
+    def __init__(self):
+         
+        if not path.exists(self.inputFile):
+            print("INPUT FILE NOT FOUND")
+            sys.exit()
+        else:
+            self.TX = open(self.inputFile, 'r')
+            self.readTX()    
 
     def sendTosrCheck(self):
         Check(self.rxData[3], self.rxData[1], self.rxData[2])
     
-    def drivePic (self, packType, winStart, winDur, dataType, picNum):
+    def drivePic (self, dataType, picNum):
         '''
-        Overloaded function if a picture is desired
+        function if a picture is desired
         '''
         data = []
         
@@ -115,29 +103,10 @@ class TXISR:
         time.sleep(delay)
             
         self.callRadioDriver(numLines, dataType, winDur)
-    
-    def driveSql (self, packType, winStart, winDur, dataType, sqlStatement):
+        
+    def driveDataType (self, dataType):   
         '''
-        Overloaded function if an arbitrary sql statement is requested
-        '''
-        data = []
-        
-        data = self.getArbitrary(sqlStatement)
-        
-        ### TODO: Determine how to packetize arbitrary sql statement 
-        # numLines = packetize(True, data)
-        #
-        
-        # delay 5 seconds to the start of the transmission window, then call Radio Driver
-        curTime = calendar.timegm(time.gmtime())
-        delay = ((winStart - curTime) - 5)
-        time.sleep(delay)
-            
-        self.callRadioDriver(numLines, dataType, winDur)
-        
-    def driveDataType (self, packType, winStart, winDur, dataType):   
-        '''
-        Overloaded function if no picture is requested 
+        function if no picture is requested 
         '''
         data = []
         data = self.getPackets(sys.argv[1], sys.argv[3])
@@ -146,6 +115,7 @@ class TXISR:
         numLines = self.packetize(False, data)
         
         # delay 5 seconds to the start of the transmission window, then call Radio Driver
+        ## TODO: MOVE THIS THE THE INTURRUPT CODE:
         curTime = calendar.timegm(time.gmtime())
         delay = ((winStart - curTime) - 5)
         time.sleep(delay)
@@ -179,7 +149,7 @@ class TXISR:
         elif isPic == False:
             self.wipeTxFile()
             
-            f = open(self.NombreDelArchivo, 'a')
+            f = open(self.outputFile, 'a')
 
             linesTotal = 0
 
@@ -213,76 +183,10 @@ class TXISR:
         return linesTotal
 
     def wipeTxFile():
-        file = open(self.NombreDelArchivo,"r+")
+        file = open(self.outputFile,"r+")
         file.truncate(0)
         file.close()
         
-    ### HEX METHOD FUNCITON:
-    '''
-    def num_to_hex(n):
-        return hex(struct.unpack('<I', struct.pack('<f', n))[0])
-    '''
-    ### USE THIS METHOD TO DECODE THE HEX STREAM (if being used) WHEN RECIEVED ON THE GROUND:
-    '''
-    def hex_to_num(h):
-        h = str(h)
-        h = h.replace("0x", "")
-        return struct.unpack('!f', h.decode('hex'))[0]
-    '''
-
-    def getPackets(self, pacType, numPackets):
-        """
-        Constructs an sql query based on pacType and numPackets, returns the result.
-        Process #6
-        """
-        lastTransmitted = 0
-        connection = sqlite3.connect('../db.sqlite3')
-        cursor = connection.execute(f'SELECT * FROM {pacType} WHERE time > {lastTransmitted} ORDER BY time DESC LIMIT {numPackets}')
-        rows = cursor.fetchall()
-        return rows
-        
-
-    def getPicture(self, picNum, res):
-        """
-        ... Actually, I don't know what this should do yet...
-        Process #6
-        """
-        pass
-
-    def getArbitrary(self, query):
-        """
-        executes arbitrary sql on the database target, returns whatever comes out.
-        """
-        connection = sqlite3.connect('../db.sqlite3')
-        cursor = connection.execute(query)
-        rows = cursor.fetchall()
-        return rows
-
-
-    def testingFunction(self):
-        """
-        Usage: command [-flag optional] [options]
-        no flag: [<packet_type> <tx_window> <number_of_packets>]
-        -a: [<sql_statement>]
-        -p: [<picture_number> <resolution>]
-
-        flags: -a, execute arbitrary sql.  Must be followed by a valid sqlite statement.
-               -p, get picture.  <picture_number> is a non-negative integer, <resolution> is the size of the picture to prepare.
-        """
-
-        ### TESTING RESOURCE:
-        '''
-        data = []
-        if sys.argv[1] == '-a':
-            data = self.getArbitrary(sys.argv[2])
-        elif sys.argv[1] == '-p':
-            data = self.self.getPicture(sys.argv[2], sys.argv[3])
-        else:
-            data = self.getPackets(sys.argv[1], sys.argv[3])
-            data.reverse()
-        print(data)
-        '''
-
     ### This part of the code checks to see if we are reciving a command to do something. 
     def commandRecived(self):
     '''
@@ -327,3 +231,61 @@ class txWindows
 
 
 
+'''
+DEPRETIATED FUNCTIONS:
+
+    
+    def driveSql (self, packType, winStart, winDur, dataType, sqlStatement):
+        # function if an arbitrary sql statement is requested
+        data = []
+        
+        data = self.getArbitrary(sqlStatement)
+        
+        ### TODO: Determine how to packetize arbitrary sql statement 
+        # numLines = packetize(True, data)
+        #
+        
+        # delay 5 seconds to the start of the transmission window, then call Radio Driver
+        curTime = calendar.timegm(time.gmtime())
+        delay = ((winStart - curTime) - 5)
+        time.sleep(delay)
+            
+        self.callRadioDriver(numLines, dataType, winDur)
+        
+    def getPackets(self, pacType, numPackets):
+        """
+        Constructs an sql query based on pacType and numPackets, returns the result.
+        Process #6
+        """
+        lastTransmitted = 0
+        connection = sqlite3.connect('../db.sqlite3')
+        cursor = connection.execute(f'SELECT * FROM {pacType} WHERE time > {lastTransmitted} ORDER BY time DESC LIMIT {numPackets}')
+        rows = cursor.fetchall()
+        return rows            
+
+    def getPicture(self, picNum, res):
+        """
+        ... Actually, I don't know what this should do yet...
+        Process #6
+        """
+        pass
+
+    def getArbitrary(self, query):
+        """
+        executes arbitrary sql on the database target, returns whatever comes out.
+        """
+        connection = sqlite3.connect('../db.sqlite3')
+        cursor = connection.execute(query)
+        rows = cursor.fetchall()
+        return rows
+    
+    ### HEX METHOD FUNCITON:      
+    def num_to_hex(n):
+        return hex(struct.unpack('<I', struct.pack('<f', n))[0])
+
+    ### USE THIS METHOD TO DECODE THE HEX STREAM (if being used) WHEN RECIEVED ON THE GROUND:
+    def hex_to_num(h):
+        h = str(h)
+        h = h.replace("0x", "")
+        return struct.unpack('!f', h.decode('hex'))[0]
+'''
