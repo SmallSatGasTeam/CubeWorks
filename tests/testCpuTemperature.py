@@ -4,6 +4,13 @@ from Drivers.cpuTemperature import CpuTemperature
 from time import sleep
 
 cpu = CpuTemperature()
-while True:
+for i in range(0,10):
     print(cpu.read())
-    sleep(0.3)
+    sleep(1)
+print("Removing the delay to pin the CPU, temperature should increase")
+for i in range(0,300):
+    print(cpu.read())
+print("Added the delay back, temperature should decrease")
+for i in range(0,10):
+    print(cpu.read())
+    sleep(1)
