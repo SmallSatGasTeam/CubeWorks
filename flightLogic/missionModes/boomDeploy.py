@@ -5,13 +5,15 @@ import Drivers.boomDeployer.BoomDeployer
 import Drivers.camera.Camera
 
 class boomMode:
-	def __init__(self):
-		None
+	def __init__(self, saveobject):
+		self.__getDataTTNC = getDriverData.TTNCData(saveobject)
+		self.__getDataAttitude = getDriverData.AttitudeData(saveobject)
+		self.__getDataDeployData = getDriverData.DeployData()
 	async def run(self):
 		#Setting up background processes
-		ttncData = TTNCData()
-		attitudeData = AttitudeData()
-		deployData = DeployData()
+		ttncData = self.__getDataTTNC.TTNCData()
+        attitudeData = self.__getDataAttitude.AttitudeData()
+		deployData = getDriverData.DeployData()
 		asyncio.run(ttncData.collectTTNCData(3), attitudeData.collectAttitudeData(), deployData.collectDeployData()) #Boom deploy is mode 3
 		safeMode = safe()
 		asyncio.run(safeMode.thresholdCheck())

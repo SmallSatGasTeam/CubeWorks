@@ -10,9 +10,9 @@ import asyncio
 import saveTofiles
 
 class TTNCData():
-	def __init__(self):
-		save = saveToFile.saveFileTTNC()
-        	self.__data = []
+	def __init__(self, saveobject):
+		save = saveobject
+        self.__data = []
 
 	async def getData(self, missionMode):
 		#gets all TTNC data - need to pass in missionMode when calling it
@@ -58,9 +58,9 @@ class TTNCData():
 			await asyncio.sleep(120)
 
 class DeployData():
-	def __init__(self):
-		save = saveToFile.saveFileDeploy()
-        	self.__data2 = []
+	def __init__(self, saveobject):
+		save = saveobject
+        self.__data2 = []
 
 	async def getData(self):
 		#gets all Boom Deployment data
@@ -84,9 +84,9 @@ class DeployData():
 			await asyncio.sleep(0.05)
 
 class AttitudeData():
-	def __init__(self):
-		save = saveToFile.saveFileAttitude()
-        	self.__data3 = []
+	def __init__(self, saveobject):
+		save = saveobject
+        self.__data3 = []
 
 	async def getData(self):
 		#gets all Attitude data

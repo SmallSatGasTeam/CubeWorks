@@ -1,10 +1,10 @@
 import asyncio
 from safe import safe
-from getDriverData import *
+import getDriverData 
 import Drivers.eps.EPS as EPS
 
 class preBoomMode:
-	def __init__(self):
+	def __init__(self, saveobject):
 		self.thresholdVoltage = 5 #Threshold voltage to deploy AeroBoom. 
         self.criticalVoltage = 3.3 #Critical voltage, below this go to SAFE
 		self.darkVoltage = 1 #Average voltage from solar panels that, if below this, indicates GASPACS is in darkness
@@ -14,11 +14,13 @@ class preBoomMode:
 		self.batteryStatusOk = False
 		self.maximumWaitTime = 240 #Max time GASPACS can wait, charging batteries, before SAFEing
 		self.timeWaited = 0
+		self.__getDataTTNC = getDriverData.TTNCData(saveobject)
+		self.__getDataAttitude = getDriverData.AttitudeData(saveobject)
 		
 	async def run(self):
-	ttncData = TTNCData()
-        attitudeData = AttitudeData()
-	asyncio.run(ttncData.collectTTNCData(2), collectAttitudeData())#Pre-boom is mode 2
+		ttncData = self.__getDataTTNC.TTNCData()
+        attitudeData = self.__getDataAttitude.AttitudeData()
+		asyncio.run(ttncData.collectTTNCData(2), collectAttitudeData())#Pre-boom is mode 2
         safeMode = safe()
 		asyncio.run(safeMode.thresholdCheck()) #Check battery conditions, run safe mode if battery drops below safe level 
 		eps = EPS() #creating EPS object  

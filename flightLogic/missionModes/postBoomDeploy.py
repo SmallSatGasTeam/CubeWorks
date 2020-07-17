@@ -1,15 +1,17 @@
 import asyncio
 from safe import safe
-from getDriverData import *
+import getDriverData
 import Drivers.eps.EPS as EPS
 
 class postBoomMode:
-	def __init__(self):
+	def __init__(self, saveobject):
 		postBoomTimeFile = f.open("postBoomTime.txt", "w+")
+		self.__getDataTTNC = getDriverData.TTNCData(saveobject)
+		self.__getDataAttitude = getDriverData.AttitudeData(saveobject)
 	async def run(self):
 		#Set up background processes
-		ttncData = TTNCData()
-		attitudeData = AttitudeData()
+		ttncData = self.__getDataTTNC.TTNCData()
+        attitudeData = self.__getDataAttitude.AttitudeData()
 		asyncio.run(ttncData.collectTTNCData(4), attitudeData.collectAttitudeData())#Post-boom is mode 4
 		safeMode = safe()
 		asyncio.run(safeMode.thresholdCheck())

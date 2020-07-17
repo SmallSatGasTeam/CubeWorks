@@ -9,10 +9,14 @@
 #down.
 #####################################################################
 
-class saveFileTTNC:
+class save:
     def __init__(self):
         #open the file when the calls is instantiated
         self.__TTNC_File = open("TTNC_Data.txt", "w+")
+        #open the file when the calls is instantiated
+        self.__Deploy_File = open("Deploy_Data.txt", "w+")
+        #open the file when the calls is instantiated
+        self.__AttitudeData = open("Attitude_Data.txt", "w+")
         
     #write the data to the file,
     #NOTE: it is important that you put a : after the time stamp, this will
@@ -27,14 +31,13 @@ class saveFileTTNC:
                 self.__TTNC_File.write(i)
 
     #this func will read the data form our file and then return that data
-    def getTTNC(self):
-        return self.__TTNC_File.readLines()
-
-class saveFileDeploy:
-    def __init__(self):
-        #open the file when the calls is instantiated
-        self.__Deploy_File = open("Deploy_Data.txt", "w+")
-
+    def getTTNC(self, time):
+        temp = []
+        for i in self.__TTNC_File:
+            if ((int) i[0] >= time):
+                temp += i
+        return temp
+    #this is data collection for Deploy     
     #write the data to the file,
     #NOTE: it is important that you put a : after the time stamp, this will
     #effect the txisr
@@ -48,13 +51,12 @@ class saveFileDeploy:
                 self.__TTNC_File.write(i)
     #this func will read the data form our file and then return that data
     def getDeploy(self):
-        return self.__Deploy_File.readLines()
-
-class saveFileAttitude:
-    def __init__(self):
-        #open the file when the calls is instantiated
-        self.__AttitudeData = open("Attitude_Data.txt", "w+")
-
+        temp = []
+        for i in self.__Deploy_File:
+            if ((int) i[0] >= time):
+                temp += i
+        return temp
+    #this part of the code is for data collection of attitude data
     #write the data to the file,
     #NOTE: it is important that you put a : after the time stamp, this will
     #effect the txisr
@@ -69,4 +71,8 @@ class saveFileAttitude:
 
     #this func will read the data form our file and then return that data
     def getAttitudeData(self):
-        return self__AttitudeData.readLines()
+        temp = []
+        for i in self.__AttitudeData:
+            if ((int) i[0] >= time):
+                temp += i
+        return temp

@@ -11,6 +11,7 @@ from TXISR import interrupt
 from getDriverData import *
 import time
 import Drivers.antennaDoor as antennaDoor
+import saveTofiles
 
 #NOTE: The TXISR needs to run as a separate thread, and is not asyncio
 import thread
@@ -41,8 +42,11 @@ def __main__():
     main()
 
 def main ():
+    #start the save object
+    save = saveTofiles.save()
+
     #start txisr
-    startTXISR()
+    startTXISR(save)
 
     #start data collection for boot mode
     getAttitude()
@@ -61,10 +65,10 @@ def main ():
     #   modes. 
     #NOTE: boot logic will be defined in this doc, as it is easier just to write it here. This is because boot
     #   must be call the antenna deploy mission mode 
-    antennaDeploy = missionModes.antennaDeployed()
-    preboomDeploy = missionModes.preboomDeploy()
-    postBoomDeploy = missionModes.postBoomDeploy()
-    boomDeploy = missionModes.boomDeploy()
+    antennaDeploy = missionModes.antennaDeployed(save)
+    preboomDeploy = missionModes.preboomDeploy(save)
+    postBoomDeploy = missionModes.postBoomDeploy(save)
+    boomDeploy = missionModes.boomDeploy(save)
 
     #bootRecords file format
     #Line 1 = boot count
@@ -184,9 +188,9 @@ def recordData():
 ##################################################################################################################
 #sets up txisr
 ##################################################################################################################
-def startTXISR():
+def startTXISR(saveobject):
     #this sets up the interupt on the uart pin that triggers when we get commincation over uart
-    thread.start(interrupt.watchReceptions)
+    thread.start(interrupt.watchReceptions(saveobject))
 
 ##################################################################################################################
 #get ttnc 
