@@ -1,12 +1,12 @@
 import asyncio
 from safe import safe
-import getDriverData 
+import getDriverData
 import Drivers.eps.EPS as EPS
 
 class preBoomMode:
 	def __init__(self, saveobject):
-		self.thresholdVoltage = 5 #Threshold voltage to deploy AeroBoom. 
-        self.criticalVoltage = 3.3 #Critical voltage, below this go to SAFE
+		self.thresholdVoltage = 5 #Threshold voltage to deploy AeroBoom.
+	        self.criticalVoltage = 3.3 #Critical voltage, below this go to SAFE
 		self.darkVoltage = 1 #Average voltage from solar panels that, if below this, indicates GASPACS is in darkness
 		self.darkMinutes = 5 #How many minutes GASPACS must be on the dark side for before moving forward
 		self.lightMinimumMinutes = 5 #Minimum amount of time GASPACS must be on light side of orbit before deploying
@@ -16,14 +16,14 @@ class preBoomMode:
 		self.timeWaited = 0
 		self.__getDataTTNC = getDriverData.TTNCData(saveobject)
 		self.__getDataAttitude = getDriverData.AttitudeData(saveobject)
-		
+
 	async def run(self):
 		ttncData = self.__getDataTTNC.TTNCData()
         attitudeData = self.__getDataAttitude.AttitudeData()
 		asyncio.run(ttncData.collectTTNCData(2), collectAttitudeData())#Pre-boom is mode 2
         safeMode = safe()
-		asyncio.run(safeMode.thresholdCheck()) #Check battery conditions, run safe mode if battery drops below safe level 
-		eps = EPS() #creating EPS object  
+		asyncio.run(safeMode.thresholdCheck()) #Check battery conditions, run safe mode if battery drops below safe level
+		eps = EPS() #creating EPS object
 		sunlightData = []
 		await while True: #Monitor the sunlight
 			averageVoltage = (eps.getSPXVoltage()+eps.getSPYVoltage()+eps.getSPZVoltage())/3
@@ -31,7 +31,7 @@ class preBoomMode:
 			averageVoltage = (averageVoltage + (eps.getSPXVoltage()+eps.getSPYVoltage()+eps.getSPZVoltage())/3)/2
 			await asyncio.sleep(5) #Every 10 seconds, record average solar panel voltage. Rough running average to avoid jumps in avg. voltage
 			sunlightData.append(averageVoltage)
-		
+
 		await while True: #iterate through array, checking for set amount of dark minutes, then set amount of light minutes no greater than the maximum. When light minutes are greater than the maximum, empties array
 			i=0
 			darkLength = 0
@@ -60,19 +60,20 @@ class preBoomMode:
 						return True #Go on to Boom Deploy Mode if the battery is Ok
 					q += 1
 			await asyncio.sleep(15) #Run this whole while loop every 15 seconds
-			
+
 		await while True: #Checking the battery voltage to see if it's ready for deployment, if it is too low for too long --> SAFE
 			if (eps.getBusVoltage()>self.thresholdVoltage):
 				self.batteryStatusOk=True
             		else:
+				self.batteryStatusOk=False
                 		if(self.timeWaited*12 > self.maximumWaitTime): #5 seconds every wait
                     			safeMode.run(10) #1 hour
                 		else:
                     			#Wait 1 minute
 					self.timeWaited = self.timeWaited+1
                     			await asyncio.sleep(5) #Check battery every 5 seconds
-				
 
-			
-		
-		
+
+
+
+
