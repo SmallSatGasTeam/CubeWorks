@@ -4,6 +4,7 @@
 //Pin numbers for the input Heartbeat and output to the MOSFET
 const int HEARTBEAT = 9;
 const int MOSFET = 10;
+const int LED = 13;
 
 //Time that the watchdog will wait without input from Pi before shutting off (in milliseconds)
 const long PI_CHECK_TIME = 5000;
@@ -63,13 +64,15 @@ void wait(long delayTime){
   while(timer_start + delayTime >= timer) {
     wdt_enable(WDTO_8S);
     timer = millis();
-    
+
+    digitalWrite(LED, HIGH);
     Serial.print("Timer start: ");
     Serial.print(timer_start);
     Serial.print("\t\tTimer: ");
     Serial.print(timer);
     Serial.print("\t\tdelay time: ");
     Serial.println(delayTime);
+    digitalWrite(LED, LOW);
     
     //check for overflow
     if(timer_start > timer + 10){
@@ -120,12 +123,22 @@ void setup() {
   // initialize pins
   pinMode(MOSFET, OUTPUT);
   pinMode(HEARTBEAT, INPUT);
+  pinMode(LED, OUTPUT);
 
   //Set MOSFET to low by default
   digitalWrite(MOSFET, LOW);
 
   Wire.begin(8);                // join i2c bus with address #0x08
   Wire.onReceive(receiveEvent); // Run receiveEvent code when an I2C message is received
+
+  //This is a work around to make the dual booting functional. In case the Arduino is reset when the Pi rebots, the Arduino will wait for the Boot time before beginning watchdog operations
+  //delay(BOOT_DELAY_TIME)
+  for(int i = 0; i < 20; i++){
+    digitalWrite(LED, HIGH);
+    delay(5000);
+    digitalWrite(LED, LOW);
+    delay(1000);
+  }
 }
 
 void loop() {
