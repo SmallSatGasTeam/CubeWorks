@@ -42,15 +42,13 @@ def __main__():
     main()
 
 def main ():
-    #start the save object
+    #Open the file save object, start TXISR, and start Boot Mode data collection
     save = saveTofiles.save()
-
-    #start txisr
     startTXISR(save)
 
     #start data collection for boot mode
-    getAttitude()
-    getTTNC()
+    taskAttitude = asyncio.create_task(getAttitude())
+    taskTTNC = asyncio.create_task(getTTNC())
 
     #initialize all mission mode
     #the mission mode should be named like the following
@@ -124,16 +122,20 @@ def main ():
             #this test to see if we have deployed the antenna correctly or not
             #NOTE: will antennaDeploy fail if it cannot deploy the antenna or should
             #   we have it return a value? (T/F)
-            antennaDeploy.run()
+            asyncio.run(antennaDeploy.run())
             antennaDeployed = True
             #save it into the files
             recordData()
     elif lastMode == "post boom deploy" :
-        postBoomDeploy.run()
+        asyncio.run(postBoomDeploy.run())
     else :
-        preboomDeploy.run()
-    #turn off boot mode, which will stop collecting data
-    boot = False
+        asyncio.run(preboomDeploy.run())
+
+    try: #Cancels attitude collection tasks
+        taskAttitude.cancel()
+        taskTTNC.cancel()
+    except asyncio.exceptions.CancelledError:
+        #Exception here is normal
 
     #this loop will check the mission modes the rest of the mission modes to keep things running.
     while True :
@@ -141,18 +143,18 @@ def main ():
             lastMode = "pre boom deploy"
             recordData()
             #if successful move on to next mission mode
-            if(preboomDeploy.run()):
-                #once we finish this mode it is time to got to post boom deploy
-                lastMode = "boom deploy"
-                recordData()
+            asyncio.run(preboomDeploy.run())
+            #once we finish this mode it is time to got to post boom deploy
+            lastMode = "boom deploy"
+            recordData()
         elif antennaDeployed == True and lastMode == "boom deploy":
             lastMode = "boom deploy"
             recordData()
             #if successful move on to next mission mode
-            if(boomDeploy.run()):
-                #once we finish it is time to satrt post boom deploy mode
-                lastMode = "post boom deploy"
-                recordData()
+            asyncio.run(boomDeploy.run())
+            #once we finish it is time to satrt post boom deploy mode
+            lastMode = "post boom deploy"
+            recordData()
             
 
         
@@ -196,35 +198,23 @@ def startTXISR(saveobject):
 #get ttnc 
 ##################################################################################################################
 #gets the ttnc data for boot mode
-#it does so every 120 milliseconds
+#it does so every 120 seconds
 ##################################################################################################################
 async def  getTTNC() :
     ttnc = TTNCData()
-    startTime = round(time.time() * 1000) #this is to get the milliseconds
     while True:
-        currentTime = round(time.time() * 1000)
-        #boot is a flag that is set when the program starts, once we leave boot mode it is set to false and we
-        #stop collecting the datta
-        if not boot:
-            break
-        #this will let us wait 120 milliseconds untill we get the data again. 
-        if((startTime - currentTime) == 120) :
-            startTime = round(time.time() * 1000)
             ttnc.getData()
+            await asyncio.sleep(120)
 
 ##################################################################################################################
 #get attitude
 ##################################################################################################################
 #gets the attitude data,
-#it does so once persecond
+#it does so once per second
 ##################################################################################################################
 async def getAttitude() :
     attitude= AttitudeData()
     while True:
-        #boot is a flag that is set when the program starts, once we leave boot mode it is set to false and we
-        #stop collecting the datta
-        if not boot:
-            break
         attitude.getData()
         #this will let us wait 1 seconds untill we get the data again.    
         await asyncio.sleep(1)
