@@ -16,7 +16,6 @@ class preBoomMode:
 		self.timeWaited = 0
 		self.__getDataTTNC = TTNCData(saveobject)
 		self.__getDataAttitude = AttitudeData(saveobject)
-		self.__tasks = [] #List will be populated with background tasks
 
 	async def run(self):
 		ttncData = self.__getDataTTNC
