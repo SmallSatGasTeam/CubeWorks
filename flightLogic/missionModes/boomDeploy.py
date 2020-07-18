@@ -9,14 +9,19 @@ class boomMode:
 		self.__getDataTTNC = TTNCData(saveobject)
 		self.__getDataAttitude = AttitudeData(saveobject)
 		self.__getDataDeployData = DeployData()
+		self.__tasks = [] # Empty list will be populated with all background tasks
+		
 	async def run(self):
 		#Setting up background processes
 		ttncData = self.__getDataTTNC
 		attitudeData = self.__getDataAttitude
 		deployData = DeployData()
-		asyncio.run(ttncData.collectTTNCData(3), attitudeData.collectAttitudeData(), deployData.collectDeployData())  # Boom deploy is mode 3
 		safeMode = safe()
-		asyncio.run(safeMode.thresholdCheck())
+
+		self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(3))) #Boom deploy is mode 3		
+		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
+		self.__tasks.append(asyncio.create_task(deployData.collectDeployData()))
+		self.__tasks.append(asyncio.create_task(safeMode.thresholdCheck()))
 		
 		# Deploy boom, take picture
 		deployer = boomDeployer.BoomDeployer()
@@ -25,4 +30,13 @@ class boomMode:
 		cam.takePicture()
 		cam.compressLowResToFiles()
 		cam.compressHighResToFiles()
+		cancelAllTasks(self.__tasks) # Cancel all background tasks
 		return True  # Go to post-boom deploy
+	
+	def cancellAllTasks(self, taskList):
+		try:
+			for t in taskList:
+				t.cancel()
+		except asyncio.exceptions.CancelledException:
+			print("Caught thrown exception in cancelling background task")
+		
