@@ -20,12 +20,12 @@ class antennaMode:
     async def run(self):
         ttncData = self.__getDataTTNC
         attitudeData = self.__getDataAttitude
-        self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(1)) #asyncio.run is exclusive, 
-        asyncio.run(attitudeData.collectAttitudeData()) #Antenna Deploy is mission mode 1
-        safeMode = safe()
-
-	asyncio.run(safeMode.thresholdCheck()) #Check battery conditions, run safe mode if battery drops below safe level 
-
+	safeMode = safe()
+        self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(1))) #Antenna deploy is mission mode 1
+        self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData())) 
+	self.__tasks.append(asyncio.create_task(safeMode.thresholdCheck())) #Check battery conditions, run safe mode if battery drops below safe level 
+	self.__tasks.append(asyncio.create_task(deployAntenna())) #Runs Antenna deploy loop
+	
 	async def deployAntenna(self):
 		#Perform tasks for antenna deployment
 		eps=EPS()
