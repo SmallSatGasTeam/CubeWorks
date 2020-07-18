@@ -5,11 +5,11 @@ Gets driver data for each data set. Also writes that data to files.
 ### NOTE NEED TO ADD "ASYNC" TO THE DEF FOR EACH METHOD IN THE DRIVER CLASSES
 import sys
 sys.path.append('../')
-from Drivers.* import *
+from Drivers import *
 import asyncio
-import saveTofiles
+from .saveTofiles import *
 
-class TTNCData():
+class TTNCData:
 	def __init__(self, saveobject):
 		save = saveobject
         	self.__ttncDataArray = []

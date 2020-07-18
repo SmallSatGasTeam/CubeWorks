@@ -3,8 +3,8 @@ import Drivers.backupAntennaDeployer.BackupAntennaDeployer as antennaDeploy
 import Drivers.antennaDoor.AntennaDoor as antennaStatus
 import Drivers.eps.EPS as EPS
 import asyncio
-from safe import safe
-from getDriverData import *
+from .safe import safe
+from ..getDriverData import *
 
 
 class antennaMode:
@@ -17,10 +17,12 @@ class antennaMode:
 	self.__getDataAttitude = getDriverData.AttitudeData(saveobject)
 
     async def run(self):
-        ttncData = self.__getDataTTNC.TTNCData()
-        attitudeData = self.__getDataAttitude.AttitudeData()
-	asyncio.run(ttncData.collectTTNCData(1), attitudeData.collectAttitudeData()) #Antenna Deploy is mission mode 1
+        ttncData = self.__getDataTTNC
+        attitudeData = self.__getDataAttitude
+        asyncio.run(ttncData.collectTTNCData(1))# NOTE: Having both the following asyncio.run statements in one statement caused error
+        asyncio.run(attitudeData.collectAttitudeData()) #Antenna Deploy is mission mode 1
         safeMode = safe()
+
 	asyncio.run(safeMode.thresholdCheck()) #Check battery conditions, run safe mode if battery drops below safe level 
 	eps = EPS() #creating EPS object    
 
