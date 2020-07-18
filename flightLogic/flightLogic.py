@@ -52,7 +52,7 @@ def main ():
     #NOTE: the comms-tx is the only exception to this rule as it is to be handled differently than other mission modes
     #NOTE: Boot Mode is defined and executed in this document, instead of a separate mission mode
     antennaDeploy = missionModes.antennaDeployed(save)
-    preboomDeploy = missionModes.preboomDeploy(save)
+    preBoomDeploy = missionModes.preboomDeploy(save)
     postBoomDeploy = missionModes.postBoomDeploy(save)
     boomDeploy = missionModes.boomDeploy(save)
 
@@ -91,8 +91,7 @@ def main ():
 
 
     #This is the implementation of the BOOT mode logic.
-    if not antennaDeployed :
-        #delay
+    if not antennaDeployed : #First, sleep for 35 minutes
         startTime = time.time()
         currentTime = time.time()
         while((startTime - currentTime) < delay):
@@ -103,22 +102,23 @@ def main ():
         #how do we check if the antenna doors are open?
         #TODO, check of antenna doors are open
         doorOpen = True
-        status = antennaDoor.readDoorStauts()
+        status = antennaDoor.readDoorStatus()
         #this checks the bytes returned by the antennaDoor if any are 0 then doorOpen gets set to false
         if not status & 0xf0:
             doorOpen = False
-        if not doorOpen :
-            #this test to see if we have deployed the antenna correctly or not
-            #NOTE: will antennaDeploy fail if it cannot deploy the antenna or should
-            #   we have it return a value? (T/F)
+	else:
+            antennaDeployed = True
+            recordData()
+
+        if not doorOpen:
             asyncio.run(antennaDeploy.run())
             antennaDeployed = True
             #save it into the files
             recordData()
     elif lastMode == "post boom deploy" :
         asyncio.run(postBoomDeploy.run())
-    else :
-        asyncio.run(preboomDeploy.run())
+    else:
+        asyncio.run(preBoomDeploy.run())
 
     try: #Cancels attitude collection tasks
         taskAttitude.cancel()
@@ -126,28 +126,21 @@ def main ():
     except asyncio.exceptions.CancelledError:
         #Exception here is normal
 
-    #this loop will check the mission modes the rest of the mission modes to keep things running.
-    while True :
+
+    while True: #This loop executes the rest of the flight logic
         if antennaDeployed == True and lastMode != "post boom deploy":
             lastMode = "pre boom deploy"
             recordData()
-            #if successful move on to next mission mode
-            asyncio.run(preboomDeploy.run())
-            #once we finish this mode it is time to got to post boom deploy
+            asyncio.run(preBoomDeploy.run()) #Execute pre-boom deploy, then move to post-boom deploy
             lastMode = "boom deploy"
             recordData()
         elif antennaDeployed == True and lastMode == "boom deploy":
-            lastMode = "boom deploy"
-            recordData()
-            #if successful move on to next mission mode
-            asyncio.run(boomDeploy.run())
+            asyncio.run(boomDeploy.run()) #Execute boom deployment, start post-boom deploy
             #once we finish it is time to satrt post boom deploy mode
             lastMode = "post boom deploy"
             recordData()
-            
-
-        
-
+        else: #Post-Boom Deploy
+            asyncio.run(postBoomDeploy.run())
 
 
 ##################################################################################################################
@@ -184,7 +177,7 @@ def startTXISR(saveobject):
     thread.start(interrupt.watchReceptions(saveobject))
 
 ##################################################################################################################
-#get ttnc 
+#get ttnc
 ##################################################################################################################
 #gets the ttnc data for boot mode
 #it does so every 120 seconds
@@ -205,5 +198,5 @@ async def getAttitude() :
     attitude= AttitudeData()
     while True:
         attitude.getData()
-        #this will let us wait 1 seconds untill we get the data again.    
+        #this will let us wait 1 seconds untill we get the data again.
         await asyncio.sleep(1)
