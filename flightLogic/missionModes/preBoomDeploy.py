@@ -20,7 +20,8 @@ class preBoomMode:
 	async def run(self):
 		ttncData = self.__getDataTTNC
 		attitudeData = self.__getDataAttitude
-		asyncio.run(ttncData.collectTTNCData(2), attitudeData.collectAttitudeData())#Pre-boom is mode 2
+		asyncio.run(ttncData.collectTTNCData(2))
+		asyncio.run(attitudeData.collectAttitudeData())#Pre-boom is mode 2
 		safeMode = safe()
 		asyncio.run(safeMode.thresholdCheck()) #Check battery conditions, run safe mode if battery drops below safe level
 		eps = EPS() #creating EPS object
@@ -37,11 +38,11 @@ class preBoomMode:
 			darkLength = 0
 			lastDark = 0
 			while i < len(sunlightData): #Loop through sunlightData, checking for X minutes of darkness
-				if(sunlightData[i]<self.darkVoltage):
+				if sunlightData[i]<self.darkVoltage :
 					darkLength+=1 #It was in the dark for the 10 seconds recorded in the ith position of sunlightData
 				else:
 					darkLength = 0 #Maybe darkLength -=1 to avoid damage from one bad measurement? Maybe a smoother running average?
-				if(darkLength>self.darkMinutes*6): #If GASPACS has been in dark longer than the preset amount
+				if darkLength > self.darkMinutes * 6: #If GASPACS has been in dark longer than the preset amount
 					lastDark = i
 					break
 				i+=1
@@ -49,14 +50,14 @@ class preBoomMode:
 				q=lastDark
 				lightLength = 0
 				while q < len(sunlightData):
-					if(sunlightData[q]>=self.darkVoltage):
+					if sunlightData[q] >= self.darkVoltage:
 						lightLength+=1
 					else:
 						lightLength = 0 #Maybe lightLength -=1 to avoid 1 bad measurement resetting everything
-					if(lightLength>self.lightMaximumMinutes*6): #Has been in the light for too long
+					if lightLength > self.lightMaximumMinutes * 6: #Has been in the light for too long
 						sunlightData.clear() #Reset array of data
 						break
-					if(lightLength>self.lightMinimumMinutes*6 and batteryStatusOk=True):
+					if lightLength > self.lightMinimumMinutes * 6 and batteryStatusOk == True:
 						return True #Go on to Boom Deploy Mode if the battery is Ok
 					q += 1
 			await asyncio.sleep(15) #Run this whole while loop every 15 seconds

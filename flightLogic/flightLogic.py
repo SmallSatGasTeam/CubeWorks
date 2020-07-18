@@ -1,16 +1,20 @@
-#NOTE: this code will not work until the TXISR branch is merged into flightLogic, but as of right now (1:00 pm 7/11/2020)
+# NOTE:this code will not work until the TXISR branch is merged into flightLogic, but as of right now (1:00 pm 7/11/2020)
 #   the txisr is not ready, however finail testing begains today, and it is expected to be done by the endo of the day,
 #   or tuseday at the latest.
 
-#this is the main file where everything happens. 
-#this code will check to see which entry conditions are met and then call and run the corresponding flight mode
-import missionModes
+# this is the main file where everything happens.
+# this code will check to see which entry conditions are met and then call and run the corresponding flight mode
+from .missionModes import preBoomDeploy as preBoomDeployMode
+from .missionModes import postBoomDeploy as postBoomDeployMode
+from .missionModes import boomDeploy as boomDeployMode
+from .missionModes import antennaDeploy as antennaDeployMode
+
 from asyncio import *
-#this imports the file we need from the TXISR
+# this imports the file we need from the TXISR
 from TXISR import interrupt
-from getDriverData import *
+from .getDriverData import *
 import time
-import Drivers.antennaDoor as antennaDoor
+from Drivers.antennaDoor.AntennaDoor import AntennaDoor
 import saveTofiles
 
 #NOTE: The TXISR needs to run as a separate thread, and is not asyncio
@@ -65,10 +69,10 @@ def main ():
     #   modes. 
     #NOTE: boot logic will be defined in this doc, as it is easier just to write it here. This is because boot
     #   must be call the antenna deploy mission mode 
-    antennaDeploy = missionModes.antennaDeployed(save)
-    preboomDeploy = missionModes.preboomDeploy(save)
-    postBoomDeploy = missionModes.postBoomDeploy(save)
-    boomDeploy = missionModes.boomDeploy(save)
+    antennaDeploy = antennaDeployMode.antennaMode(save)
+    preboomDeploy = preBoomDeployMode.preBoomMode(save)
+    postBoomDeploy = postBoomDeployMode.postBoomMode(save)
+    boomDeploy = boomDeployMode.boomMode(save)
 
     #bootRecords file format
     #Line 1 = boot count
@@ -110,13 +114,13 @@ def main ():
         #delay for 35 mins #change to 35
         startTime = time.time()
         currentTime =time.time()
-        while((startTime - currentTime) < Dealy):
+        while((startTime - currentTime) < delay):
             currentTime = time.time()
 
         #how do we check if the antenna doors are open?
         #TODO, check of antenna doors are open
         doorOpen = True
-        status = antennaDoor.readDoorStauts()
+        status = AntennaDoor.readDoorStatus()
         #this checks the bytes returned by the antennaDoor if any are 0 then doorOpen gets set to false
         if not status & 0xf0:
             doorOpen = False
@@ -200,26 +204,26 @@ def startTXISR(saveobject):
 ##################################################################################################################
 async def  getTTNC() :
     ttnc = TTNCData()
-    startTime = round(time.time() * 1000) #this is to get the milliseconds
+    startTime = round(time.time() * 1000)# this is to get the milliseconds
     while True:
         currentTime = round(time.time() * 1000)
-        #boot is a flag that is set when the program starts, once we leave boot mode it is set to false and we
-        #stop collecting the datta
+        # boot is a flag that is set when the program starts, once we leave boot mode it is set to false and we
+        # stop collecting the datta
         if not boot:
             break
-        #this will let us wait 120 milliseconds untill we get the data again. 
-        if((startTime - currentTime) == 120) :
+        # this will let us wait 120 milliseconds untill we get the data again.
+        if (startTime - currentTime) == 120 :
             startTime = round(time.time() * 1000)
             ttnc.getData()
 
 ##################################################################################################################
-#get attitude
+# get attitude
 ##################################################################################################################
-#gets the attitude data,
-#it does so once persecond
+# gets the attitude data,
+# it does so once persecond
 ##################################################################################################################
 async def getAttitude() :
-    attitude= AttitudeData()
+    attitude = AttitudeData()
     while True:
         #boot is a flag that is set when the program starts, once we leave boot mode it is set to false and we
         #stop collecting the datta
