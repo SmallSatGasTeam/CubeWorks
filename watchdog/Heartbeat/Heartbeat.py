@@ -35,7 +35,7 @@ def longTap():
     while True:
         # send a pulse
         GPIO.output(40, GPIO.HIGH)
-        sleep(0.00005)
+        sleep(waitTime/2)
         GPIO.output(40, GPIO.LOW)
         # wait a four seconds.
-        sleep(waitTime)
+        sleep(waitTime/2)
