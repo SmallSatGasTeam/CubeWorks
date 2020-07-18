@@ -31,7 +31,7 @@ import thread
 #NOTE: DO NOTE, record safe mode in the bootRecords files this is beacuse we want the program to pick up on the 
 #   same mode it left off on when it boots up again time
 ##################################################################################################################
-delay = 126000 #seconds that we are going to delay. (total of 35 mins)
+delay = 2100 # 35 minute delay = 2100 second delay
 bootCount = 0
 firstBoot = 0
 antennaDeployed = 0
@@ -45,24 +45,12 @@ def main ():
     #Open the file save object, start TXISR, and start Boot Mode data collection
     save = saveTofiles.save()
     startTXISR(save)
-
-    #start data collection for boot mode
     taskAttitude = asyncio.create_task(getAttitude())
     taskTTNC = asyncio.create_task(getTTNC())
 
-    #initialize all mission mode
-    #the mission mode should be named like the following
-    #antenna Deploy = antennaDeployed
-    #boot = boot
-    #pre-boom deploy = preboomDeploy
-    #post boom deploy = postBoomDeploy
-    #boom delpoy = boomDeploy
-    #NOTE: all mission modes should have a run() func defined, this all the this code will call, so run must 
-    #   handle all necesary parts of the code
-    #NOTE: the comms-tx is the only exception to this rule as it is to be handled diffrently then other mission
-    #   modes. 
-    #NOTE: boot logic will be defined in this doc, as it is easier just to write it here. This is because boot
-    #   must be call the antenna deploy mission mode 
+    #Initialize all mission mode objects
+    #NOTE: the comms-tx is the only exception to this rule as it is to be handled differently than other mission modes
+    #NOTE: Boot Mode is defined and executed in this document, instead of a separate mission mode
     antennaDeploy = missionModes.antennaDeployed(save)
     preboomDeploy = missionModes.preboomDeploy(save)
     postBoomDeploy = missionModes.postBoomDeploy(save)
@@ -70,11 +58,10 @@ def main ():
 
     #bootRecords file format
     #Line 1 = boot count
-    #Line 2 = first boot?
+    #Line 2 = first boot
     #Line 3 = antenna deployed?
     #Line 4 = last mission mode
-    #the try except is a why to back up our files if one get correputed then we will read from
-    #anthor file and recreate the first
+    #the try except is a way to back up our files, if one is corrupted the other used
     try :
         bootFile = open("bootRecords", "r")
         bootCount = bootFile.readline()
@@ -89,27 +76,29 @@ def main ():
         antennaDeployed = bootFile.readline()
         lastMode = bootFile.readline()
         bootFile.close()
-        #recreate the files, beacuse if we get here there has been some type of correpution on the main boot file. 
+        #In this except statement, the files are corrupted, so we rewrite both of them
         recordData()
-    
-    #NOTE: how should we handle the first boot, if we are going to do anything
-    if firstBoot :
-        firstBoot = False
-        recordData()
-    
+
+    #@SHAWN can I delete this?? NOTE: how should we handle the first boot, if we are going to do anything
+    #if firstBoot :
+        #firstBoot = False
+        #recordData()
+
     #add to the boot count
     bootCount += 1
     recordData()
-    #this is the boot mode, beacues boot should only happen on start up it is best to leave it out of the loop
-    #however should we decided that this is not the case we can put it in the loop with no problems
-    #IMPORTANT NOTE: How are we going to check to make sure that we in space to deloy here?
-    #AKA: so we dont deploy in the the box.
+
+
+
+    #This is the implementation of the BOOT mode logic.
     if not antennaDeployed :
-        #delay for 35 mins #change to 35
+        #delay
         startTime = time.time()
-        currentTime =time.time()
-        while((startTime - currentTime) < Dealy):
+        currentTime = time.time()
+        while((startTime - currentTime) < delay):
             currentTime = time.time()
+            await asyncio.sleep(5) #Sleep for 5 seconds between checking every time, otherwise the CPU will be more active than necessary
+
 
         #how do we check if the antenna doors are open?
         #TODO, check of antenna doors are open

@@ -4,7 +4,7 @@ import random
 
 async def main(): #Imitates main flight logic function, run in console with asyncio.run(main())
 	tMode = testMissionMode() 
-	task = await asyncio.gather(tMode.run()) #This is how mission modes will need to be run, probably
+	await asyncio.create_task(tMode.run()) #This is how mission modes will need to be run, probably
 	print("tMode.run() should be finished now. Waiting 5 seconds then exiting")
 	await asyncio.sleep(5) #This is how sleep will be done in the main function
 	return
