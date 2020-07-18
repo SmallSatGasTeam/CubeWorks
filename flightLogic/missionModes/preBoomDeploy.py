@@ -32,18 +32,18 @@ class preBoomMode:
 		self.__tasks.append(asyncio.create_task(self.lightStatusCheck()))
 		self.__tasks.append(asyncio.create_task(self.batteryCheck()))
 
-		
+
 
 	async def sunCheck(self):
 		sunSensor = sunSensorDriver()
-		while True: #Monitor the sunlight, record it in list NOTE: could be improved to halve calls 
+		while True: #Monitor the sunlight, record it in list NOTE: could be improved to halve calls
 			vList = sunSensor.read()
 			averageVoltage = sum(vList)/len(vList)
 			await asyncio.sleep(5)
 			averageVoltage = sum(vList)/len(vList)
 			self.sunlightData.append(averageVoltage/2)
 			await asyncio.sleep(5) #Every 10 seconds, record average solar panel voltage. Rough running average with two pieces to avoid jumps in avg. voltage
-	
+
 	async def lightStatusCheck(self):
 		while True: #iterate through array, checking for set amount of dark minutes, then set amount of light minutes no greater than the maximum. When light minutes are greater than the maximum, empties array
 			i=0
@@ -74,7 +74,7 @@ class preBoomMode:
 						return True #Go on to Boom Deploy Mode if the battery is Ok
 					q += 1
 			await asyncio.sleep(15) #Run this whole while loop every 15 seconds
-	
+
 	async def batteryCheck(self):
 		eps = EPS()
 		while True: #Checking the battery voltage to see if it's ready for deployment, if it is too low for too long --> SAFE

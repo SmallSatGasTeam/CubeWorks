@@ -2,7 +2,7 @@
 #   the txisr is not ready, however finail testing begains today, and it is expected to be done by the endo of the day,
 #   or tuseday at the latest.
 
-#this is the main file where everything happens. 
+#this is the main file where everything happens.
 #this code will check to see which entry conditions are met and then call and run the corresponding flight mode
 import missionModes
 from asyncio import *
@@ -23,12 +23,12 @@ import thread
 #First thing it does is set up the TXISR
 #then it check the previous boot conditions
 #then it will enter into a forever loop that will constently check conditions and flags that have been set on the
-#pi. It will use these conditions to decided where or not to call mission modes. 
+#pi. It will use these conditions to decided where or not to call mission modes.
 #Once a mission mode is complete it will exit and return to the main loop which will continue to check conditions
 #on the pi untill the entrence condition are meet for the next mission mode.
 #NOTE: it is the job of each mission mode to eval exit conditons and decided when to leave the mission mode.
 #NOTE: each mission mode is responsable for deciding to call safe if it is needed
-#NOTE: DO NOTE, record safe mode in the bootRecords files this is beacuse we want the program to pick up on the 
+#NOTE: DO NOTE, record safe mode in the bootRecords files this is beacuse we want the program to pick up on the
 #   same mode it left off on when it boots up again time
 ##################################################################################################################
 delay = 2100 # 35 minute delay = 2100 second delay
@@ -64,17 +64,17 @@ def main ():
     #the try except is a way to back up our files, if one is corrupted the other used
     try :
         bootFile = open("bootRecords", "r")
-        bootCount = bootFile.readline()
-        firstBoot = bootFile.readline()
-        antennaDeployed = bootFile.readline()
-        lastMode = bootFile.readline()
+        bootCount = int(bootFile.readline())
+        firstBoot = bool(bootFile.readline())
+        antennaDeployed = bool(bootFile.readline())
+        lastMode = str(bootFile.readline())
         bootFile.close()
     except :
         bootFile = open("backupBootRecords", "r")
-        bootCount = bootFile.readline()
-        firstBoot = bootFile.readline()
-        antennaDeployed = bootFile.readline()
-        lastMode = bootFile.readline()
+        bootCount = int(bootFile.readline())
+        firstBoot = bool(bootFile.readline())
+        antennaDeployed = bool(bootFile.readline())
+        lastMode = str(bootFile.readline())
         bootFile.close()
         #In this except statement, the files are corrupted, so we rewrite both of them
         recordData()
@@ -92,12 +92,7 @@ def main ():
 
     #This is the implementation of the BOOT mode logic.
     if not antennaDeployed : #First, sleep for 35 minutes
-        startTime = time.time()
-        currentTime = time.time()
-        while((startTime - currentTime) < delay):
-            currentTime = time.time()
-            await asyncio.sleep(5) #Sleep for 5 seconds between checking every time, otherwise the CPU will be more active than necessary
-
+        await asyncio.sleep(delay) #Sleep for 35 minutes
 
         #how do we check if the antenna doors are open?
         #TODO, check of antenna doors are open
@@ -136,7 +131,6 @@ def main ():
             recordData()
         elif antennaDeployed == True and lastMode == "boom deploy":
             asyncio.run(boomDeploy.run()) #Execute boom deployment, start post-boom deploy
-            #once we finish it is time to satrt post boom deploy mode
             lastMode = "post boom deploy"
             recordData()
         else: #Post-Boom Deploy
@@ -149,21 +143,21 @@ def main ():
 #records data in the back up files
 ##################################################################################################################
 def recordData():
-    #write to the boot file, 
+    #write to the boot file,
     #NOTE: "w" errase all previous lines in the file
     new = open("bootRecords", "w")
-    new.write(bootCount)
-    new.write(firstBoot)
-    new.write(antennaDeployed)
-    new.write(lastMode)
+    new.write(str(bootCount))
+    new.write(str(firstBoot))
+    new.write(str(antennaDeployed))
+    new.write(str(lastMode))
     new.close()
 
     #write to the the back up file
     new = open("backupBootRecords", "w")
-    new.write(bootCount)
-    new.write(firstBoot)
-    new.write(antennaDeployed)
-    new.write(lastMode)
+    new.write(str(bootCount))
+    new.write(str(firstBoot))
+    new.write(str(antennaDeployed))
+    new.write(str(lastMode))
     new.close()
 
 

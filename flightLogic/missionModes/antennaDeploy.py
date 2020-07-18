@@ -22,10 +22,10 @@ class antennaMode:
         attitudeData = self.__getDataAttitude
 	safeMode = safe()
         self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(1))) #Antenna deploy is mission mode 1
-        self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData())) 
-	self.__tasks.append(asyncio.create_task(safeMode.thresholdCheck())) #Check battery conditions, run safe mode if battery drops below safe level 
+        self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
+	self.__tasks.append(asyncio.create_task(safeMode.thresholdCheck())) #Check battery conditions, run safe mode if battery drops below safe level
 	self.__tasks.append(asyncio.create_task(deployAntenna())) #Runs Antenna deploy loop
-	
+
 	async def deployAntenna(self):
 		#Perform tasks for antenna deployment
 		eps=EPS()
@@ -33,7 +33,7 @@ class antennaMode:
 	 		if (eps.getBusVoltage()>self.deployVoltage):
                 	antennaDeploy.deploy()
                 	if doorStatus == (0,0,0,0): #probably need to change this to actually work
-                    		#Doors are open, cancel all tasks and then 
+                    		#Doors are open, cancel all tasks and then
                     		return True
             		else:
                 		if(self.timeWaited > self.maximumWaitTime):
@@ -42,7 +42,7 @@ class antennaMode:
                     			#Wait 1 minute
                     			self.timeWaited = self.timeWaited+1
                     			await asyncio.sleep(60)
-	
+
 	def cancellAllTasks(self, taskList):
 		try:
 			for t in taskList:

@@ -10,7 +10,7 @@ class postBoomMode:
 		self.__getDataAttitude =  AttitudeData(saveobject)
 		self.__tasks = [] # List will be populated with all background tasks
 		self.__safeMode = safe()
-		
+
 	async def run(self):
 		#Set up background processes
 		ttncData = self.__getDataTTNC
@@ -20,8 +20,7 @@ class postBoomMode:
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
 		self.__tasks.append(asyncio.create_task(rebootLoop()))
 
-		
-		
+
 
 	async def rebootLoop(self):
 		await while True:
@@ -31,7 +30,7 @@ class postBoomMode:
 			else:
 				upTime += 60
 				await asyncio.sleep(60)
-				
+
 	def cancellAllTasks(self, taskList): #Isn't used in this class, but here anyways
 		try:
 			for t in taskList:
