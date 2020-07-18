@@ -10,24 +10,23 @@ from getDriverData import *
 class antennaMode:
 
     def __init__(self, saveobject):
-        self.thresholdVoltage = 5 #Threshold voltage to deploy
+        self.deployVoltage = 5 #Threshold voltage to deploy
         self.maximumWaitTime = 30 #Maximum time to wait for deployment before going to SAFE
         self.timeWaited = 0 #Time already waited - zero
-        self.criticalVoltage = 3.3 #modify
         self.__getDataTTNC = getDriverData.TTNCData(saveobject)
-		self.__getDataAttitude = getDriverData.AttitudeData(saveobject)
+	self.__getDataAttitude = getDriverData.AttitudeData(saveobject)
 
     async def run(self):
         ttncData = self.__getDataTTNC.TTNCData()
         attitudeData = self.__getDataAttitude.AttitudeData()
 	asyncio.run(ttncData.collectTTNCData(1), attitudeData.collectAttitudeData()) #Antenna Deploy is mission mode 1
         safeMode = safe()
-	    asyncio.run(safeMode.thresholdCheck()) #Check battery conditions, run safe mode if battery drops below safe level 
-	    eps = EPS() #creating EPS object    
+	asyncio.run(safeMode.thresholdCheck()) #Check battery conditions, run safe mode if battery drops below safe level 
+	eps = EPS() #creating EPS object    
 
         #Perform tasks for antenna deployment
         await while True:
-            if (eps.getBusVoltage()>self.thresholdVoltage):
+            if (eps.getBusVoltage()>self.deployVoltage):
                 antennaDeploy.deploy()
                 if doorStatus == (0,0,0,0): #probably need to change this to actually work
                     #Doors are open

@@ -2,7 +2,7 @@
 #   the txisr is not ready, however finail testing begains today, and it is expected to be done by the endo of the day,
 #   or tuseday at the latest.
 
-#this is the main file where everything happens. 
+#this is the main file where everything happens.
 #this code will check to see which entry conditions are met and then call and run the corresponding flight mode
 import missionModes
 from asyncio import *
@@ -22,16 +22,19 @@ import thread
 #This python file is what we call when we boot, it starts off the entire process of out our flight logic.
 #First thing it does is set up the TXISR
 #then it check the previous boot conditions
-#then it will enter into a forever loop that will constently check conditions and flags that have been set on the
-#pi. It will use these conditions to decided where or not to call mission modes. 
+#then it will enter into a forever loop that will constantly check conditions and flags that have been set on the
+#pi. It will use these conditions to decide whether or not to call mission modes.
 #Once a mission mode is complete it will exit and return to the main loop which will continue to check conditions
-#on the pi untill the entrence condition are meet for the next mission mode.
+#on the pi untill the entrance conditions are met for the next mission mode.
 #NOTE: it is the job of each mission mode to eval exit conditons and decided when to leave the mission mode.
-#NOTE: each mission mode is responsable for deciding to call safe if it is needed
-#NOTE: DO NOTE, record safe mode in the bootRecords files this is beacuse we want the program to pick up on the 
-#   same mode it left off on when it boots up again time
+#NOTE: each mission mode is responsible for deciding to call safe if it is needed
+#NOTE: DO NOTE, record safe mode in the bootRecords files this is because we want the program to pick up on the
+#   same mode it left off on when it boots up again
 ##################################################################################################################
-delay = 126000 #seconds that we are going to delay. (total of 35 mins)
+
+
+# Variables
+delay = 126000 # Delay (in seconds) before checking if antenna was automatically deployed. (total of 35 mins)
 bootCount = 0
 firstBoot = 0
 antennaDeployed = 0
@@ -52,19 +55,19 @@ def main ():
     getAttitude()
     getTTNC()
 
-    #initialize all mission mode
-    #the mission mode should be named like the following
+    #initialize all mission modes
+    #the mission modes should be named like the following
     #antenna Deploy = antennaDeployed
     #boot = boot
     #pre-boom deploy = preboomDeploy
     #post boom deploy = postBoomDeploy
-    #boom delpoy = boomDeploy
-    #NOTE: all mission modes should have a run() func defined, this all the this code will call, so run must 
+    #boom deploy = boomDeploy
+    #NOTE: all mission modes should have a run() func defined, which this code will call, so run must
     #   handle all necesary parts of the code
-    #NOTE: the comms-tx is the only exception to this rule as it is to be handled diffrently then other mission
-    #   modes. 
-    #NOTE: boot logic will be defined in this doc, as it is easier just to write it here. This is because boot
-    #   must be call the antenna deploy mission mode 
+    #NOTE: the comm-tx is the only exception to this rule as it is to be handled differently than other mission
+    #   modes.
+    #NOTE: boot logic will be defined in this file, as it is easier just to write it here. This is because boot
+    #   must be call the antenna deploy mission mode
     antennaDeploy = missionModes.antennaDeployed(save)
     preboomDeploy = missionModes.preboomDeploy(save)
     postBoomDeploy = missionModes.postBoomDeploy(save)
