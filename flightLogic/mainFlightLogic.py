@@ -1,13 +1,11 @@
 # This is the main file, to be run on startup of the Pi
-import saveTofiles
 import getDriverData
-from flightLogic.getDriverData import *
+import saveTofiles
 import Drivers.antennaDoor.AntennaDoor as antennaDoor
-import flightLogic.missionModes.antennaDeploy as antennaDeploy
-import flightLogic.missionModes.preBoomDeploy as preBoomDeploy
-import flightLogic.missionModes.boomDeploy as boomDeploy
-import flightLogic.missionModes.postBoomDeploy as postBoomDeploy
-import flightLogic.saveTofiles
+import missionModes.antennaDeploy
+import missionModes.preBoomDeploy
+import missionModes.boomDeploy
+import missionModes.postBoomDeploy
 import asyncio
 
 # from TXISR import interrupt
@@ -45,10 +43,10 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
     # Initialize all mission mode objects
     # NOTE: the comms-tx is the only exception to this rule as it is to be handled differently than other mission modes
     # NOTE: Boot Mode is defined and executed in this document, instead of a separate mission mode
-    antennaDeploy = flightLogic.missionModes.antennaDeploy(save)
-    preBoomDeploy = flightLogic.missionModes.preBoomDeploy(save)
-    postBoomDeploy = flightLogic.missionModes.postBoomDeploy(save)
-    boomDeploy = flightLogic.missionModes.boomDeploy(save)
+    antennaDeploy = missionModes.antennaDeploy(save)
+    preBoomDeploy = missionModes.preBoomDeploy(save)
+    postBoomDeploy = missionModes.postBoomDeploy(save)
+    boomDeploy = missionModes.boomDeploy(save)
 
     bootCount, antennaDeployed, lastMode = readData()  # Read in data from files
     bootCount += 1  # Increment boot count

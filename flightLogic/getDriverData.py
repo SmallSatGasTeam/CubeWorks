@@ -12,7 +12,7 @@ from .saveTofiles import *
 class TTNCData:
 	def __init__(self, saveobject):
 		save = saveobject
-        	self.__ttncDataArray = []
+			self.__ttncDataArray = []
 
 	async def getData(self, missionMode):
 		# gets all TTNC data - need to pass in missionMode when calling it
@@ -41,9 +41,9 @@ class TTNCData:
 		SP_Z_Voltage = await EPS.getSPZVoltage()
 
 		#Save the data into an array
-        	self.__ttncDataArray = [timestamp, packetType, mode, reboot_count, boombox_uv, SP_X_Plus_Temp, SP_Z_Plus_Temp, piTemp, EPSMCUTemp,
-            	Cell1Temp, BattVoltage, BCRCurrent, EPS3V3Current, EPS5VCurrent, SP_X_Voltage, SP_X_Plus_Current, SP_X_Minus_Current,
-            	SP_Y_Voltage, SP_Y_Plus_Current, SP_Y_Minus_Current , SP_Z_Voltage]
+			self.__ttncDataArray = [timestamp, packetType, mode, reboot_count, boombox_uv, SP_X_Plus_Temp, SP_Z_Plus_Temp, piTemp, EPSMCUTemp,
+				Cell1Temp, BattVoltage, BCRCurrent, EPS3V3Current, EPS5VCurrent, SP_X_Voltage, SP_X_Plus_Current, SP_X_Minus_Current,
+				SP_Y_Voltage, SP_Y_Plus_Current, SP_Y_Minus_Current , SP_Z_Voltage]
 
 	async def writeData(self):
 		#writes TTNC data array to file
@@ -62,7 +62,7 @@ class TTNCData:
 class DeployData():
 	def __init__(self, saveobject):
 		save = saveobject
-        	self.__deployDataArray = []
+			self.__deployDataArray = []
 
 	async def getData(self):
 		#gets all Boom Deployment data
@@ -72,11 +72,11 @@ class DeployData():
 		accelX, accelY, accelZ = await Accelerometer.read()
 
 		#save the data into an array
-        	self.__deployDataArray = [timestamp, packetType, boombox_uv, accelX, accelY, accelZ]
+			self.__deployDataArray = [timestamp, packetType, boombox_uv, accelX, accelY, accelZ]
 
 	async def writeData(self):
 		#writes Boom Deployment data array to file
-        	save.writeDeploy(self.__deployDataArray)
+			save.writeDeploy(self.__deployDataArray)
 
 	async def collectDeployData(self):
 		# Data collection loop
@@ -91,7 +91,7 @@ class DeployData():
 class AttitudeData():
 	def __init__(self, saveobject):
 		save = saveobject
-        	self.__attitudeDataArray = []
+			self.__attitudeDataArray = []
 
 	async def getData(self):
 		#gets all Attitude data
@@ -105,7 +105,7 @@ class AttitudeData():
 
 	async def writeData(self):
 		#writes Attitude Data array to file
-        	save.writeAttitude(self.__attitudeDataArray)
+			save.writeAttitude(self.__attitudeDataArray)
 
 	async def collectAttitudeData(self):
 		# Data collection loop
