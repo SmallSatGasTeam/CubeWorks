@@ -30,7 +30,7 @@ class boomMode:
 		cam.takePicture()
 		cam.compressLowResToFiles()
 		cam.compressHighResToFiles()
-		cancelAllTasks(self.__tasks) # Cancel all background tasks
+		self.cancelAllTasks(self.__tasks) # Cancel all background tasks
 		return True  # Go to post-boom deploy
 
 	def cancellAllTasks(self, taskList):
