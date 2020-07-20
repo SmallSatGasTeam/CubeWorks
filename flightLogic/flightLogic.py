@@ -1,12 +1,6 @@
-#NOTE: this code will not work until the TXISR branch is merged into flightLogic, but as of right now (1:00 pm 7/11/2020)
-#   the txisr is not ready, however finail testing begains today, and it is expected to be done by the endo of the day,
-#   or tuseday at the latest.
-
-#this is the main file where everything happens.
-#this code will check to see which entry conditions are met and then call and run the corresponding flight mode
+#This is the main file, to be run on startup of the Pi
 import missionModes
 from asyncio import *
-#this imports the file we need from the TXISR
 from TXISR import interrupt
 from getDriverData import *
 import time
@@ -19,21 +13,14 @@ import thread
 ##################################################################################################################
 #Main()
 ##################################################################################################################
-#This python file is what we call when we boot, it starts off the entire process of out our flight logic.
-#First thing it does is set up the TXISR
-#then it check the previous boot conditions
-#then it will enter into a forever loop that will constently check conditions and flags that have been set on the
-#pi. It will use these conditions to decided where or not to call mission modes.
-#Once a mission mode is complete it will exit and return to the main loop which will continue to check conditions
-#on the pi untill the entrence condition are meet for the next mission mode.
-#NOTE: it is the job of each mission mode to eval exit conditons and decided when to leave the mission mode.
-#NOTE: each mission mode is responsable for deciding to call safe if it is needed
-#NOTE: DO NOTE, record safe mode in the bootRecords files this is beacuse we want the program to pick up on the
-#   same mode it left off on when it boots up again time
+#First, this function sets up the TXISR and then checks the boot conditions
+#Then, it runs a mission mode, and then loops forever, constantly checking to run the next mission mode.
+#NOTE: Each mission mode evaluates their exit conditions to leave the mission mode.
+#NOTE: Each mission mode calls safe if it is necessary
+#NOTE: DO NOTE record safe mode in the bootRecords file
 ##################################################################################################################
 delay = 2100 # 35 minute delay = 2100 second delay
 bootCount = 0
-firstBoot = 0
 antennaDeployed = 0
 lastMode = 0
 boot = True
@@ -56,36 +43,8 @@ def main ():
     postBoomDeploy = missionModes.postBoomDeploy(save)
     boomDeploy = missionModes.boomDeploy(save)
 
-    #bootRecords file format
-    #Line 1 = boot count
-    #Line 2 = first boot
-    #Line 3 = antenna deployed?
-    #Line 4 = last mission mode
-    #the try except is a way to back up our files, if one is corrupted the other used
-    try :
-        bootFile = open("bootRecords", "r")
-        bootCount = int(bootFile.readline())
-        firstBoot = bool(bootFile.readline())
-        antennaDeployed = bool(bootFile.readline())
-        lastMode = str(bootFile.readline())
-        bootFile.close()
-    except :
-        bootFile = open("backupBootRecords", "r")
-        bootCount = int(bootFile.readline())
-        firstBoot = bool(bootFile.readline())
-        antennaDeployed = bool(bootFile.readline())
-        lastMode = str(bootFile.readline())
-        bootFile.close()
-        #In this except statement, the files are corrupted, so we rewrite both of them
-        recordData()
-
-    #@SHAWN can I delete this?? NOTE: how should we handle the first boot, if we are going to do anything
-    #if firstBoot :
-        #firstBoot = False
-        #recordData()
-
-    #add to the boot count
-    bootCount += 1
+    readData() #Read in data from files
+    bootCount += 1 #Increment boot count
     recordData()
 
 
@@ -137,17 +96,10 @@ def main ():
             asyncio.run(postBoomDeploy.run())
 
 
-##################################################################################################################
-#recordData()
-##################################################################################################################
-#records data in the back up files
-##################################################################################################################
 def recordData():
-    #write to the boot file,
-    #NOTE: "w" errase all previous lines in the file
+    #write to the boot file, "w" option in write overwrites the file
     new = open("bootRecords", "w")
     new.write(str(bootCount))
-    new.write(str(firstBoot))
     new.write(str(antennaDeployed))
     new.write(str(lastMode))
     new.close()
@@ -155,39 +107,45 @@ def recordData():
     #write to the the back up file
     new = open("backupBootRecords", "w")
     new.write(str(bootCount))
-    new.write(str(firstBoot))
     new.write(str(antennaDeployed))
     new.write(str(lastMode))
     new.close()
 
+def readData(): #This function reads in data from the files, it was previously in the main function but is better as its own function
+    #bootRecords file format
+    #Line 1 = boot count
+    #Line 2 = first boot
+    #Line 3 = antenna deployed?
+    #Line 4 = last mission mode
+    #the try except is a way to back up our files, if one is corrupted the other used
+    try :
+        bootFile = open("bootRecords", "r")
+        bootCount = int(bootFile.readline())
+        antennaDeployed = bool(bootFile.readline())
+        lastMode = str(bootFile.readline())
+        bootFile.close()
+    except :
+        bootFile = open("backupBootRecords", "r")
+        bootCount = int(bootFile.readline())
+        antennaDeployed = bool(bootFile.readline())
+        lastMode = str(bootFile.readline())
+        bootFile.close()
+        #In this except statement, the files are corrupted, so we rewrite both of them
+        recordData()
 
-##################################################################################################################
-#startTXISR()
-##################################################################################################################
-#sets up txisr
-##################################################################################################################
-def startTXISR(saveobject):
-    #this sets up the interupt on the uart pin that triggers when we get commincation over uart
+
+def startTXISR(saveobject): #Setup for TXISR
+    #This sets up the interupt on the uart pin that triggers when we get commincation over uart
     thread.start(interrupt.watchReceptions(saveobject))
 
-##################################################################################################################
-#get ttnc
-##################################################################################################################
-#gets the ttnc data for boot mode
-#it does so every 120 seconds
-##################################################################################################################
+
+#These functions collect data in the background during BOOT mode, if applicable
 async def  getTTNC() :
     ttnc = TTNCData()
     while True:
             ttnc.getData()
             await asyncio.sleep(120)
 
-##################################################################################################################
-#get attitude
-##################################################################################################################
-#gets the attitude data,
-#it does so once per second
-##################################################################################################################
 async def getAttitude() :
     attitude= AttitudeData()
     while True:
