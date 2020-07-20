@@ -143,7 +143,7 @@ def startTXISR(saveobject): #Setup for TXISR
 async def  getTTNC() :
     ttnc = TTNCData()
     while True:
-            ttnc.getData()
+            ttnc.getData(0) #BOOT is mission mode 0
             await asyncio.sleep(120)
 
 async def getAttitude() :
