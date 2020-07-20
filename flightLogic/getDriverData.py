@@ -12,7 +12,7 @@ from .saveTofiles import *
 class TTNCData:
 	def __init__(self, saveobject):
 		save = saveobject
-			self.__ttncDataArray = []
+		self.__ttncDataArray = []
 
 	async def getData(self, missionMode):
 		# gets all TTNC data - need to pass in missionMode when calling it
