@@ -1,5 +1,6 @@
 # This is the main file, to be run on startup of the Pi
-from flightLogic import saveTofiles
+import saveTofiles
+import getDriverData
 from flightLogic.getDriverData import *
 import Drivers.antennaDoor.AntennaDoor as antennaDoor
 import flightLogic.missionModes.antennaDeploy as antennaDeploy
