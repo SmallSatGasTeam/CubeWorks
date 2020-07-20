@@ -29,7 +29,7 @@ def __main__():
     main()
 
 
-def main():  # Open the file save object, start TXISR, and start Boot Mode data collection
+async def main():  # Open the file save object, start TXISR, and start Boot Mode data collection
     # Variable setup
     delay = 2100  # 35 minute delay = 2100 second delay
     bootCount = 0
@@ -69,13 +69,13 @@ def main():  # Open the file save object, start TXISR, and start Boot Mode data 
     recordData()
 
     if not doorOpen:
-        asyncio.run(antennaDeploy.run())
+        asyncio.create_task(antennaDeploy.run())
         antennaDeployed = True
         recordData() #Save into files
     elif lastMode == "post boom deploy":
-        asyncio.run(postBoomDeploy.run())
+        asyncio.create_task(postBoomDeploy.run())
     else:
-        asyncio.run(preBoomDeploy.run())
+        asyncio.create_task(preBoomDeploy.run())
 
     try:  # Cancels attitude collection tasks
         taskAttitude.cancel()
@@ -87,15 +87,15 @@ def main():  # Open the file save object, start TXISR, and start Boot Mode data 
         if antennaDeployed == True and lastMode != "post boom deploy":
             lastMode = "pre boom deploy"
             recordData()
-            asyncio.run(preBoomDeploy.run())  # Execute pre-boom deploy, then move to post-boom deploy
+            asyncio.create_task(preBoomDeploy.run())  # Execute pre-boom deploy, then move to post-boom deploy
             lastMode = "boom deploy"
             recordData()
         elif antennaDeployed == True and lastMode == "boom deploy":
-            asyncio.run(boomDeploy.run())  # Execute boom deployment, start post-boom deploy
+            asyncio.create_task(boomDeploy.run())  # Execute boom deployment, start post-boom deploy
             lastMode = "post boom deploy"
             recordData()
         else:  # Post-Boom Deploy
-            asyncio.run(postBoomDeploy.run())
+            asyncio.create_task(postBoomDeploy.run())
 
 
 def recordData(bootCount, antennaDeployed, lastMode):
