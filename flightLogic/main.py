@@ -14,7 +14,7 @@ import asyncio
 # import thread @@Shawn This import isn't working
 
 ##################################################################################################################
-# Main()
+# executeFlightLogic()
 ##################################################################################################################
 # First, this function sets up the TXISR and then checks the boot conditions
 # Then, it runs a mission mode, and then loops forever, constantly checking to run the next mission mode.
@@ -26,10 +26,10 @@ import asyncio
 
 
 def __main__():
-    main()
+    executeFlightLogic()
 
 
-async def main():  # Open the file save object, start TXISR, and start Boot Mode data collection
+async def executeFlightLogic():  # Open the file save object, start TXISR, and start Boot Mode data collection
     # Variable setup
     delay = 2100  # 35 minute delay = 2100 second delay
     bootCount = 0
