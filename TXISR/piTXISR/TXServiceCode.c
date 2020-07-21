@@ -150,8 +150,8 @@ void main(int argc,char* argv[])
     fscanf(txFile, "%d", &transmissionWindow);
     PRINT_DEBUG(transmissionWindow)
     fgetc(txFile);
-
-    DEBUG_P(Printing file>>>)
+    DEBUG_P(Start time - current Time:)
+    PRINT_TIME(startTime - currentTime)
     while(ch != END_KEY)
     {
         DEBUG_P(\nSending>>>)
