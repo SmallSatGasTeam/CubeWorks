@@ -156,7 +156,8 @@ void main(int argc,char* argv[])
     {
         DEBUG_P(\nSending>>>)
         //this checks the transmission window
-        currentTime = millis();
+        //currentTime = millis();
+        DEBUG_P(it was the time)
         if((currentTime - startTime) < transmissionWindow) 
         {
             for(int g = 1; g < 11; g++)
@@ -266,13 +267,13 @@ void main(int argc,char* argv[])
     } 
 
      //give control of the port back to linuxs
-     //int disable = system(DISABLE);
+     int disable = system(DISABLE);
      //if we fail reboot
-    //  if(disable != 0) 
-    //  {
-    //      DEBUG_P(Failed to release tx uart pin)
-    //      exit(1);
-    //  } 
+     if(disable != 0) 
+     {
+         DEBUG_P(Failed to release tx uart pin)
+         exit(1);
+     } 
 }
 
 /*******************************************************************************************
