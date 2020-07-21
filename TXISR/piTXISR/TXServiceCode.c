@@ -266,13 +266,13 @@ void main(int argc,char* argv[])
     } 
 
      //give control of the port back to linuxs
-     int disable = system(DISABLE);
+     //int disable = system(DISABLE);
      //if we fail reboot
-     if(disable != 0) 
-     {
-         DEBUG_P(Failed to release tx uart pin)
-         exit(1);
-     } 
+    //  if(disable != 0) 
+    //  {
+    //      DEBUG_P(Failed to release tx uart pin)
+    //      exit(1);
+    //  } 
 }
 
 /*******************************************************************************************
