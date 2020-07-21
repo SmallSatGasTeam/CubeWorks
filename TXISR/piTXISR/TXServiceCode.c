@@ -156,8 +156,7 @@ void main(int argc,char* argv[])
     {
         DEBUG_P(\nSending>>>)
         //this checks the transmission window
-        //currentTime = millis();
-        DEBUG_P(it was the time)
+        currentTime = millis();
         if((currentTime - startTime) < transmissionWindow) 
         {
             for(int g = 1; g < 11; g++)
@@ -194,6 +193,9 @@ void main(int argc,char* argv[])
         {
             line[i] = '0';
         }
+        //get the first byte
+        ch = fgetc(txFile);
+        
         while(ch != 10 && ch != END_KEY)
         {
             //this collects the time stamp
