@@ -6,7 +6,6 @@ Gets driver data for each data set. Also writes that data to files.
 import sys
 sys.path.append('../')
 import Drivers
-import
 import asyncio
 from .saveTofiles import *
 
