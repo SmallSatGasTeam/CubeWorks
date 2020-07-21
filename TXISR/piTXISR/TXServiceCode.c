@@ -184,8 +184,8 @@ void main(int argc,char* argv[])
         }
 
         
-        DEBUG_P(Start time - current Time:)
-        PRINT_TIME(startTime - currentTime)
+        DEBUG_P(current Time - Start time:)
+        PRINT_TIME(currentTime - startTime)
         //get the size of each line in the file
         int charCount = 0;
         int end = 0;
