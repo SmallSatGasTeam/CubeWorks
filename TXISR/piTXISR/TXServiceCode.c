@@ -150,6 +150,7 @@ void main(int argc,char* argv[])
     fscanf(txFile, "%d", &transmissionWindow);
     PRINT_DEBUG(transmissionWindow)
     fgetc(txFile);
+    currentTime = millis();
     DEBUG_P(Start time - current Time:)
     PRINT_TIME(startTime - currentTime)
     while(ch != END_KEY)
@@ -232,7 +233,7 @@ void main(int argc,char* argv[])
         }
 
         PRINT_TIME(currentTimeTX - startTimeTX)
-        currentTime = millis();
+        
 
         if(ch == 10 && ch != EOF)
         {
