@@ -14,7 +14,7 @@ import asyncio
 #pass 24 for a day
 #####################################################################################
 class safe:
-    def __initi__(self):
+    def __initi__(self, saveObject):
         #Setup I2C bus for communication
         self.DEVICE_BUS = 1
         self.__beetle = 0x08
@@ -22,11 +22,13 @@ class safe:
         self.bus = smbus.SMBus(self.DEVICE_BUS)
         eps = EPS()
         self.thresholdVoltage = 3.33 #Threshold Voltage
+        
 
 
     def run(self, time):
         #send message to the adruino to power off the pi
-        self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, time)
+        #make sure we are not about to tx 
+        if(saveObject.checkTxWindow())self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, time)
         
     async def thresholdCheck(self):
         await while True:

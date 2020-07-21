@@ -13,7 +13,7 @@ class postBoomMode:
 		ttncData = self.__getDataTTNC.TTNCData()
         attitudeData = self.__getDataAttitude.AttitudeData()
 		asyncio.run(ttncData.collectTTNCData(4), attitudeData.collectAttitudeData())#Post-boom is mode 4
-		safeMode = safe()
+		safeMode = safe(saveobject)
 		asyncio.run(safeMode.thresholdCheck())
 		
 		await while True:
@@ -24,6 +24,7 @@ class postBoomMode:
 				if runningTime>86400: #Live for more than 24 hours
 					postBoomTimeFile.write(str(0))
 					postBoomTimeFile.close()
+					safe.run(1)
 				else: 
 					postBoomTimeFile.write(str(runningTime+60))
 			await asyncio.sleep(60) #check every 60 seconds if post boom has been running for more than 24 hours

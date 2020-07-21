@@ -21,7 +21,7 @@ class preBoomMode:
 		ttncData = self.__getDataTTNC.TTNCData()
         attitudeData = self.__getDataAttitude.AttitudeData()
 		asyncio.run(ttncData.collectTTNCData(2), collectAttitudeData())#Pre-boom is mode 2
-        safeMode = safe()
+        safeMode = safe(safeMode)
 		asyncio.run(safeMode.thresholdCheck()) #Check battery conditions, run safe mode if battery drops below safe level 
 		eps = EPS() #creating EPS object  
 		sunlightData = []

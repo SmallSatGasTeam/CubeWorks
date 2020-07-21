@@ -15,7 +15,7 @@ class boomMode:
         attitudeData = self.__getDataAttitude.AttitudeData()
 		deployData = getDriverData.DeployData()
 		asyncio.run(ttncData.collectTTNCData(3), attitudeData.collectAttitudeData(), deployData.collectDeployData()) #Boom deploy is mode 3
-		safeMode = safe()
+		safeMode = safe(saveobject)
 		asyncio.run(safeMode.thresholdCheck())
 		
 		#Deploy boom, take picture
