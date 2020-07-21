@@ -142,7 +142,7 @@ void main(int argc,char* argv[])
     write(txPort, "ES+W23003321", 13);
 
     //read in all the lines of a file
-    char ch;
+    char ch = 0;
     //set up array for tx, the max is 128, so we better not exceed that anyways so using an array of 128 is fine.
     char line[128] = {0};
     char timeStamp[10];
