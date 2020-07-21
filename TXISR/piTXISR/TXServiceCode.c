@@ -230,7 +230,6 @@ void main(int argc,char* argv[])
         while((currentTimeTX - startTimeTX) < DELAY_tx)
         { 
             currentTimeTX = millis();
-            PRINT_TIME(currentTimeTX)
             PRINT_TIME(currentTimeTX - startTimeTX)
         }
         PRINT_LONG(currentTimeTX)
