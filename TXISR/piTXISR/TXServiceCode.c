@@ -185,8 +185,6 @@ void main(int argc,char* argv[])
 
         
         PRINT_DEBUG(currentTime - startTime)
-
-        PRINT_DEBUG_CHAR('\n')
         //get the size of each line in the file
         int charCount = 0;
         int end = 0;
@@ -231,7 +229,7 @@ void main(int argc,char* argv[])
         { 
             currentTimeTX = millis();
         }
-        
+
         PRINT_TIME(currentTimeTX - startTimeTX)
         currentTime = millis();
 
@@ -240,7 +238,6 @@ void main(int argc,char* argv[])
             ch = fgetc(txFile);
         }
 
-        DEBUG_P(printing to the file)
         //save the last sent time
         for(int g = 1; g < 11; g++)
         {
