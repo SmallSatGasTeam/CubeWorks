@@ -231,6 +231,7 @@ void main(int argc,char* argv[])
         { 
             currentTimeTX = millis();
             PRINT_TIME(currentTimeTX)
+            PRINT_TIME(currentTimeTX - startTimeTX)
         }
         PRINT_LONG(currentTimeTX)
         PRINT_LONG(startTimeTX)
