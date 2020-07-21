@@ -178,6 +178,7 @@ void main(int argc,char* argv[])
                 }
                 fputc(' ', recordFile);
             }
+            DEBUG_P(\nEnding>>>)
             break;
         }
 
@@ -195,7 +196,7 @@ void main(int argc,char* argv[])
         }
         //get the first byte
         ch = fgetc(txFile);
-        
+
         while(ch != 10 && ch != END_KEY)
         {
             //this collects the time stamp
