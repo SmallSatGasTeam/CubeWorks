@@ -1,30 +1,39 @@
 import asyncio
-from safe import safe
-import getDriverData
+from .safe import safe
+from ..getDriverData import *
 import Drivers.eps.EPS as EPS
 
 class postBoomMode:
 	def __init__(self, saveobject):
-		postBoomTimeFile = f.open("postBoomTime.txt", "w+")
-		self.__getDataTTNC = getDriverData.TTNCData(saveobject)
-		self.__getDataAttitude = getDriverData.AttitudeData(saveobject)
+		self.postBoomTimeFile = open("postBoomTime.txt", "w+")
+		self.__getDataTTNC = TTNCData(saveobject)
+		self.__getDataAttitude =  AttitudeData(saveobject)
+		self.__tasks = [] # List will be populated with all background tasks
+		self.__safeMode = safe(saveobject)
+
 	async def run(self):
 		#Set up background processes
-		ttncData = self.__getDataTTNC.TTNCData()
-        attitudeData = self.__getDataAttitude.AttitudeData()
-		asyncio.run(ttncData.collectTTNCData(4), attitudeData.collectAttitudeData())#Post-boom is mode 4
-		safeMode = safe(saveobject)
-		asyncio.run(safeMode.thresholdCheck())
-		
-		await while True:
-			if not postBoomTimeFile.read(1):
-				postBoomTimeFile.write(str(0))#File is empty
+		ttncData = self.__getDataTTNC
+		attitudeData = self.__getDataAttitude
+		self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(4))) #Post-boom is mode 4
+		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData))
+		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
+		self.__tasks.append(asyncio.create_task(self.rebootLoop()))
+
+
+
+	async def rebootLoop(self):
+		while True:
+			upTime = 0
+			if upTime>86400: #Live for more than 24 hours
+				self.__safeMode.run(1) #restart, powering off Pi for 1 minute
 			else:
-				runningTime = int(postBoomTimeFile.read())
-				if runningTime>86400: #Live for more than 24 hours
-					postBoomTimeFile.write(str(0))
-					postBoomTimeFile.close()
-					safe.run(1)
-				else: 
-					postBoomTimeFile.write(str(runningTime+60))
-			await asyncio.sleep(60) #check every 60 seconds if post boom has been running for more than 24 hours
+				upTime += 60
+				await asyncio.sleep(60)
+
+	def cancellAllTasks(self, taskList): #Isn't used in this class, but here anyways
+		try:
+			for t in taskList:
+				t.cancel()
+		except asyncio.exceptions.CancelledException:
+			print("Caught thrown exception in cancelling background task")

@@ -2,8 +2,8 @@ import smbus
 import Drivers.eps.EPS as EPS
 import asyncio
 #####################################################################################
-#All this class does is tell the adruino to shut off the pi for the spesified amout 
-#of time. 
+#All this class does is tell the arduino to shut off the pi for the specified amount
+#of time.
 #times: to pass to the run func
 #pass 1 for 1 min
 #pass 2 for 2 min
@@ -31,10 +31,8 @@ class safe:
         if(saveObject.checkTxWindow())self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, time)
         
     async def thresholdCheck(self):
-        await while True:
-		epsVoltage = eps.getBusVoltage()
-		if epsVoltage < self.thresholdVoltage:
-			run(10) #1 hour
-		await asyncio.sleep(1) #check voltage every second    
-        
-        
+        while True:
+	    epsVoltage = self.__eps.getBusVoltage()
+	    if epsVoltage < self.lowVoltage:
+		    self.run(10) #1 hour
+	    await asyncio.sleep(1) #check voltage every second
