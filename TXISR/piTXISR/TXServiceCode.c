@@ -159,6 +159,7 @@ void main(int argc,char* argv[])
         currentTime = millis();
         if((currentTime - startTime) > transmissionWindow) 
         {
+            DEBUG_P(printing to the file)
             for(int g = 1; g < 11; g++)
             {
                 flags[dataType][g] = timeStamp[g];
@@ -211,7 +212,7 @@ void main(int argc,char* argv[])
             //save all the data in that line
             line[charCount++] = ch;
             if(ch != EOF) ch = fgetc(txFile);
-            PRINT_DEBUG_c(ch)
+            //PRINT_DEBUG_c(ch)
         }
         //transmit the data
         #ifdef DEBUG
@@ -242,7 +243,7 @@ void main(int argc,char* argv[])
             ch = fgetc(txFile);
         }
 
-
+        DEBUG_P(printing to the file)
         //save the last sent time
         for(int g = 1; g < 11; g++)
         {
