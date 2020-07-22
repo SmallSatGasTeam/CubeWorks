@@ -5,7 +5,7 @@ Gets driver data for each data set. Also writes that data to files.
 ### NOTE NEED TO ADD "ASYNC" TO THE DEF FOR EACH METHOD IN THE DRIVER CLASSES
 import sys
 sys.path.append('../')
-from Drivers import *
+import Drivers
 import asyncio
 from .saveTofiles import *
 
@@ -13,35 +13,41 @@ class TTNCData:
 	def __init__(self, saveobject):
 		save = saveobject
 		self.__ttncDataArray = []
+		self.EPS = Drivers.EPS.EPS()
+		self.UVDriver = Drivers.UV.UVDriver()
+		self.RTC = Drivers.rtc.RTC()
+		self.CpuTempSensor = Drivers.cpuTemperature.CpuTemperature()
+		self.TempSensor = Drivers.solarPanelTemp.TempSensor()
 
 	async def getData(self, missionMode):
 		# gets all TTNC data - need to pass in missionMode when calling it
-		timestamp = await RTC.read()
+		timestamp = self.RTC.read()
 		packetType = 1
 		mode = missionMode
-		reboot_count = reboot #not sure how to do this
-		boombox_uv = await UVDriver.read()
-		SP_X_Plus_Temp, SP_Z_Plus_Temp = await TempSensor.read()
-		piTemp = await CpuTemperature.read()
-		EPSMCUTemp = await EPS.getMCUTemp()
-		Cell1Temp = await EPS.getCell1Temp()
-		Cell2Temp = await EPS.getCell2Temp()
-		BattVoltage = await EPS.getBusVoltage()
-		BattCurrent = await EPS.getBusCurrent()
-		BCRVoltage = await EPS.getBCRVoltage()
-		BCRCurrent = await EPS.getBCRCurrent()
-		EPS3V3Current = await EPS.get3v3Current()
-		EPS5VCurrent = await EPS.get5v5Current()
-		SP_X_Voltage = await EPS.getSPXVoltage()
-		SP_X_Plus_Current = await EPS.getSPXPlusCurrent()
-		SP_X_Minus_Current = await EPS.getSPXMinusCurrent()
-		SP_Y_Voltage = await EPS.getSPYVoltage()
-		SP_Y_Plus_Current = await EPS.getSPYPlusCurrent()
-		SP_Y_Minus_Current = await EPS.getSPYMinusCurrent()
-		SP_Z_Voltage = await EPS.getSPZVoltage()
+		reboot_count = 0  #TODO This needs to read in from Shawn's file
+		#No need for await on these, since they're not sleeping
+		boombox_uv = self.UVDriver.read()
+		SP_X_Plus_Temp, SP_Z_Plus_Temp = self.TempSensor.read()
+		piTemp = self.CpuTempSensor.read()
+		EPSMCUTemp = self.EPS.getMCUTemp()
+		Cell1Temp = self.EPS.getCell1Temp()
+		Cell2Temp = self.EPS.getCell2Temp()
+		BattVoltage = self.EPS.getBusVoltage()
+		BattCurrent = self.EPS.getBusCurrent()
+		BCRVoltage = self.EPS.getBCRVoltage()
+		BCRCurrent = self.EPS.getBCRCurrent()
+		EPS3V3Current = self.EPS.get3v3Current()
+		EPS5VCurrent = self.EPS.get5v5Current()
+		SP_X_Voltage = self.EPS.getSPXVoltage()
+		SP_X_Plus_Current = self.EPS.getSPXPlusCurrent()
+		SP_X_Minus_Current = self.EPS.getSPXMinusCurrent()
+		SP_Y_Voltage = self.EPS.getSPYVoltage()
+		SP_Y_Plus_Current = self.EPS.getSPYPlusCurrent()
+		SP_Y_Minus_Current = self.EPS.getSPYMinusCurrent()
+		SP_Z_Voltage = self.EPS.getSPZVoltage()
 
 		#Save the data into an array
-			self.__ttncDataArray = [timestamp, packetType, mode, reboot_count, boombox_uv, SP_X_Plus_Temp, SP_Z_Plus_Temp, piTemp, EPSMCUTemp,
+		self.__ttncDataArray = [timestamp, packetType, mode, reboot_count, boombox_uv, SP_X_Plus_Temp, SP_Z_Plus_Temp, piTemp, EPSMCUTemp,
 				Cell1Temp, BattVoltage, BCRCurrent, EPS3V3Current, EPS5VCurrent, SP_X_Voltage, SP_X_Plus_Current, SP_X_Minus_Current,
 				SP_Y_Voltage, SP_Y_Plus_Current, SP_Y_Minus_Current , SP_Z_Voltage]
 
@@ -51,7 +57,7 @@ class TTNCData:
 
 	async def collectTTNCData(self, mMode):
 		# Data collection loop
-		await while True:
+		while True:
 			# Get TTNC data
 			getData(mMode)
 			# Write data to file
@@ -62,7 +68,7 @@ class TTNCData:
 class DeployData():
 	def __init__(self, saveobject):
 		save = saveobject
-			self.__deployDataArray = []
+		self.__deployDataArray = []
 
 	async def getData(self):
 		#gets all Boom Deployment data
@@ -72,15 +78,15 @@ class DeployData():
 		accelX, accelY, accelZ = await Accelerometer.read()
 
 		#save the data into an array
-			self.__deployDataArray = [timestamp, packetType, boombox_uv, accelX, accelY, accelZ]
+		self.__deployDataArray = [timestamp, packetType, boombox_uv, accelX, accelY, accelZ]
 
 	async def writeData(self):
 		#writes Boom Deployment data array to file
-			save.writeDeploy(self.__deployDataArray)
+		save.writeDeploy(self.__deployDataArray)
 
 	async def collectDeployData(self):
 		# Data collection loop
-		await while True:
+		while True:
 			# Get Deploy data
 			getData()
 			# Write data to file
@@ -91,7 +97,7 @@ class DeployData():
 class AttitudeData():
 	def __init__(self, saveobject):
 		save = saveobject
-			self.__attitudeDataArray = []
+		self.__attitudeDataArray = []
 
 	async def getData(self):
 		#gets all Attitude data
@@ -109,10 +115,10 @@ class AttitudeData():
 
 	async def collectAttitudeData(self):
 		# Data collection loop
-		await while True:
+		while True:
 			# Get Attitude data
-			getData()
+			self.getData()
 			# Write data to file
-			writeData()
+			self.writeData()
 			# Sleep for 1 second (1 Hz)
 			await asyncio.sleep(1)
