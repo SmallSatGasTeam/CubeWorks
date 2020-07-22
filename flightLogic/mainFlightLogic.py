@@ -83,12 +83,14 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
         print("Exception thrown cancelling task - normal")
 
     while True:  # This loop executes the rest of the flight logic
-        if antennaDeployed == True and lastMode != "post boom deploy":
+        #pre boom deploy
+        if antennaDeployed == True and lastMode != "post boom deploy" and lastMode != "boom deploy":
             lastMode = "pre boom deploy"
             recordData()
             asyncio.create_task(preBoomDeploy.run())  # Execute pre-boom deploy, then move to post-boom deploy
             lastMode = "boom deploy"
             recordData()
+        #boom deploy
         elif antennaDeployed == True and lastMode == "boom deploy":
             asyncio.create_task(boomDeploy.run())  # Execute boom deployment, start post-boom deploy
             lastMode = "post boom deploy"
