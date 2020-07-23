@@ -1,11 +1,12 @@
 #include <unistd.h>
 #include <sys/time.h>
+#include <sys/resource.h>
+#include <time.h>
 #include <fcntl.h>
 #include <termios.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <time.h>
 #include <stdint.h>
 //Take just the DEBUG line out when your are done debugging and leave debug.h
 #define DEBUG
@@ -40,7 +41,9 @@ long millis()
 {
     struct timeval current_time;
     gettimeofday(&current_time, NULL);
-    int a = current_time.tv_usec;
+    //get the milli seconds
+    long a = ((current_time.tv_sec) * 1000) + ((current_time.tv_usec) / 1000);
+    PRINT_LONG(a);
     return a;
 }
 
@@ -159,7 +162,7 @@ void main(int argc,char* argv[])
     }
     DEBUG_P(current Time - Start time :)
     PRINT_TIME(currentTime - startTime)
-    
+
     while(ch != END_KEY)
     {
         DEBUG_P(\nSending>>>)
