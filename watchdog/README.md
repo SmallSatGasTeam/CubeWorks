@@ -1,4 +1,4 @@
-GASPACS Software II: The Watchdog Protocol 
+GASPACS Software: The Watchdog Protocol 
 ==
 Watchdog:
 --

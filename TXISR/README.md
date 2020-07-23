@@ -1,4 +1,4 @@
-GASPACS Software III: The TXISR
+GASPACS Software: The TXISR
 ==
 Interrupt:
 --
