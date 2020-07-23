@@ -119,13 +119,13 @@ void main(int argc,char* argv[])
 
     }
     //config linuxs to give us the pins
-    int enable = system(ENABLE);
-    //if we fail reboot
-    if(enable != 0) 
-    {
-        DEBUG_P(Failed to connect to tx pin)
-        exit(1);
-    }
+    // int enable = system(ENABLE);
+    // //if we fail reboot
+    // if(enable != 0) 
+    // {
+    //     DEBUG_P(Failed to connect to tx pin)
+    //     exit(1);
+    // }
 
     //open the serial ports
     int txPort = open(UART_PORT, O_RDWR | O_NOCTTY ); 
@@ -268,13 +268,13 @@ void main(int argc,char* argv[])
     } 
 
      //give control of the port back to linuxs
-     int disable = system(DISABLE);
-     //if we fail reboot
-     if(disable != 0) 
-     {
-         DEBUG_P(Failed to release tx uart pin)
-         exit(1);
-     } 
+    //  int disable = system(DISABLE);
+    //  //if we fail reboot
+    //  if(disable != 0) 
+    //  {
+    //      DEBUG_P(Failed to release tx uart pin)
+    //      exit(1);
+    //  } 
 }
 
 /*******************************************************************************************
