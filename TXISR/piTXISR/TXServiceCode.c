@@ -151,8 +151,15 @@ void main(int argc,char* argv[])
     PRINT_DEBUG(transmissionWindow)
     fgetc(txFile);
     currentTime = millis();
+    
+    //this is where we wait until we hit 5 seconds after this code has been called
+    while((currentTime - startTime) < 5000)
+    { 
+        currentTime = millis();
+    }
     DEBUG_P(current Time - Start time :)
     PRINT_TIME(currentTime - startTime)
+    
     while(ch != END_KEY)
     {
         DEBUG_P(\nSending>>>)
