@@ -151,8 +151,8 @@ void main(int argc,char* argv[])
     PRINT_DEBUG(transmissionWindow)
     fgetc(txFile);
     currentTime = millis();
-    DEBUG_P(Start time - current Time:)
-    PRINT_TIME(startTime - currentTime)
+    DEBUG_P(current Time - Start time :)
+    PRINT_TIME(currentTime - startTime)
     while(ch != END_KEY)
     {
         DEBUG_P(\nSending>>>)
