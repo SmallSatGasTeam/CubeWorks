@@ -104,7 +104,7 @@ void main(int argc,char* argv[])
     //NOTE: WE HAVE TO MAKE THE FLAGS FILE RIGHT OR WE WILL GET SYSTEM FALUIR.
     for (int i =0; i < 5; i++)
     {
-      fscanf(recordFile, "%ld", flags[i]);  
+      fscanf(recordFile, "%ld", &flags[i]);  
       PRINT_TIME(flags[i]);
     }
     DEBUG_P(closing file)
