@@ -152,6 +152,9 @@ void main(int argc,char* argv[])
 
     while(ch != END_KEY)
     {
+        //start the transmition time
+        startTimeTX = millis();
+
         DEBUG_P(\nSending>>>)
         //this checks the transmission window
         currentTime = millis();
@@ -220,15 +223,14 @@ void main(int argc,char* argv[])
             PRINT_DEBUG_CHAR('\n')
         #endif
         //this line of code sends things out on the tx line
-        //start the transmition time
-        startTimeTX = millis();
+        
         write(txPort, line, charCount);
         //delay the right amount of time for the radio
         while((currentTimeTX - startTimeTX) < DELAY_tx)
         { 
             currentTimeTX = millis();
         }
-
+        DEBUG_P(Tx delay: )
         PRINT_TIME(currentTimeTX - startTimeTX)
         
 
