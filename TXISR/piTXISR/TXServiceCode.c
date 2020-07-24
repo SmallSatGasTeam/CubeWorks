@@ -105,12 +105,9 @@ void main(int argc,char* argv[])
     for (int i =0; i < 5; i++)
     {
       fscanf(recordFile, "%ld", flags[i]);  
+      PRINT_TIME(flags[i]);
     }
     DEBUG_P(closing file)
-    for (int i = 0; i< 5; i++)
-    {
-        PRINT_TIME(flags[i]);
-    }
     //config linuxs to give us the pins
     // int enable = system(ENABLE);
     // //if we fail reboot
