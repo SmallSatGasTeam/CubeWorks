@@ -100,11 +100,13 @@ void main(int argc,char* argv[])
     //5 data types
     long flags[5];
     //pop the data types
+    DEBUG_P(opening file)
     //NOTE: WE HAVE TO MAKE THE FLAGS FILE RIGHT OR WE WILL GET SYSTEM FALUIR.
     for (int i =0; i < 5; i++)
     {
       fscanf(recordFile, "%ld", flags[i]);  
     }
+    DEBUG_P(closing file)
     for (int i = 0; i< 5; i++)
     {
         PRINT_TIME(flags[i]);
