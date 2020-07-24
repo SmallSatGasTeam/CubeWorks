@@ -97,29 +97,17 @@ void main(int argc,char* argv[])
     }
 
     //this is where we will store the last transmission
-    //5 data types, the type and the last sent time, 10 chars of time so 4 by 7;
-    int flags[5][11];
+    //5 data types
+    long flags[5];
     //pop the data types
-    for (int i =0; i < 5; )
-    {
-        char temp = fgetc(recordFile);
-        if(temp != ' ') 
-        {
-            flags[i][0] = temp;
-            i++;
-        }
-    }
-
+    //NOTE: WE HAVE TO MAKE THE FLAGS FILE RIGHT OR WE WILL GET SYSTEM FALUIR.
     for (int i =0; i < 5; i++)
     {
-        char temp = fgetc(recordFile);
-        //this populatest The flags array
-        for(int k = 0; temp != ' '; k++)
-        {
-            flags[i][k] = temp;
-            temp = fgetc(recordFile);
-        }
-
+      fscanf(recordFile, "%ld", flags[i]);  
+    }
+    for (int i = 0; i< 5; i++)
+    {
+        PRINT_TIME(flags[i]);
     }
     //config linuxs to give us the pins
     // int enable = system(ENABLE);
@@ -173,12 +161,12 @@ void main(int argc,char* argv[])
             DEBUG_P(printing to the file)
             for(int g = 1; g < 11; g++)
             {
-                flags[dataType][g] = timeStamp[g];
+                //flags[dataType][g] = timeStamp[g];
             }
             //pop the types
             for(int y = 0; y < 5; y++)
             {
-               fputc(flags[y][0], recordFile);
+               //fputc(flags[y][0], recordFile);
             }
             fputc('\n', recordFile);
             //wrtie time stamps
@@ -186,7 +174,7 @@ void main(int argc,char* argv[])
             {
                 for(int g = 0; g < 11; g++)
                 {
-                    fputc(flags[dataType][g], recordFile);
+                    //fputc(flags[dataType][g], recordFile);
                 }
                 fputc(' ', recordFile);
             }
@@ -253,12 +241,12 @@ void main(int argc,char* argv[])
         //save the last sent time
         for(int g = 1; g < 11; g++)
         {
-            flags[dataType][g] = timeStamp[g];
+            //flags[dataType][g] = timeStamp[g];
         }
         //pop the types
         for(int y = 0; y < 5; y++)
         {
-            fputc(flags[y][0], recordFile);
+            //fputc(flags[y][0], recordFile);
         }
         fputc('\n', recordFile);
         //wrtie time stamps
@@ -266,7 +254,7 @@ void main(int argc,char* argv[])
         {
             for(int g = 0; g < 11; g++)
             {
-                fputc(flags[dataType][g], recordFile);
+                //fputc(flags[dataType][g], recordFile);
             }
             fputc(' ', recordFile);
         }
@@ -330,4 +318,5 @@ int changeCharToInt(char a)
             }
     }
 }
+
 
