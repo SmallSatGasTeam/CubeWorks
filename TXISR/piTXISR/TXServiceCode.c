@@ -42,7 +42,7 @@ long millis()
     struct timeval current_time;
     gettimeofday(&current_time, NULL);
     //get the milli seconds
-    long a = ((current_time.tv_sec) * 1000) + ((current_time.tv_usec) / 1000);
+    long a =((current_time.tv_usec) / 1000);
     PRINT_LONG(a)
     return a;
 }
