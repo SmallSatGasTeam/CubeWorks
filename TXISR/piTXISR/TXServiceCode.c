@@ -37,13 +37,13 @@ struct termios options;
 void setUpUart();
 
 //returns ms since the epoch
-unsigned long millis()
+intmax_t millis()
 {
     struct timeval current_time;
     gettimeofday(&current_time, NULL);
     //get the milli seconds
-    unsigned long a = ((current_time.tv_sec) * 1000) + ((current_time.tv_usec) / 1000);
-    PRINT_LONG(a)
+    intmax_t a = ((current_time.tv_sec) * 1000) + ((current_time.tv_usec) / 1000);
+    // PRINT_LONG(a)
     return a;
 }
 
@@ -72,10 +72,10 @@ void main(int argc,char* argv[])
     *Add in any set up commucation to the radio
     * TEST, UART, and the bash commands
     */
-    unsigned long startTime = millis();
-    unsigned long currentTime = millis();
-    unsigned long startTimeTX = 0;
-    unsigned long currentTimeTX = 0;
+    intmax_t startTime = millis();
+    intmax_t currentTime = millis();
+    intmax_t startTimeTX = 0;
+    intmax_t currentTimeTX = 0;
     //gather user input
     int dataType = changeCharToInt(*argv[1]);
     int transmissionWindow = 0;
