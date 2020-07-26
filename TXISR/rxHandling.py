@@ -76,6 +76,8 @@ class TXISR:
         else:
             self.TX = open(self.inputFile, 'r')
             self.readTX()    
+        
+        self.commandRecived()
 
     def sendTosrCheck(self):
         Check(self.rxData[3], self.rxData[1], self.rxData[2])
@@ -109,7 +111,9 @@ class TXISR:
         function if no picture is requested 
         '''
         data = []
-        data = self.getPackets(sys.argv[1], sys.argv[3])
+        #data = self.getPackets(sys.argv[1], sys.argv[3])
+        
+        ### TODO: Get packets from the files on the system
         data.reverse()
         
         numLines = self.packetize(False, data)
@@ -122,17 +126,6 @@ class TXISR:
             
         self.callRadioDriver(numLines, dataType, winDur)
         
-    def callRadioDriver (self, numRecords, dataType, txWindow):
-        '''
-        Function that calls TX EXE
-        '''
-        ### TODO: TEST SUBPROCESS CALL METHOD ON EXE
-
-        FNULL = open(os.devnull, 'w')
-        args = TxExe "-<ARGUMENTS>"
-        subprocess.call(args, stdout=FNULL, stderr=FNULL, shell=False)
-        #subprocess.call(["<PATH_TO_TX_EXE>"])
-        #subprocess.run(["<PATH_TO_FILE>", "-arg1 numRecords", "-dt dataType", "-tw txWindow"])
 
     def packetize(self, isPic, *dataList):
         """
@@ -188,11 +181,12 @@ class TXISR:
         file.close()
         
     ### This part of the code checks to see if we are reciving a command to do something. 
-    def commandRecived(self):
+    def commandReceived(self):
     '''
     Process #4
     '''
         if(self.rxData[0] == 0):
+            ### TODO PROCESS ALL THE OPTIONS FOR THE DATA TYPES
             return
         else :
             #turn off tx
@@ -212,24 +206,6 @@ class TXISR:
 
     def getCanTX(self):
         return self.canTX
-
-#this class handles the tx files
-class txWindows
-    def __init__(self, startTime)
-        self.tx = open(txSchedual)
-        self.startTime = startTime
-
-    #this func will add the window to our tx file
-    def creatTXSchedual(self, schedual):
-        self.tx.append(schedual)
-
-    def waitForTx(self):
-        window = self.tx.readline
-        while((self.startTime + time.time()) != window)
-        {}
-        
-
-
 
 '''
 DEPRETIATED FUNCTIONS:
