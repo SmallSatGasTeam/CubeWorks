@@ -218,13 +218,11 @@ void main(int argc,char* argv[])
         //delay the right amount of time for the radio
         while((currentTimeTX - startTimeTX) < DELAY_tx)
         { 
-            //waste time
-            // for(int i = 0; i < 100; i++){}
             currentTimeTX = millis();
         }
         DEBUG_P(Tx delay: )
-        PRINT_LONG(currentTimeTX)
-        PRINT_LONG(startTimeTX)
+        // PRINT_LONG(currentTimeTX)
+        // PRINT_LONG(startTimeTX)
         PRINT_TIME(currentTimeTX - startTimeTX)
         
 
