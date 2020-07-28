@@ -21,7 +21,7 @@
 #define UART_PORT "/dev/ttyAMA0" //this is serial port name, make sure this is correct for the final code
 
 //this is our time delay
-#define DELAY_tx 120000
+#define DELAY_tx 120
 
 //this is the end of file key we are using it can be changed without effecting the program much
 //NOTE: this char may not appear in the file more then once, and it must be the last char in the 
@@ -43,7 +43,7 @@ intmax_t millis()
     gettimeofday(&current_time, NULL);
     //get the milli seconds
     intmax_t a = ((current_time.tv_sec) * 1000) + ((current_time.tv_usec) / 1000);
-    // PRINT_LONG(a)
+    PRINT_LONG(a)
     return a;
 }
 
@@ -107,15 +107,6 @@ void main(int argc,char* argv[])
       fscanf(recordFile, "%ld", &flags[i]);  
       PRINT_TIME(flags[i]);
     }
-    DEBUG_P(closing file)
-    //config linuxs to give us the pins
-    // int enable = system(ENABLE);
-    // //if we fail reboot
-    // if(enable != 0) 
-    // {
-    //     DEBUG_P(Failed to connect to tx pin)
-    //     exit(1);
-    // }
 
     //open the serial ports
     int txPort = open(UART_PORT, O_RDWR | O_NOCTTY ); 
