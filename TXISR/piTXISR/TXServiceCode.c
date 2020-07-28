@@ -143,7 +143,6 @@ void main(int argc,char* argv[])
 
     while(ch != END_KEY)
     {
-        DEBUG_P(\nSending>>>)
         //this checks the transmission window
         currentTime = millis();
         if((currentTime - startTime) > transmissionWindow) 
@@ -175,6 +174,7 @@ void main(int argc,char* argv[])
         
         DEBUG_P(current Time - Start time:)
         PRINT_TIME(currentTime - startTime)
+        DEBUG_P(\nSending>>>)
         //get the size of each line in the file
         int charCount = 0;
         int end = 0;
