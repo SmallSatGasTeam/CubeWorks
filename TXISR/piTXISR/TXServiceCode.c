@@ -183,46 +183,46 @@ void main(int argc,char* argv[])
             if(ch != EOF) ch = fgetc(txFile);
             //PRINT_DEBUG_c(ch)
         }
-        //transmit the data
-        #ifdef DEBUG
-            for(int i = 0; i < charCount; i++)
-            {
-                PRINT_DEBUG_CHAR(line[i]) 
-            }
-            PRINT_DEBUG_CHAR('\n')
-        #endif
-        //this line of code sends things out on the tx line
-        //start the transmition time
-        startTimeTX = millis();
-        currentTimeTX = 0;
-        write(txPort, line, charCount);
-        //delay the right amount of time for the radio
-        while((currentTimeTX - startTimeTX) < DELAY_tx)
-        { 
-            currentTimeTX = millis();
-        }
-        DEBUG_P(Tx delay: )
-        // PRINT_LONG(currentTimeTX)
-        // PRINT_LONG(startTimeTX)
-        PRINT_TIME(currentTimeTX - startTimeTX)
+        
         
 
-        // if(ch == 10 && ch != EOF)
-        // {
-        //     ch = fgetc(txFile);
-        // }
-        //this stores the last sent data time
-        flags[dataType] = atoi(timeStamp);
-        //save the last sent time
-        for(int g = 0; g < 5; g++)
+        if(ch == 10 && ch != EOF)
         {
-            fprintf(recordFile, "%ld\n", flags[g]);
+            //transmit the data
+            #ifdef DEBUG
+                for(int i = 0; i < charCount; i++)
+                {
+                    PRINT_DEBUG_CHAR(line[i]) 
+                }
+                PRINT_DEBUG_CHAR('\n')
+            #endif
+            //this line of code sends things out on the tx line
+            //start the transmition time
+            startTimeTX = millis();
+            currentTimeTX = 0;
+            write(txPort, line, charCount);
+            //delay the right amount of time for the radio
+            while((currentTimeTX - startTimeTX) < DELAY_tx)
+            { 
+                currentTimeTX = millis();
+            }
+            DEBUG_P(Tx delay: )
+            // PRINT_LONG(currentTimeTX)
+            // PRINT_LONG(startTimeTX)
+            PRINT_TIME(currentTimeTX - startTimeTX)
+            //this stores the last sent data time
+            flags[dataType] = atoi(timeStamp);
+            //save the last sent time
+            for(int g = 0; g < 5; g++)
+            {
+                fprintf(recordFile, "%ld\n", flags[g]);
+            }
         }
         //this is the end of file char we have if we see it we will break the loop
-        if(ch == END_KEY)
-        {
-            break;
-        }
+        // if(ch == END_KEY)
+        // {
+        //     break;
+        // }
     } 
 
      //give control of the port back to linuxs
