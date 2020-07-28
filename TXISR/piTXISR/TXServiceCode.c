@@ -205,19 +205,18 @@ void main(int argc,char* argv[])
         // PRINT_LONG(currentTimeTX)
         // PRINT_LONG(startTimeTX)
         PRINT_TIME(currentTimeTX - startTimeTX)
+        
+
+        // if(ch == 10 && ch != EOF)
+        // {
+        //     ch = fgetc(txFile);
+        // }
         //this stores the last sent data time
         flags[dataType] = atoi(timeStamp);
-
-        if(ch == 10 && ch != EOF)
-        {
-            ch = fgetc(txFile);
-        }
-
         //save the last sent time
         for(int g = 0; g < 5; g++)
         {
-            fprintf(recordFile, "%ld", flags[g]);
-            fputc(recordFile, "\n");
+            fprintf(recordFile, "%ld\n", flags[g]);
         }
         //this is the end of file char we have if we see it we will break the loop
         if(ch == END_KEY)
