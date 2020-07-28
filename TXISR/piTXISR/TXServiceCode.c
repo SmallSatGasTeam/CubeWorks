@@ -135,10 +135,10 @@ void main(int argc,char* argv[])
     
     DEBUG_P(Waiting for tx window>>>)
     //this is where we wait until we hit 5 seconds after this code has been called
-    // while((currentTime - startTime) < 5000)
-    // { 
-    //     currentTime = millis();
-    // }
+    while((currentTime - startTime) < 5000)
+    { 
+        currentTime = millis();
+    }
     DEBUG_P(current Time - Start time :)
     PRINT_TIME(currentTime - startTime)
 
@@ -214,6 +214,7 @@ void main(int argc,char* argv[])
         //this line of code sends things out on the tx line
         //start the transmition time
         startTimeTX = millis();
+        currentTimeTX = 0;
         write(txPort, line, charCount);
         //delay the right amount of time for the radio
         while((currentTimeTX - startTimeTX) < DELAY_tx)
