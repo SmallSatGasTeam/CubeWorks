@@ -222,12 +222,12 @@ void main(int argc,char* argv[])
         #endif
         //this line of code sends things out on the tx line
         //start the transmition time
-        startTimeTX = millis();
+        startTimeTX = millis() - currentTime;
         write(txPort, line, charCount);
         //delay the right amount of time for the radio
         while((currentTimeTX - startTimeTX) < DELAY_tx)
         { 
-            currentTimeTX = millis();
+            currentTimeTX = millis() - currentTime;
         }
         DEBUG_P(Tx delay: )
         PRINT_LONG(currentTimeTX)
