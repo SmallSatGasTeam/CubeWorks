@@ -1,6 +1,5 @@
 import io
 import sys
-# import Check - DOESN'T EXIST
 import sqlite3
 import struct
 import subprocess
@@ -10,15 +9,6 @@ import time
 #we need import jacks camera code from the drivers
 #we need import the boom deployer code from the drivers
 
-### TODO: pass file location to Radio TX EXE
-        ###import the camera driver
-        ###import the boom driver
-        ###import the command to tell the pi to turn off (watchdog)
-        
-        
-### TODO: Write the Epoch time stamp (miliseconds) at the beginning of the transmission
-### TODO: Pass Datatype to shawn's code 
-### TODO: flag last tramission
         
 '''
 Processes:
@@ -49,25 +39,18 @@ class TXISR:
     # inputFile = "/dev/tty/AMA0"
     inputFile = "C:/Users/Get Away Special/Desktop/Build RX H/transTestAttitude.txt"
     
-   
     def readTX(self):
-        '''
-        Process #1 & #3
-        '''
+    '''
+    Read-in and decode transmission. Place decoded transmission in rxData
+    '''
         for i in range(5):
             currentData = self.TX.readline()
-            currentData = self.decodeTX(currentData)
+            # Commented out for testing purposes:
+            # currentData = bytes.fromhex(hexMessage).decode('utf-8')
+            # testing functionality:
+            currentData = int(hexMessage, 0)
             self.rxData.append(currentData)
             
-    def decodeTX(self, hexMessage):
-        '''
-        Process #2
-        '''
-        # USE THIS IN ACTUAL CODE:::
-        # return bytes.fromhex(hexMessage).decode('utf-8')
-        # testing RETURN VALUE FOR RECIEVING A STRING:
-        return int(hexMessage, 0)
-
     def __init__(self):
          
         if not path.exists(self.inputFile):
@@ -95,38 +78,22 @@ class TXISR:
         else:
             exit(1)
         
+        ### TODO: getPicture no longer defined since deprecation of database
         data = self.getPicture(picNum, picRes)
 
-        numLines = self.packetize(True, data)
-
-        # delay 5 seconds to the start of the transmission window, then call Radio Driver
-        curTime = calendar.timegm(time.gmtime())
-        delay = ((winStart - curTime) - 5)
-        time.sleep(delay)
-            
-        self.callRadioDriver(numLines, dataType, winDur)
-        
+        self.packetize(True, data)
+ 
     def driveDataType (self, dataType):   
         '''
         function if no picture is requested 
         '''
-        data = []
-        #data = self.getPackets(sys.argv[1], sys.argv[3])
-        
+        data = [()]
+
         ### TODO: Get packets from the files on the system
         data.reverse()
         
-        numLines = self.packetize(False, data)
+        self.packetize(False, data)
         
-        # delay 5 seconds to the start of the transmission window, then call Radio Driver
-        ## TODO: MOVE THIS THE THE INTURRUPT CODE:
-        curTime = calendar.timegm(time.gmtime())
-        delay = ((winStart - curTime) - 5)
-        time.sleep(delay)
-            
-        self.callRadioDriver(numLines, dataType, winDur)
-        
-
     def packetize(self, isPic, *dataList):
         """
         Takes an list(tuple(data)) from the database and writes a binary stream to a file
@@ -203,12 +170,11 @@ class TXISR:
             else :
                 return
                 
-
     def getCanTX(self):
         return self.canTX
 
 '''
-DEPRETIATED FUNCTIONS:
+DEPRECATED FUNCTIONS:
 
     
     def driveSql (self, packType, winStart, winDur, dataType, sqlStatement):
