@@ -21,7 +21,7 @@
 #define UART_PORT "/dev/ttyAMA0" //this is serial port name, make sure this is correct for the final code
 
 //this is our time delay
-#define DELAY_tx 120
+#define DELAY_tx 120000
 
 //this is the end of file key we are using it can be changed without effecting the program much
 //NOTE: this char may not appear in the file more then once, and it must be the last char in the 
@@ -222,12 +222,12 @@ void main(int argc,char* argv[])
         #endif
         //this line of code sends things out on the tx line
         //start the transmition time
-        startTimeTX = millis() - currentTime;
+        startTimeTX = millis();
         write(txPort, line, charCount);
         //delay the right amount of time for the radio
         while((currentTimeTX - startTimeTX) < DELAY_tx)
         { 
-            currentTimeTX = millis() - currentTime;
+            currentTimeTX = millis();
         }
         DEBUG_P(Tx delay: )
         PRINT_LONG(currentTimeTX)
