@@ -135,10 +135,10 @@ void main(int argc,char* argv[])
     
     DEBUG_P(Waiting for tx window>>>)
     //this is where we wait until we hit 5 seconds after this code has been called
-    while((currentTime - startTime) < 5000)
-    { 
-        currentTime = millis();
-    }
+    // while((currentTime - startTime) < 5000)
+    // { 
+    //     currentTime = millis();
+    // }
     DEBUG_P(current Time - Start time :)
     PRINT_TIME(currentTime - startTime)
 
