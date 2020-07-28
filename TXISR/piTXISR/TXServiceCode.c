@@ -40,7 +40,7 @@ void setUpUart();
 intmax_t millis()
 {
     struct timeval current_time;
-    gettime(&current_time, NULL);
+    clock_gettime(&current_time, NULL);
     //get the milli seconds
     intmax_t a = ((current_time.tv_sec) * 1000) + ((current_time.tv_usec) / 1000);
     PRINT_LONG(a)
