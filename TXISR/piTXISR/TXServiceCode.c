@@ -43,7 +43,6 @@ intmax_t millis()
     clock_gettime(CLOCK_MONOTONIC_RAW, &current_time);
     //get the milli seconds
     intmax_t a = ((current_time.tv_sec) * 1000) + ((current_time.tv_nsec) / 1000000);
-    PRINT_LONG(a)
     return a;
 }
 
@@ -219,9 +218,8 @@ void main(int argc,char* argv[])
         //delay the right amount of time for the radio
         while((currentTimeTX - startTimeTX) < DELAY_tx)
         { 
-            DEBUG_P(staring wait)
             //waste time
-            for(int i = 0; i < 100; i++){}
+            // for(int i = 0; i < 100; i++){}
             currentTimeTX = millis();
         }
         DEBUG_P(Tx delay: )
