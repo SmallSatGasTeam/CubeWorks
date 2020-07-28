@@ -145,28 +145,9 @@ void main(int argc,char* argv[])
     {
         //this checks the transmission window
         currentTime = millis();
+        //break if we have passed the tx window
         if((currentTime - startTime) > transmissionWindow) 
         {
-            DEBUG_P(printing to the file)
-            for(int g = 1; g < 11; g++)
-            {
-                //flags[dataType][g] = timeStamp[g];
-            }
-            //pop the types
-            for(int y = 0; y < 5; y++)
-            {
-               //fputc(flags[y][0], recordFile);
-            }
-            fputc('\n', recordFile);
-            //wrtie time stamps
-            for(int i = 0; i < 5; i++)
-            {
-                for(int g = 0; g < 11; g++)
-                {
-                    //fputc(flags[dataType][g], recordFile);
-                }
-                fputc(' ', recordFile);
-            }
             DEBUG_P(\nEnding>>>)
             break;
         }
@@ -224,7 +205,8 @@ void main(int argc,char* argv[])
         // PRINT_LONG(currentTimeTX)
         // PRINT_LONG(startTimeTX)
         PRINT_TIME(currentTimeTX - startTimeTX)
-        
+        //this stores the last sent data time
+        flags[dataType] = atoi(timeStamp);
 
         if(ch == 10 && ch != EOF)
         {
@@ -232,24 +214,10 @@ void main(int argc,char* argv[])
         }
 
         //save the last sent time
-        for(int g = 1; g < 11; g++)
+        for(int g = 0; g < 5; g++)
         {
-            //flags[dataType][g] = timeStamp[g];
-        }
-        //pop the types
-        for(int y = 0; y < 5; y++)
-        {
-            //fputc(flags[y][0], recordFile);
-        }
-        fputc('\n', recordFile);
-        //wrtie time stamps
-        for(int i = 0; i < 5; i++)
-        {
-            for(int g = 0; g < 11; g++)
-            {
-                //fputc(flags[dataType][g], recordFile);
-            }
-            fputc(' ', recordFile);
+            fprintf(recordFile, "%ld", flags[g]);
+            fputc(recordFile, "\n");
         }
         //this is the end of file char we have if we see it we will break the loop
         if(ch == END_KEY)
