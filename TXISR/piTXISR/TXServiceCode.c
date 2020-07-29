@@ -185,6 +185,7 @@ void main(int argc,char* argv[])
             else if (ch == 58)
             {
                 end = 1;
+                DEBUG_P(END)
             }
             //save all the data in that line
             line[charCount++] = ch;
