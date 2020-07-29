@@ -28,6 +28,11 @@
 //  input file
 #define END_KEY '@'
 
+//this defines are for the data types
+#define MAX_BYTES_PER_LINE 256
+#define MAX_NUM_OF_DATA_TYPES 5
+#define DELAY_UNTIL_TX_WINDOW 5000
+#define SIZE_OF_TIME_STAMP 10
 
 int changeCharToInt(char a);
 
@@ -97,11 +102,11 @@ void main(int argc,char* argv[])
 
     //this is where we will store the last transmission
     //5 data types
-    long flags[5];
+    long flags[MAX_NUM_OF_DATA_TYPES];
     //pop the data types
     DEBUG_P(opening file)
     //NOTE: WE HAVE TO MAKE THE FLAGS FILE RIGHT OR WE WILL GET SYSTEM FALUIR.
-    for (int i =0; i < 5; i++)
+    for (int i =0; i < MAX_NUM_OF_DATA_TYPES; i++)
     {
       fscanf(recordFile, "%ld", &flags[i]);  
       PRINT_TIME(flags[i]);
@@ -123,9 +128,9 @@ void main(int argc,char* argv[])
 
     //read in all the lines of a file
     char ch = 0;
-    //set up array for tx, the max is 128, so we better not exceed that anyways so using an array of 128 is fine.
-    char line[128] = {0};
-    char timeStamp[10];
+    //set up array for tx, the max is 256, so we better not exceed that anyways so using an array of 256 is fine.
+    char line[MAX_BYTES_PER_LINE] = {0};
+    char timeStamp[SIZE_OF_TIME_STAMP];
     //get tx time
     fscanf(txFile, "%d", &transmissionWindow);
     PRINT_DEBUG(transmissionWindow)
@@ -134,7 +139,7 @@ void main(int argc,char* argv[])
     
     DEBUG_P(Waiting for tx window>>>)
     //this is where we wait until we hit 5 seconds after this code has been called
-    while((currentTime - startTime) < 5000)
+    while((currentTime - startTime) < DELAY_UNTIL_TX_WINDOW)
     { 
         currentTime = millis();
     }
@@ -160,7 +165,7 @@ void main(int argc,char* argv[])
         int charCount = 0;
         int end = 0;
         int charTimeCount = 1;
-        for (int i = 0; i < 128; i++)
+        for (int i = 0; i < MAX_BYTES_PER_LINE; i++)
         {
             line[i] = '0';
         }
@@ -213,7 +218,7 @@ void main(int argc,char* argv[])
             //this stores the last sent data time
             flags[dataType] = atoi(timeStamp);
             //save the last sent time
-            for(int g = 0; g < 5; g++)
+            for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
             {
                 fprintf(recordFile, "%ld\n", flags[g]);
             }
@@ -258,6 +263,7 @@ int changeCharToInt(char a)
 {
     switch(a)
     {
+        //use assci table to decode this part of the code
         case 48:
             return 0;
         case 49:
