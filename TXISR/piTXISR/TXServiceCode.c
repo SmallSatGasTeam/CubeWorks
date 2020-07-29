@@ -182,7 +182,7 @@ void main(int argc,char* argv[])
                 timeStamp[charTimeCount++] = ch;
                 PRINT_DEBUG_c(ch)
             }
-            else if (ch == ':')
+            if (ch == ':')
             {
                 end = 1;
                 DEBUG_P(END)
