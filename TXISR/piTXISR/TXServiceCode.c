@@ -33,6 +33,8 @@
 #define MAX_NUM_OF_DATA_TYPES 5
 #define DELAY_UNTIL_TX_WINDOW 5000
 #define SIZE_OF_TIME_STAMP 10
+#define PHOTO_TYPE 3
+#define TIME_DEVISOR ':'
 
 int changeCharToInt(char a);
 
@@ -182,12 +184,13 @@ void main(int argc,char* argv[])
                 timeStamp[charTimeCount++] = ch;
                 //PRINT_DEBUG_c(ch)
             }
-            if (ch == ':')
+            if (ch == TIME_DEVISOR)
             {
                 end = 1;
             }
             //save all the data in that line
-            line[charCount++] = ch;
+            //this if lets us not send the line number if this is a photo file
+            if(dataType != PHOTO_TYPE || end)line[charCount++] = ch;
             //PRINT_DEBUG_c(ch)
             //DEBUG_P(Im in the sub loop)
         }while(ch != 10 && !feof(txFile));
