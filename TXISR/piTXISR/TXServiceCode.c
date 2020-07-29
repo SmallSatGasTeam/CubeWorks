@@ -180,6 +180,7 @@ void main(int argc,char* argv[])
             if(!end && !feof(txFile))
             {
                 timeStamp[charTimeCount++] = ch;
+                PRINT_DEBUG_c(ch)
             }
             else if (ch == 58)
             {
