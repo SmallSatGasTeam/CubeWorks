@@ -252,7 +252,7 @@ void main(int argc,char* argv[])
             // PRINT_LONG(startTimeTX)
             PRINT_TIME(currentTimeTX - startTimeTX)
             //this stores the last sent data time
-            flags[dataType] = atoi(timeStamp);
+            flags[dataType] = strtoll(timeStamp, NULL, 10);
             
         }
         //this is the end of file char we have if we see it we will break the loop
