@@ -164,7 +164,7 @@ void main(int argc,char* argv[])
         //get the size of each line in the file
         int charCount = 0;
         int end = 0;
-        int charTimeCount = 1;
+        int charTimeCount = 0;
         for (int i = 0; i < MAX_BYTES_PER_LINE; i++)
         {
             line[i] = '0';
@@ -178,7 +178,7 @@ void main(int argc,char* argv[])
             //this collects the time stamp
             if(!end && !feof(txFile))
             {
-                timeStamp[charTimeCount - 2] = ch;
+                timeStamp[charTimeCount++] = ch;
             }
             else if (ch == 58)
             {
