@@ -146,7 +146,7 @@ void main(int argc,char* argv[])
     DEBUG_P(current Time - Start time :)
     PRINT_TIME(currentTime - startTime)
 
-    while(ch != NULL)
+    while(!feof(txFile))
     {
         //this checks the transmission window
         currentTime = millis();
@@ -173,10 +173,10 @@ void main(int argc,char* argv[])
         ch = fgetc(txFile);
         DEBUG_P(Im in the main loop)
 
-        while(ch != 10 && ch != NULL)
+        while(ch != 10 && !feof(txFile))
         {
             //this collects the time stamp
-            if(!end && ch != EOF)
+            if(!end && !feof(txFile))
             {
                 timeStamp[charTimeCount - 2] = ch;
             }
@@ -194,7 +194,7 @@ void main(int argc,char* argv[])
         
         
 
-        if(ch == 10 || ch == 0)
+        if(ch == 10 || feof(txFile))
         {
             //transmit the data
             #ifdef DEBUG
