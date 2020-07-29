@@ -221,7 +221,7 @@ void main(int argc,char* argv[])
                     for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
                     {
                         //delete the existing data
-                        close(recordFile);
+                        fclose(recordFile);
                         if (recordFile = fopen(FLAG_FILE,"w"))
                         {
                             //if succesfull we will print it and set the written to true else we will try again.
