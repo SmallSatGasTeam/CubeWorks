@@ -189,7 +189,7 @@ void main(int argc,char* argv[])
             line[charCount++] = ch;
             //PRINT_DEBUG_c(ch)
             //DEBUG_P(Im in the sub loop)
-        }while(ch != 10 && !feof(txFile))
+        }while(ch != 10 && !feof(txFile));
         
         
 
