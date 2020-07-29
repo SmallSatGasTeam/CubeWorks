@@ -169,12 +169,13 @@ void main(int argc,char* argv[])
         {
             line[i] = '0';
         }
-        //get the first byte
-        ch = fgetc(txFile);
+        
         //DEBUG_P(Im in the main loop)
 
-        while(ch != 10 && !feof(txFile))
+        do 
         {
+            if(feof(txFile)) break;
+            ch = fgetc(txFile);
             //this collects the time stamp
             if(!end && !feof(txFile))
             {
@@ -186,11 +187,9 @@ void main(int argc,char* argv[])
             }
             //save all the data in that line
             line[charCount++] = ch;
-            if(feof(txFile)) break;
-            ch = fgetc(txFile);
             //PRINT_DEBUG_c(ch)
             //DEBUG_P(Im in the sub loop)
-        }
+        }while(ch != 10 && !feof(txFile))
         
         
 
