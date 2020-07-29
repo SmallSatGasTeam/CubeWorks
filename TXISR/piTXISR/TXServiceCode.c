@@ -186,7 +186,7 @@ void main(int argc,char* argv[])
             }
             //save all the data in that line
             line[charCount++] = ch;
-            if(ch == NULL) break;
+            if(feof(txFile)) break;
             ch = fgetc(txFile);
             PRINT_DEBUG_c(ch)
             DEBUG_P(Im in the sub loop)
