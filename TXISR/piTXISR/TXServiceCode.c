@@ -180,12 +180,11 @@ void main(int argc,char* argv[])
             if(!end && !feof(txFile))
             {
                 timeStamp[charTimeCount++] = ch;
-                PRINT_DEBUG_c(ch)
+                //PRINT_DEBUG_c(ch)
             }
             if (ch == ':')
             {
                 end = 1;
-                DEBUG_P(END)
             }
             //save all the data in that line
             line[charCount++] = ch;
