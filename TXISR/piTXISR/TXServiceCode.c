@@ -217,16 +217,18 @@ void main(int argc,char* argv[])
                 currentTimeTX = millis();
                 if(!written)
                 {
-                    //print the last sent time
-                    for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
-                    {
+                    
                         //delete the existing data
                         fclose(recordFile);
                         if (recordFile = fopen(FLAG_FILE,"w"))
                         {
                             //if succesfull we will print it and set the written to true else we will try again.
                             //reprint it
-                            fprintf(recordFile, "%ld\n", flags[g]);
+                            //print the last sent time
+                            for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
+                            {
+                                fprintf(recordFile, "%ld\n", flags[g]);
+                            }
                             //set written to true
                             written = 1;
                         }
@@ -236,14 +238,13 @@ void main(int argc,char* argv[])
                             remove(FLAG_FILE);
                             //recreate the file
                             recordFile = fopen(FLAG_FILE,"w");
-                            //reprint it
-                            fprintf(recordFile, "%ld\n", flags[g]);
+                            for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
+                            {
+                                fprintf(recordFile, "%ld\n", flags[g]);
+                            }
                             //set written to true
                             written = 1;
                         }
-                        
-                        
-                    }
                 }
             }
             DEBUG_P(Tx delay: )
