@@ -36,6 +36,10 @@
 #define PHOTO_TYPE 3
 #define TIME_DEVISOR ':'
 
+//NOTE: becasue of how we have to set the boud rate I cannot use a define for it in ceritian places, just do a contrl f and look for BOUD_RATE
+//it is place next to every place that the boud rate is used, you also need to change the define as it is used as well.
+#define BOUD_RATE 9600
+
 int changeCharToInt(char a);
 
 //this sets control of the settings for our serial port
@@ -216,8 +220,8 @@ void main(int argc,char* argv[])
             write(txPort, line, charCount);
             //this will let us print to the file
             int written = 0;
-            //delay the right amount of time for the radio
-            while((currentTimeTX - startTimeTX) < DELAY_tx)
+            //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate
+            while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
             { 
                 currentTimeTX = millis();
                 if(!written)
@@ -284,7 +288,8 @@ void main(int argc,char* argv[])
 void setUpUart()
 {
     //set the baud rate, it is the number with a b infornt of it ex 115200 -> B115200
-    cfsetspeed(&options, B115200);
+    //BOUD_RATE
+    cfsetspeed(&options, B9600);
 
     //set up the number of data bits
     options.c_cflag &= ~CSIZE;
