@@ -187,10 +187,12 @@ void main(int argc,char* argv[])
             if (ch == TIME_DEVISOR)
             {
                 end = 1;
+                //if you dont wanna send the : uncommit the next line into the code
+                //continue;
             }
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
-            if(dataType != PHOTO_TYPE || end)line[charCount++] = ch;
+            if((dataType != PHOTO_TYPE || end) && ch != TIME_DEVISOR)line[charCount++] = ch;
             //PRINT_DEBUG_c(ch)
             //DEBUG_P(Im in the sub loop)
         }while(ch != 10 && !feof(txFile));
