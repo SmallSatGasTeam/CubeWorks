@@ -171,6 +171,7 @@ void main(int argc,char* argv[])
         }
         //get the first byte
         ch = fgetc(txFile);
+        DEBUG_P(Im in the main loop)
 
         while(ch != 10 && ch != NULL)
         {
@@ -188,6 +189,7 @@ void main(int argc,char* argv[])
             if(ch == NULL) break;
             ch = fgetc(txFile);
             PRINT_DEBUG_c(ch)
+            DEBUG_P(Im in the sub loop)
         }
         
         
