@@ -171,7 +171,7 @@ void main(int argc,char* argv[])
         }
         //get the first byte
         ch = fgetc(txFile);
-        DEBUG_P(Im in the main loop)
+        //DEBUG_P(Im in the main loop)
 
         while(ch != 10 && !feof(txFile))
         {
@@ -188,8 +188,8 @@ void main(int argc,char* argv[])
             line[charCount++] = ch;
             if(feof(txFile)) break;
             ch = fgetc(txFile);
-            PRINT_DEBUG_c(ch)
-            DEBUG_P(Im in the sub loop)
+            //PRINT_DEBUG_c(ch)
+            //DEBUG_P(Im in the sub loop)
         }
         
         
@@ -209,10 +209,42 @@ void main(int argc,char* argv[])
             startTimeTX = millis();
             currentTimeTX = 0;
             write(txPort, line, charCount);
+            //this will let us print to the file
+            int written = 0;
             //delay the right amount of time for the radio
             while((currentTimeTX - startTimeTX) < DELAY_tx)
             { 
                 currentTimeTX = millis();
+                if(!written)
+                {
+                    //print the last sent time
+                    for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
+                    {
+                        //delete the existing data
+                        close(recordFile);
+                        if (recordFile = fopen(FLAG_FILE,"w"))
+                        {
+                            //if succesfull we will print it and set the written to true else we will try again.
+                            //reprint it
+                            fprintf(recordFile, "%ld\n", flags[g]);
+                            //set written to true
+                            written = 1;
+                        }
+                        //if we fail recreate the file
+                        else
+                        {
+                            remove(FLAG_FILE);
+                            //recreate the file
+                            recordFile = fopen(FLAG_FILE,"w");
+                            //reprint it
+                            fprintf(recordFile, "%ld\n", flags[g]);
+                            //set written to true
+                            written = 1;
+                        }
+                        
+                        
+                    }
+                }
             }
             DEBUG_P(Tx delay: )
             // PRINT_LONG(currentTimeTX)
@@ -220,11 +252,7 @@ void main(int argc,char* argv[])
             PRINT_TIME(currentTimeTX - startTimeTX)
             //this stores the last sent data time
             flags[dataType] = atoi(timeStamp);
-            //save the last sent time
-            for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
-            {
-                fprintf(recordFile, "%ld\n", flags[g]);
-            }
+            
         }
         //this is the end of file char we have if we see it we will break the loop
         // if(ch == END_KEY)
