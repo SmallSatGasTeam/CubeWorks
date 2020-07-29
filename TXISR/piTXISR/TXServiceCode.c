@@ -172,7 +172,7 @@ void main(int argc,char* argv[])
         //get the first byte
         ch = fgetc(txFile);
 
-        while(ch != 10)
+        while(ch != 10 && ch != EOF)
         {
             //this collects the time stamp
             if(!end && ch != EOF)
@@ -191,7 +191,7 @@ void main(int argc,char* argv[])
         
         
 
-        if(ch == 10)
+        if(ch == 10 || ch == EOF)
         {
             //transmit the data
             #ifdef DEBUG
