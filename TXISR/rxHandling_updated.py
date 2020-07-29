@@ -65,6 +65,8 @@ class TXISR:
                 self.drivePic(self.rxData[3])
             else if(self.rxData[3] == 4):
                 # Process LQ Picture
+            else if(self.rxData[3] == 5):
+                # Add window to file 
             return
         else :
             #turn off tx
@@ -146,3 +148,4 @@ class TXISR:
 ### TODO: Add reading in from file-like database
 ### TODO: Add Command functionality
 ### TODO: Add processing of camera
+### TODO: Process AX25 Packets

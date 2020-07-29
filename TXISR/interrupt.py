@@ -11,12 +11,13 @@ import rxHandling
 # Voltage comming through pin upon reception 
 CONST_VOLTAGE = 1.5
 
+TRASMIT_EXE = "TXService.run"
+
 if __name__ == 'main'():
    '''
    start two infinitely running functions
    '''
    
-   #
    p1 = Process(target=watchTxWindows)
    p1.start()
    p2 = Process(target=inturruptWatchReceptions)
@@ -64,7 +65,7 @@ def watchTxWindows():
     '''
 
     FNULL = open(os.devnull, 'w')
-    args = TxExe "-<ARGUMENTS>"
+    args = TRASMIT_EXE "-<ARGUMENTS>"
     subprocess.call(args, stdout=FNULL, stderr=FNULL, shell=False)
     #subprocess.call(["<PATH_TO_TX_EXE>"])
     #subprocess.run(["<PATH_TO_FILE>", "-arg1 numRecords", "-dt dataType", "-tw txWindow"])   
