@@ -1,2 +1,2 @@
-900000
-1234567890:Nothing for now
+9
+1234567890: Nothing for now
