@@ -16,17 +16,12 @@
 #define ENABLE "./configPinsTXISR"
 #define DISABLE "./configPinsTXISRDone"
 
-#define FLAG_FILE "./out.txt" //change this later for the real program
-#define FORMAT_FILE "./temp.txt" //this is the file that dallan will creat
+#define FLAG_FILE "./flagsFile.txt" //change this later for the real program
+#define FORMAT_FILE "./txFile.txt" //this is the file that dallan will creat
 #define UART_PORT "/dev/ttyAMA0" //this is serial port name, make sure this is correct for the final code
 
 //this is our time delay
 #define DELAY_tx 120
-
-//this is the end of file key we are using it can be changed without effecting the program much
-//NOTE: this char may not appear in the file more then once, and it must be the last char in the 
-//  input file
-#define END_KEY '@'
 
 //this defines are for the data types
 #define MAX_BYTES_PER_LINE 256
@@ -220,7 +215,8 @@ void main(int argc,char* argv[])
             write(txPort, line, charCount);
             //this will let us print to the file
             int written = 0;
-            //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate
+            //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
+            //cause this will make no diffrence. 
             while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
             { 
                 currentTimeTX = millis();
