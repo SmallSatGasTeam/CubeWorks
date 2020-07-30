@@ -16,8 +16,8 @@
 #define ENABLE "./configPinsTXISR"
 #define DISABLE "./configPinsTXISRDone"
 
-#define FLAG_FILE "./flagsFile.txt" //change this later for the real program
-#define FORMAT_FILE "./txFile.txt" //this is the file that dallan will creat
+#define FLAG_FILE "./out.txt" //change this later for the real program
+#define FORMAT_FILE "./temp.txt" //this is the file that dallan will creat
 #define UART_PORT "/dev/ttyAMA0" //this is serial port name, make sure this is correct for the final code
 
 //this is our time delay
