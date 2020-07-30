@@ -134,8 +134,10 @@ class TXISR:
                 
                 f.write('\n')
                 linesTotal += 1
-            f.write('@')
-            f.write('\n')
+                #Don't need this anymore I updated my code so it doesn't use this any more -Shawn
+            #f.write('@')
+            #Don't add an extra line at the end of the file as we will TXService code will send it as data, and we dont wanna do that. -Shawn
+            #f.write('\n')
         f.write(str(linesTotal))
         f.close()
         return linesTotal 
