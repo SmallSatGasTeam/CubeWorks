@@ -11,7 +11,11 @@ import rxHandling
 # Voltage comming through pin upon reception 
 CONST_VOLTAGE = 1.5
 
+# Code that runs 
 TRASMIT_EXE = "TXService.run"
+    
+# file with tx windows and durations. Eachline should have <timestamp of start of tx window> <duration of window>
+TX_WINDOWS_FILE = "TxWindows.txt"
 
 if __name__ == 'main'():
    '''
@@ -35,10 +39,8 @@ def watchTxWindows():
     '''
     # get current time
     current_time = int(time.time())
-    
-    # file with tx windows and durations. Eachline should have <timestamp of start of tx window> <duration of window>
-    filePath = "C:/Users/dstevens/Documents/GitHub/CubeWorks/TXISR/testFiles/TxWindows.txt"
-    f = open(filePath, 'r')
+
+    f = open(TX_WINDOWS_FILE, 'r')
     
     nextTimeFound = False 
     
@@ -56,7 +58,6 @@ def watchTxWindows():
             time.sleep(delay - 5)
         
             callRadioDriver(line[1])
-    
     f.close()  
     
  def callRadioDriver (txWindow):

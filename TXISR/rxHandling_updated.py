@@ -6,14 +6,26 @@ import subprocess
 import calendar
 import time
 
-
 class TXISR:
     
     # List that stores eveything recieved in the transmission
     rxData = ['#']
-    
+       
     # Define location of file where the data will be placed while waiting transmission
-    outputFile = "test.txt"
+    outputFile = "txFile.txt"
+    
+    #define location where we will put the flags (flags are the last time each datatype trasmitted)
+    flagsFile = "flagsFile.txt"
+    
+    # Datatype Files
+    attitudeDataFile = "attitudeData.txt"
+    TTCDataFile = "ttcData.txt"
+    deployDataFile = "deployData.txt"
+    HQPicFile = "hpPicData.txt"
+    LQPicFile = "lqPicData.txt"
+    
+    # TX Window Files
+    TxWindows = "TxWindows.txt"
     
     # Define file where transmission will be recieved
     # commented out for testing purposes:
@@ -57,16 +69,23 @@ class TXISR:
             ### TODO PROCESS ALL THE OPTIONS FOR THE DATA TYPES
             if(self.rxData[3] == 0):
                 # Process Attitude Data
+                driveDataType(self.attitudeDataFile)
             else if(self.rxData[3] == 1):
                 # Process TT&C Data
+                driveDataType(self.TTCDataFile)
             else if(self.rxData[3] == 2):
                 # Process Deployment Data
+                driveDataType(self.deployDataFile)
             else if(self.rxData[3] == 3):
-                self.drivePic(self.rxData[3])
+                # Process HQ Picture
+                # PicRes 0 - LQ 1 - HQ
+                drivePic(self.HQPicFile, 1, self.rxData[4])
             else if(self.rxData[3] == 4):
                 # Process LQ Picture
+                # PicRes 0 - LQ 1 - HQ
+                drivePic(self.LQPicFile, 0, self.rxData[4])
             else if(self.rxData[3] == 5):
-                # Add window to file 
+                # Add TX window to file 
             return
         else :
             #turn off tx
@@ -83,9 +102,9 @@ class TXISR:
             else :
                 return
     
-    def driveDataType (self, dataType):   
+    def driveDataType (self, dataFile):   
         '''
-        function if no picture is requested 
+        Function if we are processing a datatype
         '''
         data = [()]
 
@@ -93,6 +112,19 @@ class TXISR:
         data.reverse()
         
         numLines = self.packetize(False, data)
+    
+    def drivePic (self, dataFile, picRes, picNum):
+        '''
+        function if we are processing a  picture
+        PicRes 0 - LQ 1 - HQ
+        '''
+        data = [()]
+        
+        ### TODO: getPicture no longer defined since deprecation of database
+        data = self.getPicture(picNum, picRes)
+
+        numLines = self.packetize(True, data)
+ 
         
     def packetize(self, isPic, *dataList):
         """
@@ -145,7 +177,13 @@ class TXISR:
         file.truncate(0)
         file.close()        
     
+'''
+timestamp';' datapacket
+timestamp';'     
+'''
+    
 ### TODO: Add reading in from file-like database
 ### TODO: Add Command functionality
-### TODO: Add processing of camera
+### TODO: Add processing of picture (getPicture function, and picture functionality in packetize)
 ### TODO: Process AX25 Packets
+### TODO: put all files in the same directory as the c code.
