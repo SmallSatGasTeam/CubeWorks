@@ -7,6 +7,8 @@ from multiprocessing import Process
 from datetime import datetime
 import time
 import calendar
+import os
+import subprocess
 
 #import rxHandling.py
 import rxHandling
@@ -15,7 +17,7 @@ import rxHandling
 CONST_VOLTAGE = 1.5
 
 # Code that runs 
-TRASMIT_EXE = "TXService.run"
+TRANSMIT_EXE = "TXService.run"
     
 # file with tx windows and durations. Eachline should have <timestamp of start of tx window> <duration of window>
 TX_WINDOWS_FILE = "TxWindows.txt"
@@ -60,19 +62,16 @@ def watchTxWindows():
                 print("Something went bad, cannot have negative wait time")
             time.sleep(delay - 5)
         
-            callRadioDriver(line[1])
+            dataTypeWithSpace = " "+line[1]
+            callRadioDriver(dataTypeWithSpace)
     f.close()  
     
- def callRadioDriver (txWindow):
+ def callRadioDriver(dataType):
     '''
     Function that calls TX EXE
     '''
-
-    FNULL = open(os.devnull, 'w')
-    args = TRASMIT_EXE "-<ARGUMENTS>"
-    subprocess.call(args, stdout=FNULL, stderr=FNULL, shell=False)
-    #subprocess.call(["<PATH_TO_TX_EXE>"])
-    #subprocess.run(["<PATH_TO_FILE>", "-arg1 numRecords", "-dt dataType", "-tw txWindow"])   
+    # FNULL = open(os.devnull, 'w')
+    os.system(TRANSMIT_EXE+dataType)
     
 '''
 END PROCESS 1 DEFINITION
