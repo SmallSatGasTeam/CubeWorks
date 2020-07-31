@@ -1,4 +1,4 @@
-GASPACS Software:The Drivers
+GASPACS Software: The Drivers
 ===
 Opening Note:
 --
