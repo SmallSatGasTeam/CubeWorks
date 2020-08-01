@@ -90,7 +90,7 @@ void main(int argc,char* argv[])
     {
         //if we fail exit
         DEBUG_P(Failed to open file)
-        exit(1);
+        exit(0);
     }
 
     FILE *recordFile;
@@ -98,7 +98,7 @@ void main(int argc,char* argv[])
     {
         //if we fail exit
         DEBUG_P(Failed to open the flags file)
-        exit(1);
+        exit(0);
     }
 
     //this is where we will store the last transmission
@@ -119,7 +119,7 @@ void main(int argc,char* argv[])
     {
         printf ("Error no is : %d\n", errno);
         printf("Error opening serial port\n");
-        exit(1);
+        exit(0);
     }
     //set up the uart 
     setUpUart();
@@ -318,7 +318,7 @@ int changeCharToInt(char a)
             {
                 DEBUG_P(invaild data type)
                 PRINT_DEBUG_c(a)
-                exit(1);
+                exit(0);
             }
     }
 }
