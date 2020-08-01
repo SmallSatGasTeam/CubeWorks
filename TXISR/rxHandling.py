@@ -36,9 +36,9 @@ class TXISR:
     #inputFile = "data/AMA0_TEST.txt" 
     
     def __init__(self):
-    '''
-    Constructor. This will drive the process.
-    '''
+        '''
+        Constructor. This will drive the process.
+        '''
          
         if not path.exists(self.inputFile):
             print("INPUT FILE NOT FOUND")
@@ -52,9 +52,9 @@ class TXISR:
 
     
     def readTX(self):
-    '''
-    Read-in and decode transmission. Place decoded transmission in rxData
-    '''
+        '''
+        Read-in and decode transmission. Place decoded transmission in rxData
+        '''
         for i in range(5):
             currentData = self.TX.readline()
             # Commented out for testing purposes:
@@ -64,9 +64,9 @@ class TXISR:
             self.rxData.append(currentData)
     
     def commandReceived(self):
-    '''
-    Decide what to do based on the command recieved
-    '''
+        '''
+        Decide what to do based on the command recieved
+        '''
         if(self.rxData[0] == 0):
             ### TODO PROCESS ALL THE OPTIONS FOR THE DATA TYPES
             if(self.rxData[3] == 0):
@@ -184,7 +184,7 @@ class TXISR:
                     #    t = "0x%02x" % b
                     
                     ### HEX NUMBER METHOD: 
-                    #hexNum = num_to_hex(value)			   
+                    #hexNum = num_to_hex(value)            
                     #f.write(hexNum)
 
                     ### HEX STRING METHOD:
