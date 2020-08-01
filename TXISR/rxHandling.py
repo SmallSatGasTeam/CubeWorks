@@ -6,38 +6,50 @@ import subprocess
 import calendar
 import time
 
-#we need import jacks camera code from the drivers
-#we need import the boom deployer code from the drivers
-
-        
-'''
-Processes:
-    #1. Read Trasmission
-    #2. Decode Transmission (from hex)
-    #3. Produce rxData list from decoded TX
-    #4. Determine the type of request recieved (database query or command)
-    #5. Decide if transmitting DataType or Picture
-    #6. Get packets or picture from the database
-    #7. Packetize data and write to a file 
-    #8. Wait until 5 seconds before the tx window starts
-    #9. Call Shawn's Code
-    #10. Exit (close interrupts if made)
-'''
-
 class TXISR:
-    '''
-    rxData holds the values gotten from the grounds transmission. (see Flight Logic doc appendix c table 5)
-    0 = packet type
-    1 = window start
-    2 = window duration
-    3 = data type
-    4 = picture number (if applicable)
-    '''
+    
+    # List that stores eveything recieved in the transmission
     rxData = ['#']
-    outputFile = "test.txt"
-    # commented for testing purposes
-    # inputFile = "/dev/tty/AMA0"
-    inputFile = "C:/Users/Get Away Special/Desktop/Build RX H/transTestAttitude.txt"
+    
+    dataList = [['#']]
+       
+    # Define location of file where the data will be placed while waiting transmission
+    outputFile = "data/txFile.txt"
+    
+    #define location where we will put the flags (flags are the last time each datatype trasmitted)
+    flagsFile = "data/flagsFile.txt"
+    
+    # Datatype Files
+    attitudeDataFile = "data/attitudeData.txt"
+    TTCDataFile = "data/ttcData.txt"
+    deployDataFile = "data/deployData.txt"
+    HQPicFile = "data/hpPicData.txt"
+    LQPicFile = "data/lqPicData.txt"
+    
+    # TX Window Files
+    TxWindows = "data/TxWindows.txt"
+    
+    # Define file where transmission will be recieved
+    # commented out for testing purposes:
+    inputFile = "/dev/tty/AMA0"
+    # file for testing purposes:
+    #inputFile = "data/AMA0_TEST.txt" 
+    
+    def __init__(self):
+    '''
+    Constructor. This will drive the process.
+    '''
+         
+        if not path.exists(self.inputFile):
+            print("INPUT FILE NOT FOUND")
+            sys.exit()
+        else:
+            self.TX = open(self.inputFile, 'r')
+            self.readTX()    
+            
+        # commandRecieved will figure out how to process based on the command received
+        self.commandReceived()
+
     
     def readTX(self):
     '''
@@ -50,56 +62,101 @@ class TXISR:
             # testing functionality:
             currentData = int(hexMessage, 0)
             self.rxData.append(currentData)
-            
-    def __init__(self):
-         
-        if not path.exists(self.inputFile):
-            print("INPUT FILE NOT FOUND")
-            sys.exit()
-        else:
-            self.TX = open(self.inputFile, 'r')
-            self.readTX()    
-        
-        self.commandRecived()
-
-    def sendTosrCheck(self):
-        Check(self.rxData[3], self.rxData[1], self.rxData[2])
     
-    def drivePic (self, dataType, picNum):
+    def commandReceived(self):
+    '''
+    Decide what to do based on the command recieved
+    '''
+        if(self.rxData[0] == 0):
+            ### TODO PROCESS ALL THE OPTIONS FOR THE DATA TYPES
+            if(self.rxData[3] == 0):
+                # Process Attitude Data
+                driveDataType(self.attitudeDataFile)
+            else if(self.rxData[3] == 1):
+                # Process TT&C Data
+                driveDataType(self.TTCDataFile)
+            else if(self.rxData[3] == 2):
+                # Process Deployment Data
+                driveDataType(self.deployDataFile)
+            else if(self.rxData[3] == 3):
+                # Process HQ Picture
+                # PicRes 0 - LQ 1 - HQ
+                drivePic(self.HQPicFile, 1, self.rxData[4])
+            else if(self.rxData[3] == 4):
+                # Process LQ Picture
+                # PicRes 0 - LQ 1 - HQ
+                drivePic(self.LQPicFile, 0, self.rxData[4])
+            else if(self.rxData[3] == 5):
+                # Add TX window to file 
+            return
+        else :
+            #turn off tx
+            if(self.rxData[1] == 0):
+                canTX = False
+            #take pic
+            else if(self.rxData[2] == 1) :
+                #photo.Camera()
+            #deploy boom
+            else if(self.rxData[3] == 1) :
+                #boom.boomDeployer()
+            else if(self.rxData[4] == 1) :
+                #reboot pi, send command to adruino
+            else :
+                return
+    
+    def driveDataType (self, dataFile):   
         '''
-        function if a picture is desired
+        Function if we are processing a datatype
         '''
-        data = []
+        fdata = open(dataFile, 'r')
+        line = f.readline()
+                
+        lastTXofDT = self.getFlagsTimestamp()
         
-        if dataType == 3:
-            picRes = h
-        elif dataType == 4:
-            picRes = l
-        else:
-            exit(1)
+        counter = 0
+        # '@' indicates EOF
+        while line[0] != '@':
+            if line[0] == '#':
+                # Do Nothing, line commented
+            else if line[0] == ' ':
+                # DO Nothing, Line empty
+            else:
+                line = line.split(', ')
+                if int(line[0]) < lastTXofDT:
+                    # Line alredy transmitted
+                else:
+                    counterInner = 0
+                    while counterInner < len(line):
+                        self.dataList[counter][counterInner] = line[counterInner]
+                        counterInner = counterInner + 1
+                    counter = counter + 1
+            line = f.readline()
+            line = line.replace('\n', '')
+        
+        numLines = self.packetize(False)
+    
+    def drivePic (self, dataFile, picRes, picNum):
+        '''
+        function if we are processing a  picture
+        PicRes 0 - LQ 1 - HQ
+        '''
+        data = [()]
         
         ### TODO: getPicture no longer defined since deprecation of database
         data = self.getPicture(picNum, picRes)
 
-        self.packetize(True, data)
+        numLines = self.packetize(True)
  
-    def driveDataType (self, dataType):   
-        '''
-        function if no picture is requested 
-        '''
-        data = [()]
-
-        ### TODO: Get packets from the files on the system
-        data.reverse()
-        
-        self.packetize(False, data)
-        
-    def packetize(self, isPic, *dataList):
+    def getFlagsTimestamp(self):
+        f_flags = open(self.flagsFile, 'r')
+        allLines = f_flags.readlines()
+        lastTX = allLines(self.rxData[3])
+        return lastTX
+           
+    def packetize(self, isPic):
         """
-        Takes an list(tuple(data)) from the database and writes a binary stream to a file
-        call packetize(*<LIST NAME>, <BOOL VARIABLE>)
+        Write to file 
         """
-        
         linesTotal = 0
         
         if isPic == True:
@@ -113,8 +170,8 @@ class TXISR:
 
             linesTotal = 0
 
-            for tup in dataList:
-                for value in tup:
+            for record in self.dataList:
+                for value in record:
                 
                     ### STRING METHOD:
                     f.write(str(value))
@@ -136,98 +193,25 @@ class TXISR:
                 
                 f.write('\n')
                 linesTotal += 1
-            f.write('@')
-            f.write('\n')
+                #Don't need this anymore I updated my code so it doesn't use this any more -Shawn
+            #f.write('@')
+            #Don't add an extra line at the end of the file as we will TXService code will send it as data, and we dont wanna do that. -Shawn
+            #f.write('\n')
         f.write(str(linesTotal))
         f.close()
-        return linesTotal
+        return linesTotal 
 
     def wipeTxFile():
-        file = open(self.outputFile,"r+")
+        file = open(self.outputFile, "r+")
         file.truncate(0)
-        file.close()
-        
-    ### This part of the code checks to see if we are reciving a command to do something. 
-    def commandReceived(self):
-    '''
-    Process #4
-    '''
-        if(self.rxData[0] == 0):
-            ### TODO PROCESS ALL THE OPTIONS FOR THE DATA TYPES
-            return
-        else :
-            #turn off tx
-            if(self.rxData[1] == 0):
-                canTX = False
-            #take pic
-            else if(self.rxData[2] == 1) :
-                #photo.Camera()
-            #deploy boom
-            else if(self.rxData[3] == 1) :
-                #boom.boomDeployer()
-            else if(self.rxData[4] == 1) :
-                #reboot pi, send command to adruino
-            else :
-                return
-                
-    def getCanTX(self):
-        return self.canTX
-
-'''
-DEPRECATED FUNCTIONS:
-
+        file.close()        
     
-    def driveSql (self, packType, winStart, winDur, dataType, sqlStatement):
-        # function if an arbitrary sql statement is requested
-        data = []
-        
-        data = self.getArbitrary(sqlStatement)
-        
-        ### TODO: Determine how to packetize arbitrary sql statement 
-        # numLines = packetize(True, data)
-        #
-        
-        # delay 5 seconds to the start of the transmission window, then call Radio Driver
-        curTime = calendar.timegm(time.gmtime())
-        delay = ((winStart - curTime) - 5)
-        time.sleep(delay)
-            
-        self.callRadioDriver(numLines, dataType, winDur)
-        
-    def getPackets(self, pacType, numPackets):
-        """
-        Constructs an sql query based on pacType and numPackets, returns the result.
-        Process #6
-        """
-        lastTransmitted = 0
-        connection = sqlite3.connect('../db.sqlite3')
-        cursor = connection.execute(f'SELECT * FROM {pacType} WHERE time > {lastTransmitted} ORDER BY time DESC LIMIT {numPackets}')
-        rows = cursor.fetchall()
-        return rows            
-
-    def getPicture(self, picNum, res):
-        """
-        ... Actually, I don't know what this should do yet...
-        Process #6
-        """
-        pass
-
-    def getArbitrary(self, query):
-        """
-        executes arbitrary sql on the database target, returns whatever comes out.
-        """
-        connection = sqlite3.connect('../db.sqlite3')
-        cursor = connection.execute(query)
-        rows = cursor.fetchall()
-        return rows
-    
-    ### HEX METHOD FUNCITON:      
-    def num_to_hex(n):
-        return hex(struct.unpack('<I', struct.pack('<f', n))[0])
-
-    ### USE THIS METHOD TO DECODE THE HEX STREAM (if being used) WHEN RECIEVED ON THE GROUND:
-    def hex_to_num(h):
-        h = str(h)
-        h = h.replace("0x", "")
-        return struct.unpack('!f', h.decode('hex'))[0]
 '''
+timestamp';' datapacket
+timestamp';'     
+'''
+    
+### TODO: Add Command functionality
+### TODO: Add processing of picture (getPicture function, and picture functionality in packetize)
+### TODO: Process AX25 Packets
+### TODO: put all files in the same directory as the c code.
