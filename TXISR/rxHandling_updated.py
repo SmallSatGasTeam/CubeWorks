@@ -10,6 +10,8 @@ class TXISR:
     
     # List that stores eveything recieved in the transmission
     rxData = ['#']
+    
+    dataList = [['#']]
        
     # Define location of file where the data will be placed while waiting transmission
     outputFile = "txFile.txt"
@@ -29,9 +31,9 @@ class TXISR:
     
     # Define file where transmission will be recieved
     # commented out for testing purposes:
-    # inputFile = "/dev/tty/AMA0"
+    inputFile = "/dev/tty/AMA0"
     # file for testing purposes:
-    inputFile = "C:/Users/Get Away Special/Desktop/Build RX H/transTestAttitude.txt" 
+    #inputFile = "data/AMA0_TEST.txt" 
     
     def __init__(self):
     '''
@@ -102,16 +104,36 @@ class TXISR:
             else :
                 return
     
-    def driveDataType (self, dataFile):   
+    def driveDataType (self, dataFile, dataType):   
         '''
         Function if we are processing a datatype
         '''
-        data = [()]
-
-        ### TODO: Get packets from the files on the system
-        data.reverse()
+        fdata = open(dataFile, 'r')
+        line = f.readline()
+                
+        lastTXofDT = self.getFlagsTimestamp()
         
-        numLines = self.packetize(False, data)
+        counter = 0
+        # '@' indicates EOF
+        while line[0] != '@':
+            if line[0] == '#':
+                # Do Nothing, line commented
+            else if line[0] == ' ':
+                # DO Nothing, Line empty
+            else:
+                line = line.split(', ')
+                if int(line[0]) < lastTXofDT:
+                    # Line alredy transmitted
+                else:
+                    counterInner = 0
+                    while counterInner < len(line): ### WHAT 
+                        self.dataList[counter][counterInner] = line[counterInner]
+                        counterInner = counterInner + 1
+                    counter = counter + 1
+            line = f.readline()
+            line = line.replace('\n', '')
+        
+        numLines = self.packetize(False)
     
     def drivePic (self, dataFile, picRes, picNum):
         '''
@@ -123,10 +145,15 @@ class TXISR:
         ### TODO: getPicture no longer defined since deprecation of database
         data = self.getPicture(picNum, picRes)
 
-        numLines = self.packetize(True, data)
+        numLines = self.packetize(True)
  
-        
-    def packetize(self, isPic, *dataList):
+    def getFlagsTimestamp(self)
+        f_flags = open(flagsFile, 'r')
+        allLines = f_flags.readlines()
+        lastTX = allLines(self.rxData[3])
+        return lastTX
+           
+    def packetize(self, isPic):
         """
         Write to file 
         """
@@ -143,8 +170,8 @@ class TXISR:
 
             linesTotal = 0
 
-            for tup in dataList:
-                for value in tup:
+            for record in self.dataList:
+                for value in record:
                 
                     ### STRING METHOD:
                     f.write(str(value))
@@ -175,7 +202,7 @@ class TXISR:
         return linesTotal 
 
     def wipeTxFile():
-        file = open(self.outputFile,"r+")
+        file = open(self.outputFile, "r+")
         file.truncate(0)
         file.close()        
     
@@ -184,7 +211,6 @@ timestamp';' datapacket
 timestamp';'     
 '''
     
-### TODO: Add reading in from file-like database
 ### TODO: Add Command functionality
 ### TODO: Add processing of picture (getPicture function, and picture functionality in packetize)
 ### TODO: Process AX25 Packets

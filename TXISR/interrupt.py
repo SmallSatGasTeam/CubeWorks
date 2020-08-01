@@ -18,10 +18,10 @@ import rxHandling
 CONST_VOLTAGE = 1.5
 
 # Code that runs 
-TRANSMIT_EXE = "TXService.run"
+TRANSMIT_EXE = "TXServiceCode/TXService.run"
     
 # file with tx windows and durations. Eachline should have <timestamp of start of tx window> <duration of window>
-TX_WINDOWS_FILE = "TxWindows.txt"
+TX_WINDOWS_FILE = "data/TxWindows.txt"
 
 if __name__ == 'main'():
    '''
