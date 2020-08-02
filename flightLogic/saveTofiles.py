@@ -8,15 +8,16 @@
 #more this will not cause a  problem it will only slow the code
 #down.
 #####################################################################
+import os.path
 
 class save:
     def __init__(self):
         #open the file when the calls is instantiated
-        self.__TTNC_File = await open("TTNC_Data.txt", "w+")
+        self.__TTNC_File = open(os.path.dirname(__file__) + "/TTNC_Data.txt", "a+")
         #open the file when the calls is instantiated
-        self.__Deploy_File = await open("Deploy_Data.txt", "w+")
+        self.__Deploy_File = open(os.path.dirname(__file__) + "/Deploy_Data.txt", "a+")
         #open the file when the calls is instantiated
-        self.__AttitudeData = await open("Attitude_Data.txt", "w+")
+        self.__Attitude_File = open(os.path.dirname(__file__) + "/Attitude_Data.txt", "a+")
 
     #write the data to the file,
     #NOTE: it is important that you put a : after the time stamp, this will
@@ -25,16 +26,17 @@ class save:
         temp = 0
         for i in data:
             if temp == 0:
-                await self.__TTNC_File.write(i + ": ")
+                self.__TTNC_File.write(str(i) + ": ")
                 temp += 1
             else:
-                await self.__TTNC_File.write(i)
+                self.__TTNC_File.write(str(i)+',')
+        self.__TTNC_File.write('\n')
 
     #this func will read the data from our file and then return that data
     async def getTTNC(self, time):
         temp = []
         for i in self.__TTNC_File:
-            if ((int) i[0] >= time):
+            if (int(i[0]) >= time):
                 temp += i
         return temp
 
@@ -46,15 +48,17 @@ class save:
         temp = 0
         for i in data:
             if temp == 0:
-                await self.__Deploy_File.write(i + ": ")
+                self.__Deploy_File.write(str(i) + ": ")
                 temp += 1
             else:
-                await self.__Deploy_File.write(i)
+                self.__Deploy_File.write(str(i)+',')
+        self.__Deploy_File.write('\n')
+
     #this func will read the data form our file and then return that data
     async def getDeploy(self):
         temp = []
         for i in self.__Deploy_File:
-            if ((int) i[0] >= time):
+            if (int(i[0]) >= time):
                 temp += i
         return temp
     #this part of the code is for data collection of attitude data
@@ -65,22 +69,24 @@ class save:
         temp = 0
         for i in data:
             if temp == 0:
-                await self.__Attitude_File.write(i + ": ")
+                self.__Attitude_File.write(str(i) + ": ")
                 temp += 1
             else:
-                await self.__Attitude_File.write(i)
+                self.__Attitude_File.write(str(i)+',')
+        self.__Attitude_File.write('\n')
+
 
     #this func will read the data form our file and then return that data
     async def getAttitudeData(self):
         temp = []
         for i in self.__AttitudeData:
-            if ((int) i[0] >= time):
+            if (int(i[0]) >= time):
                 temp += i
         return temp
 
     #this will check if it is time to tx or not and then return a bool
     #TODO: how are we saving tx times?
-    def checkTxWindow(self)
+    def checkTxWindow(self):
         timeToTx = txWindows.readlines()
         for i in timeToTx:
             if (i - 10000) <= round(time.time() * 1000):
