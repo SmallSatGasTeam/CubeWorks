@@ -1,19 +1,18 @@
 """
 Gets driver data for each data set. Also writes that data to files.
 """
-
-### NOTE NEED TO ADD "ASYNC" TO THE DEF FOR EACH METHOD IN THE DRIVER CLASSES
+import asyncio
 import sys
 sys.path.append('../')
 import Drivers
-import asyncio
-from .saveTofiles import *
+
+import flightLogic.saveTofiles as saveTofiles
 
 class TTNCData:
 	def __init__(self, saveobject):
-		save = saveobject
+		self.__save = saveobject
 		self.__ttncDataArray = []
-		self.EPS = Drivers.EPS.EPS()
+		self.EPS = Drivers.eps.EPS()
 		self.UVDriver = Drivers.UV.UVDriver()
 		self.RTC = Drivers.rtc.RTC()
 		self.CpuTempSensor = Drivers.cpuTemperature.CpuTemperature()
@@ -36,8 +35,8 @@ class TTNCData:
 		BattCurrent = self.EPS.getBusCurrent()
 		BCRVoltage = self.EPS.getBCRVoltage()
 		BCRCurrent = self.EPS.getBCRCurrent()
-		EPS3V3Current = self.EPS.get3v3Current()
-		EPS5VCurrent = self.EPS.get5v5Current()
+		EPS3V3Current = self.EPS.get3V3Current()
+		EPS5VCurrent = self.EPS.get5VCurrent()
 		SP_X_Voltage = self.EPS.getSPXVoltage()
 		SP_X_Plus_Current = self.EPS.getSPXPlusCurrent()
 		SP_X_Minus_Current = self.EPS.getSPXMinusCurrent()
@@ -53,72 +52,81 @@ class TTNCData:
 
 	async def writeData(self):
 		#writes TTNC data array to file
-		save.writeTTNC(self.__ttncDataArray)
+		await self.__save.writeTTNC(self.__ttncDataArray)
 
 	async def collectTTNCData(self, mMode):
 		# Data collection loop
 		while True:
 			# Get TTNC data
-			getData(mMode)
+			await self.getData(mMode)
 			# Write data to file
-			writeData()
+			print("getting TTNC data")
+			await self.writeData()
 			# Sleep for 120 seconds (0.0083 Hz)
 			await asyncio.sleep(120)
 
 class DeployData():
 	def __init__(self, saveobject):
-		save = saveobject
+		self.__save = saveobject
+		self.RTC = Drivers.rtc.RTC()
+		self.UVDriver = Drivers.UV.UVDriver()
 		self.__deployDataArray = []
+		self.Accelerometer = Drivers.Accelerometer()
 
 	async def getData(self):
 		#gets all Boom Deployment data
-		timestamp = await RTC.read()
+		timestamp = self.RTC.read()
 		packetType = 2
-		boombox_uv = await UVDriver.read()
-		accelX, accelY, accelZ = await Accelerometer.read()
+		boombox_uv = self.UVDriver.read()
+		accelX, accelY, accelZ = self.Accelerometer.read()
 
 		#save the data into an array
 		self.__deployDataArray = [timestamp, packetType, boombox_uv, accelX, accelY, accelZ]
 
 	async def writeData(self):
 		#writes Boom Deployment data array to file
-		save.writeDeploy(self.__deployDataArray)
+		await self.__save.writeDeploy(self.__deployDataArray)
 
 	async def collectDeployData(self):
 		# Data collection loop
 		while True:
 			# Get Deploy data
-			getData()
+			await self.getData()
 			# Write data to file
-			writeData()
+			await self.writeData()
+			print("getting deployment data")
 			# Sleep for 50 ms (20Hz)
 			await asyncio.sleep(0.05)
 
 class AttitudeData():
 	def __init__(self, saveobject):
-		save = saveobject
-		self.__attitudeDataArray = []
+		self.save = saveobject
+		self.RTC = Drivers.rtc.RTC()
+		self.attitudeDataArray = []
+		self.sunSensor = Drivers.sunSensors.sunSensorDriver.sunSensor()
+		self.Magnetometer = Drivers.Magnetometer()
 
 	async def getData(self):
 		#gets all Attitude data
-		timestamp = await RTC.read()
+		timestamp = self.RTC.read()
 		packetType = 0
-		sunSensor1, sunSensor2, sunSensor3, sunSensor4, sunSensor5 = sunSensor.read()
-		mag1, mag2, mag3 = Magnetometer.read()
+		sunSensor1, sunSensor2, sunSensor3, sunSensor4, sunSensor5 = self.sunSensor.read()
+		mag1, mag2, mag3 = self.Magnetometer.read()
 
 		#save the data into an array
-		self.__attitudeDataArray = [timestamp, packetType, sunSensor1, sunSensor2, sunSensor3, sunSensor4, sunSensor5, mag1, mag2, mag3]
+		self.attitudeDataArray = [timestamp, packetType, sunSensor1, sunSensor2, sunSensor3, sunSensor4, sunSensor5, mag1, mag2, mag3]
 
 	async def writeData(self):
 		#writes Attitude Data array to file
-			save.writeAttitude(self.__attitudeDataArray)
+		await self.save.writeAttitude(self.attitudeDataArray)
 
 	async def collectAttitudeData(self):
 		# Data collection loop
 		while True:
 			# Get Attitude data
-			self.getData()
+			await self.getData()
 			# Write data to file
-			self.writeData()
+			await self.writeData()
+			print("getting attitude data")
 			# Sleep for 1 second (1 Hz)
 			await asyncio.sleep(1)
