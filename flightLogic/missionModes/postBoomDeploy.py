@@ -1,6 +1,8 @@
+import sys
+sys.path.append('../../')
 import asyncio
-from .safe import safe
-from ..getDriverData import *
+from flightLogic.missionModes import safe
+from flightLogic.getDriverData import *
 import Drivers.eps.EPS as EPS
 
 class postBoomMode:
@@ -8,22 +10,34 @@ class postBoomMode:
 		self.postBoomTimeFile = open("postBoomTime.txt", "w+")
 		self.__getDataTTNC = TTNCData(saveobject)
 		self.__getDataAttitude =  AttitudeData(saveobject)
+		self.__tasks = [] # List will be populated with all background tasks
+		self.__safeMode = safe.safe(saveobject)
+
 	async def run(self):
 		#Set up background processes
 		ttncData = self.__getDataTTNC
 		attitudeData = self.__getDataAttitude
-		asyncio.run(ttncData.collectTTNCData(4), attitudeData.collectAttitudeData())#Post-boom is mode 4
-		safeMode = safe()
-		asyncio.run(safeMode.thresholdCheck())
-		
-		await while True:
-			if not self.postBoomTimeFile.read(1):
-				self.postBoomTimeFile.write(str(0))#File is empty
+		self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(4))) #Post-boom is mode 4
+		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
+		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
+		self.__tasks.append(asyncio.create_task(self.__safeMode.heartBeat()))
+		upTime = 86100
+		while True: #Runs reboot loop
+			if upTime>86400: #Live for more than 24 hours
+				self.__safeMode.run(1) #restart, powering off Pi for 1 minute
+				print('Rebooting raspberry pi')
+				upTime = 0 # Won't be necessary for flight article
 			else:
-				runningTime = int(self.postBoomTimeFile.read())
-				if runningTime>86400: #Live for more than 24 hours
-					self.postBoomTimeFile.write(str(0))
-					self.postBoomTimeFile.close()
-				else: 
-					self.postBoomTimeFile.write(str(runningTime+60))
-			await asyncio.sleep(60) #check every 60 seconds if post boom has been running for more than 24 hours
+				print('Uptime: '+str(upTime))
+				await asyncio.sleep(60)
+				upTime += 60
+
+
+
+
+	def cancellAllTasks(self, taskList): #Isn't used in this class, but here anyways
+		try:
+			for t in taskList:
+				t.cancel()
+		except asyncio.exceptions.CancelledException:
+			print("Caught thrown exception in cancelling background task")
