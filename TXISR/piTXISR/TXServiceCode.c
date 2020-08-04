@@ -33,6 +33,7 @@
 
 //NOTE: becasue of how we have to set the boud rate I cannot use a define for it in ceritian places, just do a contrl f and look for BOUD_RATE
 //it is place next to every place that the boud rate is used, you also need to change the define as it is used as well.
+//NOTE: this boud rate (9600) is the radio speed. We talk to it with a diffrent speed, in other words the 9600 is our divisor for the delay
 #define BOUD_RATE 9600
 
 int changeCharToInt(char a);
@@ -285,7 +286,7 @@ void setUpUart()
 {
     //set the baud rate, it is the number with a b infornt of it ex 115200 -> B115200
     //BOUD_RATE
-    cfsetspeed(&options, B9600);
+    cfsetspeed(&options, B115200);
 
     //set up the number of data bits
     options.c_cflag &= ~CSIZE;
