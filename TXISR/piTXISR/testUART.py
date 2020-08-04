@@ -1,6 +1,6 @@
 import serial
 print("beging")  
-ser = serial.Serial ("/dev/tty1")  
+ser = serial.Serial ("/dev/ttyS0")  
 print("Opening port")    
 ser.baudrate = 9600                   
 ser.write(str.encode("hello"))  
