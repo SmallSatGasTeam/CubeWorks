@@ -1,7 +1,7 @@
 import serial
 import os 
 import sys
-TRANSMIT_EXE = "TXServiceCode/TXService.run"
+TRANSMIT_EXE = "./TXService.run"
 
 print("beging")  
 ser = serial.Serial ("/dev/ttyAMA0")  
