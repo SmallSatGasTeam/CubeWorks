@@ -1,5 +1,7 @@
 import serial
-ser = serial.Serial ("/dev/ttyAMA0")    
+print(beging)  
+ser = serial.Serial ("/dev/ttyAMA0")  
+print(Opend port)    
 ser.baudrate = 9600                   
 ser.write(str.encode("hello"))  
 print(sending)                     
