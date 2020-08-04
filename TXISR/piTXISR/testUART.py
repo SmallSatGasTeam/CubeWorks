@@ -1,7 +1,7 @@
 import serial
 import os 
 import sys
-TRANSMIT_EXE = "a.out"
+TRANSMIT_EXE = "./a.out"
 
 print("beging")  
 ser = serial.Serial ("/dev/ttyAMA0")  
