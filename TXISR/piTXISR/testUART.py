@@ -10,7 +10,8 @@ print("Opening port")
 ser.baudrate = 115200                   
 os.system(TRANSMIT_EXE + " 1") 
 print("\nPython Reading")  
-while not os.system(read_EXE)                    
+while not os.system(read_EXE) : 
+    print(checking)                    
 data = ser.read(100)
 print(data)                      
 ser.close() 
