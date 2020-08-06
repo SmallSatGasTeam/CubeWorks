@@ -72,36 +72,41 @@ class TXISR:
             if(self.rxData[3] == 0):
                 # Process Attitude Data
                 driveDataType(self.attitudeDataFile)
-            else if(self.rxData[3] == 1):
+            elif(self.rxData[3] == 1):
                 # Process TT&C Data
                 driveDataType(self.TTCDataFile)
-            else if(self.rxData[3] == 2):
+            elif(self.rxData[3] == 2):
                 # Process Deployment Data
                 driveDataType(self.deployDataFile)
-            else if(self.rxData[3] == 3):
+            elif(self.rxData[3] == 3):
                 # Process HQ Picture
                 # PicRes 0 - LQ 1 - HQ
                 drivePic(self.HQPicFile, 1, self.rxData[4])
-            else if(self.rxData[3] == 4):
+            elif(self.rxData[3] == 4):
                 # Process LQ Picture
                 # PicRes 0 - LQ 1 - HQ
                 drivePic(self.LQPicFile, 0, self.rxData[4])
-            else if(self.rxData[3] == 5):
-                # Add TX window to file 
-            return
-        else :
+            elif(self.rxData[3] == 5):
+                # Add TX window to file
+                addTXWindow()
+            else:
+                return
+        else:
             #turn off tx
             if(self.rxData[1] == 0):
                 canTX = False
             #take pic
-            else if(self.rxData[2] == 1) :
+            elif(self.rxData[2] == 1):
                 #photo.Camera()
+                pass
             #deploy boom
-            else if(self.rxData[3] == 1) :
+            elif(self.rxData[3] == 1):
                 #boom.boomDeployer()
-            else if(self.rxData[4] == 1) :
+                pass
+            elif(self.rxData[4] == 1):
                 #reboot pi, send command to adruino
-            else :
+                pass
+            else:
                 return
     
     def driveDataType (self, dataFile):   
@@ -118,12 +123,15 @@ class TXISR:
         while line[0] != '@':
             if line[0] == '#':
                 # Do Nothing, line commented
-            else if line[0] == ' ':
+                pass
+            elif line[0] == ' ':
                 # DO Nothing, Line empty
+                pass
             else:
                 line = line.split(', ')
                 if int(line[0]) < lastTXofDT:
                     # Line alredy transmitted
+                    pass
                 else:
                     counterInner = 0
                     while counterInner < len(line):
