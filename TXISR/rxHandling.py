@@ -1,5 +1,9 @@
+from sys import path
+path.append('../')
+import Drivers.boomDeployer.BoomDeployer
+import Drivers.camera.Camera
+import flightLogic.missionModes.safe
 import io
-import sys
 import struct
 import subprocess
 import calendar
@@ -61,6 +65,7 @@ class TXISR:
         '''
         Read-in and decode transmission. Place decoded transmission in rxData
         '''
+
         for i in range(0, len(inputString)):
             currentData = inputString[i]
             currentData = bytes.fromhex(currentData).decode('utf-8')
@@ -70,6 +75,10 @@ class TXISR:
         '''
         Decide what to do based on the command recieved
         '''
+        deployer = BoomDeployer()
+		cam = Camera()
+        saveObject = safe(None)
+        
         if(self.rxData[0] == 0):
             ### TODO PROCESS ALL THE OPTIONS FOR THE DATA TYPES
             if(self.rxData[3] == 0):
@@ -101,13 +110,16 @@ class TXISR:
             #take pic
             elif(self.rxData[2] == 1):
                 #photo.Camera()
+                cam.takePicture()
                 pass
             #deploy boom
             elif(self.rxData[3] == 1):
                 #boom.boomDeployer()
+                deployer.deploy()
                 pass
             elif(self.rxData[4] == 1):
                 #reboot pi, send command to adruino
+                saveObject.run(1)
                 pass
             else:
                 return
