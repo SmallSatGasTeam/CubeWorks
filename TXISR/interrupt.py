@@ -33,7 +33,7 @@ if __name__ == 'main'():
     start two infinitely running functions
     '''
     #Comment out other function until asynio works in function
-    # watchTxWindows()
+    watchTxWindows()
     watchReceptions()
     '''
     p1 = Process(target=watchTxWindows)
@@ -47,6 +47,7 @@ if __name__ == 'main'():
 '''
 START PROCESS 1 (p1) DEFINITION 
 '''
+# asyncio def watchTxWindows():
 def watchTxWindows():
     '''
     watch windows and call to transmit if within window.
@@ -73,7 +74,8 @@ def watchTxWindows():
         
             dataTypeWithSpace = " "+line[1]
             callRadioDriver(dataTypeWithSpace)
-    f.close()  
+    f.close()
+    #await asyncio.sleep(1)
     
 def callRadioDriver(dataType):
     '''
@@ -89,6 +91,7 @@ END PROCESS 1 DEFINITION
 '''
 START PROCESS 2 (p2) DEFINITION
 '''
+#asyncio def watchReceptions():
 def watchReceptions():
     checking = os.system(READ_EXE)
 
@@ -96,7 +99,7 @@ def watchReceptions():
         checking = os.system(READ_EXE)
         if checking > 0:
             x = rxHandling.TXISR(checking)
-
+    # wait ayncio.sleep(1)
 '''
 END PROCESS 2 DEFINITION
 '''
