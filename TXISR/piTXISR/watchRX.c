@@ -14,12 +14,16 @@
 #define UART_PORT "/dev/ttyAMA0" //this is serial port name, make sure this is correct for the final code
 
 #include <sys/ioctl.h>
+
+//this sets control of the settings for our serial port
+struct termios options;
+
 int main(void)
 {
     int bytes;
 
     //open the serial ports
-    //NOTE: opening the serial port clears the buffer!!!
+    //NOTE: opening the serial port clears
     int txPort = open(UART_PORT, O_RDWR | O_NOCTTY ); 
     if (txPort == -1)
     {
@@ -27,17 +31,37 @@ int main(void)
         printf("Error opening serial port\n");
         exit(1);
     }
-
+    setUpUart();
     
-    while(1)
+    //check the num of bytes in the buff
+    ioctl(txPort, FIONREAD, &bytes);
+
+    //tell python where or not there is stuff in the buff
+    if(bytes > 0)
     {
-        //check the num of bytes in the buff
-        ioctl(txPort, FIONREAD, &bytes);
-        //exit if we see a byte
-        if(bytes > 0) exit(1);
-        //print value 
         PRINT_DEBUG(bytes)
+        exit(1);
+    }
+    else
+    {
+        PRINT_DEBUG(bytes)
+        exit(0);
     }
     
-    
+}
+
+
+/*******************************************************************************************
+ * setUpUart
+ * this func sets up the uart commincation for us so everything works nicely
+ *******************************************************************************************/
+void setUpUart()
+{
+    //set the baud rate, it is the number with a b infornt of it ex 115200 -> B115200
+    //BOUD_RATE
+    cfsetspeed(&options, B115200);
+
+    //set up the number of data bits
+    options.c_cflag &= ~CSIZE;
+    options.c_cflag |= CS8;
 }
