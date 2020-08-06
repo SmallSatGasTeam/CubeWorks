@@ -12,97 +12,97 @@ import os
 import string
 import sys
 #import asycnio
-
-#import rxHandling.py
 import rxHandling
 
-# Voltage comming through pin upon reception 
-CONST_VOLTAGE = 1.5
+class INTERRUPT:
 
-# Code that runs 
-TRANSMIT_EXE = "TXServiceCode/TXService.run"
+    #change all functions to self
+    #change class variables to self
 
-# Code that scans the UART
-READ_EXE = "TXServiceCode/watchRX.run"
-    
-# file with tx windows and durations. Eachline should have <timestamp of start of tx window> <duration of window>
-TX_WINDOWS_FILE = "data/TxWindows.txt"
+    # Code that runs
+    TRANSMIT_EXE = "TXServiceCode/TXService.run"
 
-if __name__ == 'main'():
+    # Code that scans the UART
+    READ_EXE = "TXServiceCode/watchRX.run"
+
+    # file with tx windows and durations. Eachline should have <timestamp of start of tx window> <duration of window>
+    TX_WINDOWS_FILE = "data/TxWindows.txt"
+
+    def __init__(self):
+        '''
+        start two infinitely running functions
+        '''
+        #Comment out other function until asynio works in function
+        watchTxWindows()
+        watchReceptions()
+        '''
+        p1 = Process(target=watchTxWindows)
+        p1.start()
+        p2 = Process(target=inturruptWatchReceptions)
+        p2.start()
+        p1.join()
+        p2.join()
+        '''
+
     '''
-    start two infinitely running functions
+    START PROCESS 1 (p1) DEFINITION 
     '''
-    #Comment out other function until asynio works in function
-    watchTxWindows()
-    watchReceptions()
+    # asyncio def watchTxWindows():
+    def watchTxWindows(self):
+        '''
+        watch windows and call to transmit if within window.
+        '''
+        # get current time
+        current_time = int(time.time())
+
+        f = open(self.TX_WINDOWS_FILE, 'r')
+
+        nextTimeFound = False
+
+        # Should be an infinite loop
+        while nextTimeFound == False:
+            line = fp.readline()
+            line = line.replace('\n','')
+            line = line.split(' ')
+            if line[0] == '':
+                print("no TX window is listed. FAILING...")
+            if current_time < int(line[0]):
+                delay = (int(line[0]) - int(current_time))
+                if delay < 0:
+                    print("Something went bad, cannot have negative wait time")
+                time.sleep(delay - 5)
+
+                dataTypeWithSpace = " "+line[1]
+                callRadioDriver(dataTypeWithSpace)
+        f.close()
+        #await asyncio.sleep(1)
+
+    def callRadioDriver(self, dataType):
+        '''
+        Function that calls TX EXE
+        '''
+        # FNULL = open(os.devnull, 'w')
+        os.system(self.TRANSMIT_EXE+dataType)
+
     '''
-    p1 = Process(target=watchTxWindows)
-    p1.start()
-    p2 = Process(target=inturruptWatchReceptions)
-    p2.start()
-    p1.join()
-    p2.join()
+    END PROCESS 1 DEFINITION
     '''
 
-'''
-START PROCESS 1 (p1) DEFINITION 
-'''
-# asyncio def watchTxWindows():
-def watchTxWindows():
     '''
-    watch windows and call to transmit if within window.
+    START PROCESS 2 (p2) DEFINITION
     '''
-    # get current time
-    current_time = int(time.time())
+    #asyncio def watchReceptions():
+    def watchReceptions(self):
+        checking = os.system(self.READ_EXE)
 
-    f = open(TX_WINDOWS_FILE, 'r')
-    
-    nextTimeFound = False 
-    
-    # Should be an infinite loop
-    while nextTimeFound == False:
-        line = fp.readline()
-        line = line.replace('\n','')
-        line = line.split(' ')
-        if line[0] == '':
-            print("no TX window is listed. FAILING...")
-        if current_time < int(line[0]):
-            delay = (int(line[0]) - int(current_time))
-            if delay < 0:
-                print("Something went bad, cannot have negative wait time")
-            time.sleep(delay - 5)
-        
-            dataTypeWithSpace = " "+line[1]
-            callRadioDriver(dataTypeWithSpace)
-    f.close()
-    #await asyncio.sleep(1)
-    
-def callRadioDriver(dataType):
+        while checking <= 0:
+            checking = os.system(self.READ_EXE)
+            if checking > 0:
+                x = rxHandling.TXISR(checking)
+        # wait ayncio.sleep(1)
     '''
-    Function that calls TX EXE
+    END PROCESS 2 DEFINITION
     '''
-    # FNULL = open(os.devnull, 'w')
-    os.system(TRANSMIT_EXE+dataType)
-    
-'''
-END PROCESS 1 DEFINITION
-'''
-
-'''
-START PROCESS 2 (p2) DEFINITION
-'''
-#asyncio def watchReceptions():
-def watchReceptions():
-    checking = os.system(READ_EXE)
-
-    while checking <= 0:
-        checking = os.system(READ_EXE)
-        if checking > 0:
-            x = rxHandling.TXISR(checking)
-    # wait ayncio.sleep(1)
-'''
-END PROCESS 2 DEFINITION
-'''
 
 '''
 Depricated Functions:
