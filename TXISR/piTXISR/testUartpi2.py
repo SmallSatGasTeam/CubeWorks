@@ -11,7 +11,6 @@ ser.baudrate = 115200
 checking = os.system(read_EXE) 
 while not checking : 
     checking = os.system(read_EXE)
-    print(checking)    
 print("\nPython sending to the 1st pi")                
 os.system(TRANSMIT_EXE + " 1")                     
 ser.close() 

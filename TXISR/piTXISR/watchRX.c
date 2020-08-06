@@ -18,6 +18,8 @@
 //this sets control of the settings for our serial port
 struct termios options;
 
+void setUpUart();
+
 int main(void)
 {
     int bytes;
@@ -32,7 +34,7 @@ int main(void)
         exit(1);
     }
     setUpUart();
-    
+
     //check the num of bytes in the buff
     ioctl(txPort, FIONREAD, &bytes);
 
