@@ -19,6 +19,7 @@ int main(void)
     int bytes;
 
     //open the serial ports
+    //NOTE: opening the serial port clears the buffer!!!
     int txPort = open(UART_PORT, O_RDWR | O_NOCTTY ); 
     if (txPort == -1)
     {
@@ -26,20 +27,17 @@ int main(void)
         printf("Error opening serial port\n");
         exit(1);
     }
-    
-    //check the num of bytes in the buff
-    ioctl(txPort, FIONREAD, &bytes);
 
-    //tell python where or not there is stuff in the buff
-    if(bytes > 0)
+    
+    while(1)
     {
+        //check the num of bytes in the buff
+        ioctl(txPort, FIONREAD, &bytes);
+        //exit if we see a byte
+        if(bytes > 0) exit(1);
+        //print value 
         PRINT_DEBUG(bytes)
-        exit(1);
     }
-    else
-    {
-        PRINT_DEBUG(bytes)
-        exit(0);
-    }
+    
     
 }

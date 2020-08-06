@@ -115,6 +115,7 @@ void main(int argc,char* argv[])
     }
 
     //open the serial ports
+    //NOTE: opening the serial port clears the buffer!!!
     int txPort = open(UART_PORT, O_RDWR | O_NOCTTY ); 
     if (txPort == -1)
     {
