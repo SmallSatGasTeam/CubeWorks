@@ -91,10 +91,10 @@ START PROCESS 2 (p2) DEFINITION
 async def watchReceptions():
     checking = os.system(READ_EXE)
 
-    while not checking:
+    while checking <= 0:
         checking = os.system(READ_EXE)
-        if checking:
-            x = rxHandling.TXISR()
+        if checking > 0:
+            x = rxHandling.TXISR(checking)
 
 '''
 END PROCESS 2 DEFINITION
