@@ -26,6 +26,7 @@ int main(void)
         printf("Error opening serial port\n");
         exit(1);
     }
+    
     //check the num of bytes in the buff
     ioctl(txPort, FIONREAD, &bytes);
 
