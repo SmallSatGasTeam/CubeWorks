@@ -14,10 +14,10 @@ class TXISR:
     dataList = [['#']]
     
     # Define location of file where the data will be placed while waiting transmission
-    outputFile = "data/txFile.txt"
+    outputFile = "TXServiceCode/txFile.txt"
     
     #define location where we will put the flags (flags are the last time each datatype trasmitted)
-    flagsFile = "data/flagsFile.txt"
+    flagsFile = "TXServiceCodde/flagsFile.txt"
     
     # Datatype Files
     attitudeDataFile = "data/attitudeData.txt"
