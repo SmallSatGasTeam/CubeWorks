@@ -1,8 +1,10 @@
 from sys import path
 path.append('../')
-import Drivers.boomDeployer.BoomDeployer
-import Drivers.camera.Camera
-import flightLogic.missionModes.safe
+
+# these imports are causing syntax errors at the moment
+#import Drivers.boomDeployer.BoomDeployer
+#import Drivers.camera.Camera
+#import flightLogic.missionModes.safe
 import io
 import struct
 import subprocess
