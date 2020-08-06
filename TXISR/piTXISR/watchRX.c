@@ -41,12 +41,13 @@ int main(void)
     //tell python where or not there is stuff in the buff
     if(bytes > 0)
     {
-        PRINT_DEBUG(bytes)
+        //print the num of bytes to the screen
+        printf("%d", &bytes);
         exit(1);
     }
     else
     {
-        PRINT_DEBUG(bytes)
+        printf("%d", 0);
         exit(0);
     }
     
