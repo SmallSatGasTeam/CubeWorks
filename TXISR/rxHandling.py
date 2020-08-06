@@ -48,6 +48,11 @@ class TXISR:
         '''
         Constructor. This will drive the process.
         '''
+        print("HERE I am")
+        successFile = open("/home/pi/didWork.txt", 'a')
+        successFile.write("we have exito")
+        successFile.close()
+
         self.UART_BYTES = bytes
 
         if not path.exists(self.inputFile):

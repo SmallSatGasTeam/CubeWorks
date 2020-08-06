@@ -32,9 +32,11 @@ class INTERRUPT:
         '''
         start two infinitely running functions
         '''
+        sys.stdout.write("Im in the main function, all you should use is sys")
+        print("Im in the main function")
         #Comment out other function until asynio works in function
-        watchTxWindows()
-        watchReceptions()
+       # self.watchTxWindows()
+        self.watchReceptions()
         '''
         p1 = Process(target=watchTxWindows)
         p1.start()
@@ -52,6 +54,8 @@ class INTERRUPT:
         '''
         watch windows and call to transmit if within window.
         '''
+        print("im in the watch TX WINDOWS... shouldn't be here..")
+
         # get current time
         current_time = int(time.time())
 
@@ -93,11 +97,17 @@ class INTERRUPT:
     '''
     #asyncio def watchReceptions():
     def watchReceptions(self):
+        print("im in the watchReceptions function! that's good")
         checking = os.system(self.READ_EXE)
 
+        print("why didn't I get in the loop?")
+        print(checking)
+        print(self.READ_EXE)
         while checking <= 0:
+            # print("im in the loop")
             checking = os.system(self.READ_EXE)
             if checking > 0:
+                print("should now call TXISR rxHandling")
                 x = rxHandling.TXISR(checking)
         # wait ayncio.sleep(1)
     '''
