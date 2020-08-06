@@ -28,7 +28,7 @@ READ_EXE = "TXServiceCode/watchRX.run"
 # file with tx windows and durations. Eachline should have <timestamp of start of tx window> <duration of window>
 TX_WINDOWS_FILE = "data/TxWindows.txt"
 
-:if __name__ == 'main'():
+if __name__ == 'main'():
     '''
     start two infinitely running functions
     '''
