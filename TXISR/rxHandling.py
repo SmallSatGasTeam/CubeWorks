@@ -1,10 +1,10 @@
 import io
 import sys
-import sqlite3
 import struct
 import subprocess
 import calendar
 import time
+import serial
 
 class TXISR:
     
@@ -12,12 +12,12 @@ class TXISR:
     rxData = ['#']
     
     dataList = [['#']]
-       
+    
     # Define location of file where the data will be placed while waiting transmission
-    outputFile = "data/txFile.txt"
+    outputFile = "TXServiceCode/txFile.txt"
     
     #define location where we will put the flags (flags are the last time each datatype trasmitted)
-    flagsFile = "data/flagsFile.txt"
+    flagsFile = "TXServiceCodde/flagsFile.txt"
     
     # Datatype Files
     attitudeDataFile = "data/attitudeData.txt"
@@ -31,36 +31,39 @@ class TXISR:
     
     # Define file where transmission will be recieved
     # commented out for testing purposes:
-    inputFile = "/dev/tty/AMA0"
+    UART_PORT = "/dev/ttyAMA0"
     # file for testing purposes:
-    #inputFile = "data/AMA0_TEST.txt" 
+    #inputFile = "data/AMA0_TEST.txt"
+
+    # Bytes being recieved over UART, this gets changed in the parameterized constructor
+    UART_BYTES = 0
     
-    def __init__(self):
+    def __init__(self, bytes):
         '''
         Constructor. This will drive the process.
         '''
-         
+        self.UART_BYTES = bytes
+
         if not path.exists(self.inputFile):
             print("INPUT FILE NOT FOUND")
             sys.exit()
         else:
-            self.TX = open(self.inputFile, 'r')
-            self.readTX()    
+            SER = serial.Serial(UART_PORT)
+            SER.baudrate = 115200
+            inputString = SER.read(UART_BYTES)
+            self.readTX(inputString)
             
         # commandRecieved will figure out how to process based on the command received
         self.commandReceived()
 
     
-    def readTX(self):
+    def readTX(self, inputString):
         '''
         Read-in and decode transmission. Place decoded transmission in rxData
         '''
-        for i in range(5):
-            currentData = self.TX.readline()
-            # Commented out for testing purposes:
-            # currentData = bytes.fromhex(hexMessage).decode('utf-8')
-            # testing functionality:
-            currentData = int(hexMessage, 0)
+        for i in range(0, len(inputString)):
+            currentData = inputString[i]
+            currentData = bytes.fromhex(currentData).decode('utf-8')
             self.rxData.append(currentData)
     
     def commandReceived(self):
