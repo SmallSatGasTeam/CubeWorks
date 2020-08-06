@@ -2,13 +2,15 @@ import serial
 import os 
 import sys
 TRANSMIT_EXE = "./a.out"
+read_EXE = "./test.out"
 
 print("beging")  
 ser = serial.Serial ("/dev/ttyAMA0")  
 print("Opening port")    
 ser.baudrate = 115200                   
 os.system(TRANSMIT_EXE + " 1") 
-print("\nPython Reading")                     
+print("\nPython Reading")  
+while not os.system(read_EXE)                    
 data = ser.read(100)
 print(data)                      
 ser.close() 
