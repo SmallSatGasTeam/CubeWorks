@@ -65,7 +65,6 @@ class TXISR:
         '''
         Read-in and decode transmission. Place decoded transmission in rxData
         '''
-
         for i in range(0, len(inputString)):
             currentData = inputString[i]
             currentData = bytes.fromhex(currentData).decode('utf-8')
@@ -107,17 +106,19 @@ class TXISR:
             #turn off tx
             if(self.rxData[1] == 0):
                 canTX = False
-            #take pic
             elif(self.rxData[2] == 1):
+                self.wipeFile(TxWindows)
+            #take pic
+            elif(self.rxData[3] == 1):
                 #photo.Camera()
                 cam.takePicture()
                 pass
             #deploy boom
-            elif(self.rxData[3] == 1):
+            elif(self.rxData[4] == 1):
                 #boom.boomDeployer()
                 deployer.deploy()
                 pass
-            elif(self.rxData[4] == 1):
+            elif(self.rxData[5] == 1):
                 #reboot pi, send command to adruino
                 saveObject.run(1)
                 pass
@@ -187,7 +188,7 @@ class TXISR:
             ### TODO: Locate the picture data and report to TX function .exe
             pass
         elif isPic == False:
-            self.wipeTxFile()
+            self.wipeFile(self.outputFile)
             
             f = open(self.outputFile, 'a')
 
@@ -224,11 +225,15 @@ class TXISR:
         f.close()
         return linesTotal 
 
-    def wipeTxFile():
-        file = open(self.outputFile, "r+")
+    #def wipeTxFile():
+    #    file = open(self.outputFile, "r+")
+    #    file.truncate(0)
+    #    file.close()
+    def wipeFile(self, fileToWipe)
+        file = open(fileToWipe, "r+")
         file.truncate(0)
-        file.close()        
-    
+        file.close()
+
 '''
 timestamp';' datapacket
 timestamp';'     

@@ -32,6 +32,7 @@ if __name__ == 'main'():
     '''
     start two infinitely running functions
     '''
+    #Comment out other function until asynio works in function
     # watchTxWindows()
     watchReceptions()
     '''
