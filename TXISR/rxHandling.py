@@ -74,10 +74,12 @@ class TXISR:
         '''
         Decide what to do based on the command recieved
         '''
+
+        # the following throws syntax errors. Commenting out for testing.
         deployer = BoomDeployer()
-		cam = Camera()
+        cam = Camera()
         saveObject = safe(None)
-        
+
         if(self.rxData[0] == 0):
             ### TODO PROCESS ALL THE OPTIONS FOR THE DATA TYPES
             if(self.rxData[3] == 0):
@@ -229,7 +231,7 @@ class TXISR:
     #    file = open(self.outputFile, "r+")
     #    file.truncate(0)
     #    file.close()
-    def wipeFile(self, fileToWipe)
+    def wipeFile(self, fileToWipe):
         file = open(fileToWipe, "r+")
         file.truncate(0)
         file.close()

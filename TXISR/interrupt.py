@@ -75,7 +75,7 @@ def watchTxWindows():
             callRadioDriver(dataTypeWithSpace)
     f.close()  
     
- def callRadioDriver(dataType):
+def callRadioDriver(dataType):
     '''
     Function that calls TX EXE
     '''
