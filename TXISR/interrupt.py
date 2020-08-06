@@ -28,25 +28,25 @@ READ_EXE = "TXServiceCode/watchRX.run"
 # file with tx windows and durations. Eachline should have <timestamp of start of tx window> <duration of window>
 TX_WINDOWS_FILE = "data/TxWindows.txt"
 
-if __name__ == 'main'():
-   '''
-   start two infinitely running functions
-   '''
-  # watchTxWindows()
-   watchReceptions()
-   '''
-   p1 = Process(target=watchTxWindows)
-   p1.start()
-   p2 = Process(target=inturruptWatchReceptions)
-   p2.start()
-   p1.join()
-   p2.join()
-   '''
+:if __name__ == 'main'():
+    '''
+    start two infinitely running functions
+    '''
+    # watchTxWindows()
+    watchReceptions()
+    '''
+    p1 = Process(target=watchTxWindows)
+    p1.start()
+    p2 = Process(target=inturruptWatchReceptions)
+    p2.start()
+    p1.join()
+    p2.join()
+    '''
 
 '''
 START PROCESS 1 (p1) DEFINITION 
 '''
-async def watchTxWindows():
+def watchTxWindows():
     '''
     watch windows and call to transmit if within window.
     '''
@@ -88,7 +88,7 @@ END PROCESS 1 DEFINITION
 '''
 START PROCESS 2 (p2) DEFINITION
 '''
-async def watchReceptions():
+def watchReceptions():
     checking = os.system(READ_EXE)
 
     while checking <= 0:
