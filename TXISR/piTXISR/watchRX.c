@@ -27,7 +27,7 @@ int main(void)
         exit(1);
     }
     //check the num of bytes in the buff
-    ioctl(UART_PORT, FIONREAD, &bytes);
+    ioctl(txPort, FIONREAD, &bytes);
 
     //tell python where or not there is stuff in the buff
     if(bytes > 0)
