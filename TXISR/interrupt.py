@@ -11,7 +11,7 @@ import calendar
 import os
 import string
 import sys
-import asycnio
+#import asycnio
 
 #import rxHandling.py
 import rxHandling
