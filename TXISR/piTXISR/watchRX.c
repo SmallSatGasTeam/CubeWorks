@@ -42,12 +42,12 @@ int main(void)
     if(bytes > 0)
     {
         //print the num of bytes to the screen
-        printf("%d", &bytes);
+        printf("%d\n", &bytes);
         exit(1);
     }
     else
     {
-        printf("0");
+        printf("0\n");
         exit(0);
     }
     
