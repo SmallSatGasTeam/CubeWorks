@@ -47,7 +47,7 @@ int main(void)
     }
     else
     {
-        printf("%d", 0);
+        printf("0");
         exit(0);
     }
     
