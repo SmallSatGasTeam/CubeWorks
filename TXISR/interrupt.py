@@ -23,7 +23,7 @@ CONST_VOLTAGE = 1.5
 TRANSMIT_EXE = "TXServiceCode/TXService.run"
 
 # Code that scans the UART
-READ_EXE = "TXServiceCode/watchUARTRX.run"
+READ_EXE = "TXServiceCode/watchRX.run"
     
 # file with tx windows and durations. Eachline should have <timestamp of start of tx window> <duration of window>
 TX_WINDOWS_FILE = "data/TxWindows.txt"
@@ -32,7 +32,7 @@ if __name__ == 'main'():
    '''
    start two infinitely running functions
    '''
-   watchTxWindows()
+  # watchTxWindows()
    watchReceptions()
    '''
    p1 = Process(target=watchTxWindows)
