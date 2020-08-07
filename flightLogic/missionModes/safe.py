@@ -15,8 +15,7 @@ class safe:
 		#Setup I2C bus for communication
 		self.__eps = EPS()
 		self.thresholdVoltage = 3.33 #Threshold Voltage
-        if saveObject != NULL:
-			self.__saveObject = saveObject
+	    self.__saveObject = saveObject
 		GPIO.setwarnings(False)
 		GPIO.setmode(GPIO.BOARD) #Physical Pin numbering
 		GPIO.setup(40, GPIO.OUT, initial=GPIO.LOW) #Sets pin 40 to be an output pin and sets the initial value to low (off)
