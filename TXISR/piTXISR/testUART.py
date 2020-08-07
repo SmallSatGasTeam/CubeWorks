@@ -2,7 +2,7 @@ import serial
 import os 
 import sys
 TRANSMIT_EXE = "./a.out"
-read_EXE = "./test.out"
+read_EXE = "./watchRX.run"
 
 print("beging")  
 ser = serial.Serial ("/dev/ttyAMA0")  
