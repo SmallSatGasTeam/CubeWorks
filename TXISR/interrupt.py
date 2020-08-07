@@ -1,5 +1,5 @@
 #Shawn's pre review notes:
-# Time here is declared as an int, I would not do that beacuse it could overflow. Just let python handle it. 
+# Time here is declared as an int, I would not do that beacuse it could overflow. Just let python handle it.
 # Also when this class gets called by flight logic it will pass it an object that will handle getting the data we have stored.
 # Inturrupt requires Pin
 
@@ -49,8 +49,7 @@ class INTERRUPT:
     '''
     START PROCESS 1 (p1) DEFINITION 
     '''
-    # asyncio def watchTxWindows():
-    def watchTxWindows(self):
+    asyncio def watchTxWindows():
         '''
         watch windows and call to transmit if within window.
         '''
