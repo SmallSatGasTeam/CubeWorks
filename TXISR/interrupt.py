@@ -1,5 +1,5 @@
 #Shawn's pre review notes:
-# Time here is declared as an int, I would not do that beacuse it could overflow. Just let python handle it. 
+# Time here is declared as an int, I would not do that beacuse it could overflow. Just let python handle it.
 # Also when this class gets called by flight logic it will pass it an object that will handle getting the data we have stored.
 # Inturrupt requires Pin
 
@@ -51,8 +51,7 @@ class INTERRUPT:
     '''
     START PROCESS 1 (p1) DEFINITION 
     '''
-    # asyncio def watchTxWindows():
-    def watchTxWindows(self):
+    asyncio def watchTxWindows():
         '''
         watch windows and call to transmit if within window.
         '''
@@ -80,8 +79,8 @@ class INTERRUPT:
 
                 dataTypeWithSpace = " "+line[1]
                 callRadioDriver(dataTypeWithSpace)
+            await asyncio.sleep(1)
         f.close()
-        #await asyncio.sleep(1)
 
     def callRadioDriver(self, dataType):
         '''
@@ -97,8 +96,7 @@ class INTERRUPT:
     '''
     START PROCESS 2 (p2) DEFINITION
     '''
-    #asyncio def watchReceptions():
-    def watchReceptions(self):
+    asyncio def watchReceptions():
         print("im in the watchReceptions function! that's good")
         checking = os.system(self.READ_EXE)
 
@@ -109,8 +107,13 @@ class INTERRUPT:
             checking = os.system(self.READ_EXE)
             if checking > 0:
                 print("should now call TXISR rxHandling")
+<<<<<<< HEAD
                 x = rxHandling.TXISR(self.checking)
         # wait ayncio.sleep(1)
+=======
+                x = rxHandling.TXISR(checking)
+        await ayncio.sleep(1)
+>>>>>>> cabfa7ed19d1cb487beeb0d83d16d7a5d451deab
     '''
     END PROCESS 2 DEFINITION
     '''

@@ -5,68 +5,90 @@
 #is passed to it.
 #They are written as different classes so that each code my be quicker
 #NOTE: try to only instantiate the classes once. if you have to do
-#more this will not cause a  problem it will only slow the code 
+#more this will not cause a  problem it will only slow the code
 #down.
 #####################################################################
+import os.path
 
-class saveFileTTNC:
+class save:
     def __init__(self):
         #open the file when the calls is instantiated
-        self.__TTNC_File = open("TTNC_Data.txt", "w+")
-        
-    #write the data to the file,
-    #NOTE: it is important that you put a : after the time stamp, this will
-    #effect the txisr
-    def writeTTNC(self, data):
-        temp = 0
-        for i in data:
-            if temp == 0:
-                self.__TTNC_File.write(i + ": ")
-                temp += 1
-            else :
-                self.__TTNC_File.write(i)
-
-    #this func will read the data form our file and then return that data
-    def getTTNC(self):
-        return self.__TTNC_File.readLines()
-
-class saveFileDeploy:
-    def __init__(self):
+        self.__TTNC_File = open(os.path.dirname(__file__) + "/TTNC_Data.txt", "a+")
         #open the file when the calls is instantiated
-        self.__Deploy_File = open("Deploy_Data.txt", "w+")
+        self.__Deploy_File = open(os.path.dirname(__file__) + "/Deploy_Data.txt", "a+")
+        #open the file when the calls is instantiated
+        self.__Attitude_File = open(os.path.dirname(__file__) + "/Attitude_Data.txt", "a+")
 
     #write the data to the file,
     #NOTE: it is important that you put a : after the time stamp, this will
     #effect the txisr
-    def writeDeploy(self, data):
+    async def writeTTNC(self, data):
         temp = 0
         for i in data:
             if temp == 0:
-                self.__TTNC_File.write(i + ": ")
+                self.__TTNC_File.write(str(i) + ": ")
                 temp += 1
-            else :
-                self.__TTNC_File.write(i)
-    #this func will read the data form our file and then return that data
-    def getDeploy(self):
-        return self.__Deploy_File.readLines()
+            else:
+                self.__TTNC_File.write(str(i)+',')
+        self.__TTNC_File.write('\n')
 
-class saveFileAttitude:
-    def __init__(self):
-        #open the file when the calls is instantiated
-        self.__AttitudeData = open("Attitude_Data.txt", "w+")
+    #this func will read the data from our file and then return that data
+    async def getTTNC(self, time):
+        temp = []
+        for i in self.__TTNC_File:
+            if (int(i[0]) >= time):
+                temp += i
+        return temp
 
+    #this is data collection for Deploy
     #write the data to the file,
     #NOTE: it is important that you put a : after the time stamp, this will
     #effect the txisr
-    def writeAttitude(self, data):
+    async def writeDeploy(self, data):
         temp = 0
         for i in data:
             if temp == 0:
-                self.__TTNC_File.write(i + ": ")
+                self.__Deploy_File.write(str(i) + ": ")
                 temp += 1
-            else :
-                self.__TTNC_File.write(i)
+            else:
+                self.__Deploy_File.write(str(i)+',')
+        self.__Deploy_File.write('\n')
 
     #this func will read the data form our file and then return that data
-    def getAttitudeData(self):
-        return self__AttitudeData.readLines()
+    async def getDeploy(self):
+        temp = []
+        for i in self.__Deploy_File:
+            if (int(i[0]) >= time):
+                temp += i
+        return temp
+    #this part of the code is for data collection of attitude data
+    #write the data to the file,
+    #NOTE: it is important that you put a : after the time stamp, this will
+    #effect the txisr
+    async def writeAttitude(self, data):
+        temp = 0
+        for i in data:
+            if temp == 0:
+                self.__Attitude_File.write(str(i) + ": ")
+                temp += 1
+            else:
+                self.__Attitude_File.write(str(i)+',')
+        self.__Attitude_File.write('\n')
+
+
+    #this func will read the data form our file and then return that data
+    async def getAttitudeData(self):
+        temp = []
+        for i in self.__AttitudeData:
+            if (int(i[0]) >= time):
+                temp += i
+        return temp
+
+    #this will check if it is time to tx or not and then return a bool
+    #TODO: how are we saving tx times?
+    def checkTxWindow(self):
+        timeToTx = txWindows.readlines()
+        for i in timeToTx:
+            if (i - 10000) <= round(time.time() * 1000):
+                return True
+        return False
