@@ -28,7 +28,7 @@ class TXISR:
 
     # Datatype Files
     attitudeDataFile = "data/attitudeData.txt"
-    TTCDataFile = "data/ttcData.txt"
+    TTCDataFile = "data/ttncData.txt"
     deployDataFile = "data/deployData.txt"
     HQPicFile = "data/hpPicData.txt"
     LQPicFile = "data/lqPicData.txt"
@@ -203,8 +203,8 @@ class TXISR:
                     # Line alredy transmitted
                     pass
                 else:
-                    for i in range(0, len(line) - 1):
-                        print(i)
+                    for i in range(0, len(line)):
+                        #print(i)
                         print(line[i])
                         #print()
                         # self.dataList[int(counter)][i] = line[i]
