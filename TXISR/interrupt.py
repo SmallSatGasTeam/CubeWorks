@@ -107,13 +107,8 @@ class INTERRUPT:
             checking = os.system(self.READ_EXE)
             if checking > 0:
                 print("should now call TXISR rxHandling")
-<<<<<<< HEAD
-                x = rxHandling.TXISR(self.checking)
-        # wait ayncio.sleep(1)
-=======
                 x = rxHandling.TXISR(checking)
         await ayncio.sleep(1)
->>>>>>> cabfa7ed19d1cb487beeb0d83d16d7a5d451deab
     '''
     END PROCESS 2 DEFINITION
     '''

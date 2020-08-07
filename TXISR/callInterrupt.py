@@ -1,3 +1,9 @@
-import interrupt
+import asyncio
+from TXISR.interrupt import INTERRUPT
 
-y = interrupt.INTERRUPT()
+def __main__():
+	asyncio.run(executeFlightLogic())
+
+
+async def executeFlightLogic(): 
+    interruptObject = INTERRUPT()
