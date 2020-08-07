@@ -37,7 +37,6 @@ class INTERRUPT:
         self.watchReceptions()
         self.watchTxWindows()
         # Code that runs
-        
 
         '''
         p1 = Process(target=watchTxWindows)
@@ -49,7 +48,7 @@ class INTERRUPT:
         '''
 
     '''
-    START PROCESS 1 (p1) DEFINITION 
+    START PROCESS 1 (p1) DEFINITION
     '''
     async def watchTxWindows():
         '''
@@ -75,7 +74,7 @@ class INTERRUPT:
                 delay = (int(line[0]) - int(current_time))
                 if delay < 0:
                     print("Something went bad, cannot have negative wait time")
-                time.sleep(delay - 5)
+                await asyncio.sleep(delay - 5)
 
                 dataTypeWithSpace = " "+line[1]
                 callRadioDriver(dataTypeWithSpace)
