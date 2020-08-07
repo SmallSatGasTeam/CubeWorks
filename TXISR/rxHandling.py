@@ -5,7 +5,7 @@ sys.path.append('../')
 #import Drivers.boomDeployer as boomDeployer
 #import Drivers.camera as Camera
 #import flightLogic.missionModes.safe as safe
-from flightLogic import saveTofiles
+#from flightLogic import saveTofiles
 import io
 import struct
 import subprocess
