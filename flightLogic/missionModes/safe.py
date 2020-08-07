@@ -29,8 +29,8 @@ class safe:
 		try :
 			if(self.__saveObject.checkTxWindow()):
 				self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, time)
-	except :
-		pass
+		except :
+			pass
 
 	async def thresholdCheck(self):
 		while True:
