@@ -201,9 +201,8 @@ class TXISR:
                     pass
                 else:
                     counterInner = 0
-                    while counterInner < len(line):
-                        self.dataList[counter][counterInner] = line[counterInner]
-                        counterInner = counterInner + 1
+                    for i in range(0, len(line)):
+                        self.dataList[counter][i] = line[i]
                     counter = counter + 1
             line = fdata.readline()
             line = line.replace('\n', '')
