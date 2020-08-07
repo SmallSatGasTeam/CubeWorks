@@ -1,3 +1,11 @@
+UV Driver:
+--
+Location: ../Drivers/UV/UVDriver.py
+
+Functionality:
+	The UV Driver inherits functionality from the ADC Driver, much like the Sun Sensor Driver. It reads from a specific channel through the SPi connection created in the ADC Driver, and returns a single value. To get the data returned by this driver call UVDriver.UVDriver.read()
+	
+
 # UV Sensor Documentation
 ## Requirements
 The the value of uv power hitting the uv sensor and return the power in mW/cm^2

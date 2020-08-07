@@ -19,4 +19,4 @@ if __name__ == "__main__":
         valueInput = input("Choose shut down time in minutes 1,2,3: ")    
         value = int(valueInput)
         writeNumber(value)
-   
+
