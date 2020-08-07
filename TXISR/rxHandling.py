@@ -1,10 +1,10 @@
-from sys import path
-path.append('../')
+import sys
+sys.path.append('../')
 
 # these imports are causing syntax errors at the moment
-#import Drivers.boomDeployer.BoomDeployer
-#import Drivers.camera.Camera
-#import flightLogic.missionModes.safe
+import Drivers.boomDeployer as boomDeployer
+import Drivers.camera as Camera
+import flightLogic.missionModes.safe as safe
 import io
 import struct
 import subprocess
@@ -110,9 +110,9 @@ class TXISR:
         '''
 
         # the following throws syntax errors. Commenting out for testing.
-        #deployer = BoomDeployer()
-        #cam = Camera()
-        #saveObject = safe(None)
+        deployer = boomDeployer.BoomDeployer()
+        cam = Camera.Camera()
+        saveObject = safe.safe(None)
         print("command cointained in 0")
         inc = 1
         print(self.rxData[0 + inc])
@@ -122,21 +122,21 @@ class TXISR:
             ### TODO PROCESS ALL THE OPTIONS FOR THE DATA TYPES
             if(self.rxData[3 + inc] == 0):
                 # Process Attitude Data
-                driveDataType(self.attitudeDataFile)
+                self.driveDataType(self.attitudeDataFile)
             elif(self.rxData[3 + inc] == 1):
                 # Process TT&C Data
-                driveDataType(self.TTCDataFile)
+                self.driveDataType(self.TTCDataFile)
             elif(self.rxData[3 + inc] == 2):
                 # Process Deployment Data
-                driveDataType(self.deployDataFile)
+                self.driveDataType(self.deployDataFile)
             elif(self.rxData[3 + inc] == 3):
                 # Process HQ Picture
                 # PicRes 0 - LQ 1 - HQ
-                drivePic(self.HQPicFile, 1, self.rxData[4])
+                self.drivePic(self.HQPicFile, 1, self.rxData[4])
             elif(self.rxData[3 + inc] == 4):
                 # Process LQ Picture
                 # PicRes 0 - LQ 1 - HQ
-                drivePic(self.LQPicFile, 0, self.rxData[4])
+                self.drivePic(self.LQPicFile, 0, self.rxData[4])
             elif(self.rxData[3 + inc] == 5):
                 # Add TX window to file
                 addTXWindow()
@@ -147,7 +147,7 @@ class TXISR:
             if(self.rxData[1 + inc] == 0):
                 canTX = False
             elif(self.rxData[2 + inc] == 1):
-                self.wipeFile(TxWindows)
+                self.wipeFile(self.TxWindows)
             #take pic
             elif(self.rxData[3 + inc] == 1):
                 #photo.Camera()
@@ -174,7 +174,7 @@ class TXISR:
         print(dataFile)
 
         fdata = open(dataFile, 'r')
-        line = f.readline()
+        line = fdata.readline()
                 
         lastTXofDT = self.getFlagsTimestamp()
         
@@ -198,7 +198,7 @@ class TXISR:
                         self.dataList[counter][counterInner] = line[counterInner]
                         counterInner = counterInner + 1
                     counter = counter + 1
-            line = f.readline()
+            line = fdata.readline()
             line = line.replace('\n', '')
         
         numLines = self.packetize(False)
