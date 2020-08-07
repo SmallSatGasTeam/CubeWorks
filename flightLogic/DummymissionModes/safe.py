@@ -1,6 +1,6 @@
 import sys
 sys.path.append('../../')
-import DummyDrivers.eps.EPS as EPS
+import DummyDrivers.eps.DummyEPS as EPS
 import asyncio
 import RPi.GPIO as GPIO
 #####################################################################################
