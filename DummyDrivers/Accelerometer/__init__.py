@@ -1,1 +1,1 @@
-from .Accelerometer import *
+from .DummyAccelerometer import *
