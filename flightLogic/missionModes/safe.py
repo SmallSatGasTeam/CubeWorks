@@ -1,8 +1,3 @@
-import sys
-sys.path.append('../../')
-import Drivers.eps.EPS as EPS
-import asyncio
-import RPi.GPIO as GPIO
 #####################################################################################
 #All this class does is tell the arduino to shut off the pi for the specified amount
 #of time.
@@ -20,6 +15,7 @@ class safe:
 		#Setup I2C bus for communication
 		self.__eps = EPS()
 		self.thresholdVoltage = 3.33 #Threshold Voltage
+        self.__saveObject = saveObject
 		GPIO.setwarnings(False)
 		GPIO.setmode(GPIO.BOARD) #Physical Pin numbering
 		GPIO.setup(40, GPIO.OUT, initial=GPIO.LOW) #Sets pin 40 to be an output pin and sets the initial value to low (off)
@@ -29,8 +25,11 @@ class safe:
 	def run(self, time):
 		#send message to the adruino to power off the pi
 		#make sure we are not about to tx
-        	if(saveObject.checkTxWindow()):
+        try :
+        	if(self.__saveObject.checkTxWindow()):
 				self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, time)
+        except :
+            pass
 
 	async def thresholdCheck(self):
 		while True:
