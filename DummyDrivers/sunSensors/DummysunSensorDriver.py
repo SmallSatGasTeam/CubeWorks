@@ -13,7 +13,7 @@ class sunSensor(Driver):
         """
         This function calls the read function of the ADC for each channel a sun sensor has and return a list of the voltages
         """
-	voltageList = []
+        voltageList = []
         for i in range(0, 5):
             voltageList.append(1.3)
 
