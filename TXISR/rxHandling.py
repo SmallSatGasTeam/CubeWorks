@@ -2,9 +2,9 @@ import sys
 sys.path.append('../')
 
 # these imports are causing syntax errors at the moment
-import Drivers.boomDeployer as Boom
-import Drivers.camera as Camera
-import flightLogic.missionModes.safe as safe
+# import Drivers.boomDeployer as Boom
+# import Drivers.camera as Camera
+# import flightLogic.missionModes.safe as safe
 import io
 import struct
 import subprocess
@@ -99,9 +99,9 @@ class TXISR:
         '''
 
         # the following throws syntax errors. Commenting out for testing.
-        deployer = Boom.BoomDeployer()
-        cam = Camera.Camera()
-        saveObject = safe.safe(None)
+        # deployer = Boom.BoomDeployer()
+        # cam = Camera.Camera()
+        # saveObject = safe.safe(None)
 
         if(self.rxData[0] == 0):
             ### TODO PROCESS ALL THE OPTIONS FOR THE DATA TYPES
