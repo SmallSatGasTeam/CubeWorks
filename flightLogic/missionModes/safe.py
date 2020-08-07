@@ -26,11 +26,11 @@ class safe:
 	def run(self, time):
 		#send message to the adruino to power off the pi
 		#make sure we are not about to tx
-        try :
-        	if(self.__saveObject.checkTxWindow()):
+		try :
+			if(self.__saveObject.checkTxWindow()):
 				self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, time)
-        except :
-            pass
+	except :
+		pass
 
 	async def thresholdCheck(self):
 		while True:
