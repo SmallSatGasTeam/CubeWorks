@@ -117,7 +117,7 @@ class TXISR:
         saveObject = safe.safe(None)
         print("command cointained in 0")
 
-        print(self.rxData[0 + self.self.inc])
+        print(self.rxData[0 + self.inc])
 
         if(self.rxData[0 + self.inc] == 0):
             print(self.rxData[0 + self.inc])
