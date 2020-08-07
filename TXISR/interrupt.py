@@ -78,8 +78,8 @@ class INTERRUPT:
 
                 dataTypeWithSpace = " "+line[1]
                 callRadioDriver(dataTypeWithSpace)
+            await asyncio.sleep(1)
         f.close()
-        #await asyncio.sleep(1)
 
     def callRadioDriver(self, dataType):
         '''
@@ -95,8 +95,7 @@ class INTERRUPT:
     '''
     START PROCESS 2 (p2) DEFINITION
     '''
-    #asyncio def watchReceptions():
-    def watchReceptions(self):
+    asyncio def watchReceptions():
         print("im in the watchReceptions function! that's good")
         checking = os.system(READ_EXE)
 
@@ -109,7 +108,7 @@ class INTERRUPT:
             if checking > 0:
                 print("should now call TXISR rxHandling")
                 x = rxHandling.TXISR(checking)
-        # wait ayncio.sleep(1)
+        await ayncio.sleep(1)
     '''
     END PROCESS 2 DEFINITION
     '''
