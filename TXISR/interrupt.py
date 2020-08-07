@@ -105,7 +105,7 @@ class INTERRUPT:
         print(self.READ_EXE)
         while checking <= 0:
             # print("im in the loop")
-            print("checking: " + str(checking))
+            #print("checking: " + str(checking))
             checking = os.system(self.READ_EXE)
             if checking > 0:
                 print("should now call TXISR rxHandling")

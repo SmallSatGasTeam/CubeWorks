@@ -22,7 +22,7 @@ void setUpUart();
 
 int main(void)
 {
-    int bytes;
+    long bytes;
 
     //open the serial ports
     //NOTE: opening the serial port clears
@@ -42,7 +42,7 @@ int main(void)
     if(bytes > 0)
     {
         //print the num of bytes to the screen
-        printf("%d\n", &bytes);
+        printf("%ld\n", &bytes);
         exit(1);
     }
     else
