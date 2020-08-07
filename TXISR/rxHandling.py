@@ -11,6 +11,7 @@ import subprocess
 import calendar
 import time
 import serial
+import os
 
 class TXISR:
     
@@ -38,8 +39,9 @@ class TXISR:
     # Define file where transmission will be recieved
     # commented out for testing purposes:
     UART_PORT = "/dev/ttyAMA0"
+    
     # file for testing purposes:
-    #inputFile = "data/AMA0_TEST.txt"
+    inputFile = "data/AMA0_TEST.txt"
 
     # Bytes being recieved over UART, this gets changed in the parameterized constructor
     UART_BYTES = 0
@@ -55,15 +57,23 @@ class TXISR:
 
         self.UART_BYTES = bytes
 
-        if not path.exists(self.inputFile):
+        print("i I have so many bytes" + str(self.UART_BYTES))
+
+        if not os.path.exists(self.inputFile):
             print("INPUT FILE NOT FOUND")
             sys.exit()
         else:
-            SER = serial.Serial(UART_PORT)
-            SER.baudrate = 115200
-            inputString = SER.read(UART_BYTES)
+            #SER = serial.Serial(UART_PORT)
+            #SER.baudrate = 115200
+            #inputString = SER.read(UART_BYTES)
+            
+            fInput = open(self.inputFile, "r")
+            inputString = fInput.readline()
+            print(inputString)
+
             self.readTX(inputString)
             
+            print(self.rxData)
         # commandRecieved will figure out how to process based on the command received
         self.commandReceived()
 
@@ -72,10 +82,23 @@ class TXISR:
         '''
         Read-in and decode transmission. Place decoded transmission in rxData
         '''
-        for i in range(0, len(inputString)):
-            currentData = inputString[i]
-            currentData = bytes.fromhex(currentData).decode('utf-8')
+        print(inputString)    
+
+        inputString.replace('#', '')
+        inputString.replace('\n', '')
+        splitInput = inputString.split(', ')
+        print(len(splitInput))
+        splitInput[len(splitInput) - 1].replace('\n', '')      
+        # splitInput.remove('#')
+        
+        for x in range(0, len(splitInput)):
+            print(splitInput[x])
+
+        for i in range(0, len(splitInput)):
+            currentData = splitInput[i]
+            # currentData = bytes.fromhex(currentData).decode('utf-8')
             self.rxData.append(currentData)
+            print(self.rxData)
     
     def commandReceived(self):
         '''
@@ -83,9 +106,11 @@ class TXISR:
         '''
 
         # the following throws syntax errors. Commenting out for testing.
-        deployer = BoomDeployer()
-        cam = Camera()
-        saveObject = safe(None)
+        #deployer = BoomDeployer()
+        #cam = Camera()
+        #saveObject = safe(None)
+        print("command cointained in 0")
+        print(self.rxData[0])
 
         if(self.rxData[0] == 0):
             ### TODO PROCESS ALL THE OPTIONS FOR THE DATA TYPES
