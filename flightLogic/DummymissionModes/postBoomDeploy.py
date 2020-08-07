@@ -3,7 +3,7 @@ sys.path.append('../../')
 import asyncio
 from flightLogic.DummymissionModes import safe
 from flightLogic.DummygetDriverData import *
-import Drivers.eps.DummyEPS as EPS
+import DummyDrivers.eps.DummyEPS as EPS
 #from TXISR.interrupt import INTERRUPT
 
 class postBoomMode:

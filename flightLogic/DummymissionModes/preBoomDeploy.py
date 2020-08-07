@@ -3,8 +3,8 @@ sys.path.append('../../')
 import asyncio
 from flightLogic.DummymissionModes import safe
 from flightLogic.DummygetDriverData import *
-from Drivers.eps import DummyEPS as EPS
-from Drivers.sunSensors import DummysunSensorDriver as sunSensorDriver
+from DummyDrivers.eps import DummyEPS as EPS
+from DummyDrivers.sunSensors import DummysunSensorDriver as sunSensorDriver
 #from TXISR.interrupt import INTERRUPT
 
 

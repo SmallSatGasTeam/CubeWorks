@@ -4,7 +4,7 @@ sys.path.append('../../')
 import asyncio
 from flightLogic.DummymissionModes import safe
 from flightLogic.DummygetDriverData import *
-import Drivers.boomDeployer as boomDeployer
+import DummyDrivers.boomDeployer as boomDeployer
 #import Drivers.camera.Camera as camera
 #from TXISR.interrupt import INTERRUPT
 
