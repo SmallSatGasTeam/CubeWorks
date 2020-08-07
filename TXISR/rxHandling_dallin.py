@@ -1,11 +1,10 @@
-import sys
-sys.path.append('../')
+from sys import path
+path.append('../')
 
 # these imports are causing syntax errors at the moment
-#import Drivers.boomDeployer as boomDeployer
-#import Drivers.camera as Camera
-#import flightLogic.missionModes.safe as safe
-#from flightLogic import saveTofiles
+#import Drivers.boomDeployer.BoomDeployer
+#import Drivers.camera.Camera
+#import flightLogic.missionModes.safe
 import io
 import struct
 import subprocess
@@ -15,39 +14,38 @@ import serial
 import os
 
 class TXISR:
-
+    
     # List that stores eveything recieved in the transmission
     rxData = ['#']
+    
     dataList = [['#']]
+    
     # Define location of file where the data will be placed while waiting transmission
     outputFile = "TXServiceCode/txFile.txt"
-
+    
     #define location where we will put the flags (flags are the last time each datatype trasmitted)
-    #flagsFile = "TXServiceCodde/flagsFile.txt"
-    flagsFile = "data/flagsFile.txt"
-
+    flagsFile = "TXServiceCodde/flagsFile.txt"
+    
     # Datatype Files
     attitudeDataFile = "data/attitudeData.txt"
     TTCDataFile = "data/ttcData.txt"
     deployDataFile = "data/deployData.txt"
     HQPicFile = "data/hpPicData.txt"
     LQPicFile = "data/lqPicData.txt"
-
+    
     # TX Window Files
     TxWindows = "data/TxWindows.txt"
-
+    
     # Define file where transmission will be recieved
     # commented out for testing purposes:
     UART_PORT = "/dev/ttyAMA0"
-
+    
     # file for testing purposes:
     inputFile = "data/AMA0_TEST.txt"
 
     # Bytes being recieved over UART, this gets changed in the parameterized constructor
     UART_BYTES = 0
-
-    inc = 1
-
+    
     def __init__(self, bytes):
         '''
         Constructor. This will drive the process.
@@ -68,7 +66,7 @@ class TXISR:
             #SER = serial.Serial(UART_PORT)
             #SER.baudrate = 115200
             #inputString = SER.read(UART_BYTES)
-
+            
             fInput = open(self.inputFile, "r")
             inputString = fInput.readline()
             print(inputString)
@@ -80,20 +78,20 @@ class TXISR:
         # commandRecieved will figure out how to process based on the command received
         self.commandReceived()
 
-
+    
     def readTX(self, inputString):
         '''
         Read-in and decode transmission. Place decoded transmission in rxData
         '''
-        print(inputString)
+        print(inputString)    
 
         inputString.replace('#', '')
         inputString.replace('\n', '')
         splitInput = inputString.split(', ')
         print(len(splitInput))
-        splitInput[-1].replace('\n', '')
+        splitInput[-1].replace('\n', '')      
         # splitInput.remove('#')
-
+        
         for x in range(0, len(splitInput)):
             print(splitInput[x])
 
@@ -101,87 +99,74 @@ class TXISR:
             currentData = splitInput[i]
             # currentData = bytes.fromhex(currentData).decode('utf-8')
             self.rxData.append(currentData)
-            # Maybe we need this??
-            # self.rxData.pop(0)
             print(self.rxData)
-
+    
     def commandReceived(self):
         '''
         Decide what to do based on the command recieved
         '''
 
         # the following throws syntax errors. Commenting out for testing.
-        #deployer = boomDeployer.BoomDeployer()
-        #cam = Camera.Camera()
-        # saveObject = save()
-        # safeObject = safe.safe(saveObject)
+        #deployer = BoomDeployer()
+        #cam = Camera()
+        #saveObject = safe(None)
         print("command cointained in 0")
+        inc = 1
+        print(self.rxData[0 + inc])
 
-        print(self.rxData[0 + self.inc])
-
-        if(int(self.rxData[0 + self.inc]) == 0):
-            print(self.rxData[0 + self.inc])
+        if(self.rxData[0 + inc] == 0):
             ### TODO PROCESS ALL THE OPTIONS FOR THE DATA TYPES
-            if(int(self.rxData[3 + self.inc]) == 0):
+            if(self.rxData[3 + inc] == 0):
                 # Process Attitude Data
-                self.driveDataType(self.attitudeDataFile)
-            elif(int(self.rxData[3 + self.inc]) == 1):
+                driveDataType(self.attitudeDataFile)
+            elif(self.rxData[3 + inc] == 1):
                 # Process TT&C Data
-                self.driveDataType(self.TTCDataFile)
-            elif(int(self.rxData[3 + self.inc]) == 2):
+                driveDataType(self.TTCDataFile)
+            elif(self.rxData[3 + inc] == 2):
                 # Process Deployment Data
-                self.driveDataType(self.deployDataFile)
-            elif(int(self.rxData[3 + self.inc]) == 3):
+                driveDataType(self.deployDataFile)
+            elif(self.rxData[3 + inc] == 3):
                 # Process HQ Picture
                 # PicRes 0 - LQ 1 - HQ
-                self.drivePic(self.HQPicFile, 1, self.rxData[4])
-            elif(int(self.rxData[3 + self.inc]) == 4):
+                drivePic(self.HQPicFile, 1, self.rxData[4])
+            elif(self.rxData[3 + inc] == 4):
                 # Process LQ Picture
                 # PicRes 0 - LQ 1 - HQ
-                self.drivePic(self.LQPicFile, 0, self.rxData[4])
-            elif(int(self.rxData[3 + self.inc]) == 5):
+                drivePic(self.LQPicFile, 0, self.rxData[4])
+            elif(self.rxData[3 + inc] == 5):
                 # Add TX window to file
-                self.addTXWindow()
+                addTXWindow()
             else:
                 return
         else:
             #turn off tx
-            if(int(self.rxData[1 + self.inc]) == 0):
+            if(self.rxData[1 + inc] == 0):
                 canTX = False
-            elif(int(self.rxData[2 + self.inc]) == 1):
-                self.wipeFile(self.TxWindows)
+            elif(self.rxData[2 + inc] == 1):
+                self.wipeFile(TxWindows)
             #take pic
-            elif(int(self.rxData[3 + self.inc]) == 1):
+            elif(self.rxData[3 + inc] == 1):
                 #photo.Camera()
-                # cam.takePicture()
+                cam.takePicture()
                 pass
             #deploy boom
-            elif(int(self.rxData[4 + self.inc]) == 1):
+            elif(self.rxData[4 + inc] == 1):
                 #boom.boomDeployer()
-                # deployer.deploy()
+                deployer.deploy()
                 pass
-            elif(int(self.rxData[5 + self.inc]) == 1):
+            elif(self.rxData[5 + inc] == 1):
                 #reboot pi, send command to adruino
-                #saveObject.run(1)
+                saveObject.run(1)
                 pass
             else:
                 return
-    
-    def addTXWindow(self):
-        fTX = open(self.TxWindows, 'a')
-        fTX.write(str(self.rxData[1 + self.inc]) + ", " + str(self.rxData[2 + self.inc]))
-        fTX.close()
     
     def driveDataType (self, dataFile):   
         '''
         Function if we are processing a datatype
         '''
-
-        print("Made it to Drive Data")
-        print(dataFile)
-
         fdata = open(dataFile, 'r')
-        line = fdata.readline()
+        line = f.readline()
                 
         lastTXofDT = self.getFlagsTimestamp()
         
@@ -196,7 +181,7 @@ class TXISR:
                 pass
             else:
                 line = line.split(', ')
-                if int(line[0]) < int(lastTXofDT):
+                if int(line[0]) < lastTXofDT:
                     # Line alredy transmitted
                     pass
                 else:
@@ -205,7 +190,7 @@ class TXISR:
                         self.dataList[counter][counterInner] = line[counterInner]
                         counterInner = counterInner + 1
                     counter = counter + 1
-            line = fdata.readline()
+            line = f.readline()
             line = line.replace('\n', '')
         
         numLines = self.packetize(False)
@@ -217,23 +202,21 @@ class TXISR:
         '''
         data = [()]
         
-        ### TODO: getPicture no longer defined sself.ince deprecation of database
+        ### TODO: getPicture no longer defined since deprecation of database
         data = self.getPicture(picNum, picRes)
 
         numLines = self.packetize(True)
  
     def getFlagsTimestamp(self):
-        print("checking flags")
         f_flags = open(self.flagsFile, 'r')
         allLines = f_flags.readlines()
-        lastTX = allLines[int(self.rxData[3])]
+        lastTX = allLines(self.rxData[3])
         return lastTX
            
     def packetize(self, isPic):
         """
         Write to file 
         """
-        print("packetizing data...")
         linesTotal = 0
         
         if isPic == True:
