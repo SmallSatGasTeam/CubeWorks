@@ -2,7 +2,7 @@
 import sys
 sys.path.append('../')
 import os.path
-from flightLogic import DummygetDriverData
+from flightLogic import DummygetDriverData as getDriverData
 import flightLogic.saveTofiles as saveTofiles
 from DummyDrivers.antennaDoor.DummyAntennaDoor import AntennaDoor as antennaDoor
 from flightLogic.DummymissionModes.antennaDeploy import antennaMode as antennaMode
