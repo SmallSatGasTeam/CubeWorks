@@ -2,9 +2,9 @@ import sys
 sys.path.append('../')
 
 # these imports are causing syntax errors at the moment
-import Drivers.boomDeployer as boomDeployer
-import Drivers.camera as Camera
-import flightLogic.missionModes.safe as safe
+#import Drivers.boomDeployer as boomDeployer
+#import Drivers.camera as Camera
+#import flightLogic.missionModes.safe as safe
 from flightLogic import saveTofiles
 import io
 import struct
@@ -111,8 +111,8 @@ class TXISR:
         '''
 
         # the following throws syntax errors. Commenting out for testing.
-        deployer = boomDeployer.BoomDeployer()
-        cam = Camera.Camera()
+        #deployer = boomDeployer.BoomDeployer()
+        #cam = Camera.Camera()
         # saveObject = save()
         # safeObject = safe.safe(saveObject)
         print("command cointained in 0")
