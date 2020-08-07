@@ -4,6 +4,7 @@ import asyncio
 from flightLogic.missionModes import safe
 from flightLogic.getDriverData import *
 import Drivers.eps.EPS as EPS
+from TXISR.interrupt import INTERRUPT
 
 class postBoomMode:
 	def __init__(self, saveobject):
@@ -17,6 +18,9 @@ class postBoomMode:
 		#Set up background processes
 		ttncData = self.__getDataTTNC
 		attitudeData = self.__getDataAttitude
+		interruptObject = INTERRUPT()
+		self.__tasks.append(asyncio.create_task(interruptObject.watchTxWindows()))
+		self.__tasks.append(asyncio.create_task(interruptObject.watchReceptions()))
 		self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(4))) #Post-boom is mode 4
 		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
