@@ -196,7 +196,7 @@ class TXISR:
                 pass
             else:
                 line = line.split(', ')
-                if int(line[0]) < lastTXofDT:
+                if int(line[0]) < int(lastTXofDT):
                     # Line alredy transmitted
                     pass
                 else:
