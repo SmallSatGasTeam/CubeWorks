@@ -113,8 +113,8 @@ class TXISR:
         # the following throws syntax errors. Commenting out for testing.
         deployer = boomDeployer.BoomDeployer()
         cam = Camera.Camera()
-	saveObject = save()
-        safeObject = safe.safe(saveObject)
+        # saveObject = save()
+        # safeObject = safe.safe(saveObject)
         print("command cointained in 0")
 
         print(self.rxData[0 + self.inc])
@@ -125,44 +125,44 @@ class TXISR:
             if(int(self.rxData[3 + self.inc]) == 0):
                 # Process Attitude Data
                 self.driveDataType(self.attitudeDataFile)
-            elif(self.rxData[3 + self.inc] == 1):
+            elif(int(self.rxData[3 + self.inc]) == 1):
                 # Process TT&C Data
                 self.driveDataType(self.TTCDataFile)
-            elif(self.rxData[3 + self.inc] == 2):
+            elif(int(self.rxData[3 + self.inc]) == 2):
                 # Process Deployment Data
                 self.driveDataType(self.deployDataFile)
-            elif(self.rxData[3 + self.inc] == 3):
+            elif(int(self.rxData[3 + self.inc]) == 3):
                 # Process HQ Picture
                 # PicRes 0 - LQ 1 - HQ
                 self.drivePic(self.HQPicFile, 1, self.rxData[4])
-            elif(self.rxData[3 + self.inc] == 4):
+            elif(int(self.rxData[3 + self.inc]) == 4):
                 # Process LQ Picture
                 # PicRes 0 - LQ 1 - HQ
                 self.drivePic(self.LQPicFile, 0, self.rxData[4])
-            elif(self.rxData[3 + self.inc] == 5):
+            elif(int(self.rxData[3 + self.inc]) == 5):
                 # Add TX window to file
                 self.addTXWindow()
             else:
                 return
         else:
             #turn off tx
-            if(self.rxData[1 + self.inc] == 0):
+            if(int(self.rxData[1 + self.inc]) == 0):
                 canTX = False
-            elif(self.rxData[2 + self.inc] == 1):
+            elif(int(self.rxData[2 + self.inc]) == 1):
                 self.wipeFile(self.TxWindows)
             #take pic
-            elif(self.rxData[3 + self.inc] == 1):
+            elif(int(self.rxData[3 + self.inc]) == 1):
                 #photo.Camera()
                 cam.takePicture()
                 pass
             #deploy boom
-            elif(self.rxData[4 + self.inc] == 1):
+            elif(int(self.rxData[4 + self.inc]) == 1):
                 #boom.boomDeployer()
                 deployer.deploy()
                 pass
-            elif(self.rxData[5 + self.inc] == 1):
+            elif(int(self.rxData[5 + self.inc]) == 1):
                 #reboot pi, send command to adruino
-                saveObject.run(1)
+                #saveObject.run(1)
                 pass
             else:
                 return
