@@ -200,9 +200,12 @@ class TXISR:
                     # Line alredy transmitted
                     pass
                 else:
-                    counterInner = 0
-                    for i in range(0, len(line)):
-                        self.dataList[counter][i] = line[i]
+                    for i in range(0, len(line) - 1):
+                        print(i)
+                        print(line[i])
+                        #print()
+                        # self.dataList[int(counter)][i] = line[i]
+                        self.dataList[int(counter)].append(line[i])
                     counter = counter + 1
             line = fdata.readline()
             line = line.replace('\n', '')
