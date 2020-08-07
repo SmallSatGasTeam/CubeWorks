@@ -1,3 +1,8 @@
+import sys
+sys.path.append('../../')
+import Drivers.eps.EPS as EPS
+import asyncio
+import RPi.GPIO as GPIO
 #####################################################################################
 #All this class does is tell the arduino to shut off the pi for the specified amount
 #of time.
