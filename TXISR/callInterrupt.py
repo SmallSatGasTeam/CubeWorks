@@ -1,5 +1,5 @@
 import asyncio
-from TXISR.interrupt import INTERRUPT
+from interrupt import INTERRUPT
 
 def __main__():
 	asyncio.run(executeFlightLogic())
