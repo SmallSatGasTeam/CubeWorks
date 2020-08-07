@@ -139,7 +139,7 @@ class TXISR:
                 self.drivePic(self.LQPicFile, 0, self.rxData[4])
             elif(self.rxData[3 + inc] == 5):
                 # Add TX window to file
-                addTXWindow()
+                self.addTXWindow()
             else:
                 return
         else:
@@ -164,6 +164,11 @@ class TXISR:
                 pass
             else:
                 return
+    
+    def addTXWindow(self):
+        fTX = open(self.TxWindows, 'a')
+        fTX.write(str(self.rxData[1 + inc]) + ", " + str(self.rxData[2 + inc]))
+        fTX.close()
     
     def driveDataType (self, dataFile):   
         '''
@@ -219,7 +224,7 @@ class TXISR:
         print("checking flags")
         f_flags = open(self.flagsFile, 'r')
         allLines = f_flags.readlines()
-        lastTX = allLines(self.rxData[3])
+        lastTX = allLines[self.rxData[3]]
         return lastTX
            
     def packetize(self, isPic):
