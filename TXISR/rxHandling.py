@@ -153,12 +153,12 @@ class TXISR:
             #take pic
             elif(int(self.rxData[3 + self.inc]) == 1):
                 #photo.Camera()
-                cam.takePicture()
+                # cam.takePicture()
                 pass
             #deploy boom
             elif(int(self.rxData[4 + self.inc]) == 1):
                 #boom.boomDeployer()
-                deployer.deploy()
+                # deployer.deploy()
                 pass
             elif(int(self.rxData[5 + self.inc]) == 1):
                 #reboot pi, send command to adruino
