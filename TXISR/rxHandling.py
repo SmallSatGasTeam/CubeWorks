@@ -1,10 +1,10 @@
-import sys
-sys.path.append('../')
+from sys import path
+path.append('../')
 
 # these imports are causing syntax errors at the moment
-# import Drivers.boomDeployer as Boom
-# import Drivers.camera as Camera
-# import flightLogic.missionModes.safe as safe
+#import Drivers.boomDeployer.BoomDeployer
+#import Drivers.camera.Camera
+#import flightLogic.missionModes.safe
 import io
 import struct
 import subprocess
@@ -24,8 +24,9 @@ class TXISR:
     outputFile = "TXServiceCode/txFile.txt"
     
     #define location where we will put the flags (flags are the last time each datatype trasmitted)
-    flagsFile = "TXServiceCodde/flagsFile.txt"
-    
+    #flagsFile = "TXServiceCodde/flagsFile.txt"
+    flagsFile = "data/flagsFile.txt"
+
     # Datatype Files
     attitudeDataFile = "data/attitudeData.txt"
     TTCDataFile = "data/ttcData.txt"
@@ -57,15 +58,23 @@ class TXISR:
 
         self.UART_BYTES = bytes
 
-        if not sys.path.exists(self.inputFile):
+        print("i I have so many bytes" + str(self.UART_BYTES))
+
+        if not os.path.exists(self.inputFile):
             print("INPUT FILE NOT FOUND")
             sys.exit()
         else:
-            SER = serial.Serial(self.UART_PORT)
-            SER.baudrate = 115200
-            inputString = SER.read(self.UART_BYTES)
-            self.readTX(inputString)
+            #SER = serial.Serial(UART_PORT)
+            #SER.baudrate = 115200
+            #inputString = SER.read(UART_BYTES)
             
+            fInput = open(self.inputFile, "r")
+            inputString = fInput.readline()
+            print(inputString)
+
+            self.readTX(inputString)
+            self.rxData[-1].rstrip()
+            print(self.rxData[-1])
             print(self.rxData)
         # commandRecieved will figure out how to process based on the command received
         self.commandReceived()
@@ -81,16 +90,18 @@ class TXISR:
         inputString.replace('\n', '')
         splitInput = inputString.split(', ')
         print(len(splitInput))
-        splitInput[len(splitInput) - 1].replace('\n', '')      
+        splitInput[-1].replace('\n', '')      
         # splitInput.remove('#')
         
         for x in range(0, len(splitInput)):
             print(splitInput[x])
-
+        
         for i in range(0, len(splitInput)):
             currentData = splitInput[i]
             # currentData = bytes.fromhex(currentData).decode('utf-8')
             self.rxData.append(currentData)
+            # Maybe we need this??
+            # self.rxData.pop(0)
             print(self.rxData)
     
     def commandReceived(self):
@@ -99,51 +110,55 @@ class TXISR:
         '''
 
         # the following throws syntax errors. Commenting out for testing.
-        # deployer = Boom.BoomDeployer()
-        # cam = Camera.Camera()
-        # saveObject = safe.safe(None)
+        #deployer = BoomDeployer()
+        #cam = Camera()
+        #saveObject = safe(None)
+        print("command cointained in 0")
+        inc = 1
+        print(self.rxData[0 + inc])
 
-        if(self.rxData[0] == 0):
+        if(self.rxData[0 + inc] == 0):
+            print(self.rxData[0 + inc])
             ### TODO PROCESS ALL THE OPTIONS FOR THE DATA TYPES
-            if(self.rxData[3] == 0):
+            if(self.rxData[3 + inc] == 0):
                 # Process Attitude Data
-                self.driveDataType(self.attitudeDataFile)
-            elif(self.rxData[3] == 1):
+                driveDataType(self.attitudeDataFile)
+            elif(self.rxData[3 + inc] == 1):
                 # Process TT&C Data
-                self.driveDataType(self.TTCDataFile)
-            elif(self.rxData[3] == 2):
+                driveDataType(self.TTCDataFile)
+            elif(self.rxData[3 + inc] == 2):
                 # Process Deployment Data
-                self.driveDataType(self.deployDataFile)
-            elif(self.rxData[3] == 3):
+                driveDataType(self.deployDataFile)
+            elif(self.rxData[3 + inc] == 3):
                 # Process HQ Picture
                 # PicRes 0 - LQ 1 - HQ
-                self.drivePic(self.HQPicFile, 1, self.rxData[4])
-            elif(self.rxData[3] == 4):
+                drivePic(self.HQPicFile, 1, self.rxData[4])
+            elif(self.rxData[3 + inc] == 4):
                 # Process LQ Picture
                 # PicRes 0 - LQ 1 - HQ
-                self.drivePic(self.LQPicFile, 0, self.rxData[4])
-            elif(self.rxData[3] == 5):
+                drivePic(self.LQPicFile, 0, self.rxData[4])
+            elif(self.rxData[3 + inc] == 5):
                 # Add TX window to file
                 addTXWindow()
             else:
                 return
         else:
             #turn off tx
-            if(self.rxData[1] == 0):
+            if(self.rxData[1 + inc] == 0):
                 canTX = False
-            elif(self.rxData[2] == 1):
+            elif(self.rxData[2 + inc] == 1):
                 self.wipeFile(TxWindows)
             #take pic
-            elif(self.rxData[3] == 1):
+            elif(self.rxData[3 + inc] == 1):
                 #photo.Camera()
                 cam.takePicture()
                 pass
             #deploy boom
-            elif(self.rxData[4] == 1):
+            elif(self.rxData[4 + inc] == 1):
                 #boom.boomDeployer()
                 deployer.deploy()
                 pass
-            elif(self.rxData[5] == 1):
+            elif(self.rxData[5 + inc] == 1):
                 #reboot pi, send command to adruino
                 saveObject.run(1)
                 pass
@@ -154,6 +169,10 @@ class TXISR:
         '''
         Function if we are processing a datatype
         '''
+
+        print("Made it to Drive Data")
+        print(dataFile)
+
         fdata = open(dataFile, 'r')
         line = f.readline()
                 
@@ -197,6 +216,7 @@ class TXISR:
         numLines = self.packetize(True)
  
     def getFlagsTimestamp(self):
+        print("checking flags")
         f_flags = open(self.flagsFile, 'r')
         allLines = f_flags.readlines()
         lastTX = allLines(self.rxData[3])
@@ -206,6 +226,7 @@ class TXISR:
         """
         Write to file 
         """
+        print("packetizing data...")
         linesTotal = 0
         
         if isPic == True:
