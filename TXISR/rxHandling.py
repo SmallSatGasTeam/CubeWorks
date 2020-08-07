@@ -18,7 +18,7 @@ class TXISR:
 
     # List that stores eveything recieved in the transmission
     rxData = ['#']
-    dataList = [['#']]
+    dataList = [[]]
     # Define location of file where the data will be placed while waiting transmission
     outputFile = "TXServiceCode/txFile.txt"
 
@@ -226,7 +226,7 @@ class TXISR:
         print("checking flags")
         f_flags = open(self.flagsFile, 'r')
         allLines = f_flags.readlines()
-        lastTX = allLines[int(self.rxData[3])]
+        lastTX = allLines[int(self.rxData[3 + self.inc])]
         return lastTX
            
     def packetize(self, isPic):
