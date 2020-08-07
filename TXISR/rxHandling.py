@@ -226,7 +226,7 @@ class TXISR:
         print("checking flags")
         f_flags = open(self.flagsFile, 'r')
         allLines = f_flags.readlines()
-        lastTX = allLines[self.rxData[3]]
+        lastTX = allLines[int(self.rxData[3])]
         return lastTX
            
     def packetize(self, isPic):
