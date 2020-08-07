@@ -165,6 +165,11 @@ class TXISR:
             else:
                 return
     
+    def addTXWindow(self):
+        fTX = open(self.TxWindows, 'a')
+        fTX.write(str(self.rxData[1 + inc]) + ", " + str(self.rxData[2 + inc]))
+        fTX.close()
+    
     def driveDataType (self, dataFile):   
         '''
         Function if we are processing a datatype
@@ -219,7 +224,7 @@ class TXISR:
         print("checking flags")
         f_flags = open(self.flagsFile, 'r')
         allLines = f_flags.readlines()
-        lastTX = allLines(self.rxData[3])
+        lastTX = allLines[self.rxData[3]]
         return lastTX
            
     def packetize(self, isPic):
