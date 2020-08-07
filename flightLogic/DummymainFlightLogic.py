@@ -11,7 +11,7 @@ from flightLogic.missionModes.boomDeploy import boomMode
 from flightLogic.missionModes.postBoomDeploy import postBoomMode
 from flightLogic.missionModes import safe
 import asyncio
-from TXISR.interrupt import INTERRUPT
+#from TXISR.interrupt import INTERRUPT
 
 
 # from TXISR import interrupt
