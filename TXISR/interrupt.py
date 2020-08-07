@@ -98,15 +98,14 @@ class INTERRUPT:
     #asyncio def watchReceptions():
     def watchReceptions(self):
         print("im in the watchReceptions function! that's good")
-        checking = os.system(self.READ_EXE)
+        checking = os.system(READ_EXE)
 
         print("why didn't I get in the loop?")
         print(checking)
-        print(self.READ_EXE)
         while checking <= 0:
             # print("im in the loop")
             #print("checking: " + str(checking))
-            checking = os.system(self.READ_EXE)
+            checking = os.system(READ_EXE)
             if checking > 0:
                 print("should now call TXISR rxHandling")
                 x = rxHandling.TXISR(checking)
