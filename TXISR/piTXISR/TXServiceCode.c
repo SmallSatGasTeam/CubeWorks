@@ -144,7 +144,7 @@ void main(int argc,char* argv[])
         currentTime = millis();
     }
     //write to the radio
-    write(txPort, "ES+W23003321", 13);
+    write(txPort, "ES+W23003321", 12);
     DEBUG_P(current Time - Start time :)
     PRINT_TIME(currentTime - startTime)
 
