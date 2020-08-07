@@ -19,12 +19,6 @@ class INTERRUPT:
     #change all functions to self
     #change class variables to self
 
-    # Code that runs
-    TRANSMIT_EXE = "TXServiceCode/TXService.run"
-
-    # Code that scans the UART
-    READ_EXE = "TXServiceCode/watchRX.run"
-
     # file with tx windows and durations. Eachline should have <timestamp of start of tx window> <duration of window>
     TX_WINDOWS_FILE = "data/TxWindows.txt"
 
@@ -37,6 +31,12 @@ class INTERRUPT:
         #Comment out other function until asynio works in function
        # self.watchTxWindows()
         self.watchReceptions()
+        # Code that runs
+        self.TRANSMIT_EXE = "TXServiceCode/TXService.run"
+
+        # Code that scans the UART
+        self.READ_EXE = "TXServiceCode/watchRX.run"
+
         '''
         p1 = Process(target=watchTxWindows)
         p1.start()
@@ -101,14 +101,13 @@ class INTERRUPT:
         checking = os.system(READ_EXE)
 
         print("why didn't I get in the loop?")
-        print(checking)
         while checking <= 0:
             # print("im in the loop")
             #print("checking: " + str(checking))
-            checking = os.system(READ_EXE)
+            checking = os.system(self.READ_EXE)
             if checking > 0:
                 print("should now call TXISR rxHandling")
-                x = rxHandling.TXISR(checking)
+                x = rxHandling.TXISR(self.checking)
         # wait ayncio.sleep(1)
     '''
     END PROCESS 2 DEFINITION
