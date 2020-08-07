@@ -49,7 +49,7 @@ class INTERRUPT:
     '''
     START PROCESS 1 (p1) DEFINITION 
     '''
-    asyncio def watchTxWindows():
+    async def watchTxWindows():
         '''
         watch windows and call to transmit if within window.
         '''
@@ -94,7 +94,7 @@ class INTERRUPT:
     '''
     START PROCESS 2 (p2) DEFINITION
     '''
-    asyncio def watchReceptions():
+    async def watchReceptions():
         print("im in the watchReceptions function! that's good")
         checking = os.system(READ_EXE)
 
