@@ -6,6 +6,8 @@ from flightLogic.missionModes import safe
 from flightLogic.getDriverData import *
 import Drivers.boomDeployer as boomDeployer
 #import Drivers.camera.Camera as camera
+from TXISR.interrupt import INTERRUPT
+
 
 
 class boomMode:
