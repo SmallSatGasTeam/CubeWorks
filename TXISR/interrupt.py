@@ -20,7 +20,7 @@ class INTERRUPT:
     #change class variables to self
 
     # file with tx windows and durations. Eachline should have <timestamp of start of tx window> <duration of window>
-    TX_WINDOWS_FILE = "data/TxWindows.txt"
+    TX_WINDOWS_FILE = "TXSerciveCode/TxWindows.txt"
 
     def __init__(self):
         '''
@@ -28,14 +28,16 @@ class INTERRUPT:
         '''
         sys.stdout.write("Im in the main function, all you should use is sys")
         print("Im in the main function")
-        #Comment out other function until asynio works in function
-       # self.watchTxWindows()
-        self.watchReceptions()
-        # Code that runs
+
         self.TRANSMIT_EXE = "TXServiceCode/TXService.run"
 
         # Code that scans the UART
         self.READ_EXE = "TXServiceCode/watchRX.run"
+        #Comment out other function until asynio works in function
+        self.watchReceptions()
+        self.watchTxWindows()
+        # Code that runs
+        
 
         '''
         p1 = Process(target=watchTxWindows)
@@ -98,7 +100,7 @@ class INTERRUPT:
     #asyncio def watchReceptions():
     def watchReceptions(self):
         print("im in the watchReceptions function! that's good")
-        checking = os.system(READ_EXE)
+        checking = os.system(self.READ_EXE)
 
         print("why didn't I get in the loop?")
         while checking <= 0:
