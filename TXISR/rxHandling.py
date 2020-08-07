@@ -57,22 +57,6 @@ class TXISR:
 
         self.UART_BYTES = bytes
 
-<<<<<<< HEAD
-        print("i I have so many bytes" + str(self.UART_BYTES))
-
-        if not os.path.exists(self.inputFile):
-            print("INPUT FILE NOT FOUND")
-            sys.exit()
-        else:
-            #SER = serial.Serial(UART_PORT)
-            #SER.baudrate = 115200
-            #inputString = SER.read(UART_BYTES)
-            
-            fInput = open(self.inputFile, "r")
-            inputString = fInput.readline()
-            print(inputString)
-
-=======
         if not sys.path.exists(self.inputFile):
             print("INPUT FILE NOT FOUND")
             sys.exit()
@@ -80,7 +64,6 @@ class TXISR:
             SER = serial.Serial(self.UART_PORT)
             SER.baudrate = 115200
             inputString = SER.read(self.UART_BYTES)
->>>>>>> 440ff4b2cd839376e299ae1d2249a00ead6a5978
             self.readTX(inputString)
             
             print(self.rxData)
@@ -116,17 +99,9 @@ class TXISR:
         '''
 
         # the following throws syntax errors. Commenting out for testing.
-<<<<<<< HEAD
-        #deployer = BoomDeployer()
-        #cam = Camera()
-        #saveObject = safe(None)
-        print("command cointained in 0")
-        print(self.rxData[0])
-=======
         deployer = Boom.BoomDeployer()
         cam = Camera.Camera()
         saveObject = safe.safe(None)
->>>>>>> 440ff4b2cd839376e299ae1d2249a00ead6a5978
 
         if(self.rxData[0] == 0):
             ### TODO PROCESS ALL THE OPTIONS FOR THE DATA TYPES
