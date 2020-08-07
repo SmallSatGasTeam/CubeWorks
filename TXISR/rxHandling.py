@@ -1,10 +1,10 @@
-from sys import path
-path.append('../')
+import sys
+sys.path.append('../')
 
 # these imports are causing syntax errors at the moment
-#import Drivers.boomDeployer.BoomDeployer
-#import Drivers.camera.Camera
-#import flightLogic.missionModes.safe
+import Drivers.boomDeployer as Boom
+import Drivers.camera as Camera
+import flightLogic.missionModes.safe as safe
 import io
 import struct
 import subprocess
@@ -55,13 +55,13 @@ class TXISR:
 
         self.UART_BYTES = bytes
 
-        if not path.exists(self.inputFile):
+        if not sys.path.exists(self.inputFile):
             print("INPUT FILE NOT FOUND")
             sys.exit()
         else:
-            SER = serial.Serial(UART_PORT)
+            SER = serial.Serial(self.UART_PORT)
             SER.baudrate = 115200
-            inputString = SER.read(UART_BYTES)
+            inputString = SER.read(self.UART_BYTES)
             self.readTX(inputString)
             
         # commandRecieved will figure out how to process based on the command received
@@ -83,29 +83,29 @@ class TXISR:
         '''
 
         # the following throws syntax errors. Commenting out for testing.
-        deployer = BoomDeployer()
-        cam = Camera()
-        saveObject = safe(None)
+        deployer = Boom.BoomDeployer()
+        cam = Camera.Camera()
+        saveObject = safe.safe(None)
 
         if(self.rxData[0] == 0):
             ### TODO PROCESS ALL THE OPTIONS FOR THE DATA TYPES
             if(self.rxData[3] == 0):
                 # Process Attitude Data
-                driveDataType(self.attitudeDataFile)
+                self.driveDataType(self.attitudeDataFile)
             elif(self.rxData[3] == 1):
                 # Process TT&C Data
-                driveDataType(self.TTCDataFile)
+                self.driveDataType(self.TTCDataFile)
             elif(self.rxData[3] == 2):
                 # Process Deployment Data
-                driveDataType(self.deployDataFile)
+                self.driveDataType(self.deployDataFile)
             elif(self.rxData[3] == 3):
                 # Process HQ Picture
                 # PicRes 0 - LQ 1 - HQ
-                drivePic(self.HQPicFile, 1, self.rxData[4])
+                self.drivePic(self.HQPicFile, 1, self.rxData[4])
             elif(self.rxData[3] == 4):
                 # Process LQ Picture
                 # PicRes 0 - LQ 1 - HQ
-                drivePic(self.LQPicFile, 0, self.rxData[4])
+                self.drivePic(self.LQPicFile, 0, self.rxData[4])
             elif(self.rxData[3] == 5):
                 # Add TX window to file
                 addTXWindow()
