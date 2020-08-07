@@ -119,7 +119,7 @@ class TXISR:
 
         print(self.rxData[0 + self.inc])
 
-        if(self.rxData[0 + self.inc] == 0):
+        if(int(self.rxData[0 + self.inc]) == 0):
             print(self.rxData[0 + self.inc])
             ### TODO PROCESS ALL THE OPTIONS FOR THE DATA TYPES
             if(int(self.rxData[3 + self.inc]) == 0):
