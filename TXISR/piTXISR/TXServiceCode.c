@@ -126,9 +126,6 @@ void main(int argc,char* argv[])
     //set up the uart 
     setUpUart();
 
-    //write to the radio
-    write(txPort, "ES+W23003321", 13);
-
     //read in all the lines of a file
     char ch = 1;
     //set up array for tx, the max is 256, so we better not exceed that anyways so using an array of 256 is fine.
@@ -146,6 +143,8 @@ void main(int argc,char* argv[])
     { 
         currentTime = millis();
     }
+    //write to the radio
+    write(txPort, "ES+W23003323", 13);
     DEBUG_P(current Time - Start time :)
     PRINT_TIME(currentTime - startTime)
 
