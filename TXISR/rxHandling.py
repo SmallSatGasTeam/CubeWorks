@@ -117,7 +117,7 @@ class TXISR:
         saveObject = safe.safe(None)
         print("command cointained in 0")
 
-        print(self.rxData[0 + self.self.inc])
+        print(self.rxData[0 + self.inc])
 
         if(self.rxData[0 + self.inc] == 0):
             print(self.rxData[0 + self.inc])
@@ -196,7 +196,7 @@ class TXISR:
                 pass
             else:
                 line = line.split(', ')
-                if int(line[0]) < lastTXofDT:
+                if int(line[0]) < int(lastTXofDT):
                     # Line alredy transmitted
                     pass
                 else:
