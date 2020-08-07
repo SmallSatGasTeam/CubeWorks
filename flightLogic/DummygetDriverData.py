@@ -13,7 +13,7 @@ class TTNCData:
 		self.__save = saveobject
 		self.__ttncDataArray = []
 		self.EPS = Drivers.eps.EPS()
-		self.UVDriver = Drivers.UV.DummyUVDriver()
+		self.UVDriver = Drivers.UV.UVDriver()
 		self.RTC = Drivers.rtc.DummyRTC()
 		self.CpuTempSensor = Drivers.cpuTemperature.DummyCpuTemperature()
 		self.TempSensor = Drivers.solarPanelTemp.DummyTempSensor()
