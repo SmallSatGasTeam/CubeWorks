@@ -47,6 +47,8 @@ class TXISR:
     # Bytes being recieved over UART, this gets changed in the parameterized constructor
     UART_BYTES = 0
     
+    inc = 1
+    
     def __init__(self, bytes):
         '''
         Constructor. This will drive the process.
@@ -114,51 +116,51 @@ class TXISR:
         cam = Camera.Camera()
         saveObject = safe.safe(None)
         print("command cointained in 0")
-        inc = 1
-        print(self.rxData[0 + inc])
 
-        if(self.rxData[0 + inc] == 0):
-            print(self.rxData[0 + inc])
+        print(self.rxData[0 + self.self.inc])
+
+        if(self.rxData[0 + self.inc] == 0):
+            print(self.rxData[0 + self.inc])
             ### TODO PROCESS ALL THE OPTIONS FOR THE DATA TYPES
-            if(self.rxData[3 + inc] == 0):
+            if(self.rxData[3 + self.inc] == 0):
                 # Process Attitude Data
                 self.driveDataType(self.attitudeDataFile)
-            elif(self.rxData[3 + inc] == 1):
+            elif(self.rxData[3 + self.inc] == 1):
                 # Process TT&C Data
                 self.driveDataType(self.TTCDataFile)
-            elif(self.rxData[3 + inc] == 2):
+            elif(self.rxData[3 + self.inc] == 2):
                 # Process Deployment Data
                 self.driveDataType(self.deployDataFile)
-            elif(self.rxData[3 + inc] == 3):
+            elif(self.rxData[3 + self.inc] == 3):
                 # Process HQ Picture
                 # PicRes 0 - LQ 1 - HQ
                 self.drivePic(self.HQPicFile, 1, self.rxData[4])
-            elif(self.rxData[3 + inc] == 4):
+            elif(self.rxData[3 + self.inc] == 4):
                 # Process LQ Picture
                 # PicRes 0 - LQ 1 - HQ
                 self.drivePic(self.LQPicFile, 0, self.rxData[4])
-            elif(self.rxData[3 + inc] == 5):
+            elif(self.rxData[3 + self.inc] == 5):
                 # Add TX window to file
                 self.addTXWindow()
             else:
                 return
         else:
             #turn off tx
-            if(self.rxData[1 + inc] == 0):
+            if(self.rxData[1 + self.inc] == 0):
                 canTX = False
-            elif(self.rxData[2 + inc] == 1):
+            elif(self.rxData[2 + self.inc] == 1):
                 self.wipeFile(self.TxWindows)
             #take pic
-            elif(self.rxData[3 + inc] == 1):
+            elif(self.rxData[3 + self.inc] == 1):
                 #photo.Camera()
                 cam.takePicture()
                 pass
             #deploy boom
-            elif(self.rxData[4 + inc] == 1):
+            elif(self.rxData[4 + self.inc] == 1):
                 #boom.boomDeployer()
                 deployer.deploy()
                 pass
-            elif(self.rxData[5 + inc] == 1):
+            elif(self.rxData[5 + self.inc] == 1):
                 #reboot pi, send command to adruino
                 saveObject.run(1)
                 pass
@@ -167,7 +169,7 @@ class TXISR:
     
     def addTXWindow(self):
         fTX = open(self.TxWindows, 'a')
-        fTX.write(str(self.rxData[1 + inc]) + ", " + str(self.rxData[2 + inc]))
+        fTX.write(str(self.rxData[1 + self.inc]) + ", " + str(self.rxData[2 + self.inc]))
         fTX.close()
     
     def driveDataType (self, dataFile):   
@@ -215,7 +217,7 @@ class TXISR:
         '''
         data = [()]
         
-        ### TODO: getPicture no longer defined since deprecation of database
+        ### TODO: getPicture no longer defined sself.ince deprecation of database
         data = self.getPicture(picNum, picRes)
 
         numLines = self.packetize(True)
