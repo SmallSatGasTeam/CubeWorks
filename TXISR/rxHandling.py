@@ -122,7 +122,7 @@ class TXISR:
         if(self.rxData[0 + self.inc] == 0):
             print(self.rxData[0 + self.inc])
             ### TODO PROCESS ALL THE OPTIONS FOR THE DATA TYPES
-            if(self.rxData[3 + self.inc] == 0):
+            if(int(self.rxData[3 + self.inc]) == 0):
                 # Process Attitude Data
                 self.driveDataType(self.attitudeDataFile)
             elif(self.rxData[3 + self.inc] == 1):
