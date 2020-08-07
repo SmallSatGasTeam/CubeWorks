@@ -184,7 +184,10 @@ class TXISR:
         line = fdata.readline()
                 
         lastTXofDT = self.getFlagsTimestamp()
-        
+         
+
+        self.dataList.append([])
+
         counter = 0
         # '@' indicates EOF
         while line[0] != '@':
@@ -205,10 +208,13 @@ class TXISR:
                         print(line[i])
                         #print()
                         # self.dataList[int(counter)][i] = line[i]
+                        #  self.dataList
                         self.dataList[int(counter)].append(line[i])
-                    counter = counter + 1
+                    counter += 1
             line = fdata.readline()
             line = line.replace('\n', '')
+            #append empty row
+            self.dataList.append([])
         
         numLines = self.packetize(False)
     
