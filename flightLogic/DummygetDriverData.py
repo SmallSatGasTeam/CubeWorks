@@ -12,7 +12,7 @@ class TTNCData:
 	def __init__(self, saveobject):
 		self.__save = saveobject
 		self.__ttncDataArray = []
-		self.EPS = Drivers.eps.DummyEPS()
+		self.EPS = Drivers.eps.EPS()
 		self.UVDriver = Drivers.UV.DummyUVDriver()
 		self.RTC = Drivers.rtc.DummyRTC()
 		self.CpuTempSensor = Drivers.cpuTemperature.DummyCpuTemperature()
