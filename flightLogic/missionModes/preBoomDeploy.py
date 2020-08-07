@@ -5,6 +5,7 @@ from flightLogic.missionModes import safe
 from flightLogic.getDriverData import *
 from Drivers.eps import EPS as EPS
 from Drivers.sunSensors import sunSensorDriver as sunSensorDriver
+from TXISR.interrupt import INTERRUPT
 
 
 class preBoomMode:
@@ -28,6 +29,9 @@ class preBoomMode:
 	async def run(self):
 		ttncData = self.__getDataTTNC
 		attitudeData = self.__getDataAttitude
+		interruptObject = INTERRUPT()
+		self.__tasks.append(asyncio.create_task(interruptObject.watchTxWindows()))
+		self.__tasks.append(asyncio.create_task(interruptObject.watchReceptions()))
 		self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(2))) #Pre-Boom is mode 2
 		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.safeMode.thresholdCheck()))
