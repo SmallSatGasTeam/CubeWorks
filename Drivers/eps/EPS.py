@@ -99,4 +99,4 @@ class EPS(Driver):
         return __startRead(11) * 0.0024414063 #Reads data of specified type, sets up conversion factor to V
 
     def getSPZPlusVoltage():
-	return __startRead(13) * 0.0006103516
+        return __startRead(13) * 0.0006103516

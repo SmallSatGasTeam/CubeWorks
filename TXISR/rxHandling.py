@@ -5,6 +5,7 @@ sys.path.append('../')
 import Drivers.boomDeployer as boomDeployer
 import Drivers.camera as Camera
 import flightLogic.missionModes.safe as safe
+from flightLogic import saveTofiles
 import io
 import struct
 import subprocess
@@ -14,15 +15,13 @@ import serial
 import os
 
 class TXISR:
-    
+
     # List that stores eveything recieved in the transmission
     rxData = ['#']
-    
     dataList = [['#']]
-    
     # Define location of file where the data will be placed while waiting transmission
     outputFile = "TXServiceCode/txFile.txt"
-    
+
     #define location where we will put the flags (flags are the last time each datatype trasmitted)
     #flagsFile = "TXServiceCodde/flagsFile.txt"
     flagsFile = "data/flagsFile.txt"
@@ -33,22 +32,22 @@ class TXISR:
     deployDataFile = "data/deployData.txt"
     HQPicFile = "data/hpPicData.txt"
     LQPicFile = "data/lqPicData.txt"
-    
+
     # TX Window Files
     TxWindows = "data/TxWindows.txt"
-    
+
     # Define file where transmission will be recieved
     # commented out for testing purposes:
     UART_PORT = "/dev/ttyAMA0"
-    
+
     # file for testing purposes:
     inputFile = "data/AMA0_TEST.txt"
 
     # Bytes being recieved over UART, this gets changed in the parameterized constructor
     UART_BYTES = 0
-    
+
     inc = 1
-    
+
     def __init__(self, bytes):
         '''
         Constructor. This will drive the process.
@@ -69,7 +68,7 @@ class TXISR:
             #SER = serial.Serial(UART_PORT)
             #SER.baudrate = 115200
             #inputString = SER.read(UART_BYTES)
-            
+
             fInput = open(self.inputFile, "r")
             inputString = fInput.readline()
             print(inputString)
@@ -81,23 +80,23 @@ class TXISR:
         # commandRecieved will figure out how to process based on the command received
         self.commandReceived()
 
-    
+
     def readTX(self, inputString):
         '''
         Read-in and decode transmission. Place decoded transmission in rxData
         '''
-        print(inputString)    
+        print(inputString)
 
         inputString.replace('#', '')
         inputString.replace('\n', '')
         splitInput = inputString.split(', ')
         print(len(splitInput))
-        splitInput[-1].replace('\n', '')      
+        splitInput[-1].replace('\n', '')
         # splitInput.remove('#')
-        
+
         for x in range(0, len(splitInput)):
             print(splitInput[x])
-        
+
         for i in range(0, len(splitInput)):
             currentData = splitInput[i]
             # currentData = bytes.fromhex(currentData).decode('utf-8')
@@ -105,7 +104,7 @@ class TXISR:
             # Maybe we need this??
             # self.rxData.pop(0)
             print(self.rxData)
-    
+
     def commandReceived(self):
         '''
         Decide what to do based on the command recieved
@@ -114,55 +113,56 @@ class TXISR:
         # the following throws syntax errors. Commenting out for testing.
         deployer = boomDeployer.BoomDeployer()
         cam = Camera.Camera()
-        saveObject = safe.safe(None)
+        # saveObject = save()
+        # safeObject = safe.safe(saveObject)
         print("command cointained in 0")
 
-        print(self.rxData[0 + self.self.inc])
+        print(self.rxData[0 + self.inc])
 
         if(self.rxData[0 + self.inc] == 0):
             print(self.rxData[0 + self.inc])
             ### TODO PROCESS ALL THE OPTIONS FOR THE DATA TYPES
-            if(self.rxData[3 + self.inc] == 0):
+            if(int(self.rxData[3 + self.inc]) == 0):
                 # Process Attitude Data
                 self.driveDataType(self.attitudeDataFile)
-            elif(self.rxData[3 + self.inc] == 1):
+            elif(int(self.rxData[3 + self.inc]) == 1):
                 # Process TT&C Data
                 self.driveDataType(self.TTCDataFile)
-            elif(self.rxData[3 + self.inc] == 2):
+            elif(int(self.rxData[3 + self.inc]) == 2):
                 # Process Deployment Data
                 self.driveDataType(self.deployDataFile)
-            elif(self.rxData[3 + self.inc] == 3):
+            elif(int(self.rxData[3 + self.inc]) == 3):
                 # Process HQ Picture
                 # PicRes 0 - LQ 1 - HQ
                 self.drivePic(self.HQPicFile, 1, self.rxData[4])
-            elif(self.rxData[3 + self.inc] == 4):
+            elif(int(self.rxData[3 + self.inc]) == 4):
                 # Process LQ Picture
                 # PicRes 0 - LQ 1 - HQ
                 self.drivePic(self.LQPicFile, 0, self.rxData[4])
-            elif(self.rxData[3 + self.inc] == 5):
+            elif(int(self.rxData[3 + self.inc]) == 5):
                 # Add TX window to file
                 self.addTXWindow()
             else:
                 return
         else:
             #turn off tx
-            if(self.rxData[1 + self.inc] == 0):
+            if(int(self.rxData[1 + self.inc]) == 0):
                 canTX = False
-            elif(self.rxData[2 + self.inc] == 1):
+            elif(int(self.rxData[2 + self.inc]) == 1):
                 self.wipeFile(self.TxWindows)
             #take pic
-            elif(self.rxData[3 + self.inc] == 1):
+            elif(int(self.rxData[3 + self.inc]) == 1):
                 #photo.Camera()
                 cam.takePicture()
                 pass
             #deploy boom
-            elif(self.rxData[4 + self.inc] == 1):
+            elif(int(self.rxData[4 + self.inc]) == 1):
                 #boom.boomDeployer()
                 deployer.deploy()
                 pass
-            elif(self.rxData[5 + self.inc] == 1):
+            elif(int(self.rxData[5 + self.inc]) == 1):
                 #reboot pi, send command to adruino
-                saveObject.run(1)
+                #saveObject.run(1)
                 pass
             else:
                 return
@@ -196,7 +196,7 @@ class TXISR:
                 pass
             else:
                 line = line.split(', ')
-                if int(line[0]) < lastTXofDT:
+                if int(line[0]) < int(lastTXofDT):
                     # Line alredy transmitted
                     pass
                 else:

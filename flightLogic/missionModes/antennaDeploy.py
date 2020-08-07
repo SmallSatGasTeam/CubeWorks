@@ -7,7 +7,7 @@ import Drivers.eps.EPS as EPS
 import asyncio
 from flightLogic.missionModes import safe
 import flightLogic.getDriverData as getDriverData
-from TXISR.interrupt import INTERRUPT
+#from TXISR.interrupt import INTERRUPT
 
 
 class antennaMode:
