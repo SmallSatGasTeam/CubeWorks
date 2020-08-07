@@ -139,7 +139,7 @@ class TXISR:
                 self.drivePic(self.LQPicFile, 0, self.rxData[4])
             elif(self.rxData[3 + inc] == 5):
                 # Add TX window to file
-                addTXWindow()
+                self.addTXWindow()
             else:
                 return
         else:
