@@ -1,8 +1,8 @@
 import asyncio
 from interrupt import INTERRUPT
 
-def __main__():
-	asyncio.run(testInterrupt())
+
+asyncio.run(testInterrupt())
 
 async def testInterrupt():
 	interruptObject = INTERRUPT()
