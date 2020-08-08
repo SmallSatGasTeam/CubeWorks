@@ -39,6 +39,10 @@ class INTERRUPT:
         #asyncio.run(self.watchTxWindows())
         # Code that runs
 
+        #this boolians are to tell if the async func has finished or not
+        self.__TX_WATCH_IS_DONE = True
+        self.__RX__WATCH_IS_DONE = True
+
         '''
         p1 = Process(target=watchTxWindows)
         p1.start()
@@ -52,6 +56,7 @@ class INTERRUPT:
     START PROCESS 1 (p1) DEFINITION
     '''
     async def watchTxWindows(self):
+        self.__TX_WATCH_IS_DONE = False
         '''
         watch windows and call to transmit if within window.
         '''
@@ -81,6 +86,7 @@ class INTERRUPT:
                 callRadioDriver(dataTypeWithSpace)
             await asyncio.sleep(1)
         f.close()
+        self.__TX_WATCH_IS_DONE = True
 
     def callRadioDriver(self, dataType):
         '''
@@ -97,6 +103,7 @@ class INTERRUPT:
     START PROCESS 2 (p2) DEFINITION
     '''
     async def watchReceptions(self):
+        self.__RX__WATCH_IS_DONE = False
         print("im in the watchReceptions function! that's good")
         checking = os.system(self.READ_EXE)
 
@@ -105,14 +112,19 @@ class INTERRUPT:
             #print("checking: " + str(checking))
             checking = os.system(self.READ_EXE)
             print(checking)
-            await waitForChange()
-            aler(checking)
             if checking > 0:
                 print("should now call TXISR rxHandling")
                 x = rxHandling.TXISR(checking)
+        self.__RX__WATCH_IS_DONE = True
     '''
     END PROCESS 2 DEFINITION
     '''
+
+def getTXstatus (self):
+    return self.__TX_WATCH_IS_DONE
+
+def getRXstatus (self):
+    return self.__RX__WATCH_IS_DONE
 
 '''
 Depricated Functions:
