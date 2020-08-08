@@ -59,15 +59,15 @@ class TXISR:
 
         self.UART_BYTES = bytes
 
-        print("i I have so many bytes" + str(self.UART_BYTES))
+        print("i I have so many bytes " + str(self.UART_BYTES))
 
         if not os.path.exists(self.inputFile):
             print("INPUT FILE NOT FOUND")
             sys.exit()
         else:
-            #SER = serial.Serial(UART_PORT)
-            #SER.baudrate = 115200
-            #inputString = SER.read(UART_BYTES)
+            SER = serial.Serial(UART_PORT)
+            SER.baudrate = 115200
+            inputString = SER.read(UART_BYTES)
 
             fInput = open(self.inputFile, "r")
             inputString = fInput.readline()
