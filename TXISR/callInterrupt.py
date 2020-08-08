@@ -1,9 +1,6 @@
 import asyncio
 from interrupt import INTERRUPT
 
-
-asyncio.run(testInterrupt())
-
 async def testInterrupt():
 	interruptObject = INTERRUPT()
 	tasks = []
@@ -12,4 +9,6 @@ async def testInterrupt():
 	tasks.append(asyncio.create_task(interruptObject.watchReceptions()))
 	while True:
 		await asyncio.sleep(60)
+
+asyncio.run(testInterrupt())
 
