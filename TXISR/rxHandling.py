@@ -67,7 +67,7 @@ class TXISR:
         else:
             SER = serial.Serial(UART_PORT)
             SER.baudrate = 115200
-            inputString = SER.read(UART_BYTES - 1)
+            inputString = SER.read(self.UART_BYTES - 1)
 
             fInput = open(self.inputFile, "r")
             inputString = fInput.readline()

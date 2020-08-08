@@ -108,7 +108,6 @@ class INTERRUPT:
             if checking > 0:
                 print("should now call TXISR rxHandling")
                 x = rxHandling.TXISR(checking)
-        await ayncio.sleep(1)
     '''
     END PROCESS 2 DEFINITION
     '''
