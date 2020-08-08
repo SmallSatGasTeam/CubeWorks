@@ -3,12 +3,14 @@ from interrupt import INTERRUPT
 
 async def testInterrupt():
 	interruptObject = INTERRUPT()
+	tasks = []
+	tasks.append(asyncio.create_task(interruptObject.watchReceptions()))
+	tasks.append(asyncio.create_task(interruptObject.watchTxWindows()))
 	while true :
 		if interruptObject.getRXSTatous() :
-			print("Starting RX watching")
-			asyncio.create_task(interruptObject.watchReceptions())
+			tasks[0] = (asyncio.create_task(interruptObject.watchReceptions()))
 		if interruptObject.getTXstatus() :
-			#syncio.create_task(interruptObject.watchTxWindows())
+			#tasks[1] = (asyncio.create_task(interruptObject.watchTxWindows()))
 
 
 asyncio.run(testInterrupt())
