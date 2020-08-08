@@ -66,7 +66,7 @@ class TXISR:
             sys.exit()
         else:
             
-            sleep(1)
+            time.sleep(1)
             SER = serial.Serial(UART_PORT)
             SER.baudrate = 115200
             inputString = SER.read(self.UART_BYTES - 1)
