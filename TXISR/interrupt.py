@@ -34,8 +34,9 @@ class INTERRUPT:
         # Code that scans the UART
         self.READ_EXE = "TXServiceCode/watchRX.run"
         #Comment out other function until asynio works in function
-        self.watchReceptions()
-        self.watchTxWindows()
+        print("Starting txisr interrupt")
+        asyncio.run(self.watchReceptions())
+        asyncio.run(self.watchTxWindows())
         # Code that runs
 
         '''
