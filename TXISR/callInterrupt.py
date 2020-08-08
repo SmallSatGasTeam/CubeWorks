@@ -14,4 +14,3 @@ async def testInterrupt():
 
 
 asyncio.run(testInterrupt())
-
