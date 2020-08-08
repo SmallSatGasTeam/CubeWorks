@@ -36,7 +36,10 @@ int main(void)
     setUpUart();
 
     //check the num of bytes in the buff
-    ioctl(txPort, FIONREAD, &bytes);
+    while(bytes == 0)
+    {
+        ioctl(txPort, FIONREAD, &bytes);
+    }
 
     //tell python where or not there is stuff in the buff
     if(bytes > 0)

@@ -106,6 +106,9 @@ class INTERRUPT:
         self.__RX__WATCH_IS_DONE = False
         print("im in the watchReceptions function! that's good")
         checking = os.system(self.READ_EXE)
+        if checking > 0:
+                print("should now call TXISR rxHandling")
+                x = rxHandling.TXISR(checking)
 
         while checking == 0:
             # print("im in the loop")
