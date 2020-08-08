@@ -65,6 +65,7 @@ class TXISR:
             print("INPUT FILE NOT FOUND")
             sys.exit()
         else:
+            await asyncio.sleep(1)
             SER = serial.Serial(UART_PORT)
             SER.baudrate = 115200
             inputString = SER.read(self.UART_BYTES - 1)

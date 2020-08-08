@@ -100,7 +100,6 @@ class INTERRUPT:
         print("im in the watchReceptions function! that's good")
         checking = os.system(self.READ_EXE)
 
-        print("why didn't I get in the loop?")
         while checking <= 0:
             # print("im in the loop")
             #print("checking: " + str(checking))
