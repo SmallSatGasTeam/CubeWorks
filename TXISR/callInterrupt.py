@@ -5,7 +5,7 @@ async def testInterrupt():
 	interruptObject = INTERRUPT()
 	tasks = []
 	tasks.append(asyncio.create_task(interruptObject.watchReceptions()))
-	tasks.append(asyncio.create_task(interruptObject.watchTxWindows()))
+	#tasks.append(asyncio.create_task(interruptObject.watchTxWindows()))
 	# while true :
 		# if interruptObject.getRXSTatous() :
 		# 	tasks[0] = (asyncio.create_task(interruptObject.watchReceptions()))
