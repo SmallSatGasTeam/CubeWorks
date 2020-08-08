@@ -105,6 +105,8 @@ class INTERRUPT:
             #print("checking: " + str(checking))
             checking = os.system(self.READ_EXE)
             print(checking)
+            await waitForChange()
+            aler(checking)
             if checking > 0:
                 print("should now call TXISR rxHandling")
                 x = rxHandling.TXISR(checking)
