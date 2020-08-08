@@ -35,8 +35,8 @@ class INTERRUPT:
         self.READ_EXE = "TXServiceCode/watchRX.run"
         #Comment out other function until asynio works in function
         print("Starting txisr interrupt")
-        asyncio.run(self.watchReceptions())
-        asyncio.run(self.watchTxWindows())
+        #asyncio.run(self.watchReceptions())
+        #asyncio.run(self.watchTxWindows())
         # Code that runs
 
         '''
