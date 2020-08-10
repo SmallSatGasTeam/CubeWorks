@@ -1,4 +1,4 @@
-from Drivers.Driver import Driver
+from DummyDrivers.Driver import Driver
 #from Drivers.adc import ADC_Driver
 
 class sunSensor(Driver):

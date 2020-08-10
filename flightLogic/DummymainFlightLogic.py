@@ -11,7 +11,7 @@ from flightLogic.DummymissionModes.boomDeploy import boomMode
 from flightLogic.DummymissionModes.postBoomDeploy import postBoomMode
 from flightLogic.DummymissionModes import safe
 import asyncio
-#from TXISR.interrupt import INTERRUPT
+from TXISR.interrupt import INTERRUPT
 
 
 # from TXISR import interrupt
@@ -35,7 +35,7 @@ def __main__():
 
 async def executeFlightLogic():  # Open the file save object, start TXISR, and start Boot Mode data collection
 	# Variable setup
-	delay = 1*60  # 35 minute delay
+	delay = 5  # 35 minute delay
 	boot = True
 	save = saveTofiles.save()
 	# startTXISR(save)
@@ -46,8 +46,8 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 
 	print('Starting data collection') #Setting up Background tasks for BOOT mode
 	tasks=[]
-	tasks.append(asyncio.create_task(interruptObject.watchTxWindows()))
-	tasks.append(asyncio.create_task(interruptObject.watchReceptions()))
+	#tasks.append(asyncio.create_task(interruptObject.watchTxWindows()))
+	#tasks.append(asyncio.create_task(interruptObject.watchReceptions()))
 	tasks.append(asyncio.create_task(ttncData.collectTTNCData(0))) #Boot Mode is classified as 0
 	tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
 	tasks.append(asyncio.create_task(safeMode.thresholdCheck()))

@@ -1,4 +1,4 @@
-from Drivers.Driver import Driver
+from DummyDrivers.Driver import Driver
 from os import popen
 
 class CpuTemperature(Driver):

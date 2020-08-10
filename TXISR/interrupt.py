@@ -12,6 +12,7 @@ import os
 import string
 import sys
 #import asycnio
+#from TXISR import rxHandling
 import rxHandling
 
 class INTERRUPT:
@@ -20,7 +21,7 @@ class INTERRUPT:
     #change class variables to self
 
     # file with tx windows and durations. Eachline should have <timestamp of start of tx window> <duration of window>
-    TX_WINDOWS_FILE = "TXSerciveCode/TxWindows.txt"
+    TX_WINDOWS_FILE = "~/txisrTesting/ben_CubeWorks/CubeWorks/TXISR/TXServiceCode/TxWindows.txt"
 
     def __init__(self):
         '''
@@ -29,10 +30,10 @@ class INTERRUPT:
         sys.stdout.write("Im in the main function, all you should use is sys")
         print("Im in the main function")
 
-        self.TRANSMIT_EXE = "TXServiceCode/TXService.run"
+        self.TRANSMIT_EXE = "~/txisrTesting/ben_CubeWorks/CubeWorks/TXISR/TXServiceCode/TXService.run"
 
         # Code that scans the UART
-        self.READ_EXE = "TXServiceCode/watchRX.run"
+        self.READ_EXE = "~/txisrTesting/ben_CubeWorks/CubeWorks/TXISR/TXServiceCode/watchRX.run"
         #Comment out other function until asynio works in function
         print("Starting txisr interrupt")
         #asyncio.run(self.watchReceptions())

@@ -5,6 +5,7 @@ import asyncio
 import sys
 sys.path.append('../')
 import DummyDrivers as Drivers
+from DummyDrivers import *
 
 import flightLogic.saveTofiles as saveTofiles
 
@@ -14,9 +15,9 @@ class TTNCData:
 		self.__ttncDataArray = []
 		self.EPS = Drivers.eps.EPS()
 		self.UVDriver = Drivers.UV.UVDriver()
-		self.RTC = Drivers.rtc.DummyRTC()
-		self.CpuTempSensor = Drivers.cpuTemperature.DummyCpuTemperature()
-		self.TempSensor = Drivers.solarPanelTemp.DummyTempSensor()
+		self.RTC = Drivers.rtc.RTC()
+		self.CpuTempSensor = Drivers.cpuTemperature.CpuTemperature()
+		self.TempSensor = Drivers.solarPanelTemp.TempSensor()
 
 	async def getData(self, missionMode):
 		# gets all TTNC data - need to pass in missionMode when calling it
@@ -103,8 +104,8 @@ class AttitudeData():
 		self.save = saveobject
 		self.RTC = Drivers.rtc.RTC()
 		self.attitudeDataArray = []
-		self.sunSensor = Drivers.sunSensors.sunSensorDriver.sunSensor()
-		self.Magnetometer = Drivers.Magnetometer()
+		self.sunSensor = Drivers.sunSensors.DummysunSensorDriver.sunSensor()
+		self.Magnetometer = Drivers.Magnetometer.DummyMagnetometer()
 
 	async def getData(self):
 		#gets all Attitude data

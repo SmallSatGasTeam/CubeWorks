@@ -1,4 +1,4 @@
-from Drivers.Driver import Driver
+from DummyDrivers.Driver import Driver
 import spidev
 import RPi.GPIO as GPIO
 
