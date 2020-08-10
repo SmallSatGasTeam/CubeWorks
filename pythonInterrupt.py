@@ -5,8 +5,9 @@ async def readSerial():
 	serialport = serial.Serial('/dev/serial0', 115200)
 	while True:
 		if serialport.in_waiting:
-			data = serialport.read_until(' ')
-			print(data)
+			print(serialport.read(10))
+			#data = serialport.read_until('\r')
+			#print(data)
 			await asyncio.sleep(5)
 		else:
 			print('buffer empty')
