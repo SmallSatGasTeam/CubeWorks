@@ -33,7 +33,7 @@ class INTERRUPT:
         self.TRANSMIT_EXE = "~/txisrTesting/ben_CubeWorks/CubeWorks/TXISR/TXServiceCode/TXService.run"
 
         # Code that scans the UART
-        self.READ_EXE = "~/txisrTesting/ben_CubeWorks/CubeWorks/TXISR/TXServiceCode/watchRX.run"
+        self.READ_EXE = "~/txisrTesting/CubeWorks/TXISR/TXServiceCode/watchRX.run"
         #Comment out other function until asynio works in function
         print("Starting txisr interrupt")
         #asyncio.run(self.watchReceptions())

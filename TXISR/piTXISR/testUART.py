@@ -5,7 +5,7 @@ TRANSMIT_EXE = "./a.out"
 read_EXE = "./watchRX.run"
 
 print("beging")  
-ser = serial.Serial ("/dev/ttyAMA0")  
+ser = serial.Serial ("/dev/serial0")  
 print("Opening port")    
 ser.baudrate = 115200                   
 os.system(TRANSMIT_EXE + " 1") 
