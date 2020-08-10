@@ -2,10 +2,10 @@ import serial
 import asyncio
 
 async def readSerial():
-	serialport = serial.Serial('/dev/serial0', 115200)
+	serialport = serial.Serial('/dev/serial0', 115200, timeout=1o)
 	while True:
 		if serialport.in_waiting:
-			data = serialport.read_until(b'\r')
+			data = serialport.read_until(b'\r\n')
 			print(data.decode('utf-8'))
 			await asyncio.sleep(1)
 		else:
