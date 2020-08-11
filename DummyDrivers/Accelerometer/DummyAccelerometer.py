@@ -7,7 +7,7 @@
 #   For LSM303DLH:
 #     sudo pip3 install adafruit-circuitpython-lsm303dlh-mag
 
-from Drivers.Driver import Driver
+from DummyDrivers.Driver import Driver
 #import board
 #import busio
 #import adafruit_lsm303_accel

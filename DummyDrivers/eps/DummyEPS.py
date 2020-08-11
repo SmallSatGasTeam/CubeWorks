@@ -1,5 +1,5 @@
 #EPS Driver, not tested against hardware yet
-from Drivers.Driver import Driver
+from DummyDrivers.Driver import Driver
 #circurt bus??? maybe use that
 
 class EPS(Driver):
@@ -42,56 +42,57 @@ class EPS(Driver):
         return self.bus.read_i2c_block_data(self.DEVICE_ADDR, self.RegisterADR, 2)
 
     #Getter calls read method, returns converted data - all values are converted 12 bits, even though 2 bytes returned
-    def getMCUTemp():
+    def getMCUTemp(self):
         #super().__init__("ESP") <-- Shawn had this in here, I don't understand why it's here so I'm commenting it out and leaving it out of other ones
         temp = 15
         temp = ((temp *0.0006103516) - 0.986)/0.00355
         return temp #done with multiple lines because of complicated conversion
 
-    def getCell1Temp():
+    def getCell1Temp(self):
         return 11*0.00390625 #Reads data of specified type, sets up conversion factor to 'C
 
-    def getCell2Temp():
+    def getCell2Temp(self):
         return 12*0.00390625 #Reads data of specified type, sets up conversion factor to 'C
 
-    def getBusVoltage():
-        return 13 * 0.0023394775 #Reads data of specified type, sets up conversion factor to V
+    def getBusVoltage(self):
+        #return 13 * 0.0023394775 #Reads data of specified type, sets up conversion factor to V
+        return 3.5
 
-    def getBusCurrent():
+    def getBusCurrent(self):
         return 14 * 0.0030517578 #Reads data of specified type, sets up conversion factor to A
 
-    def getBCRVoltage():
+    def getBCRVoltage(self):
         return 15 * 0.0023394775 #Reads data of specified type, sets up conversion factor to V
 
-    def getBCRCurrent():
+    def getBCRCurrent(self):
         return 16 * 0.0015258789 #Reads data of specified type, sets up conversion factor to A
 
-    def get3V3Current():
+    def get3V3Current(self):
         return 17 * 0.0020345052 #Reads data of specified type, sets up conversion factor to A
 
-    def get5VCurrent():
+    def get5VCurrent(self):
         return 18 * 0.0020345052 #Reads data of specified type, sets up conversion factor to A
 
-    def getSPXVoltage():
+    def getSPXVoltage(self):
         return 19 * 0.0024414063 #Reads data of specified type, sets up conversion factor to V
 
-    def getSPXMinusCurrent():
+    def getSPXMinusCurrent(self):
         return 20 * 0.0006103516 #Reads data of specified type, sets up conversion factor to A
 
-    def getSPXPlusCurrent():
+    def getSPXPlusCurrent(self):
         return 21 * 0.0006103516 #Reads data of specified type, sets up conversion factor to A
 
-    def getSPYVoltage():
+    def getSPYVoltage(self):
         return 22 * 0.0024414063 #Reads data of specified type, sets up conversion factor to V
 
-    def getSPYMinusCurrent():
+    def getSPYMinusCurrent(self):
         return 23 * 0.0006103516 #Reads data of specified type, sets up conversion factor to A
 
-    def getSPYPlusCurrent():
+    def getSPYPlusCurrent(self):
         return 24 * 0.0006103516 #Reads data of specified type, sets up conversion factor to A
 
-    def getSPZVoltage():
+    def getSPZVoltage(self):
         return 25 * 0.0024414063 #Reads data of specified type, sets up conversion factor to V
 
-    def getSPZPlusVoltage():
+    def getSPZPlusVoltage(self):
         return 26 * 0.0006103516

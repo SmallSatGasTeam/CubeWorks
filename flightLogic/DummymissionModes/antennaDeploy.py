@@ -7,7 +7,7 @@ import DummyDrivers.eps.DummyEPS as EPS
 import asyncio
 from flightLogic.DummymissionModes import safe
 import flightLogic.DummygetDriverData as getDriverData
-#from TXISR.interrupt import INTERRUPT
+from TXISR.interrupt import INTERRUPT
 
 
 class antennaMode:
@@ -21,7 +21,7 @@ class antennaMode:
 		self.__tasks = [] #List will be populated with background tasks to cancel them
 		self.__safeMode = safe.safe(saveobject)
 		self.__antennaDeployer = BackupAntennaDeployer()
-		self.__antennaDoor = AntennaDoor()
+		self.__antennaDoor = AntennaDoor.AntennaDoor()
 
 
 	async def run(self):

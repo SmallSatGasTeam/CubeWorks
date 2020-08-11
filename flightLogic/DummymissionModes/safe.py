@@ -18,9 +18,9 @@ import RPi.GPIO as GPIO
 class safe:
 	def __init__(self, saveObject):
 		#Setup I2C bus for communication
-		self.__eps = EPS()
+		self.__eps = EPS.EPS()
 		self.thresholdVoltage = 3.33 #Threshold Voltage
-		if saveObject != NULL:
+		if saveObject != None:
 			self.__saveObject = saveObject
 		GPIO.setwarnings(False)
 		GPIO.setmode(GPIO.BOARD) #Physical Pin numbering
