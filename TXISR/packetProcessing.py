@@ -6,6 +6,7 @@ processPacket() will convert the packet data to binary, and then go through bit 
 '''
 # NOTE: This code is not asyncronous currently.
 import time
+import os.path
 
 def processPacket(packetData):
 	# Packet data comes in as hex, need to convet to binary to parse
@@ -79,9 +80,19 @@ def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber):
 	# This function will write the TX window packet information to a file. Pass in the window start (delta T), window duration, data type, and picture number.
 	# Note that this function saves the window start as an actual time, not a delta T - this is critical.
 
+	# Convert window start from delta T to seconds since epoch
 	windowStartTime = windowStart + int(time.time())
-	print("Current time: ", time.time())
+	print("Current time: ", int(time.time()))
 	print("Start time: ", windowStartTime)
+	
+	TXWindow_File = open(os.path.dirname(__file__) + "/data/txWindows.txt", "a+")
+       
+	#write the data to the file,
+	TXWindow_File.write(str(windowStartTime)+',')
+	TXWindow_File.write(str(windowDuration)+',')
+	TXWindow_File.write(str(dataType)+',')
+	TXWindow_File.write(str(pictureNumber))
+	TXWindow_File.write('\n')
 	
 # Command packet
 # processPacket('C8')
