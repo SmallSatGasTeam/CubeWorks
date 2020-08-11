@@ -9,41 +9,41 @@ def processPacket(packetData):
 	# Packet data comes in as hex, need to convet to binary to parse
 	binaryData = format(int(packetData,16), 'b')
 	print(binaryData)
-	if binaryData[0] == 0:
+	if binaryData[0] == '0':
 		# This is a TX Schedule packet
 		print("TX Schedule Packet")
 	else:
 		# This is a command packet
 		print("Command packet")
-		if binaryData[1] == 0:
+		if binaryData[1] == '0':
 			# Turn off Transmitter
 			print("Turn off Transmitter")
 		else:
 			#Turn on Transmitter
 			print("Turn on Transmitter")
 			
-		if binaryData[2] == 0:
+		if binaryData[2] == '0':
 			# DO NOT Clear TX Schedule and Progress
 			print("Do NOT Clear TX Schedule and Progress")
 		else:
 			# Clear TX Schedule
 			print("Clear TX Schedule and Progress")
 			
-		if binaryData[3] == 0:
+		if binaryData[3] == '0':
 			# Do not take picture
 			print("Do not take picture")
 		else:
 			# Take picture
 			print("Take picture")
 			
-		if binaryData[4] == 0:
+		if binaryData[4] == '0':
 			# Do not deploy boom
 			print("Do not deploy boom")
 		else:
 			# Deploy boom
 			print("Deploy boom")
 			
-		if binaryData[5] == 0:
+		if binaryData[5] == '0':
 			# Do not reboot
 			print("Do not reboot")
 		else:
