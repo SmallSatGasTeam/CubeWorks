@@ -10,4 +10,4 @@ async def processPacket(packetData):
 	binaryData = format(int(packetData,16), 'b')
 	print(binaryData)
 	
-processPacket('C8')
+await processPacket('C8')
