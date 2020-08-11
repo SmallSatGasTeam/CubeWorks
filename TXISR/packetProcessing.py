@@ -13,13 +13,27 @@ def processPacket(packetData):
 	if binaryData[0] == '0':
 		# This is a TX Schedule packet.
 		print("TX Schedule Packet")
+		
+		# Get window start delta T
 		windowStartBinary = binaryData[1:33]
 		windowStartDecimal = int(windowStartBinary,2)
 		print("Window start in seconds: ", windowStartDecimal)
 		
+		# Get window duration
 		windowDurationBinary = binaryData[33:49]
 		windowDurationDecimal = int(windowDurationBinary,2)
 		print("Window duration in seconds: ", windowDurationDecimal)
+		
+		# Get data type
+		dataTypeBinary = binaryData[49:57]
+		dataTypeDecimal = int(dataTypeBinary,2)
+		print("Data type: ", dataTypeDecimal)
+		
+		# Get picture number
+		pictureNumberBinary = binaryData[57:73]
+		pictureNumberDecimal = int(pictureNumberBinary,2)
+		print("Picture number: ", pictureNumberDecimal)
+		
 	else:
 		# This is a command packet
 		print("Command packet")
