@@ -7,11 +7,13 @@ processPacket() will convert the packet data to binary, and then go through bit 
 # NOTE: This code is not asyncronous currently.
 def processPacket(packetData):
 	# Packet data comes in as hex, need to convet to binary to parse
-	binaryData = format(int(packetData,16), 'b')
+	binaryDataLength = len(packetData) * 4
+	binaryData = format(int(packetData,16), 'b').zfill(binaryDataLength)
 	print(binaryData)
 	if binaryData[0] == '0':
-		# This is a TX Schedule packet
+		# This is a TX Schedule packet. The window start, duration, data type, and picture number are decimal format encoded in hex.
 		print("TX Schedule Packet")
+		windowStart = hexData[
 	else:
 		# This is a command packet
 		print("Command packet")
