@@ -115,3 +115,4 @@ def enableTransmissions()
 # processPacket('C8')
 # TX Window Packet
 processPacket('0000000F007801000000')
+disableTransmissions()
