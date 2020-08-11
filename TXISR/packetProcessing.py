@@ -14,7 +14,7 @@ def processPacket(packetData):
 		# This is a TX Schedule packet. The window start, duration, data type, and picture number are decimal format encoded in hex.
 		print("TX Schedule Packet")
 		windowStartBinary = binaryData[1:33]
-		windowStartDecimal = int(windowStartBinary,10)
+		windowStartDecimal = int(windowStartBinary,2)
 		print(windowStartBinary)
 		print(windowStartDecimal)
 	else:
