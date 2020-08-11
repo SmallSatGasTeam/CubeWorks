@@ -43,10 +43,12 @@ def processPacket(packetData):
 		print("Command packet")
 		if binaryData[1] == '0':
 			# Turn off Transmitter
-			print("Turn off Transmitter")
+			print("Turn off Transmissions")
+			disableTransmissions()
 		else:
 			#Turn on Transmitter
 			print("Turn on Transmitter")
+			enableTransmissions()
 			
 		if binaryData[2] == '0':
 			# DO NOT Clear TX Schedule and Progress
@@ -93,6 +95,21 @@ def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber):
 	TXWindow_File.write(str(dataType)+',')
 	TXWindow_File.write(str(pictureNumber))
 	TXWindow_File.write('\n')
+	
+def disableTransmissions()
+	# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
+	transmissionFlag_File = open("/home/pi/Comms/CubeWorks/TXISR/data/transmissionFlag.txt", "w")
+	
+	#write the data to the file,
+	transmissionFlag_File.write(False)
+	
+def enableTransmissions()
+	# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
+	transmissionFlag_File = open("/home/pi/Comms/CubeWorks/TXISR/data/transmissionFlag.txt", "w")
+	
+	#write the data to the file,
+	transmissionFlag_File.write(True)
+	
 	
 # Command packet
 # processPacket('C8')
