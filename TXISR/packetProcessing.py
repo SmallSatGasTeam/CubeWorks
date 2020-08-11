@@ -4,10 +4,10 @@ The pythonInterrupt.py file monitors the UART buffer, and when data is received 
 The header and footer is the Hex representation of 'GASPACS'. The pythonInterrupt.py takes the packet data located in between the header and footer and then calls the processPacket() method located in this file, passing in an argument containing the packet data.
 processPacket() will convert the packet data to binary, and then go through bit by bit and perform the functionality specified in the packet.
 '''
-
-async def processPacket(packetData):
+# NOTE: This code is not asyncronous currently.
+def processPacket(packetData):
 	# Packet data comes in as hex, need to convet to binary to parse
 	binaryData = format(int(packetData,16), 'b')
 	print(binaryData)
 	
-await processPacket('C8')
+processPacket('C8')
