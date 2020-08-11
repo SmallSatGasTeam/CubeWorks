@@ -194,7 +194,7 @@ void main(int argc,char* argv[])
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
             if((dataType != PHOTO_TYPE || end) && ch != TIME_DEVISOR)line[charCount++] = ch;
-            if((dataType != PHOTO_TYPE || end) && ch == TIME_DEVISOR) line[charCount++] = ","
+            if((dataType != PHOTO_TYPE || end) && ch == TIME_DEVISOR) line[charCount++] = ",";
             //PRINT_DEBUG_c(ch)
             //DEBUG_P(Im in the sub loop)
         }while(ch != 10 && !feof(txFile));
