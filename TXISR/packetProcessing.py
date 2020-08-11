@@ -9,7 +9,7 @@ def processPacket(packetData):
 	# Packet data comes in as hex, need to convet to binary to parse
 	binaryDataLength = len(packetData) * 4
 	binaryData = format(int(packetData,16), 'b').zfill(binaryDataLength)
-	print(binaryData)
+
 	if binaryData[0] == '0':
 		# This is a TX Schedule packet.
 		print("TX Schedule Packet")
