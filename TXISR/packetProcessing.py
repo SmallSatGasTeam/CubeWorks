@@ -13,7 +13,8 @@ def processPacket(packetData):
 	if binaryData[0] == '0':
 		# This is a TX Schedule packet. The window start, duration, data type, and picture number are decimal format encoded in hex.
 		print("TX Schedule Packet")
-		#windowStart = hexData[
+		windowStart = binaryData[1:34]
+		print(WindowStart)
 	else:
 		# This is a command packet
 		print("Command packet")
@@ -52,4 +53,7 @@ def processPacket(packetData):
 			#Send reboot command to Beetle
 			print("Reboot")
 			
-processPacket('48')
+# Command packet
+# processPacket('C8')
+# TX Window Packet
+processPacket('0000000F007801000000')
