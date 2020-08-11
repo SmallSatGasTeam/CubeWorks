@@ -5,6 +5,8 @@ The header and footer is the Hex representation of 'GASPACS'. The pythonInterrup
 processPacket() will convert the packet data to binary, and then go through bit by bit and perform the functionality specified in the packet.
 '''
 # NOTE: This code is not asyncronous currently.
+import time
+
 def processPacket(packetData):
 	# Packet data comes in as hex, need to convet to binary to parse
 	binaryDataLength = len(packetData) * 4
@@ -34,6 +36,7 @@ def processPacket(packetData):
 		pictureNumberDecimal = int(pictureNumberBinary,2)
 		print("Picture number: ", pictureNumberDecimal)
 		
+		writeTXWindow(windowStartDecimal, windowDurationDecimal, dataTypeDecimal, pictureNumberDecimal)
 	else:
 		# This is a command packet
 		print("Command packet")
@@ -72,6 +75,14 @@ def processPacket(packetData):
 			#Send reboot command to Beetle
 			print("Reboot")
 			
+def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber):
+	# This function will write the TX window packet information to a file. Pass in the window start (delta T), window duration, data type, and picture number.
+	# Note that this function saves the window start as an actual time, not a delta T - this is critical.
+
+	windowStartTime = windowStart + int(time.time())
+	print("Current time: ", time.time())
+	print("Start time: ", windowStartTime)
+	
 # Command packet
 # processPacket('C8')
 # TX Window Packet
