@@ -3,14 +3,29 @@ import asyncio
 
 async def readSerial():
 	serialport = serial.Serial('/dev/serial0', 115200)
+	leftovers = []
+	gaspacsNibbles = list(b'GASPACS'.hex())
 	while True:
 		if serialport.in_waiting:
-			data = serialport.read_until(b'\r')
-			print(data.decode('utf-8'))
-			await asyncio.sleep(1)
+			data = list(serialport.read(serialport.inWaiting()).hex()) #This produces a list of nibbles (half bytes)
+			data = leftovers.extend(data)
+			fixes = findOccurences(''.join(data), ''.join(gaspacsNibbles))
+			await asyncio.sleep(5)
 		else:
 			print('buffer empty')
-			await asyncio.sleep(1)
+			await asyncio.sleep(10)
+
+def findOccurences(str1, str2):
+	occurenceList = []
+	minIndex = 0
+	while True:
+		foundIndex = str1.find(str2, minIndex)
+		if(foundIndex is not -1):
+			minIndex = foundIndex + 1
+			occurenceList.append(foundIndex)
+		else:
+			break
+	return occurenceList
 
 async def otherFunction():
 	while True:
