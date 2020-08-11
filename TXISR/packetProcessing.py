@@ -101,14 +101,14 @@ def disableTransmissions():
 	transmissionFlag_File = open("/home/pi/Comms/CubeWorks/TXISR/data/transmissionFlag.txt", "w")
 	
 	#write the data to the file,
-	transmissionFlag_File.write(False)
+	transmissionFlag_File.write("Disabled")
 	
 def enableTransmissions():
 	# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
 	transmissionFlag_File = open("/home/pi/Comms/CubeWorks/TXISR/data/transmissionFlag.txt", "w")
 	
 	#write the data to the file,
-	transmissionFlag_File.write(True)
+	transmissionFlag_File.write("Enabled")
 	
 	
 # Command packet
