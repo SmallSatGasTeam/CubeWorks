@@ -18,7 +18,7 @@
 
 #define FLAG_FILE "./flagsFile.txt" //change this later for the real program
 #define FORMAT_FILE "./txFile.txt" //this is the file that dallan will creat
-#define UART_PORT "/dev/ttyAMA0" //this is serial port name, make sure this is correct for the final code
+#define UART_PORT "/dev/serial0" //this is serial port name, make sure this is correct for the final code
 
 //this is our time delay
 #define DELAY_tx 120
@@ -144,7 +144,8 @@ void main(int argc,char* argv[])
         currentTime = millis();
     }
     //write to the radio
-    write(txPort, "ES+W23003321", 13);
+    //NOTE a return carage needs to be added to the command (\r)
+    write(txPort, "ES+W23003321\r", 13);
     DEBUG_P(current Time - Start time :)
     PRINT_TIME(currentTime - startTime)
 
@@ -193,6 +194,7 @@ void main(int argc,char* argv[])
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
             if((dataType != PHOTO_TYPE || end) && ch != TIME_DEVISOR)line[charCount++] = ch;
+            else if(dataType != PHOTO_TYPE && ch == TIME_DEVISOR) line[charCount++] = ',';
             //PRINT_DEBUG_c(ch)
             //DEBUG_P(Im in the sub loop)
         }while(ch != 10 && !feof(txFile));
