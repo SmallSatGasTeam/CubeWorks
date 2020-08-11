@@ -85,7 +85,7 @@ def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber):
 	print("Current time: ", int(time.time()))
 	print("Start time: ", windowStartTime)
 	
-	TXWindow_File = open(os.path.dirname(__file__) + "/txWindows.txt", "a+")
+	TXWindow_File = open("~/Comms/CubeWorks/TXISR/data/txWindows.txt", "a+")
        
 	#write the data to the file,
 	TXWindow_File.write(str(windowStartTime)+',')
