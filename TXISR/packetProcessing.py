@@ -5,5 +5,9 @@ The header and footer is the Hex representation of 'GASPACS'. The pythonInterrup
 processPacket() will convert the packet data to binary, and then go through bit by bit and perform the functionality specified in the packet.
 '''
 
-async def processPacket(self):
+async def processPacket(self, packetData):
+	# Packet data comes in as hex, need to convet to binary to parse
+	binaryData = format(int(packetData,16), 'b')
+	print(binaryData)
 	
+processPacket(C8)
