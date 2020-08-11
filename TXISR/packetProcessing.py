@@ -52,4 +52,4 @@ def processPacket(packetData):
 			#Send reboot command to Beetle
 			print("Reboot")
 			
-processPacket('C8')
+processPacket('48')
