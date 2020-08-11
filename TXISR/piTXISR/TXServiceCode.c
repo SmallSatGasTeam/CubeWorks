@@ -18,7 +18,7 @@
 
 #define FLAG_FILE "./flagsFile.txt" //change this later for the real program
 #define FORMAT_FILE "./txFile.txt" //this is the file that dallan will creat
-#define UART_PORT "/dev/ttyAMA0" //this is serial port name, make sure this is correct for the final code
+#define UART_PORT "/dev/serial0" //this is serial port name, make sure this is correct for the final code
 
 //this is our time delay
 #define DELAY_tx 120
