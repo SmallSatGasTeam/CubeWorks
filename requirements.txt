@@ -1,4 +1,6 @@
-Adafruit_GPIO
-Adafruit_MCP3008
-picamera
-
+board
+RPi.GPIO
+adafruit-blinka
+adafruit-circuitpython-lsm303_accel
+adafruit-circuitpython-lis2mdl
+spidev

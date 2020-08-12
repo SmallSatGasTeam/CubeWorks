@@ -90,10 +90,12 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	print('Moving on to check antenna door status')
 	status = antennaDoor().readDoorStatus()
 	# this checks the bytes returned by the antennaDoor if any are 0 then doorOpen gets set to false
-	if status != (1,1,1,1) and lastMode not in (2,3,4): #This will need to be changed to reflect the real antenna
-		antennaDeployed = False
+	if antennaDeployed = True:
+		pass
+	elif status = (1,1,1,1): #This will need to be changed to reflect the real antenna
+		antennaDeployed = True
 	else:
-        	antennaDeployed = True
+        	antennaDeployed = False
 
 	recordData(bootCount, antennaDeployed, lastMode)
 
