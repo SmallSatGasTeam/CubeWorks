@@ -7,6 +7,9 @@ processPacket() will convert the packet data to binary, and then go through bit 
 # NOTE: This code is not asyncronous currently.
 import time
 import os.path
+import Drivers.camera.Camera as camera
+import Drivers.boomDeployer as boomDeployer
+import smbus
 
 def processPacket(packetData):
 	# Packet data comes in as hex, need to convet to binary to parse
@@ -54,8 +57,10 @@ def processPacket(packetData):
 			# DO NOT Clear TX Schedule and Progress
 			print("Do NOT Clear TX Schedule and Progress")
 		else:
-			# Clear TX Schedule
+			# Clear TX Schedule & Progress
 			print("Clear TX Schedule and Progress")
+			clearTXFile()
+			clearTXProgress()
 			
 		if binaryData[3] == '0':
 			# Do not take picture
@@ -63,6 +68,8 @@ def processPacket(packetData):
 		else:
 			# Take picture
 			print("Take picture")
+			cam = camera.Camera()
+			cam.takePicture()
 			
 		if binaryData[4] == '0':
 			# Do not deploy boom
@@ -70,6 +77,8 @@ def processPacket(packetData):
 		else:
 			# Deploy boom
 			print("Deploy boom")
+			deployer = boomDeployer.BoomDeployer()
+			deployer.deploy()
 			
 		if binaryData[5] == '0':
 			# Do not reboot
@@ -77,6 +86,12 @@ def processPacket(packetData):
 		else:
 			#Send reboot command to Beetle
 			print("Reboot")
+			###
+			# TODO Kill the Heartbeat code
+			###
+			bus = smbus.SMBus(1)
+			address = 0x08
+			bus.write_byte(address, 1)
 			
 def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber):
 	# This function will write the TX window packet information to a file. Pass in the window start (delta T), window duration, data type, and picture number.
@@ -96,23 +111,43 @@ def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber):
 	TXWindow_File.write(str(pictureNumber))
 	TXWindow_File.write('\n')
 	
+	# close file
+	TXWindow_File.close()
+	
 def disableTransmissions():
 	# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
 	transmissionFlag_File = open("/home/pi/Comms/CubeWorks/TXISR/data/transmissionFlag.txt", "w")
 	
-	#write the data to the file,
+	# write the data to the file,
 	transmissionFlag_File.write("Disabled")
+	
+	# close the file
+	transmissionFlag_File.close()
 	
 def enableTransmissions():
 	# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
 	transmissionFlag_File = open("/home/pi/Comms/CubeWorks/TXISR/data/transmissionFlag.txt", "w")
 	
-	#write the data to the file,
+	# write the data to the file,
 	transmissionFlag_File.write("Enabled")
+	
+	# close file
+	transmissionFlag_File.close()
+	
+def clearTXFile():
+	# This function clears the TX windows file
+	transmissionFlag_File = open("/home/pi/Comms/CubeWorks/TXISR/data/txWindows.txt", "w"))
+	
+	# close file
+	transmissionFlag_File.close()
+	
+def clearTXProgress()
+	# This function will clear the file that saves which timestamp has been transmitted most recently for each data type
+	print("I don't know which file to clear!!!")
+	
 	
 	
 # Command packet
 # processPacket('C8')
 # TX Window Packet
 processPacket('0000000F007801000000')
-enableTransmissions()
