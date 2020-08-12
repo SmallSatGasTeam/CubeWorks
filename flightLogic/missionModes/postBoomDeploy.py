@@ -13,7 +13,7 @@ REBOOT_WAIT_TIME = 900 #15 minutes, 900 seconds
 class postBoomMode:
 	
 	def __init__(self, saveobject):
-	    self.postBoomTimeFile = open("postBoomTime.txt", "w+")
+		self.postBoomTimeFile = open("postBoomTime.txt", "w+")
 	    self.__getDataTTNC = TTNCData(saveobject)
 	    self.__getDataAttitude =  AttitudeData(saveobject)
 		self.__tasks = [] # List will be populated with all background tasks
@@ -34,48 +34,53 @@ async def run(self):
 	self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
 	self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
 	self.__tasks.append(asyncio.create_task(self.__safeMode.heartBeat()))
-	upTime = 86100
-	while True: #Runs reboot loop
-		if upTime>86400: #Live for more than 24 hours
+	self.__tasks.append(asyncio.create_task(self.readNextTransferWindow()))
+	self.__tasks.append(asyncio.create_task(self.rebootLoop()))
+	while True:
+		#if close enough, prep files
+		#wait until 5 seconds before, return True
+		await asyncio.sleep(1)
+				
+	async def rebootLoop(self):
+		upTime = 0
+		while True:
+			if upTime>86400: #Live for more than 24 hours
 			if (self.__timeToNextWindow == -1) or (self.__timeToNextWindow > REBOOT_WAIT_TIME):
 				self.__safeMode.run(1) #restart, powering off Pi for 1 minute
 				print('Rebooting raspberry pi')
-				upTime = 0 # Won't be necessary for flight article
 		else:
 			print('Uptime: '+str(upTime))
 			await asyncio.sleep(60)
 			upTime += 60
-				
-	def readNextTransferWindow(self, transferWindowFilename):
-	#read the given transfer window file and extract the data for the soonest transfer window
-		transferWindowFile = open(transferWindowFilename)
-		sendData = 0
-		soonestWindowTime = 0
-		for line in transferWindowFile:
-#            print("reading line: ")
-#            print(line)
-			data = line.split(",")
-			#data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number
-			if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME):  #if the transfer window is at BUFFER_TIME milliseconds in the future
-				if(soonestWindowTime == 0 or float(data[0]) - time.time() < soonestWindowTime):
-					soonestWindowTime = float(data[0]) - time.time()
-					sendData = data
-		if not(sendData == 0):
-#            print("Found next transfer window: ")
-#            print(sendData)
-			self.__timeToNextWindow = float(sendData[0]) - time.time()
-			self.__duration = int(sendData[1])
-			self.__datatype = int(sendData[2])
-			self.__pictureNumber = int(sendData[3])
-#            print(self.__timeToNextWindow)
-#            print(self.__duration)
-#            print(self.__datatype)
-#            print(self.__pictureNumber)
-		
 			
-
-
-
+	async def readNextTransferWindow(self, transferWindowFilename):
+		while True:
+			#read the given transfer window file and extract the data for the soonest transfer window
+			transferWindowFile = open(transferWindowFilename)
+			sendData = 0
+			soonestWindowTime = 0
+			for line in transferWindowFile:
+				#print("reading line: ")
+				#print(line)
+				data = line.split(",")
+				#data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number
+				if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME):  #if the transfer window is at BUFFER_TIME milliseconds in the future
+					if(soonestWindowTime == 0 or float(data[0]) - time.time() < soonestWindowTime):
+						soonestWindowTime = float(data[0]) - time.time()
+						sendData = data
+			if not(sendData == 0):
+				#print("Found next transfer window: ")
+				#print(sendData)
+				self.__timeToNextWindow = float(sendData[0]) - time.time()
+				self.__duration = int(sendData[1])
+				self.__datatype = int(sendData[2])
+				self.__pictureNumber = int(sendData[3])
+				#print(self.__timeToNextWindow)
+				#print(self.__duration)
+				#print(self.__datatype)
+				#print(self.__pictureNumber)
+			await asyncio.sleep(10) #Checks transmission windows every 10 seconds
+		
 
 	def cancellAllTasks(self, taskList): #Isn't used in this class, but here anyways
 		try:
