@@ -5,13 +5,14 @@ The header and footer is the Hex representation of 'GASPACS'. The pythonInterrup
 processPacket() will convert the packet data to binary, and then go through bit by bit and perform the functionality specified in the packet.
 '''
 # NOTE: This code is not asyncronous currently.
+import sys
+sys.path.append('../')
 import time
 import os.path
 import Drivers.camera.Camera as camera
 import Drivers.boomDeployer as boomDeployer
 import smbus
-import sys
-sys.path.append('../')
+
 def processPacket(packetData):
 	# Packet data comes in as hex, need to convet to binary to parse
 	binaryDataLength = len(packetData) * 4
