@@ -28,6 +28,7 @@ def int8tohex(num):
 	#takes an 8 byte integer, returns a hex representation of it
 	return str(format(num, '016x'))[-16:]
 
+gaspacsBytes = str(b'GASPACS'.hex())
 
 class TTNCData:
 	def __init__(self, saveobject):
@@ -40,6 +41,7 @@ class TTNCData:
 		self.TempSensor = Drivers.solarPanelTemp.TempSensor()
 
 	async def getData(self, missionMode):
+		packet = ''		
 		# gets all TTNC data - need to pass in missionMode when calling it
 		timestamp = self.RTC.read()
 		packetType = 1
