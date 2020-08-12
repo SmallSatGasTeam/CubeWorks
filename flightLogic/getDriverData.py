@@ -118,23 +118,35 @@ class AttitudeData():
 	def __init__(self, saveobject):
 		self.save = saveobject
 		self.RTC = Drivers.rtc.RTC()
-		self.attitudeDataArray = []
+		self.__attitudeData = None
 		self.sunSensor = Drivers.sunSensors.sunSensorDriver.sunSensor()
 		self.Magnetometer = Drivers.Magnetometer()
 
 	async def getData(self):
 		#gets all Attitude data
-		timestamp = self.RTC.read()
-		packetType = 0
+		packet = ''
+		timestamp = int4tohex(self.RTC.readSeconds())
+		packetType = int1tohex(0)
 		sunSensor1, sunSensor2, sunSensor3, sunSensor4, sunSensor5 = self.sunSensor.read()
+		sunSensor1 = float4tohex(sunSensor1)
+		sunSensor2 = float4tohex(sunSensor2)
+		sunSensor3 = float4tohex(sunSensor3)
+		sunSensor4 = float4tohex(sunSensor4)
+		sunSensor5 = float4tohex(sunSensor5)
+		
 		mag1, mag2, mag3 = self.Magnetometer.read()
-
-		#save the data into an array
-		self.attitudeDataArray = [timestamp, packetType, sunSensor1, sunSensor2, sunSensor3, sunSensor4, sunSensor5, mag1, mag2, mag3]
+		mag1 = float4tohex(mag1)
+		mag2 = float4tohex(mag2)
+		mag3 = float4tohex(mag3)
+		
+		packet += gaspacsBytes + timestamp + packetType + sunSensor1 + sunSensor2 + sunSensor3 + sunSensor4 + sunSensor5 + mag1 + mag2 + mag3 + gaspacsBytes
+		packetTimestamp = str(int(RTC.readSeconds())).zfill(10)+': '
+		packet = packetTimestamp + packet
+		self.__attitudeData = packet
 
 	async def writeData(self):
 		#writes Attitude Data array to file
-		await self.save.writeAttitude(self.attitudeDataArray)
+		await self.save.writeAttitude(self.__attitudeData)
 
 	async def collectAttitudeData(self):
 		# Data collection loop
