@@ -136,7 +136,7 @@ def enableTransmissions():
 	
 def clearTXFile():
 	# This function clears the TX windows file
-	transmissionFlag_File = open("/home/pi/Comms/CubeWorks/TXISR/data/txWindows.txt", "w"))
+	transmissionFlag_File = open("/home/pi/Comms/CubeWorks/TXISR/data/txWindows.txt", "w")
 	
 	# close file
 	transmissionFlag_File.close()
