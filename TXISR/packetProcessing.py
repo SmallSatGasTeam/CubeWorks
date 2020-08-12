@@ -95,6 +95,15 @@ def processPacket(packetData):
 			address = 0x08
 			bus.write_byte(address, 1)
 			
+		if binaryData[6] == '0':
+			# Turn off AX25
+			print("Turn off AX25")
+			disableAX25()
+		else:
+			#Turn on AX25
+			print("Turn on AX25")
+			enableAX25()
+			
 def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber):
 	# This function will write the TX window packet information to a file. Pass in the window start (delta T), window duration, data type, and picture number.
 	# Note that this function saves the window start as an actual time, not a delta T - this is critical.
@@ -135,6 +144,26 @@ def enableTransmissions():
 	
 	# close file
 	transmissionFlag_File.close()
+	
+def disableAX25():
+	# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
+	AX25Flag_File = open("/home/pi/Comms/CubeWorks/TXISR/data/AX25Flag.txt", "w")
+	
+	# write the data to the file,
+	AX25Flag_File.write("Disabled")
+	
+	# close the file
+	AX25Flag_File.close()
+	
+def enableAX25():
+	# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
+	AX25Flag_File = open("/home/pi/Comms/CubeWorks/TXISR/data/AX25Flag.txt", "w")
+	
+	# write the data to the file,
+	AX25Flag_File.write("Enabled")
+	
+	# close file
+	AX25Flag_File.close()
 	
 def clearTXFile():
 	# This function clears the TX windows file
