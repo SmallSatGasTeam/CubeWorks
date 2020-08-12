@@ -4,16 +4,16 @@ import os
 from math import ceil
 
 def prepareData(duration, dataType, pictureNumber = 0):
-	if (type == 0): #Attitude Data
-		f
-	elif (type == 1): #TTNC Data
-		f
-	elif (type == 2): #Deploy Data
-		f
-	elif (type == 3): #HQ Picture Data
-		f
-	else: #LQ Picture Data
-		f
+	if (dataType == 0): #Attitude Data
+		packetLength = 51 #Packet length in bytes
+		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/Attitude_Data.txt') #Set data file path to respective file
+	elif (dataType == 1): #TTNC Data
+		packetLength = 118 #Packet length in bytes
+		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/TTNC_Data.txt') #Set data file path to respective file
+	else: #Deploy Data
+		packetLength = 36 #Packet length in bytes
+		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/Deploy_Data.txt') #Set data file path to respective file
+
 		
 	progressLineNumber = 0 #Line number in Shawn's flag file for the progress of this specific data type
 	packetLength = 41 #Bytes
@@ -64,8 +64,13 @@ def prepareData(duration, dataType, pictureNumber = 0):
 			continue
 
 		
-def preparePicture(duration, dataType, pictureNumber)
-			
+def preparePicture(duration, dataType, pictureNumber):
+	if dataType == 3: #HQ Picture
+		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/Attitude_Data.txt') #TODO FIX!
+	else: #LQ picture
+		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/Attitude_Data.txt')
+	
+	numPackets = ceil(duration*1000/(120 + 128*8/9600)) + 15 #How many picture packets can we transmit in the window? + 15 for safety
 			
 	
 	
