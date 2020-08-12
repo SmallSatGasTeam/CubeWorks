@@ -10,7 +10,8 @@ import os.path
 import Drivers.camera.Camera as camera
 import Drivers.boomDeployer as boomDeployer
 import smbus
-
+import sys
+sys.path.append('../')
 def processPacket(packetData):
 	# Packet data comes in as hex, need to convet to binary to parse
 	binaryDataLength = len(packetData) * 4
