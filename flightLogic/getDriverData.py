@@ -15,7 +15,7 @@ gaspacsBytes = str(b'GASPACS'.hex())
 class TTNCData:
 	def __init__(self, saveobject):
 		self.__save = saveobject
-		self.__ttncDataArray = []
+		self.__ttncData = None
 		self.EPS = Drivers.eps.EPS()
 		self.UVDriver = Drivers.UV.UVDriver()
 		self.RTC = Drivers.rtc.RTC()
@@ -62,7 +62,7 @@ class TTNCData:
 
 	async def writeData(self):
 		#writes TTNC data array to file
-		await self.__save.writeTTNC(self.ttncData)
+		await self.__save.writeTTNC(self.__ttncData)
 
 	async def collectTTNCData(self, mMode):
 		# Data collection loop
@@ -80,22 +80,28 @@ class DeployData():
 		self.__save = saveobject
 		self.RTC = Drivers.rtc.RTC()
 		self.UVDriver = Drivers.UV.UVDriver()
-		self.__deployDataArray = []
+		self.__deployData = None
 		self.Accelerometer = Drivers.Accelerometer()
 
 	async def getData(self):
 		#gets all Boom Deployment data
-		timestamp = self.RTC.read()
-		packetType = 2
-		boombox_uv = self.UVDriver.read()
+		packet = ''
+		timestamp = int8tohex(self.RTC.readMilliseconds())
+		packetType = int1tohex(2)
+		boombox_uv = float4tohex(self.UVDriver.read())
 		accelX, accelY, accelZ = self.Accelerometer.read()
-
-		#save the data into an array
-		self.__deployDataArray = [timestamp, packetType, boombox_uv, accelX, accelY, accelZ]
+		accelX = float4tohex(accelX)
+		accelY = float4tohex(accelY)
+		accelZ = float4tohex(accelZ)
+		packet = ''
+		packet += gaspacsBytes+timestamp+packetType+boombox_uv+accelX+accelY+accelZ
+		packetTimestamp = str(int(RTC.readSeconds())).zfill(10)+': '
+		packet = packetTimestamp + packet
+		self.__deployData = packet
 
 	async def writeData(self):
 		#writes Boom Deployment data array to file
-		await self.__save.writeDeploy(self.__deployDataArray)
+		await self.__save.writeDeploy(self.__deployData)
 
 	async def collectDeployData(self):
 		# Data collection loop
