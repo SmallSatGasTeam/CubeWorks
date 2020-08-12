@@ -1,5 +1,6 @@
 import serial
 import asyncio
+import packetProcessing
 
 async def readSerial():
 	serialport = serial.Serial('/dev/serial0', 115200)
@@ -7,14 +8,17 @@ async def readSerial():
 	gaspacsHex = str(b'GASPACS'.hex())
 	while True:
 		if serialport.in_waiting:
+			print('Data in waiting')
 			data = string(serialport.read(serialport.inWaiting()).hex()) #This produces a list of nibbles (half bytes)
 			data = leftovers+data
 			commands, ax25Packets = None, None
 			commands, ax25Packets, leftovers = parseData(data, gaspacsHex)
-			await asyncio.sleep(5)
+			for command in commands:
+				packetProcessing.processPacket(command)
+			await asyncio.sleep(1)
 		else:
 			print('buffer empty')
-			await asyncio.sleep(10)
+			await asyncio.sleep(1)
 
 def parseData(data, bracket): #Takes data string, in the form of hex, from async read serial function. Spits out all AX.25 packets and GASPACS packets contained inside, as well as remaining data to be put into the leftovers
 	searching = True

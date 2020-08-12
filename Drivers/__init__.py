@@ -1,4 +1,4 @@
-from .Drivers import *
+from .Driver import *
 #from .Magnetometer import *
 #from .camera import *
 #from .cpuTemp import *
