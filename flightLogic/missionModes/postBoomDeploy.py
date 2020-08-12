@@ -6,6 +6,7 @@ from flightLogic.missionModes import safe
 from flightLogic.getDriverData import *
 import Drivers.eps.EPS as EPS
 from TXISR.interrupt import INTERRUPT
+from TXISR import prepareFiles
 
 TRANSFER_WINDOW_BUFFER_TIME = 30 #30 seconds
 REBOOT_WAIT_TIME = 900 #15 minutes, 900 seconds
@@ -39,7 +40,23 @@ async def run(self):
 	while True:
 		#if close enough, prep files
 		#wait until 5 seconds before, return True
+		if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<120): #If next window is in 2 minutes or less
+			if(self.__datatype == 0): #Attitude data
+				prepareFiles.prepareAttitude(self.__duration)
+			elif(self.__datatype == 1): #TTNC data
+				prepareFiles.prepareTTNC(self.__duration)
+			elif(self.__datatype == 2): #Deployment data
+				prepareFiles.prepareDeployment(self.__duration)
+			elif(self.__datatype == 3): #HQ Picture
+				prepareFiles.prepareHQPicture(self.__duration, self.__pictureNumber)
+			else: #LQ Picture
+				prepareFiles.prepareLQPicture(self.__duration, self.__pictureNumber)
+			break
 		await asyncio.sleep(1)
+		
+		while True:
+			#Wait until 5 seconds before TX window!
+			break
 				
 	async def rebootLoop(self):
 		upTime = 0
