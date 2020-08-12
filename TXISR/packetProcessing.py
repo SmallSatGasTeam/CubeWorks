@@ -152,4 +152,4 @@ def clearTXProgress():
 # Command packet
 # processPacket('C8')
 # TX Window Packet
-processPacket('0000000F007801000000')
+#processPacket('0000000F007801000000')
