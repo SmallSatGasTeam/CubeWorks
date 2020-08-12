@@ -7,20 +7,20 @@ from flightLogic.getDriverData import *
 import Drivers.eps.EPS as EPS
 from TXISR.interrupt import INTERRUPT
 
-TRANSFER_WINDOW_BUFFER_TIME = 30000
+TRANSFER_WINDOW_BUFFER_TIME = 30 #30 seconds
 
 class postBoomMode:
-	self.__timeToNextWindow
-	self.__duration
-	self.__datatype
-	self.__pictureNumber
 	
-	def __init__(self, saveobject):
-		self.postBoomTimeFile = open("postBoomTime.txt", "w+")
-		self.__getDataTTNC = TTNCData(saveobject)
-		self.__getDataAttitude =  AttitudeData(saveobject)
-		self.__tasks = [] # List will be populated with all background tasks
-		self.__safeMode = safe.safe(saveobject)
+    def __init__(self):#, saveobject):
+       self.postBoomTimeFile = open("postBoomTime.txt", "w+")
+	self.__getDataTTNC = TTNCData(saveobject)
+	self.__getDataAttitude =  AttitudeData(saveobject)
+        self.__tasks = [] # List will be populated with all background tasks
+	self.__safeMode = safe.safe(saveobject)
+        self.__timeToNextWindow = -1
+        self.__duration = -1
+        self.__datatype = -1
+        self.__pictureNumber = -1
 
 	async def run(self):
 		#Set up background processes
@@ -44,32 +44,40 @@ class postBoomMode:
 				await asyncio.sleep(60)
 				upTime += 60
 				
-	def readNextTransferWindow(self, transferWindowFilename):
+    def readNextTransferWindow(self, transferWindowFilename):
 		#read the given transfer window file and extract the data for the soonest transfer window
-		transferWindowFile = open(transferWindowFilename)
-		sendData = 0
-		soonestWindowTime = 0
-		for line in transferWindowFile:
-			data = line.split(",")
-			#data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number
-			if(data[0] - time.time() > TRANSFER_WINDOW_BUFFER_TIME):  #if the transfer window is at BUFFER_TIME milliseconds in the future
-				if(soonestWindowTime = 0 or data[0] - time.time() < soonestWindowTime):
-					soonestWindowTime = data[0] - time.time()
-					sendData = data
-		if not(sendData == 0): 
-			self.__timeToNextWindow = sendData[0] - time.time()
-			self.__duration = sendData[1]
-			self.__datatype = sendData[2]
-			self.__pictureNumber = sendData[3]
+        transferWindowFile = open(transferWindowFilename)
+        sendData = 0
+        soonestWindowTime = 0
+        for line in transferWindowFile:
+#            print("reading line: ")
+#            print(line)
+            data = line.split(",")
+            #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number
+            if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME):  #if the transfer window is at BUFFER_TIME milliseconds in the future
+                if(soonestWindowTime == 0 or float(data[0]) - time.time() < soonestWindowTime):
+                    soonestWindowTime = float(data[0]) - time.time()
+                    sendData = data
+        if not(sendData == 0):
+#            print("Found next transfer window: ")
+#            print(sendData)
+            self.__timeToNextWindow = float(sendData[0]) - time.time()
+            self.__duration = int(sendData[1])
+            self.__datatype = int(sendData[2])
+            self.__pictureNumber = int(sendData[3])
+#            print(self.__timeToNextWindow)
+#            print(self.__duration)
+#            print(self.__datatype)
+#            print(self.__pictureNumber)
 		
 			
 
 
 
 
-	def cancellAllTasks(self, taskList): #Isn't used in this class, but here anyways
-		try:
-			for t in taskList:
-				t.cancel()
-		except asyncio.exceptions.CancelledException:
-			print("Caught thrown exception in cancelling background task")
+    def cancellAllTasks(self, taskList): #Isn't used in this class, but here anyways
+        try:
+            for t in taskList:
+                t.cancel()
+        except asyncio.exceptions.CancelledException:
+            print("Caught thrown exception in cancelling background task")
