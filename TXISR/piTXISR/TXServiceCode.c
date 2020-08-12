@@ -24,7 +24,7 @@
 #define DELAY_tx 120
 
 //this defines are for the data types
-#define MAX_BYTES_PER_LINE 256
+#define MAX_BYTES_PER_LINE 512
 #define MAX_NUM_OF_DATA_TYPES 5
 #define DELAY_UNTIL_TX_WINDOW 5000
 #define SIZE_OF_TIME_STAMP 10
@@ -149,7 +149,7 @@ void main(int argc,char* argv[])
     DEBUG_P(current Time - Start time :)
     PRINT_TIME(currentTime - startTime)
     while((currentTimeTX - startTimeTX) < DELAY_tx ) { }
-    write(txPort, "GASPACS", 7);
+    write(txPort, "47415350414353", 14);
     while((currentTimeTX - startTimeTX) < DELAY_tx ) { }
 
     while(!feof(txFile))
@@ -272,7 +272,7 @@ void main(int argc,char* argv[])
         //     break;
         // }
     } 
-    write(txPort, "GASPACS", 7);
+    write(txPort, "47415350414353", 14);
     while((currentTimeTX - startTimeTX) < DELAY_tx ) { }
      //give control of the port back to linuxs
     //  int disable = system(DISABLE);
