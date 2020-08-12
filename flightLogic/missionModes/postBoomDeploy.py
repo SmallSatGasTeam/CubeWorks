@@ -8,6 +8,7 @@ import Drivers.eps.EPS as EPS
 from TXISR.interrupt import INTERRUPT
 
 TRANSFER_WINDOW_BUFFER_TIME = 30 #30 seconds
+REBOOT_WAIT_TIME = 900 #15 minutes, 900 seconds
 
 class postBoomMode:
 	
@@ -22,30 +23,31 @@ class postBoomMode:
         self.__datatype = -1
         self.__pictureNumber = -1
 
-	async def run(self):
-		#Set up background processes
-		ttncData = self.__getDataTTNC
-		attitudeData = self.__getDataAttitude
-		interruptObject = INTERRUPT()
-		self.__tasks.append(asyncio.create_task(interruptObject.watchTxWindows()))
-		self.__tasks.append(asyncio.create_task(interruptObject.watchReceptions()))
-		self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(4))) #Post-boom is mode 4
-		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
-		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
-		self.__tasks.append(asyncio.create_task(self.__safeMode.heartBeat()))
-		upTime = 86100
-		while True: #Runs reboot loop
-			if upTime>86400: #Live for more than 24 hours
+async def run(self):
+	#Set up background processes
+	ttncData = self.__getDataTTNC
+	attitudeData = self.__getDataAttitude
+	interruptObject = INTERRUPT()
+	self.__tasks.append(asyncio.create_task(interruptObject.watchTxWindows()))
+	self.__tasks.append(asyncio.create_task(interruptObject.watchReceptions()))
+	self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(4))) #Post-boom is mode 4
+	self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
+	self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
+	self.__tasks.append(asyncio.create_task(self.__safeMode.heartBeat()))
+	upTime = 86100
+	while True: #Runs reboot loop
+		if upTime>86400: #Live for more than 24 hours
+			if (self.__timeToNextWindow == -1) or (self.__timeToNextWindow > REBOOT_WAIT_TIME):
 				self.__safeMode.run(1) #restart, powering off Pi for 1 minute
 				print('Rebooting raspberry pi')
 				upTime = 0 # Won't be necessary for flight article
-			else:
-				print('Uptime: '+str(upTime))
-				await asyncio.sleep(60)
-				upTime += 60
+		else:
+			print('Uptime: '+str(upTime))
+			await asyncio.sleep(60)
+			upTime += 60
 				
     def readNextTransferWindow(self, transferWindowFilename):
-		#read the given transfer window file and extract the data for the soonest transfer window
+	#read the given transfer window file and extract the data for the soonest transfer window
         transferWindowFile = open(transferWindowFilename)
         sendData = 0
         soonestWindowTime = 0
