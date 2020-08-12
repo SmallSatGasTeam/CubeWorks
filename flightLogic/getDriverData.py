@@ -8,25 +8,7 @@ import Drivers
 import struct
 import flightLogic.saveTofiles as saveTofiles
 
-def float4tohex(num):
-	#takes a 4 byte float, returns a hex representation of it
-	return str(hex(struct.unpack('<I', struct.pack('<f', num))[0]))[2:]
 
-def int4tohex(num):
-	#takes a 4 byte int, returns a hex representation of it
-	return str(format(num, '08x'))[-8:]
-
-def int1tohex(num):
-	#takes a 1 byte integer, returns a hex representation of it
-	return str(format(num, '02x'))[-2:]
-
-def int2tohex(num):
-	#takes a 2 byte integer, returns a hex representation of it
-	return str(format(num, '04x'))[-4:]
-
-def int8tohex(num):
-	#takes an 8 byte integer, returns a hex representation of it
-	return str(format(num, '016x'))[-16:]
 
 gaspacsBytes = str(b'GASPACS'.hex())
 
@@ -43,39 +25,44 @@ class TTNCData:
 	async def getData(self, missionMode):
 		packet = ''		
 		# gets all TTNC data - need to pass in missionMode when calling it
-		timestamp = self.RTC.read()
-		packetType = 1
-		mode = missionMode
-		reboot_count = 0  #TODO This needs to read in from Shawn's file
+		timestamp = int4tohex(self.RTC.readSeconds())
+		packetType = int1tohex(1)
+		mode = int1tohex(missionMode)
+		reboot_count = int2tohex(0)  #TODO This needs to read in from Shawn's file
 		#No need for await on these, since they're not sleeping
-		boombox_uv = self.UVDriver.read()
+		boombox_uv = float4tohex(self.UVDriver.read())
 		SP_X_Plus_Temp, SP_Z_Plus_Temp = self.TempSensor.read()
-		piTemp = self.CpuTempSensor.read()
-		EPSMCUTemp = self.EPS.getMCUTemp()
-		Cell1Temp = self.EPS.getCell1Temp()
-		Cell2Temp = self.EPS.getCell2Temp()
-		BattVoltage = self.EPS.getBusVoltage()
-		BattCurrent = self.EPS.getBusCurrent()
-		BCRVoltage = self.EPS.getBCRVoltage()
-		BCRCurrent = self.EPS.getBCRCurrent()
-		EPS3V3Current = self.EPS.get3V3Current()
-		EPS5VCurrent = self.EPS.get5VCurrent()
-		SP_X_Voltage = self.EPS.getSPXVoltage()
-		SP_X_Plus_Current = self.EPS.getSPXPlusCurrent()
-		SP_X_Minus_Current = self.EPS.getSPXMinusCurrent()
-		SP_Y_Voltage = self.EPS.getSPYVoltage()
-		SP_Y_Plus_Current = self.EPS.getSPYPlusCurrent()
-		SP_Y_Minus_Current = self.EPS.getSPYMinusCurrent()
-		SP_Z_Voltage = self.EPS.getSPZVoltage()
-
-		#Save the data into an array
-		self.__ttncDataArray = [timestamp, packetType, mode, reboot_count, boombox_uv, SP_X_Plus_Temp, SP_Z_Plus_Temp, piTemp, EPSMCUTemp,
-				Cell1Temp, BattVoltage, BCRCurrent, EPS3V3Current, EPS5VCurrent, SP_X_Voltage, SP_X_Plus_Current, SP_X_Minus_Current,
-				SP_Y_Voltage, SP_Y_Plus_Current, SP_Y_Minus_Current , SP_Z_Voltage]
+		SP_X_Plus_Temp = float4tohex(SP_X_Plus_Temp)
+		SP_Z_Plus_Temp = float4tohex(SP_Z_Plus_Temp)
+		piTemp = float4tohex(self.CpuTempSensor.read())
+		EPSMCUTemp = float4tohex(self.EPS.getMCUTemp())
+		Cell1Temp = float4tohex(self.EPS.getCell1Temp())
+		Cell2Temp = float4tohex(self.EPS.getCell2Temp())
+		BattVoltage = float4tohex(self.EPS.getBusVoltage())
+		BattCurrent = float4tohex(self.EPS.getBusCurrent())
+		BCRVoltage = float4tohex(self.EPS.getBCRVoltage())
+		BCRCurrent = float4tohex(self.EPS.getBCRCurrent())
+		EPS3V3Current = float4tohex(self.EPS.get3V3Current())
+		EPS5VCurrent = float4tohex(self.EPS.get5VCurrent())
+		SP_X_Voltage = float4tohex(self.EPS.getSPXVoltage())
+		SP_X_Plus_Current = float4tohex(self.EPS.getSPXPlusCurrent())
+		SP_X_Minus_Current = float4tohex(self.EPS.getSPXMinusCurrent())
+		SP_Y_Voltage = float4tohex(self.EPS.getSPYVoltage())
+		SP_Y_Plus_Current = float4tohex(self.EPS.getSPYPlusCurrent())
+		SP_Y_Minus_Current = float4tohex(self.EPS.getSPYMinusCurrent())
+		SP_Z_Voltage = float4tohex(self.EPS.getSPZVoltage())
+		
+		packet += gaspacsBytes + timestamp + packetType + mode + reboot_count + boombox_uv + SP_X_Plus_Temp + SP_Z_Plus_Temp + piTemp + EPSMCUTemp +
+				Cell1Temp + BattVoltage + BCRCurrent + EPS3V3Current + EPS5VCurrent + SP_X_Voltage + SP_X_Plus_Current + SP_X_Minus_Current +
+				SP_Y_Voltage + SP_Y_Plus_Current + SP_Y_Minus_Current + SP_Z_Voltage + gaspacsBytes
+		
+		packetTimestamp = str(int(RTC.readSeconds())).zfill(10)+': '
+		packet = packetTimestamp + packet
+		self.__ttncData = packet
 
 	async def writeData(self):
 		#writes TTNC data array to file
-		await self.__save.writeTTNC(self.__ttncDataArray)
+		await self.__save.writeTTNC(self.ttncData)
 
 	async def collectTTNCData(self, mMode):
 		# Data collection loop
@@ -154,4 +141,22 @@ class AttitudeData():
 			# Sleep for 1 second (1 Hz)
 			await asyncio.sleep(1)
 
+def float4tohex(num):
+	#takes a 4 byte float, returns a hex representation of it
+	return str(hex(struct.unpack('<I', struct.pack('<f', num))[0]))[2:]
 
+def int4tohex(num):
+	#takes a 4 byte int, returns a hex representation of it
+	return str(format(num, '08x'))[-8:]
+
+def int1tohex(num):
+	#takes a 1 byte integer, returns a hex representation of it
+	return str(format(num, '02x'))[-2:]
+
+def int2tohex(num):
+	#takes a 2 byte integer, returns a hex representation of it
+	return str(format(num, '04x'))[-4:]
+
+def int8tohex(num):
+	#takes an 8 byte integer, returns a hex representation of it
+	return str(format(num, '016x'))[-16:]
