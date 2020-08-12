@@ -14,15 +14,20 @@ def float4tohex(num):
 
 def int4tohex(num):
 	#takes a 4 byte int, returns a hex representation of it
-	return str(format(num, '16x'))
+	return str(format(num, '08x'))[-8:]
 
 def int1tohex(num):
 	#takes a 1 byte integer, returns a hex representation of it
-	pass
+	return str(format(num, '02x'))[-2:]
 
 def int2tohex(num):
 	#takes a 2 byte integer, returns a hex representation of it
-	pass
+	return str(format(num, '04x'))[-4:]
+
+def int8tohex(num):
+	#takes an 8 byte integer, returns a hex representation of it
+	return str(format(num, '016x'))[-16:]
+
 
 class TTNCData:
 	def __init__(self, saveobject):
