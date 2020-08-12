@@ -3,7 +3,7 @@ sys.path.append('../')
 import os
 from math import ceil
 
-def prepareData(duration, type, pictureNumber = 0):
+def prepareData(duration, dataType, pictureNumber = 0):
 	if (type == 0): #Attitude Data
 		f
 	elif (type == 1): #TTNC Data
@@ -62,7 +62,9 @@ def prepareData(duration, type, pictureNumber = 0):
 			txDataFile.write(line) #Write line from recorded data file into transmission file
 			dataSize+=1
 			continue
+
 		
+def preparePicture(duration, dataType, pictureNumber)
 			
 			
 	
