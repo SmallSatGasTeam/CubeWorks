@@ -9,7 +9,7 @@ async def readSerial():
 	while True:
 		if serialport.in_waiting:
 			print('Data in waiting')
-			data = string(serialport.read(serialport.inWaiting()).hex()) #This produces a list of nibbles (half bytes)
+			data = str(serialport.read(serialport.inWaiting()).hex()) #This produces a list of nibbles (half bytes)
 			data = leftovers+data
 			commands, ax25Packets = None, None
 			commands, ax25Packets, leftovers = parseData(data, gaspacsHex)
