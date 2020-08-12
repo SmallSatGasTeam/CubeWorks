@@ -148,6 +148,9 @@ void main(int argc,char* argv[])
     write(txPort, "ES+W23003321\r", 13);
     DEBUG_P(current Time - Start time :)
     PRINT_TIME(currentTime - startTime)
+    while((currentTimeTX - startTimeTX) < DELAY_tx ) { }
+    write(txPort, "GASPACS", 7);
+    while((currentTimeTX - startTimeTX) < DELAY_tx ) { }
 
     while(!feof(txFile))
     {
@@ -269,7 +272,8 @@ void main(int argc,char* argv[])
         //     break;
         // }
     } 
-
+    write(txPort, "GASPACS", 7);
+    while((currentTimeTX - startTimeTX) < DELAY_tx ) { }
      //give control of the port back to linuxs
     //  int disable = system(DISABLE);
     //  //if we fail reboot
