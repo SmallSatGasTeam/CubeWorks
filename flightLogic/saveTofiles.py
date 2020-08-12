@@ -24,9 +24,8 @@ class save:
     #effect the txisr
     async def writeTTNC(self, data):
         temp = 0
-        for i in data:
-            self.__TTNC_File.write(str(i))
-            self.__TTNC_File.write('\n')
+        self.__TTNC_File.write(str(data))
+        self.__TTNC_File.write('\n')
 
     #this func will read the data from our file and then return that data
     async def getTTNC(self, time):
