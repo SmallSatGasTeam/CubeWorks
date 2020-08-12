@@ -25,12 +25,8 @@ class save:
     async def writeTTNC(self, data):
         temp = 0
         for i in data:
-            if temp == 0:
-                self.__TTNC_File.write(str(i) + ": ")
-                temp += 1
-            else:
-                self.__TTNC_File.write(str(i)+',')
-        self.__TTNC_File.write('\n')
+            self.__TTNC_File.write(str(i))
+            self.__TTNC_File.write('\n')
 
     #this func will read the data from our file and then return that data
     async def getTTNC(self, time):
@@ -47,12 +43,8 @@ class save:
     async def writeDeploy(self, data):
         temp = 0
         for i in data:
-            if temp == 0:
-                self.__Deploy_File.write(str(i) + ": ")
-                temp += 1
-            else:
-                self.__Deploy_File.write(str(i)+',')
-        self.__Deploy_File.write('\n')
+            self.__TTNC_File.write(str(i))
+            self.__Deploy_File.write('\n')
 
     #this func will read the data form our file and then return that data
     async def getDeploy(self):
@@ -68,18 +60,14 @@ class save:
     async def writeAttitude(self, data):
         temp = 0
         for i in data:
-            if temp == 0:
-                self.__Attitude_File.write(str(i) + ": ")
-                temp += 1
-            else:
-                self.__Attitude_File.write(str(i)+',')
-        self.__Attitude_File.write('\n')
+            self.__Attitude_File.write(str(i))
+            self.__Attitude_File.write('\n')
 
 
     #this func will read the data form our file and then return that data
     async def getAttitudeData(self):
         temp = []
-        for i in self.__AttitudeData:
+        for i in self.__Attitude_File:
             if (int(i[0]) >= time):
                 temp += i
         return temp
