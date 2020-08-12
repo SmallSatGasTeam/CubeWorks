@@ -16,11 +16,11 @@ def int4tohex(num):
 	#takes a 4 byte int, returns a hex representation of it
 	pass
 
-def int1tohex(num)
+def int1tohex(num):
 	#takes a 1 byte integer, returns a hex representation of it
 	pass
 
-def int2tohex(num)
+def int2tohex(num):
 	#takes a 2 byte integer, returns a hex representation of it
 	pass
 
