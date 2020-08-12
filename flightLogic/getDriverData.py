@@ -10,11 +10,11 @@ import flightLogic.saveTofiles as saveTofiles
 
 def float4tohex(num):
 	#takes a 4 byte float, returns a hex representation of it
-	return hex(struct.unpack('<I', struct.pack('<f', num))[0])
+	return str(hex(struct.unpack('<I', struct.pack('<f', num))[0]))[2:]
 
 def int4tohex(num):
 	#takes a 4 byte int, returns a hex representation of it
-	pass
+	return str(format(num, '16x'))
 
 def int1tohex(num):
 	#takes a 1 byte integer, returns a hex representation of it
