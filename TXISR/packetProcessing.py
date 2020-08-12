@@ -141,7 +141,7 @@ def clearTXFile():
 	# close file
 	transmissionFlag_File.close()
 	
-def clearTXProgress()
+def clearTXProgress():
 	# This function will clear the file that saves which timestamp has been transmitted most recently for each data type
 	print("I don't know which file to clear!!!")
 	
