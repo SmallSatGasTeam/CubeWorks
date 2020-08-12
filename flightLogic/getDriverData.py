@@ -6,8 +6,20 @@ import sys
 sys.path.append('../')
 import Drivers
 import struct
-
 import flightLogic.saveTofiles as saveTofiles
+
+def float4tohex(num):
+	#takes a 4 byte float, returns a hex representation of it
+	return hex(struct.unpack('<I', struct.pack('<f', f))[0])
+
+def int4tohex(num):
+	#takes a 4 byte int, returns a hex representation of it
+	
+def int1tohex(num)
+	#takes a 1 byte integer, returns a hex representation of it
+	
+def int2tohex(num)
+	#takes a 2 byte integer, returns a hex representation of it
 
 class TTNCData:
 	def __init__(self, saveobject):
@@ -132,15 +144,4 @@ class AttitudeData():
 			# Sleep for 1 second (1 Hz)
 			await asyncio.sleep(1)
 
-def float4tohex(num):
-	#takes a 4 byte float, returns a hex representation of it
-	return hex(struct.unpack('<I', struct.pack('<f', f))[0])
 
-def int4tohex(num):
-	#takes a 4 byte int, returns a hex representation of it
-	
-def int1tohex(num)
-	#takes a 1 byte integer, returns a hex representation of it
-	
-def int2tohex(num)
-	#takes a 2 byte integer, returns a hex representation of it
