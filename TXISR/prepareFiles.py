@@ -2,6 +2,7 @@ import sys
 sys.path.append('../')
 import os
 from math import ceil
+from binascii import hexlify
 
 def prepareData(duration, dataType, pictureNumber = 0):
 	if (dataType == 0): #Attitude Data
@@ -15,13 +16,11 @@ def prepareData(duration, dataType, pictureNumber = 0):
 		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/Deploy_Data.txt') #Set data file path to respective file
 
 		
-	progressLineNumber = 0 #Line number in Shawn's flag file for the progress of this specific data type
 	packetLength = 41 #Bytes
 	packetTime = 120 + packetLength*8/9600 #Transmission time for 1 packet of size packetLength
 	numPackets = ceil(duration*1000/packetTime) + 15 #For safety, 15 extra packets compared to the number that will likely be transmitted
-	transmissionFilePath = os.path.join(os.path.dirname(__file__), 'txServiceCode/txFile.txt') #File path to txFile. This is where data will be stored
-	dataFilePath = os.path.join()
 	
+	transmissionFilePath = os.path.join(os.path.dirname(__file__), 'txServiceCode/txFile.txt') #File path to txFile. This is where data will be stored
 	os.remove(transmissionFilePath) #Remove txFile
 	txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
 	txDataFile.write(duration*1000 + '\n') #Write first line to txData. Duration of window in milliseconds
@@ -29,7 +28,7 @@ def prepareData(duration, dataType, pictureNumber = 0):
 	progressFilePath = os.path.join(os.path.dirname(__file__), 'txServiceCode/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
 	progressFile = open(progressFilePath) #Opens progress file as read only
 	progressList = progressFile.read().splitlines()
-	transmissionProgress = progressList[progressLineNumber]
+	transmissionProgress = progressList[dataType]
 	
 	dataFile = open(dataFilePath) #Open data file, this gets copied into txFile.
 	#NOTE: THIS COULD CAUSE ERRORS WITH THE FILE SIMULTANEOUSLY BEING WRITTEN INTO. THIS IS #1 ON LIST OF THINGS TO FIX POST-CDR!!! @SHAWN
@@ -66,11 +65,42 @@ def prepareData(duration, dataType, pictureNumber = 0):
 		
 def preparePicture(duration, dataType, pictureNumber):
 	if dataType == 3: #HQ Picture
-		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/Attitude_Data.txt') #TODO FIX!
+		dataFilePath = os.path.join(os.path.dirname(__file__), '../../../Pictures/') #TODO FIX!
 	else: #LQ picture
-		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/Attitude_Data.txt')
+		dataFilePath = os.path.join(os.path.dirname(__file__), '../../../Pictures/')
 	
 	numPackets = ceil(duration*1000/(120 + 128*8/9600)) + 15 #How many picture packets can we transmit in the window? + 15 for safety
+	
+	transmissionFilePath = os.path.join(os.path.dirname(__file__), 'txServiceCode/txFile.txt') #File path to txFile. This is where data will be stored
+	os.remove(transmissionFilePath) #Remove txFile
+	txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
+	txDataFile.write(duration*1000 + '\n') #Write first line to txData. Duration of window in milliseconds
+	
+	progressFilePath = os.path.join(os.path.dirname(__file__), 'txServiceCode/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
+	progressFile = open(progressFilePath) #Opens progress file as read only
+	progressList = progressFile.read().splitlines()
+	transmissionProgress = progressList[dataType]
+	
+	pictureFile = open(dataFilePath, 'rb')
+	pictureContent = hexlify(pictureFile.read()) #Picture content is now a string with the hex data of the file in it
+	dataSize = 0
+	position = 0
+	while dataSize < numPackets: #NOTE: @SHAWN THIS WILL BREAK IF THE FILE IS LESS THAN 128 bytes
+		substringOfData = pictureContent[dataSize*256:dataSize*256+256].decode()
+		if(len(substringOfData)<256): #EOF - 
+			position = 256-len(substringOfData)
+			substringOfData += pictureContent[0:position]
+		else: #Nominal situation
+			position=dataSize*256+256
+		txDataFile.write(str(dataSize).zfill(10)+':'+substringOfData+'\n')
+		datasize+=1
+
+	progressFile.close()
+	pictureFile.close()
+	txDataFile.close()
+			
+	
+		
 			
 	
 	
