@@ -1,4 +1,5 @@
 import sys
+import os
 import time
 sys.path.append('../../')
 import asyncio
@@ -15,15 +16,15 @@ class postBoomMode:
 
 	def __init__(self, saveobject):
 		self.postBoomTimeFile = open("postBoomTime.txt", "w+")
-	    self.__getDataTTNC = TTNCData(saveobject)
-	    self.__getDataAttitude =  AttitudeData(saveobject)
+		self.__getDataTTNC = TTNCData(saveobject)
+		self.__getDataAttitude =  AttitudeData(saveobject)
 		self.__tasks = [] # List will be populated with all background tasks
-        self.__safeMode = safe.safe(saveobject)
-        self.__timeToNextWindow = -1
-	self.___nextWindowTime = -1
-        self.__duration = -1
-        self.__datatype = -1
-        self.__pictureNumber = -1
+		self.__safeMode = safe.safe(saveobject)
+		self.__timeToNextWindow = -1
+		self.___nextWindowTime = -1
+		self.__duration = -1
+		self.__datatype = -1
+		self.__pictureNumber = -1
 
 async def run(self):
 	#Set up background processes
@@ -42,25 +43,19 @@ async def run(self):
 		#if close enough, prep files
 		#wait until 5 seconds before, return True
 		if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<60): #If next window is in 2 minutes or less
-			if(self.__datatype == 0): #Attitude data
-				prepareFiles.prepareAttitude(self.__duration)
-			elif(self.__datatype == 1): #TTNC data
-				prepareFiles.prepareTTNC(self.__duration)
-			elif(self.__datatype == 2): #Deployment data
-				prepareFiles.prepareDeployment(self.__duration)
-			elif(self.__datatype == 3): #HQ Picture
-				prepareFiles.prepareHQPicture(self.__duration, self.__pictureNumber)
-			else: #LQ Picture
-				prepareFiles.prepareLQPicture(self.__duration, self.__pictureNumber)
+			if(self.__datatype < 3): #Attitude, TTNC, or Deployment data
+				prepareFiles.prepareData(self.__duration, self.__datatype)
+			else:
+				prepareFiles.preparePicture(self.__duration, self.__datatype, self.pictureNumber)
 			break
 		await asyncio.sleep(5)
-		windowTime = self.__nextWindowTime
-		while True:
-			if((windowTime-time.time()) <= 5):
-				pass
-				#Call TXISR
-				return True
-			await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
+	windowTime = self.__nextWindowTime
+	while True:
+		if((windowTime-time.time()) <= 5):
+			txisrCodePath = os.path.join(os.path.dirname(__file__), '../../TXISR/TXServiceCode/TXService.run')
+			os.system(txisrCodePath + ' ' + str(self.__datatype)) #Call TXISR Code
+			return True
+		await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
 
 	async def rebootLoop(self):
 		upTime = 0
