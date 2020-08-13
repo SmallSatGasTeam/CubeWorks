@@ -2,7 +2,7 @@ import serial
 import asyncio
 import packetProcessing
 
-async def readSerial():
+async def interrupt():
 	serialport = serial.Serial('/dev/serial0', 115200)
 	leftovers = ''
 	gaspacsHex = str(b'GASPACS'.hex())
