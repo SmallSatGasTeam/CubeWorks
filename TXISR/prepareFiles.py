@@ -21,7 +21,11 @@ def prepareData(duration, dataType, pictureNumber = 0):
 	numPackets = ceil(duration*1000/packetTime) + 15 #For safety, 15 extra packets compared to the number that will likely be transmitted
 	
 	transmissionFilePath = os.path.join(os.path.dirname(__file__), 'txServiceCode/txFile.txt') #File path to txFile. This is where data will be stored
-	os.remove(transmissionFilePath) #Remove txFile
+	try:
+		os.remove(transmissionFilePath) #Remove txFile
+	except:
+		pass #FileNotFoundError is thrown if file doesn't exist
+	
 	txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
 	txDataFile.write(duration*1000 + '\n') #Write first line to txData. Duration of window in milliseconds
 	
@@ -72,7 +76,11 @@ def preparePicture(duration, dataType, pictureNumber):
 	numPackets = ceil(duration*1000/(120 + 128*8/9600)) + 15 #How many picture packets can we transmit in the window? + 15 for safety
 	
 	transmissionFilePath = os.path.join(os.path.dirname(__file__), 'txServiceCode/txFile.txt') #File path to txFile. This is where data will be stored
-	os.remove(transmissionFilePath) #Remove txFile
+	try:
+		os.remove(transmissionFilePath) #Remove txFile
+	except:
+		pass #FileNotFoundError is thrown if file doesn't exist
+	
 	txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
 	txDataFile.write(duration*1000 + '\n') #Write first line to txData. Duration of window in milliseconds
 	
