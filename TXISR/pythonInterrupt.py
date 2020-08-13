@@ -11,13 +11,13 @@ async def readSerial():
 			print('Data in waiting')
 			data = str(serialport.read(serialport.inWaiting()).hex()) #This produces a list of nibbles (half bytes)
 			data = leftovers+data
-			commands, ax25Packets = None, None
+			commands, ax25Packets = [], []
 			commands, ax25Packets, leftovers = parseData(data, gaspacsHex)
 			for command in commands:
 				packetProcessing.processPacket(command)
 			for ax25 in ax25Packets:
 				packetProcessing.processPacket(ax25)
-			await asyncio.sleep(1)
+			await asyncio.sleep(5)
 		else:
 			print('buffer empty')
 			await asyncio.sleep(5)
