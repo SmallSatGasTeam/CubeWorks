@@ -20,6 +20,7 @@ class postBoomMode:
 		self.__tasks = [] # List will be populated with all background tasks
         self.__safeMode = safe.safe(saveobject)
         self.__timeToNextWindow = -1
+	self.___nextWindowTime = -1
         self.__duration = -1
         self.__datatype = -1
         self.__pictureNumber = -1
@@ -40,7 +41,7 @@ async def run(self):
 	while True:
 		#if close enough, prep files
 		#wait until 5 seconds before, return True
-		if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<120): #If next window is in 2 minutes or less
+		if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<60): #If next window is in 2 minutes or less
 			if(self.__datatype == 0): #Attitude data
 				prepareFiles.prepareAttitude(self.__duration)
 			elif(self.__datatype == 1): #TTNC data
@@ -52,11 +53,14 @@ async def run(self):
 			else: #LQ Picture
 				prepareFiles.prepareLQPicture(self.__duration, self.__pictureNumber)
 			break
-		await asyncio.sleep(1)
-
+		await asyncio.sleep(5)
+		windowTime = self.__nextWindowTime
 		while True:
-			#Wait until 5 seconds before TX window!
-			break
+			if((windowTime-time.time()) <= 5):
+				pass
+				#Call TXISR
+				return True
+			await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
 
 	async def rebootLoop(self):
 		upTime = 0
@@ -92,6 +96,7 @@ async def run(self):
 				self.__duration = int(sendData[1])
 				self.__datatype = int(sendData[2])
 				self.__pictureNumber = int(sendData[3])
+				self.__nextWindowTime = float(sendData[0])
 				#print(self.__timeToNextWindow)
 				#print(self.__duration)
 				#print(self.__datatype)
