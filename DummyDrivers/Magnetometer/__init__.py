@@ -1,1 +1,1 @@
-from .DummyMagnetometer import *
+from .Magnetometer import *

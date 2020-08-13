@@ -1,17 +1,16 @@
-# This is the main file, to be run on startup of the Pi
+#This is the main file, to be run on startup of the Pi
 import sys
 sys.path.append('../')
 import os.path
 from flightLogic import DummygetDriverData as getDriverData
 import flightLogic.saveTofiles as saveTofiles
-from DummyDrivers.antennaDoor.DummyAntennaDoor import AntennaDoor as antennaDoor
-from flightLogic.DummymissionModes.antennaDeploy import antennaMode as antennaMode
+from DummyDrivers.antennaDoor import AntennaDoor as antennaDoor
+from flightLogic.DummymissionModes.antennaDeploy import antennaMode
 from flightLogic.DummymissionModes.preBoomDeploy import preBoomMode
 from flightLogic.DummymissionModes.boomDeploy import boomMode
 from flightLogic.DummymissionModes.postBoomDeploy import postBoomMode
 from flightLogic.DummymissionModes import safe
 import asyncio
-from TXISR.interrupt import INTERRUPT
 
 
 # from TXISR import interrupt
@@ -42,12 +41,9 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	ttncData = getDriverData.TTNCData(save)
 	attitudeData = getDriverData.AttitudeData(save)
 	safeMode = safe.safe(save)
-	interruptObject = INTERRUPT()
 
 	print('Starting data collection') #Setting up Background tasks for BOOT mode
 	tasks=[]
-	#tasks.append(asyncio.create_task(interruptObject.watchTxWindows()))
-	#tasks.append(asyncio.create_task(interruptObject.watchReceptions()))
 	tasks.append(asyncio.create_task(ttncData.collectTTNCData(0))) #Boot Mode is classified as 0
 	tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
 	tasks.append(asyncio.create_task(safeMode.thresholdCheck()))
@@ -182,7 +178,4 @@ def readData():
 	return bootCount, antennaDeployed, lastMode
 
 
-# def startTXISR(saveobject):  # Setup for TXISR
-# This sets up the interupt on the uart pin that triggers when we get commincation over uart
-# thread.start(interrupt.watchReceptions(saveobject)) <-- TODO fix that import
 

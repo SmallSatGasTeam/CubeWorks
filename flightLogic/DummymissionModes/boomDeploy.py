@@ -5,8 +5,7 @@ import asyncio
 from flightLogic.DummymissionModes import safe
 from flightLogic.DummygetDriverData import *
 import DummyDrivers.boomDeployer as boomDeployer
-#import Drivers.camera.Camera as camera
-#from TXISR.interrupt import INTERRUPT
+import Drivers.camera.Camera as camera
 
 
 
@@ -24,9 +23,6 @@ class boomMode:
 		ttncData = self.__getDataTTNC
 		attitudeData = self.__getDataAttitude
 		deployData = DeployData(self.saveobject)
-		interruptObject = INTERRUPT()
-		self.__tasks.append(asyncio.create_task(interruptObject.watchTxWindows()))
-		self.__tasks.append(asyncio.create_task(interruptObject.watchReceptions()))
 		self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(3)))  # Boom deploy is mode 3
 		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(deployData.collectDeployData()))
@@ -36,11 +32,11 @@ class boomMode:
 		# Deploy boom, take picture
 		await asyncio.sleep(5)
 		deployer = boomDeployer.BoomDeployer()
-		#cam = camera.Camera()
+		cam = camera.Camera()
 		await deployer.deploy() #From LOGAN: Deployer.deploy is now an asyncio method, run it like the others
-		#cam.takePicture()
-		#cam.compressLowResToFiles()
-		#cam.compressHighResToFiles()
+		cam.takePicture()
+		cam.compressLowResToFiles()
+		cam.compressHighResToFiles()
 		self.cancelAllTasks(self.__tasks) # Cancel all background tasks
 		await asyncio.sleep(5)
 		return True  # Go to post-boom deploy

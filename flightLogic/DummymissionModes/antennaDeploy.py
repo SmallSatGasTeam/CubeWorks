@@ -2,12 +2,11 @@ import sys
 sys.path.append('../../')
 import time
 from DummyDrivers.backupAntennaDeployer import BackupAntennaDeployer
-from DummyDrivers.antennaDoor import DummyAntennaDoor as AntennaDoor
-import DummyDrivers.eps.DummyEPS as EPS
+from DummyDrivers.antennaDoor import AntennaDoor as AntennaDoor
+from DummyDrivers.eps import EPS
 import asyncio
 from flightLogic.DummymissionModes import safe
 import flightLogic.DummygetDriverData as getDriverData
-from TXISR.interrupt import INTERRUPT
 
 
 class antennaMode:
@@ -21,16 +20,13 @@ class antennaMode:
 		self.__tasks = [] #List will be populated with background tasks to cancel them
 		self.__safeMode = safe.safe(saveobject)
 		self.__antennaDeployer = BackupAntennaDeployer()
-		self.__antennaDoor = AntennaDoor.AntennaDoor()
+		self.__antennaDoor = AntennaDoor()
 
 
 	async def run(self):
 		print('Antenna Deploy Running!')
 		ttncData = self.__getDataTTNC
 		attitudeData = self.__getDataAttitude
-		interruptObject = INTERRUPT()
-		self.__tasks.append(asyncio.create_task(interruptObject.watchTxWindows()))
-		self.__tasks.append(asyncio.create_task(interruptObject.watchReceptions()))
 		self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(1))) #Antenna deploy is mission mode 1
 		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck())) #Check battery conditions, run safe mode if battery drops below safe level

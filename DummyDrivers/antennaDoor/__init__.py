@@ -1,1 +1,1 @@
-from .DummyAntennaDoor import *
+from .AntennaDoor import *

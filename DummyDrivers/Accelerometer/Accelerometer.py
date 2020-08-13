@@ -7,10 +7,10 @@
 #   For LSM303DLH:
 #     sudo pip3 install adafruit-circuitpython-lsm303dlh-mag
 
-from DummyDrivers.Driver import Driver
-#import board
-#import busio
-#import adafruit_lsm303_accel
+from Drivers.Driver import Driver
+import board
+import busio
+import adafruit_lsm303_accel
 
 class Accelerometer(Driver):
   #Set up I2C link
@@ -20,4 +20,4 @@ class Accelerometer(Driver):
     super().__init__("Accelerometer")
 
   def read(self):
-      return 9.2,0.1,0.1
+      return 9.6,0.3,0.3

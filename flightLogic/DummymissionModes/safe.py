@@ -1,6 +1,6 @@
 import sys
 sys.path.append('../../')
-import DummyDrivers.eps.DummyEPS as EPS
+from DummyDrivers.eps import EPS
 import asyncio
 import RPi.GPIO as GPIO
 #####################################################################################
@@ -18,7 +18,7 @@ import RPi.GPIO as GPIO
 class safe:
 	def __init__(self, saveObject):
 		#Setup I2C bus for communication
-		self.__eps = EPS.EPS()
+		self.__eps = EPS()
 		self.thresholdVoltage = 3.33 #Threshold Voltage
 		if saveObject != None:
 			self.__saveObject = saveObject
