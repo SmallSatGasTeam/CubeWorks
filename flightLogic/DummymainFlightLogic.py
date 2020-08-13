@@ -10,6 +10,7 @@ from flightLogic.DummymissionModes.preBoomDeploy import preBoomMode
 from flightLogic.DummymissionModes.boomDeploy import boomMode
 from flightLogic.DummymissionModes.postBoomDeploy import postBoomMode
 from flightLogic.DummymissionModes import safe
+from TXISR import pythonInterrupt
 import asyncio
 
 
@@ -48,6 +49,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
 	tasks.append(asyncio.create_task(safeMode.thresholdCheck()))
 	tasks.append(asyncio.create_task(safeMode.heartBeat()))
+	tasks.append(asyncio.create_task(pythonInterrupt.interrupt()))
 
 	# Initialize all mission mode objects
 	# NOTE: the comms-tx is the only exception to this rule as it is to be handled differently than other mission modes
