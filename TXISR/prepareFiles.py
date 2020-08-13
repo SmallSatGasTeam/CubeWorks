@@ -27,7 +27,7 @@ def prepareData(duration, dataType, pictureNumber = 0):
 		pass #FileNotFoundError is thrown if file doesn't exist
 	
 	txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
-	txDataFile.write(duration*1000 + '\n') #Write first line to txData. Duration of window in milliseconds
+	txDataFile.write(str(duration*1000) + '\n') #Write first line to txData. Duration of window in milliseconds
 	
 	progressFilePath = os.path.join(os.path.dirname(__file__), 'TXServiceCode/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
 	progressFile = open(progressFilePath) #Opens progress file as read only
@@ -82,7 +82,7 @@ def preparePicture(duration, dataType, pictureNumber):
 		pass #FileNotFoundError is thrown if file doesn't exist
 	
 	txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
-	txDataFile.write(duration*1000 + '\n') #Write first line to txData. Duration of window in milliseconds
+	txDataFile.write(str(duration*1000) + '\n') #Write first line to txData. Duration of window in milliseconds
 	
 	progressFilePath = os.path.join(os.path.dirname(__file__), 'TXServiceCode/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
 	progressFile = open(progressFilePath) #Opens progress file as read only
