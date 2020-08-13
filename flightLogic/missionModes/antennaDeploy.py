@@ -28,7 +28,6 @@ class antennaMode:
 		print('Antenna Deploy Running!')
 		ttncData = self.__getDataTTNC
 		attitudeData = self.__getDataAttitude
-		interruptObject = INTERRUPT()
 		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt()))
 		self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(1))) #Antenna deploy is mission mode 1
 		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
