@@ -20,7 +20,7 @@ def prepareData(duration, dataType, pictureNumber = 0):
 	packetTime = 120 + packetLength*8/9600 #Transmission time for 1 packet of size packetLength
 	numPackets = ceil(duration*1000/packetTime) + 15 #For safety, 15 extra packets compared to the number that will likely be transmitted
 	
-	transmissionFilePath = os.path.join(os.path.dirname(__file__), 'txServiceCode/txFile.txt') #File path to txFile. This is where data will be stored
+	transmissionFilePath = os.path.join(os.path.dirname(__file__), 'TXServiceCode/txFile.txt') #File path to txFile. This is where data will be stored
 	try:
 		os.remove(transmissionFilePath) #Remove txFile
 	except:
@@ -29,7 +29,7 @@ def prepareData(duration, dataType, pictureNumber = 0):
 	txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
 	txDataFile.write(duration*1000 + '\n') #Write first line to txData. Duration of window in milliseconds
 	
-	progressFilePath = os.path.join(os.path.dirname(__file__), 'txServiceCode/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
+	progressFilePath = os.path.join(os.path.dirname(__file__), 'TXServiceCode/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
 	progressFile = open(progressFilePath) #Opens progress file as read only
 	progressList = progressFile.read().splitlines()
 	transmissionProgress = progressList[dataType]
@@ -75,7 +75,7 @@ def preparePicture(duration, dataType, pictureNumber):
 	
 	numPackets = ceil(duration*1000/(120 + 128*8/9600)) + 15 #How many picture packets can we transmit in the window? + 15 for safety
 	
-	transmissionFilePath = os.path.join(os.path.dirname(__file__), 'txServiceCode/txFile.txt') #File path to txFile. This is where data will be stored
+	transmissionFilePath = os.path.join(os.path.dirname(__file__), 'TXServiceCode/txFile.txt') #File path to txFile. This is where data will be stored
 	try:
 		os.remove(transmissionFilePath) #Remove txFile
 	except:
@@ -84,7 +84,7 @@ def preparePicture(duration, dataType, pictureNumber):
 	txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
 	txDataFile.write(duration*1000 + '\n') #Write first line to txData. Duration of window in milliseconds
 	
-	progressFilePath = os.path.join(os.path.dirname(__file__), 'txServiceCode/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
+	progressFilePath = os.path.join(os.path.dirname(__file__), 'TXServiceCode/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
 	progressFile = open(progressFilePath) #Opens progress file as read only
 	progressList = progressFile.read().splitlines()
 	transmissionProgress = progressList[dataType]
