@@ -9,6 +9,7 @@ import sys
 sys.path.append('../')
 import time
 import os.path
+from os import system
 import Drivers.camera.Camera as camera
 import Drivers.boomDeployer as boomDeployer
 import smbus
@@ -25,27 +26,27 @@ def processPacket(packetData):
 	if binaryData[0] == '0':
 		# This is a TX Schedule packet.
 		print("TX Schedule Packet")
-		
+
 		# Get window start delta T
 		windowStartBinary = binaryData[1:33]
 		windowStartDecimal = int(windowStartBinary,2)
 		print("Window start in seconds: ", windowStartDecimal)
-		
+
 		# Get window duration
 		windowDurationBinary = binaryData[33:49]
 		windowDurationDecimal = int(windowDurationBinary,2)
 		print("Window duration in seconds: ", windowDurationDecimal)
-		
+
 		# Get data type
 		dataTypeBinary = binaryData[49:57]
 		dataTypeDecimal = int(dataTypeBinary,2)
 		print("Data type: ", dataTypeDecimal)
-		
+
 		# Get picture number
 		pictureNumberBinary = binaryData[57:73]
 		pictureNumberDecimal = int(pictureNumberBinary,2)
 		print("Picture number: ", pictureNumberDecimal)
-		
+
 		writeTXWindow(windowStartDecimal, windowDurationDecimal, dataTypeDecimal, pictureNumberDecimal)
 	else:
 		# This is a command packet
@@ -58,7 +59,7 @@ def processPacket(packetData):
 			#Turn on Transmitter
 			print("Turn on Transmitter")
 			enableTransmissions()
-			
+
 		if binaryData[2] == '0':
 			# DO NOT Clear TX Schedule and Progress
 			print("Do NOT Clear TX Schedule and Progress")
@@ -67,7 +68,7 @@ def processPacket(packetData):
 			print("Clear TX Schedule and Progress")
 			clearTXFile()
 			clearTXProgress()
-			
+
 		if binaryData[3] == '0':
 			# Do not take picture
 			print("Do not take picture")
@@ -76,7 +77,7 @@ def processPacket(packetData):
 			print("Take picture")
 			cam = camera.Camera()
 			cam.takePicture()
-			
+
 		if binaryData[4] == '0':
 			# Do not deploy boom
 			print("Do not deploy boom")
@@ -85,20 +86,18 @@ def processPacket(packetData):
 			print("Deploy boom")
 			deployer = boomDeployer.BoomDeployer()
 			deployer.deploy()
-			
+
 		if binaryData[5] == '0':
 			# Do not reboot
 			print("Do not reboot")
 		else:
 			#Send reboot command to Beetle
 			print("Reboot")
-			###
-			# TODO Kill the Heartbeat code
-			###
 			bus = smbus.SMBus(1)
 			address = 0x08
 			bus.write_byte(address, 1)
-			
+			system('pkill -9 python') #Kills all python code, including the heartbeat code
+
 		if binaryData[6] == '0':
 			# Turn off AX25
 			print("Turn off AX25")
@@ -107,7 +106,7 @@ def processPacket(packetData):
 			#Turn on AX25
 			print("Turn on AX25")
 			enableAX25()
-			
+
 def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber):
 	# This function will write the TX window packet information to a file. Pass in the window start (delta T), window duration, data type, and picture number.
 	# Note that this function saves the window start as an actual time, not a delta T - this is critical.

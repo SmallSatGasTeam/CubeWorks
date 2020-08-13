@@ -3,6 +3,9 @@ sys.path.append('../../')
 from DummyDrivers.eps import EPS
 import asyncio
 import RPi.GPIO as GPIO
+from time import sleep
+from os import system
+
 #####################################################################################
 #All this class does is tell the arduino to shut off the pi for the specified amount
 #of time.
@@ -36,6 +39,8 @@ class safe:
 				self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, time)
 		except :
 			pass
+		sleep(15) #If Pi hasn't turned off after 15 seconds, we must take drastic measures to kill the heartbeat code
+		system('pkill -9 python')
 
 	async def thresholdCheck(self):
 		while True:
