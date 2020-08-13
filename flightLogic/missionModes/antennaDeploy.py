@@ -7,7 +7,7 @@ import Drivers.eps.EPS as EPS
 import asyncio
 from flightLogic.missionModes import safe
 import flightLogic.getDriverData as getDriverData
-#from TXISR.interrupt import INTERRUPT
+from TXISR import pythonInterrupt
 
 
 class antennaMode:
@@ -29,8 +29,7 @@ class antennaMode:
 		ttncData = self.__getDataTTNC
 		attitudeData = self.__getDataAttitude
 		interruptObject = INTERRUPT()
-		self.__tasks.append(asyncio.create_task(interruptObject.watchTxWindows()))
-		self.__tasks.append(asyncio.create_task(interruptObject.watchReceptions()))
+		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt()))
 		self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(1))) #Antenna deploy is mission mode 1
 		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck())) #Check battery conditions, run safe mode if battery drops below safe level
