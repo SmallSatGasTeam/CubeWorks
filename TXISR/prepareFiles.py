@@ -4,7 +4,7 @@ import os
 from math import ceil
 from binascii import hexlify
 
-def prepareData(duration, dataType, pictureNumber = 0):
+def prepareData(duration, dataType):
 	if (dataType == 0): #Attitude Data
 		packetLength = 51 #Packet length in bytes
 		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/Attitude_Data.txt') #Set data file path to respective file
