@@ -12,7 +12,7 @@ TRANSFER_WINDOW_BUFFER_TIME = 30 #30 seconds
 REBOOT_WAIT_TIME = 900 #15 minutes, 900 seconds
 
 class postBoomMode:
-	
+
 	def __init__(self, saveobject):
 		self.postBoomTimeFile = open("postBoomTime.txt", "w+")
 	    self.__getDataTTNC = TTNCData(saveobject)
@@ -53,11 +53,11 @@ async def run(self):
 				prepareFiles.prepareLQPicture(self.__duration, self.__pictureNumber)
 			break
 		await asyncio.sleep(1)
-		
+
 		while True:
 			#Wait until 5 seconds before TX window!
 			break
-				
+
 	async def rebootLoop(self):
 		upTime = 0
 		while True:
@@ -69,7 +69,7 @@ async def run(self):
 			print('Uptime: '+str(upTime))
 			await asyncio.sleep(60)
 			upTime += 60
-			
+
 	async def readNextTransferWindow(self, transferWindowFilename):
 		while True:
 			#read the given transfer window file and extract the data for the soonest transfer window

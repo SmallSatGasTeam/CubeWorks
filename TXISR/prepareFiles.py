@@ -32,7 +32,7 @@ def prepareData(duration, dataType, pictureNumber = 0):
 	progressFilePath = os.path.join(os.path.dirname(__file__), 'TXServiceCode/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
 	progressFile = open(progressFilePath) #Opens progress file as read only
 	progressList = progressFile.read().splitlines()
-	transmissionProgress = progressList[dataType]
+	transmissionProgress = int(progressList[dataType])
 	
 	dataFile = open(dataFilePath) #Open data file, this gets copied into txFile.
 	#NOTE: THIS COULD CAUSE ERRORS WITH THE FILE SIMULTANEOUSLY BEING WRITTEN INTO. THIS IS #1 ON LIST OF THINGS TO FIX POST-CDR!!! @SHAWN
@@ -87,7 +87,7 @@ def preparePicture(duration, dataType, pictureNumber):
 	progressFilePath = os.path.join(os.path.dirname(__file__), 'TXServiceCode/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
 	progressFile = open(progressFilePath) #Opens progress file as read only
 	progressList = progressFile.read().splitlines()
-	transmissionProgress = progressList[dataType]
+	transmissionProgress = int(progressList[dataType])
 	
 	pictureFile = open(dataFilePath, 'rb')
 	pictureContent = hexlify(pictureFile.read()) #Picture content is now a string with the hex data of the file in it
@@ -102,7 +102,7 @@ def preparePicture(duration, dataType, pictureNumber):
 		else: #Nominal situation
 			position=position+256
 		txDataFile.write(str(dataSize).zfill(10)+':'+substringOfData+'\n')
-		datasize+=1
+		dataSize+=1
 
 	progressFile.close() #Close files
 	pictureFile.close()
