@@ -13,6 +13,10 @@ import Drivers.camera.Camera as camera
 import Drivers.boomDeployer as boomDeployer
 import smbus
 
+def processAX25(AX25):  #Placeholder function
+	#Check AX25 Transmission flag, if it is OK then open a pyserial connection and transmit the content of the packet
+	pass
+
 def processPacket(packetData):
 	# Packet data comes in as hex, need to convet to binary to parse
 	binaryDataLength = len(packetData) * 4
