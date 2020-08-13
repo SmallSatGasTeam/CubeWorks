@@ -65,9 +65,9 @@ def prepareData(duration, dataType, pictureNumber = 0):
 		
 def preparePicture(duration, dataType, pictureNumber):
 	if dataType == 3: #HQ Picture
-		dataFilePath = os.path.join(os.path.dirname(__file__), '../../../Pictures/') #TODO FIX!
+		dataFilePath = os.path.join(os.path.dirname(__file__), '../../../Pictures/'+str(pictureNumber)+'/HighRes/HighResOriginal'+str(pictureNumber)+'.jpg') #TODO FIX!
 	else: #LQ picture
-		dataFilePath = os.path.join(os.path.dirname(__file__), '../../../Pictures/')
+		dataFilePath = os.path.join(os.path.dirname(__file__), '../../../Pictures/'+str(pictureNumber)+'/LowRes/LowResOriginal'+str(pictureNumber)+'.jpg')
 	
 	numPackets = ceil(duration*1000/(120 + 128*8/9600)) + 15 #How many picture packets can we transmit in the window? + 15 for safety
 	
