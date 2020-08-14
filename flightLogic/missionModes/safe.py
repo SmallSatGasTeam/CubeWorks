@@ -5,6 +5,7 @@ import asyncio
 import RPi.GPIO as GPIO
 from os import system
 from time import sleep
+import smbus
 #####################################################################################
 #All this class does is tell the arduino to shut off the pi for the specified amount
 #of time.
@@ -21,8 +22,7 @@ class safe:
 	def __init__(self, saveObject):
 		#Setup I2C bus for communication
 		self.DEVICE_ADDR = 0x08
-		self.RegisterADR = 
-		self.bus
+		self.bus = smbus.SMBus(1)
 		self.__eps = EPS()
 		self.thresholdVoltage = 3.33 #Threshold Voltage
 		self.__saveObject = saveObject
@@ -36,10 +36,10 @@ class safe:
 		#send message to the adruino to power off the pi
 		#make sure we are not about to tx
 		if(self.__saveObject is not None and self.__saveObject.checkTxWindow()):
-			self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, time)
+			self.bus.write_byte(self.DEVICE_ADDR, time)
 			print('Sent power-off command')
 		else:
-			self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, time)
+			self.bus.write_byte(self.DEVICE_ADDR, time)
 			print('Send power-off command')
 
 		sleep(15) #If Pi hasn't turned off by now, must take drastic measures. Kill heartbeat code!
