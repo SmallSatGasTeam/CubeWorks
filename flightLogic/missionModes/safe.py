@@ -27,7 +27,7 @@ class safe:
 		self.thresholdVoltage = 3.33 #Threshold Voltage
 		self.__saveObject = saveObject
 		GPIO.setwarnings(False)
-		GPIO.setmode(GPIO.BOARD) #Physical Pin numbering
+		GPIO.setmode(GPIO.BOARD) #Physical Pin numbering NOTE: 8/14/20, this threw an error 
 		GPIO.setup(40, GPIO.OUT, initial=GPIO.LOW) #Sets pin 40 to be an output pin and sets the initial value to low (off)
 
 
