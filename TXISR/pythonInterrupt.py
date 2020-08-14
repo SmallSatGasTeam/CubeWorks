@@ -1,24 +1,29 @@
 import serial
 import asyncio
 import packetProcessing
-
+"""
+This file sets up the interrupt process. Every five seconds, the buffer of the serial port at /dev/serial0 is read.
+Content is split up into AX.25 Packets, and Command Packets. The data is passed to Jack's packetProcessing.py methods.
+TODO: Implement AX.25 digipeating, probably in packetProcessing.py
+To defray the possibility of half a packet being in the buffer, any half-packets are stored and evaluated the next time around
+"""
 async def interrupt():
-	serialport = serial.Serial('/dev/serial0', 115200)
-	leftovers = ''
+	serialport = serial.Serial('/dev/serial0', 115200) #Open serial port. Currently /dev/serial0, might change to the PL011 port for flight article
+	leftovers = '' #Stores any half-packets for evaluation the next loop
 	gaspacsHex = str(b'GASPACS'.hex())
 	while True:
-		if serialport.in_waiting:
+		if serialport.in_waiting: #If there is content in the serial buffer, read it and act on it
 			print('Data in waiting')
 			data = str(serialport.read(serialport.inWaiting()).hex()) #This produces a list of nibbles (half bytes)
-			data = leftovers+data
+			data = leftovers+data #Append any leftover data for evaluation
 			commands, ax25Packets = [], []
 			commands, ax25Packets, leftovers = parseData(data, gaspacsHex)
 			for command in commands:
-				packetProcessing.processPacket(command)
+				packetProcessing.processPacket(command) #Process Command Packets
 			for ax25 in ax25Packets:
-				packetProcessing.processPacket(ax25)
+				packetProcessing.processPacket(ax25) #Process AX.25 Packets
 			await asyncio.sleep(5)
-		else:
+		else: #No contents in serial buffer
 			print('buffer empty')
 			await asyncio.sleep(5)
 
@@ -27,7 +32,7 @@ def parseData(data, bracket): #Takes data string, in the form of hex, from async
 	gaspacsPackets = []
 	ax25Packets = []
 	modifiedString = data
-	while searching: #searching for GASPACS-bracketed packets
+	while searching: #Searching for packets bracketed by Hex-bytes of 'GASPACS'
 		content = None
 		content, modifiedString, searching = searchGASPACS(modifiedString, bracket)
 		if searching:
@@ -35,7 +40,7 @@ def parseData(data, bracket): #Takes data string, in the form of hex, from async
 
 	searching = True
 	print('asdf '+str(modifiedString))
-	while searching:
+	while searching: #Searching for packets bracketed by AX.25 header and footer, as described in Endurosat UHF Transceiver II User Manual Rev. 1.8
 		content = None
 		content, modifiedString, searching = searchAX25(modifiedString)
 		if searching:
@@ -43,7 +48,7 @@ def parseData(data, bracket): #Takes data string, in the form of hex, from async
 
 	return gaspacsPackets, ax25Packets, modifiedString
 
-def searchAX25(data): #Finds AX.25 packets stored in the dat astring, which is a string of hex. Removes it from data, returns AX.25 packet and modified data
+def searchAX25(data): #Finds AX.25 packets stored in the data string, which is a string of hex. Removes it from data, returns AX.25 packet and modified data
 	prefix = '7e7e7e7e7e7e7e7e7e'
 	postfix = '7e7e7e7e'
 	changed = False
@@ -63,7 +68,7 @@ def searchAX25(data): #Finds AX.25 packets stored in the dat astring, which is a
 
 
 def searchGASPACS(data, str): #Must be passed as a string of hex, for both parameters
-	#Finds command or window packets, bracketed by <str> in data. Removes brackets and contents, returns contents
+	#Finds command or window packets, bracketed by <str> in <data>. Removes the brackets and the contents in between from <data>. Returns the command contents
 	content=''
 	occurences = findOccurences(data, str)
 	modifiedString = data
@@ -77,7 +82,7 @@ def searchGASPACS(data, str): #Must be passed as a string of hex, for both param
 		modifiedString = data[0:startIndex-len(str)] + data[endIndex+len(str):]
 	return content, modifiedString, changed
 
-def findOccurences(str1, str2):
+def findOccurences(str1, str2): #Finds all occurences of String 2 in String 1, returns a list of all the indices where String 2 appeared
 	occurenceList = []
 	minIndex = 0
 	while True:
@@ -89,17 +94,3 @@ def findOccurences(str1, str2):
 			break
 	return occurenceList
 
-async def otherFunction():
-	while True:
-		print('Other functionalities running')
-		await asyncio.sleep(1)
-
-async def main():
-	asyncio.create_task(readSerial())
-	#asyncio.create_task(otherFunction())
-	while True:
-		#print('even more functionality')
-		await asyncio.sleep(2)
-
-if __name__ == '__main__':
-	asyncio.run(main())
