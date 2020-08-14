@@ -1,5 +1,5 @@
 from Drivers.Driver import Driver
-from time import sleep
+import asyncio
 import RPi.GPIO as GPIO
 
 class BoomDeployer(Driver):
@@ -34,7 +34,7 @@ class BoomDeployer(Driver):
         GPIO.setup(self.wireCutter2_low1,GPIO.OUT, initial=GPIO.HIGH)
 
 
-    def deploy(self):
+    async def deploy(self):
         """
         Loop a specified number of times, setting the correct GPIO pins to HIGH/LOW  to start/stop
 	the burn. Wait and then repeat with the other wirecutter mechanism
@@ -45,27 +45,26 @@ class BoomDeployer(Driver):
             GPIO.output(self.wireCutter1_high2, GPIO.HIGH)
             GPIO.output(self.wireCutter1_low1, GPIO.LOW)
             #Burn for set number of seconds
-            sleep(self.burnTime)
+            await asyncio.sleep(self.burnTime)
             #Turn off Wire Cutter 1
             GPIO.output(self.wireCutter1_high1, GPIO.LOW)
             GPIO.output(self.wireCutter1_high2, GPIO.LOW)
             GPIO.output(self.wireCutter1_low1, GPIO.HIGH)
             #Wait
-            sleep(self.waitTime)
+            await asyncio.sleep(self.waitTime)
 
             #Turn on Wire Cutter 2
             GPIO.output(self.wireCutter2_high1, GPIO.HIGH)
             GPIO.output(self.wireCutter2_high2, GPIO.HIGH)
             GPIO.output(self.wireCutter2_low1, GPIO.LOW)
             #Burn for set number of seconds
-            sleep(self.burnTime)
+            await asyncio.sleep(self.burnTime)
             #Turn off Wire Cutter 2
             GPIO.output(self.wireCutter2_high1, GPIO.LOW)
             GPIO.output(self.wireCutter2_high2, GPIO.LOW)
             GPIO.output(self.wireCutter2_low1, GPIO.HIGH)
             #Wait
-            sleep(self.waitTime)
-        GPIO.cleanup()
+            await asyncio.sleep(self.waitTime)
     def read(self):
         """
         Left undefined as no data is collected by this component

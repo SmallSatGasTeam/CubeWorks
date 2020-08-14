@@ -10,7 +10,6 @@ class BackupAntennaDeployer(Driver):
         super().__init__("BackupAntennaDeployer")
         # Initial values
         self.burnTime = 10
-        self.waitTime = 5
 
         # Set up the GPIO pins for use
         GPIO.setmode(GPIO.BOARD)
@@ -21,23 +20,25 @@ class BackupAntennaDeployer(Driver):
         GPIO.setup(self.primaryPin,GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.secondaryPin,GPIO.OUT, initial=GPIO.LOW)
 
-    def deploy(self):
+    async def deployPrimary(self):
         """
-        Consecutively set primary and then secondary antenna deploy pins to high
-        for a specified amount of time
+        Set primary deploy pin to high for a specified time, triggering the
+        backup antenna burn.
         """
         #Burn primary backup, then turn off and wait
         GPIO.output(self.primaryPin, GPIO.HIGH)
         await asyncio.sleep(self.burnTime)
         GPIO.output(self.primaryPin, GPIO.LOW)
-        await asyncio.sleep(self.waitTime)
 
-        #Burn secondary backup, then turn off and cleanup
+    async def deploySecondary(self):
+        """
+        Set secondary deploy pin to high for a specified time, triggering the
+        backup antenna burn.
+        """
         GPIO.output(self.secondaryPin, GPIO.HIGH)
         await asyncio.sleep(self.burnTime)
         GPIO.output(self.secondaryPin, GPIO.LOW)
 
-        GPIO.cleanup()
     def read(self):
         """
         Left undefined as no data is collected by this component

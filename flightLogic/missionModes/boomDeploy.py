@@ -34,13 +34,13 @@ class boomMode:
 		# Deploy boom, take picture
 		await asyncio.sleep(5)
 		deployer = boomDeployer.BoomDeployer()
-		#cam = camera.Camera()
+		cam = camera.Camera()
 		await deployer.deploy() #From LOGAN: Deployer.deploy is now an asyncio method, run it like the others
 		#cam.takePicture()
-		#cam.compressLowResToFiles()
-		#cam.compressHighResToFiles()
-		self.cancelAllTasks(self.__tasks) # Cancel all background tasks
+		#cam.compressLowResToFiles() No longer necessary
+		#cam.compressHighResToFiles() No longer necessary
 		await asyncio.sleep(5)
+		self.cancelAllTasks(self.__tasks) # Cancel all background tasks
 		return True  # Go to post-boom deploy
 
 	def cancelAllTasks(self, taskList):
