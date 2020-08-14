@@ -1,5 +1,5 @@
 from Drivers.Driver import Driver
-from time import sleep
+from asyncio import sleep
 import RPi.GPIO as GPIO
 
 class BackupAntennaDeployer(Driver):
@@ -28,13 +28,13 @@ class BackupAntennaDeployer(Driver):
         """
         #Burn primary backup, then turn off and wait
         GPIO.output(self.primaryPin, GPIO.HIGH)
-        sleep(self.burnTime)
+        await asyncio.sleep(self.burnTime)
         GPIO.output(self.primaryPin, GPIO.LOW)
-        sleep(self.waitTime)
+        await asyncio.sleep(self.waitTime)
 
         #Burn secondary backup, then turn off and cleanup
         GPIO.output(self.secondaryPin, GPIO.HIGH)
-        sleep(self.burnTime)
+        await asyncio.sleep(self.burnTime)
         GPIO.output(self.secondaryPin, GPIO.LOW)
 
         GPIO.cleanup()
