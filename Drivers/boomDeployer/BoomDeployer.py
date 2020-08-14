@@ -65,6 +65,7 @@ class BoomDeployer(Driver):
             GPIO.output(self.wireCutter2_low1, GPIO.HIGH)
             #Wait
             await asyncio.sleep(self.waitTime)
+            print('Loop executed once')
     def read(self):
         """
         Left undefined as no data is collected by this component

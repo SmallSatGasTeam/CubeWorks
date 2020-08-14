@@ -20,10 +20,12 @@ from time import sleep
 class safe:
 	def __init__(self, saveObject):
 		#Setup I2C bus for communication
+		self.DEVICE_ADDR = 0x08
+		self.RegisterADR = 
+		self.bus
 		self.__eps = EPS()
 		self.thresholdVoltage = 3.33 #Threshold Voltage
-		if saveObject != None:
-			self.__saveObject = saveObject
+		self.__saveObject = saveObject
 		GPIO.setwarnings(False)
 		GPIO.setmode(GPIO.BOARD) #Physical Pin numbering
 		GPIO.setup(40, GPIO.OUT, initial=GPIO.LOW) #Sets pin 40 to be an output pin and sets the initial value to low (off)
@@ -33,11 +35,13 @@ class safe:
 	def run(self, time):
 		#send message to the adruino to power off the pi
 		#make sure we are not about to tx
-		try :
-			if(self.__saveObject is not None and self.__saveObject.checkTxWindow()):
-				self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, time)
-		except :
-			pass
+		if(self.__saveObject is not None and self.__saveObject.checkTxWindow()):
+			self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, time)
+			print('Sent power-off command')
+		else:
+			self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, time)
+			print('Send power-off command')
+
 		sleep(15) #If Pi hasn't turned off by now, must take drastic measures. Kill heartbeat code!
 		system('pkill -9 python')
 

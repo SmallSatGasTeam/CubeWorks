@@ -1,5 +1,5 @@
 from Drivers.Driver import Driver
-from asyncio import sleep
+import asyncio
 import RPi.GPIO as GPIO
 
 class BackupAntennaDeployer(Driver):
@@ -15,8 +15,8 @@ class BackupAntennaDeployer(Driver):
         GPIO.setmode(GPIO.BOARD)
 
         #Setup GPIO pins
-        self.primaryPin = 32
-        self.secondaryPin = 33
+        self.primaryPin = 33
+        self.secondaryPin = 32
         GPIO.setup(self.primaryPin,GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.secondaryPin,GPIO.OUT, initial=GPIO.LOW)
 

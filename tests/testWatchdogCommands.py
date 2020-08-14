@@ -5,6 +5,6 @@ import sys
 sys.path.append('../')
 from flightLogic.missionModes import safe
 if __name__ == "__main__":
-	safeMode = safe.safe()
+	safeMode = safe.safe(None)
 	print('Sending reboot command to arduino for 3 minutes')
 	safeMode.run(3)
