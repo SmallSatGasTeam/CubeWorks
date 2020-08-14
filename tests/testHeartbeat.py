@@ -1,9 +1,8 @@
 import sys
 sys.path.append("../")
+import asyncio
+from flightLogic.missionModes import safe
 
-from watchdog.Heartbeat import Heartbeat
-
-Heartbeat.setUp()
-Heartbeat.longTap()
-
+safeMode = safe()
+asyncio.run(safeMode.heartbeat())
 
