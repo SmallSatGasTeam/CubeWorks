@@ -11,7 +11,7 @@ from flightLogic.missionModes.boomDeploy import boomMode
 from flightLogic.missionModes.postBoomDeploy import postBoomMode
 from flightLogic.missionModes import safe
 import asyncio
-from TXISR.interrupt import INTERRUPT
+from TXISR import pythonInterrupt
 
 
 # from TXISR import interrupt
@@ -46,8 +46,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 
 	print('Starting data collection') #Setting up Background tasks for BOOT mode
 	tasks=[]
-	tasks.append(asyncio.create_task(interruptObject.watchTxWindows()))
-	tasks.append(asyncio.create_task(interruptObject.watchReceptions()))
+	tasks.append(asyncio.create_task(pythonInterrupt.interrupt()))
 	tasks.append(asyncio.create_task(ttncData.collectTTNCData(0))) #Boot Mode is classified as 0
 	tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
 	tasks.append(asyncio.create_task(safeMode.thresholdCheck()))
@@ -90,10 +89,12 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	print('Moving on to check antenna door status')
 	status = antennaDoor().readDoorStatus()
 	# this checks the bytes returned by the antennaDoor if any are 0 then doorOpen gets set to false
-	if status != (1,1,1,1) and lastMode not in (2,3,4): #This will need to be changed to reflect the real antenna
-		antennaDeployed = False
+	if antennaDeployed = True:
+		pass
+	elif status = (1,1,1,1): #This will need to be changed to reflect the real antenna
+		antennaDeployed = True
 	else:
-        	antennaDeployed = True
+        	antennaDeployed = False
 
 	recordData(bootCount, antennaDeployed, lastMode)
 

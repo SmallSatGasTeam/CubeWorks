@@ -3,6 +3,8 @@ sys.path.append('../../')
 import Drivers.eps.EPS as EPS
 import asyncio
 import RPi.GPIO as GPIO
+from os import system
+from time import sleep
 #####################################################################################
 #All this class does is tell the arduino to shut off the pi for the specified amount
 #of time.
@@ -20,7 +22,7 @@ class safe:
 		#Setup I2C bus for communication
 		self.__eps = EPS()
 		self.thresholdVoltage = 3.33 #Threshold Voltage
-		if saveObject != NULL:
+		if saveObject != None:
 			self.__saveObject = saveObject
 		GPIO.setwarnings(False)
 		GPIO.setmode(GPIO.BOARD) #Physical Pin numbering
@@ -36,6 +38,8 @@ class safe:
 				self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, time)
 		except :
 			pass
+		sleep(15) #If Pi hasn't turned off by now, must take drastic measures. Kill heartbeat code!
+		system('pkill -9 python')
 
 	async def thresholdCheck(self):
 		while True:

@@ -3,9 +3,9 @@ sys.path.append('../../')
 import asyncio
 from flightLogic.DummymissionModes import safe
 from flightLogic.DummygetDriverData import *
-from DummyDrivers.eps import DummyEPS as EPS
-from DummyDrivers.sunSensors import DummysunSensorDriver as sunSensorDriver
-#from TXISR.interrupt import INTERRUPT
+from DummyDrivers.eps import EPS
+from DummyDrivers.sunSensors import sunSensorDriver
+from TXISR import pythonInterrupt
 
 
 class preBoomMode:
@@ -29,9 +29,7 @@ class preBoomMode:
 	async def run(self):
 		ttncData = self.__getDataTTNC
 		attitudeData = self.__getDataAttitude
-		interruptObject = INTERRUPT()
-		self.__tasks.append(asyncio.create_task(interruptObject.watchTxWindows()))
-		self.__tasks.append(asyncio.create_task(interruptObject.watchReceptions()))
+		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt()))
 		self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(2))) #Pre-Boom is mode 2
 		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.safeMode.thresholdCheck()))

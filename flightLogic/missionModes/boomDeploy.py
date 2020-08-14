@@ -6,7 +6,7 @@ from flightLogic.missionModes import safe
 from flightLogic.getDriverData import *
 import Drivers.boomDeployer as boomDeployer
 #import Drivers.camera.Camera as camera
-from TXISR.interrupt import INTERRUPT
+from TXISR import pythonInterrupt
 
 
 
@@ -24,9 +24,7 @@ class boomMode:
 		ttncData = self.__getDataTTNC
 		attitudeData = self.__getDataAttitude
 		deployData = DeployData(self.saveobject)
-		interruptObject = INTERRUPT()
-		self.__tasks.append(asyncio.create_task(interruptObject.watchTxWindows()))
-		self.__tasks.append(asyncio.create_task(interruptObject.watchReceptions()))
+		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt()))
 		self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(3)))  # Boom deploy is mode 3
 		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(deployData.collectDeployData()))
