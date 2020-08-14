@@ -1,6 +1,6 @@
 import serial
 import asyncio
-import packetProcessing
+import TXISR.packetProcessing as packetProcessing
 """
 This file sets up the interrupt process. Every five seconds, the buffer of the serial port at /dev/serial0 is read.
 Content is split up into AX.25 Packets, and Command Packets. The data is passed to Jack's packetProcessing.py methods.

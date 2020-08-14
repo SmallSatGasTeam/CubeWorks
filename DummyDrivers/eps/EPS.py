@@ -60,13 +60,13 @@ class EPS(Driver):
         return 12*0.00390625 #Reads data of specified type, sets up conversion factor to 'C
 
     def getBusVoltage(self):
-        return 13 * 0.0023394775 #Reads data of specified type, sets up conversion factor to V
+        return 13000 * 0.0023394775 #Reads data of specified type, sets up conversion factor to V
 
     def getBusCurrent(self):
         return 14 * 0.0030517578 #Reads data of specified type, sets up conversion factor to A
 
     def getBCRVoltage(self):
-        return 15 * 0.0023394775 #Reads data of specified type, sets up conversion factor to V
+        return 15000 * 0.0023394775 #Reads data of specified type, sets up conversion factor to V
 
     def getBCRCurrent(self):
         return 16 * 0.0015258789 #Reads data of specified type, sets up conversion factor to A
