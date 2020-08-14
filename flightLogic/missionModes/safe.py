@@ -34,7 +34,7 @@ class safe:
 		#send message to the adruino to power off the pi
 		#make sure we are not about to tx
 		try :
-			if(self.__saveObject.checkTxWindow()):
+			if(self.__saveObject is not None and self.__saveObject.checkTxWindow()):
 				self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, time)
 		except :
 			pass
