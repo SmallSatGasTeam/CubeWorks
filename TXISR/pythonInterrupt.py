@@ -21,6 +21,7 @@ async def interrupt():
 			commands, ax25Packets = [], []
 			commands, ax25Packets, leftovers = parseData(data, gaspacsHex)
 			for command in commands:
+				print(command)
 				packetProcessing.processPacket(command) #Process Command Packets
 			for ax25 in ax25Packets:
 				packetProcessing.processPacket(ax25) #Process AX.25 Packets
@@ -41,7 +42,6 @@ def parseData(data, bracket): #Takes data string, in the form of hex, from async
 			gaspacsPackets.append(content)
 
 	searching = True
-	print('asdf '+str(modifiedString))
 	while searching: #Searching for packets bracketed by AX.25 header and footer, as described in Endurosat UHF Transceiver II User Manual Rev. 1.8
 		content = None
 		content, modifiedString, searching = searchAX25(modifiedString)
