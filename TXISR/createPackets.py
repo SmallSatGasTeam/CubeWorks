@@ -2,11 +2,11 @@ def int4tobin(num):
 	#takes a 4 byte int, returns a binary representation of it
 	return str(format(num, '08b'))[-8:]
 
-def int1tohex(num):
+def int1tobin(num):
 	#takes a 1 byte integer, returns a binary representation of it
 	return str(format(num, '02b'))[-2:]
 
-def int2tohex(num):
+def int2tobin(num):
 	#takes a 2 byte integer, returns a binary representation of it
 	return str(format(num, '04b'))[-4:]
 
