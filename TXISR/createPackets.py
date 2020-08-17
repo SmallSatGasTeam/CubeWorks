@@ -19,7 +19,6 @@ if(typeOfPacket == '0'):
 	packet += int1tobin(int(input('Number from 0-4 corresponding to requested data type. See flight logic document: ')))
 	packet += int2tobin(int(input('If picture is requested, number of the picture that is requested: ')))
 	packet += '0000000'
-	print(packet)
 	print(hex(int(packet, 2))[2:].zfill(20))
 
 else:
