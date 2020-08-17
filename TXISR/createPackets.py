@@ -1,6 +1,6 @@
 import struct
 
-typeOfPacket = input('Type 0 for Window Packet, 1 for Command Packet')
+typeOfPacket = input('Type 0 for Window Packet, 1 for Command Packet: ')
 if(typeOfPacket == '0'):
 	#Window packet
 	pass
@@ -8,12 +8,12 @@ else:
 	#Command Packet
 	commandsList = []
 	content = '1'
-	commandsList.append(input('Input 0 for disable TX, 1 for enable TX'))
-	commandsList.append(input('Input 0 for do nothing, 1 for erase all TX windows and progress'))
-	commandsList.append(input('Input 0 for do nothing, 1 for take a picture'))
-	commandsList.append(input('Input 0 for do nothing, 1 for deploy boom'))
-	commandsList.append(input('Input 0 for do nothing, 1 for reboot'))
-	commandsList.append(input('Input 0 for disable TX, 1 for enable TX'))
+	commandsList.append(input('Input 0 for disable TX, 1 for enable TX: '))
+	commandsList.append(input('Input 0 for do nothing, 1 for erase all TX windows and progress: '))
+	commandsList.append(input('Input 0 for do nothing, 1 for take a picture: '))
+	commandsList.append(input('Input 0 for do nothing, 1 for deploy boom: '))
+	commandsList.append(input('Input 0 for do nothing, 1 for reboot: '))
+	commandsList.append(input('Input 0 for disable TX, 1 for enable TX: '))
 	for command in commandsList:
 		if command == '0':
 			content += command
