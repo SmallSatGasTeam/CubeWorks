@@ -49,7 +49,7 @@ class preBoomMode:
 					lastDark = i
 					break
 				i+=1
-			print('Last Dark' + str(lastDark))
+			print('Last Dark ' + str(lastDark))
 
 			if lastDark != 0: #Condition from previous while loop has  been met
 				q=lastDark
@@ -80,7 +80,6 @@ class preBoomMode:
 			await asyncio.sleep(5)
 			averageVoltage += sum(vList)/len(vList)
 			self.sunlightData.append(averageVoltage/2)
-			print(self.sunlightData)
 			await asyncio.sleep(5) #Every 10 seconds, record average solar panel voltage. Rough running average with two pieces to avoid jumps in avg. voltage
 
 	async def batteryCheck(self):
