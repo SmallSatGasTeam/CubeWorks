@@ -4,3 +4,6 @@ adafruit-blinka
 adafruit-circuitpython-lsm303_accel
 adafruit-circuitpython-lis2mdl
 spidev
+picamera
+smbus
+
