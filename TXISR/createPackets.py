@@ -7,21 +7,21 @@ if(typeOfPacket == '0'):
 else:
 	#Command Packet
 	commandsList = []
+	content = '1'
 	commandsList.append(input('Input 0 for disable TX, 1 for enable TX'))
+	commandsList.append(input('Input 0 for do nothing, 1 for erase all TX windows and progress'))
+	commandsList.append(input('Input 0 for do nothing, 1 for take a picture'))
+	commandsList.append(input('Input 0 for do nothing, 1 for deploy boom'))
+	commandsList.append(input('Input 0 for do nothing, 1 for reboot'))
 	commandsList.append(input('Input 0 for disable TX, 1 for enable TX'))
-	commandsList.append(input('Input 0 for disable TX, 1 for enable TX'))
-	commandsList.append(input('Input 0 for disable TX, 1 for enable TX'))
-	commandsList.append(input('Input 0 for disable TX, 1 for enable TX'))
-	commandsList.append(input('Input 0 for disable TX, 1 for enable TX'))
-	commandsList.append(input('Input 0 for disable TX, 1 for enable TX'))
-	commandsList.append(input('Input 0 for disable TX, 1 for enable TX'))
-	clearTX = input('Input 0 for do nothing, 1 for erase all TX windows and progress')
-	takePicture = input('Input 0 for do nothing, 1 for take a picture')
-	deployBoom = input('Input 0 for do nothing, 1 for deploy boom')
-	reboot = input('Input 0 for do nothing, 1 for reboot')
-	enableAX25 = input('Input 0 for do nothing, 1 for erase all TX windows and progress')
-	clearTX = input('Input 0 for do nothing, 1 for erase all TX windows and progress')
-
+	for command in commandsList:
+		if command == '0':
+			content += command
+		else:
+			content += '1'
+	content += '0'
+	print(hex(int(content, 2))[2:].zfill(2))
+	
 
 
 
