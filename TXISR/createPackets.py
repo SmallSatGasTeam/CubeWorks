@@ -1,3 +1,14 @@
+def int4tobin(num):
+	#takes a 4 byte int, returns a binary representation of it
+	return str(format(num, '08b'))[-8:]
+
+def int1tohex(num):
+	#takes a 1 byte integer, returns a binary representation of it
+	return str(format(num, '02b'))[-2:]
+
+def int2tohex(num):
+	#takes a 2 byte integer, returns a binary representation of it
+	return str(format(num, '04b'))[-4:]
 
 typeOfPacket = input('Type 0 for Window Packet, 1 for Command Packet: ')
 if(typeOfPacket == '0'):
@@ -28,14 +39,4 @@ else:
 	content += '0'
 	print(hex(int(content, 2))[2:].zfill(2))
 
-def int4tobin(num):
-	#takes a 4 byte int, returns a binary representation of it
-	return str(format(num, '08b'))[-8:]
 
-def int1tohex(num):
-	#takes a 1 byte integer, returns a binary representation of it
-	return str(format(num, '02b'))[-2:]
-
-def int2tohex(num):
-	#takes a 2 byte integer, returns a binary representation of it
-	return str(format(num, '04b'))[-4:]
