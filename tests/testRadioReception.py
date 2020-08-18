@@ -26,3 +26,4 @@ async def interrupt():
 		else: #No contents in serial buffer
 			print('buffer empty')
 			await asyncio.sleep(0.5)
+asyncio.run(interrupt())
