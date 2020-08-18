@@ -41,7 +41,6 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	# startTXISR(save)
 	ttncData = getDriverData.TTNCData(save)
 	attitudeData = getDriverData.AttitudeData(save)
-	safeMode = safe.safe(save)
 
 	print('Starting data collection') #Setting up Background tasks for BOOT mode
 	tasks=[]
