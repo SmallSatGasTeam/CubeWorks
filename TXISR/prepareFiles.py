@@ -73,7 +73,7 @@ def prepareData(duration, dataType):
 
 def preparePicture(duration, dataType, pictureNumber):
 	if dataType == 3: #HQ Picture
-		dataFilePath = os.path.join(os.path.dirname(__file__), '../../../Pictures/'+str(pictureNumber)+'/HighRes/HighResOriginal'+str(pictureNumber)+'.jpg') #TODO FIX!
+		dataFilePath = os.path.join(os.path.dirname(__file__), '../../../Pictures/'+str(pictureNumber)+'/HighRes/HighResOriginal'+str(pictureNumber)+'.jpg')
 	else: #LQ picture
 		dataFilePath = os.path.join(os.path.dirname(__file__), '../../../Pictures/'+str(pictureNumber)+'/LowRes/LowResOriginal'+str(pictureNumber)+'.jpg')
 
@@ -84,7 +84,7 @@ def preparePicture(duration, dataType, pictureNumber):
 		os.remove(transmissionFilePath) #Remove txFile
 	except:
 		pass #FileNotFoundError is thrown if file doesn't exist
-
+	print('got here')
 	txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
 	txDataFile.write(str(duration*1000) + '\n') #Write first line to txData. Duration of window in milliseconds
 
