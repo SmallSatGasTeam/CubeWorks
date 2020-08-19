@@ -30,7 +30,7 @@ class postBoomMode:
 		#Set up background processes
 		ttncData = self.__getDataTTNC
 		attitudeData = self.__getDataAttitude
-		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt())))
+		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt()))
 		self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(4))) #Post-boom is mode 4
 		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
@@ -59,9 +59,10 @@ class postBoomMode:
 		upTime = 0
 		while True:
 			if upTime>86400: #Live for more than 24 hours
-			if (self.__timeToNextWindow == -1) or (self.__timeToNextWindow > REBOOT_WAIT_TIME):
-				self.__safeMode.run(1) #restart, powering off Pi for 1 minute
-				print('Rebooting raspberry pi')
+				if (self.__timeToNextWindow == -1) or (self.__timeToNextWindow > REBOOT_WAIT_TIME):
+					self.__safeMode.run(1) #restart, powering off Pi for 1 minute
+					print('Rebooting raspberry pi')
+					upTime=0
 		else:
 			print('Uptime: '+str(upTime))
 			await asyncio.sleep(60)
@@ -95,7 +96,6 @@ class postBoomMode:
 				#print(self.__datatype)
 				#print(self.__pictureNumber)
 			await asyncio.sleep(10) #Checks transmission windows every 10 seconds
-		
 
 	def cancellAllTasks(self, taskList): #Isn't used in this class, but here anyways
 		try:
