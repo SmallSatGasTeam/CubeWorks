@@ -11,7 +11,10 @@ duration = -1
 datatype = -1
 pictureNumber = -1
 
-if __name__ = '__main__':
+if __name__ == '__main__':
+	asycnio.run(main())
+
+async def main():
 	asyncio.create_task(pythonInterrupt.interrupt())
 	asyncio.create_task(readNextTransferWindow())
 	while True:
