@@ -54,7 +54,7 @@ class TTNCData:
 
 		packet += gaspacsBytes + timestamp + packetType + mode + reboot_count + boombox_uv + SP_X_Plus_Temp + SP_Z_Plus_Temp + piTemp + EPSMCUTemp + Cell1Temp + BattVoltage + BCRCurrent + EPS3V3Current + EPS5VCurrent + SP_X_Voltage + SP_X_Plus_Current + SP_X_Minus_Current + SP_Y_Voltage + SP_Y_Plus_Current + SP_Y_Minus_Current + SP_Z_Voltage + gaspacsBytes
 
-		packetTimestamp = str(int(RTC.readSeconds())).zfill(10)+': '
+		packetTimestamp = str(int(RTC.readSeconds())).zfill(10)+':'
 		packet = packetTimestamp + packet
 		self.__ttncData = packet
 
@@ -93,7 +93,7 @@ class DeployData():
 		accelZ = float4tohex(accelZ)
 		packet = ''
 		packet += gaspacsBytes+timestamp+packetType+boombox_uv+accelX+accelY+accelZ
-		packetTimestamp = str(int(RTC.readSeconds())).zfill(10)+': '
+		packetTimestamp = str(int(RTC.readSeconds())).zfill(10)+':'
 		packet = packetTimestamp + packet
 		self.__deployData = packet
 
@@ -138,7 +138,7 @@ class AttitudeData():
 		mag3 = float4tohex(mag3)
 		
 		packet += gaspacsBytes + timestamp + packetType + sunSensor1 + sunSensor2 + sunSensor3 + sunSensor4 + sunSensor5 + mag1 + mag2 + mag3 + gaspacsBytes
-		packetTimestamp = str(int(RTC.readSeconds())).zfill(10)+': '
+		packetTimestamp = str(int(RTC.readSeconds())).zfill(10)+':'
 		packet = packetTimestamp + packet
 		self.__attitudeData = packet
 
