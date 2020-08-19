@@ -26,34 +26,34 @@ class postBoomMode:
 		self.__datatype = -1
 		self.__pictureNumber = -1
 
-async def run(self):
-	#Set up background processes
-	ttncData = self.__getDataTTNC
-	attitudeData = self.__getDataAttitude
-	self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt())))
-	self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(4))) #Post-boom is mode 4
-	self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
-	self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
-	self.__tasks.append(asyncio.create_task(self.__safeMode.heartBeat()))
-	self.__tasks.append(asyncio.create_task(self.readNextTransferWindow()))
-	self.__tasks.append(asyncio.create_task(self.rebootLoop()))
-	while True:
-		#if close enough, prep files
-		#wait until 5 seconds before, return True
-		if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<60): #If next window is in 2 minutes or less
-			if(self.__datatype < 3): #Attitude, TTNC, or Deployment data
-				prepareFiles.prepareData(self.__duration, self.__datatype)
-			else:
-				prepareFiles.preparePicture(self.__duration, self.__datatype, self.pictureNumber)
-			break
-		await asyncio.sleep(5)
-	windowTime = self.__nextWindowTime
-	while True:
-		if((windowTime-time.time()) <= 5):
-			txisrCodePath = os.path.join(os.path.dirname(__file__), '../../TXISR/TXServiceCode/TXService.run')
-			os.system(txisrCodePath + ' ' + str(self.__datatype)) #Call TXISR Code
-			return True
-		await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
+	async def run(self):
+		#Set up background processes
+		ttncData = self.__getDataTTNC
+		attitudeData = self.__getDataAttitude
+		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt())))
+		self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(4))) #Post-boom is mode 4
+		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
+		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
+		self.__tasks.append(asyncio.create_task(self.__safeMode.heartBeat()))
+		self.__tasks.append(asyncio.create_task(self.readNextTransferWindow()))
+		self.__tasks.append(asyncio.create_task(self.rebootLoop()))
+		while True:
+			#if close enough, prep files
+			#wait until 5 seconds before, return True
+			if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<60): #If next window is in 2 minutes or less
+				if(self.__datatype < 3): #Attitude, TTNC, or Deployment data
+					prepareFiles.prepareData(self.__duration, self.__datatype)
+				else:
+					prepareFiles.preparePicture(self.__duration, self.__datatype, self.pictureNumber)
+				break
+			await asyncio.sleep(5)
+		windowTime = self.__nextWindowTime
+		while True:
+			if((windowTime-time.time()) <= 5):
+				txisrCodePath = os.path.join(os.path.dirname(__file__), '../../TXISR/TXServiceCode/TXService.run')
+				os.system(txisrCodePath + ' ' + str(self.__datatype)) #Call TXISR Code
+				return True
+			await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
 
 	async def rebootLoop(self):
 		upTime = 0
