@@ -228,7 +228,7 @@ void main(int argc,char* argv[])
             //start the transmition time
             startTimeTX = millis();
             currentTimeTX = 0;
-            //write(txPort, sendingData, charCount);
+            write(txPort, sendingData, (charCount / 2));
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
