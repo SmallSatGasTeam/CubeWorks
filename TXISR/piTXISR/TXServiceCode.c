@@ -151,7 +151,6 @@ void main(int argc,char* argv[])
 
     //write to the radio
     write(txPort, "ES+W23003321\r", 13);
-    while((currentTimeTX - startTimeTX) < DELAY_tx ) { }
 
     while(!feof(txFile))
     {
