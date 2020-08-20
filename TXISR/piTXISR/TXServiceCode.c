@@ -200,7 +200,7 @@ void main(int argc,char* argv[])
             //if((dataType != PHOTO_TYPE || end) && ch != TIME_DEVISOR) line[charCount++] = ch; this line of code will send the time stamp at the begining of the line
             //this line of code will never send the time stamp
             if(end && ch != TIME_DEVISOR) line[charCount++] = ch;
-            //PRINT_DEBUG_c(ch)
+            PRINT_DEBUG_c(ch)
             //DEBUG_P(Im in the sub loop)
         }while(ch != 10 && !feof(txFile));
         
