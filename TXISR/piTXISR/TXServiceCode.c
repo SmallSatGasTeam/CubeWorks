@@ -206,7 +206,7 @@ void main(int argc,char* argv[])
         }while(ch != 10 && !feof(txFile));
         
         //convert the data 
-        for(int count = 0; count < MAX_BYTES_PER_LINE / 2; count++)
+        for(int count = 0; count < MAX_BYTES_PER_LINE; count += 2)
         {
             PRINT_DEBUG(count)
             sscanf(xferData, "%2hhx", &sendingData[count]);
