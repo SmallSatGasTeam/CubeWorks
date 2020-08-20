@@ -206,20 +206,15 @@ void main(int argc,char* argv[])
         //convert the data 
         for(int count = 0; count < MAX_BYTES_PER_LINE / 2; count++)
         {
-            DEBUG_P(looping)
+            PRINT_DEBUG(count)
             sscanf(xferData, "%2hhx", &sendingData[count]);
+            PRINT_HEX(sendingData[count])
             xferData += (2 * sizeof(char));
         }
 
         if(ch == 10 || feof(txFile))
         {
             //transmit the data
-            #ifdef DEBUG
-                for(int i = 0; i < charCount / 2; i++)
-                {
-                    PRINT_HEX(sendingData[i]) 
-                }
-            #endif
             //this line of code sends things out on the tx line
             //start the transmition time
             startTimeTX = millis();
