@@ -1,7 +1,7 @@
 #EPS Driver, not tested against hardware yet
 from Drivers.Driver import Driver
 import smbus
-#circurt bus??? maybe use that
+import RPi.GPIO as GPIO
 
 class EPS(Driver):
     #this sets up i2c commincation.
@@ -23,6 +23,13 @@ class EPS(Driver):
         #This method disables RAW battery output from the EPS
         #The command is 3 bytes device address left-shifted by one bit, the command, and the state
         self.bus.write_byte_data(self.DEVICE_ADDR, 0x01, 0x02)
+
+    def enableUHF(self):
+        #This method sends the command to the EPS to enable UHF Transmission, and sets the corresponding GPIO Pin high on the Pi
+	self.bus.write_byte_data(self.DEVICE_ADDR, 0x0E, 0x03)
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(18, GPIO.OUT, initial = GPIO.HIGH)
+        GPIO.output(18, GPIO.HIGH)
 
     def read(self):
         #returns nothing since there are so many different things we could read, use other methods instead
