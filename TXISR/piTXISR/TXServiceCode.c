@@ -231,8 +231,9 @@ void main(int argc,char* argv[])
             for(int i = 0; i < charCount / 2; i++)
             {
                 PRINT_DEBUG_CHAR(sendingData[i])
+                dprintf(txPort, "%X", sendingData[i]);
             }
-            write(txPort, sendingData, (charCount / 2));
+            //write(txPort, sendingData, (charCount / 2));
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
