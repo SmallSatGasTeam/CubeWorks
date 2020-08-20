@@ -200,15 +200,15 @@ void main(int argc,char* argv[])
             if(end && ch != TIME_DEVISOR && ch != 10) 
             {
                 line[charCount++] = ch;
-                PRINT_DEBUG_c(ch)
-                PRINT_DEBUG(charCount)
+                //PRINT_DEBUG_c(ch)
+                //PRINT_DEBUG(charCount)
             }
             //DEBUG_P(Im in the sub loop)
         }while(ch != 10 && !feof(txFile));
         
         //convert the data to hex
         int temp = 0;
-        PRINT_DEBUG(charCount / 2)
+        //PRINT_DEBUG(charCount / 2)
         for(int count = 0; count <= (charCount / 2); count++)
         {
             //this look like it is uncessary but it is not sure why
@@ -229,7 +229,7 @@ void main(int argc,char* argv[])
             //start the transmition time
             startTimeTX = millis();
             currentTimeTX = 0;
-            write(txPort, sendingData, charCount);
+            write(txPort, &sendingData, charCount);
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
