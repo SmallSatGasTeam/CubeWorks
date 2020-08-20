@@ -212,7 +212,7 @@ void main(int argc,char* argv[])
             PRINT_DEBUG_c(line[temp])
             PRINT_DEBUG_c(line[temp + 1])
             PRINT_DEBUG(temp)
-            temp +=2;
+            temp = count * 2;
         }
 
         if(ch == 10 || feof(txFile))
