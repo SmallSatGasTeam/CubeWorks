@@ -197,9 +197,7 @@ void main(int argc,char* argv[])
             }
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
-            //if((dataType != PHOTO_TYPE || end) && ch != TIME_DEVISOR) line[charCount++] = ch; this line of code will send the time stamp at the begining of the line
-            //this line of code will never send the time stamp
-            if(end && ch != TIME_DEVISOR && ch != '\n') line[charCount++] = ch;
+            if(end && ch != TIME_DEVISOR && ch != 10) line[charCount++] = ch;
             PRINT_DEBUG_c(ch)
             //DEBUG_P(Im in the sub loop)
         }while(ch != 10 && !feof(txFile));
@@ -211,6 +209,8 @@ void main(int argc,char* argv[])
             PRINT_DEBUG(count)
             sscanf(&line[temp], "%2hhx", &sendingData[count]);
             PRINT_HEX(sendingData[count])
+            PRINT_DEBUG_c(line[temp])
+            PRINT_DEBUG_c(line[temp + 1])
             PRINT_DEBUG(temp)
             temp +=2;
         }
