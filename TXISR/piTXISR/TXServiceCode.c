@@ -87,7 +87,7 @@ void main(int argc,char* argv[])
     int dataType = changeCharToInt(*argv[1]);
     int transmissionWindow = 0;
     char *xferData;
-    char sendingData[MAX_NUM_OF_DATA_TYPES / 2]; 
+    char sendingData[(MAX_NUM_OF_DATA_TYPES / 2)]; 
     
 
     FILE *txFile;
@@ -226,7 +226,9 @@ void main(int argc,char* argv[])
             //start the transmition time
             startTimeTX = millis();
             currentTimeTX = 0;
+            DEBUG_P(sending...)
             write(txPort, sendingData, charCount);
+            DEBUG_P(done...)
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
