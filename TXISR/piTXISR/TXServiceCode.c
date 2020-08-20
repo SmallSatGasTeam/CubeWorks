@@ -221,14 +221,14 @@ void main(int argc,char* argv[])
             temp = count * 2;
         }
 
-        if(ch == 10 || feof(txFile))
+        if(ch == 10)
         {
             //transmit the data
             //this line of code sends things out on the tx line
             //start the transmition time
             startTimeTX = millis();
             currentTimeTX = 0;
-            for(int i = 0; i < charCount / 2; i++)
+            for(int i = 0; i <= charCount / 2; i++)
             {
                 PRINT_HEX(sendingData[i])
                 dprintf(txPort, "%X", sendingData[i]);
