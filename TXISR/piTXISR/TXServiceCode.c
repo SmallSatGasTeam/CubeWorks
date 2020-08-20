@@ -228,6 +228,10 @@ void main(int argc,char* argv[])
             //start the transmition time
             startTimeTX = millis();
             currentTimeTX = 0;
+            for(int i = 0; i < charCount / 2; i++)
+            {
+                PRINT_DEBUG_CHAR(sendingData[i])
+            }
             write(txPort, sendingData, (charCount / 2));
             //this will let us print to the file
             int written = 0;
