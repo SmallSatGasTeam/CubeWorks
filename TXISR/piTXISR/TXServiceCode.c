@@ -211,8 +211,9 @@ void main(int argc,char* argv[])
         PRINT_DEBUG(charCount / 2)
         for(int count = 0; count < (charCount / 2); count++)
         {
+            int index = count;
             PRINT_DEBUG(count)
-            sscanf(&line[temp], "%2hhx", &sendingData[count]);
+            sscanf(&line[temp], "%2hhx", &sendingData[index]);
             PRINT_HEX(sendingData[count])
             PRINT_DEBUG_c(line[temp])
             PRINT_DEBUG_c(line[temp + 1])
