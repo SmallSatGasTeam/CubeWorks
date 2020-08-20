@@ -232,51 +232,50 @@ void main(int argc,char* argv[])
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
-            flags[dataType] = atoi(timeStamp);
-            DEBUG_P(done...)
-            //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
-            //cause this will make no diffrence. 
-            while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
-            { 
-                currentTimeTX = millis();
-                if(!written)
-                {
+        //     flags[dataType] = atoi(timeStamp);
+        //     //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
+        //     //cause this will make no diffrence. 
+        //     while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
+        //     { 
+        //         currentTimeTX = millis();
+        //         if(!written)
+        //         {
                     
-                        //delete the existing data
-                        fclose(recordFile);
-                        if (recordFile = fopen(FLAG_FILE,"w"))
-                        {
-                            //if succesfull we will print it and set the written to true else we will try again.
-                            //reprint it
-                            //print the last sent time
-                            for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
-                            {
-                                fprintf(recordFile, "%ld\n", flags[g]);
-                            }
-                            //set written to true
-                            written = 1;
-                        }
-                        //if we fail recreate the file
-                        else
-                        {
-                            remove(FLAG_FILE);
-                            //recreate the file
-                            recordFile = fopen(FLAG_FILE,"w");
-                            for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
-                            {
-                                fprintf(recordFile, "%ld\n", flags[g]);
-                            }
-                            //set written to true
-                            written = 1;
-                        }
-                }
-            }
-            DEBUG_P(Tx delay: )
-            // PRINT_LONG(currentTimeTX)
-            // PRINT_LONG(startTimeTX)
-            PRINT_TIME(currentTimeTX - startTimeTX)
+        //                 //delete the existing data
+        //                 fclose(recordFile);
+        //                 if (recordFile = fopen(FLAG_FILE,"w"))
+        //                 {
+        //                     //if succesfull we will print it and set the written to true else we will try again.
+        //                     //reprint it
+        //                     //print the last sent time
+        //                     for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
+        //                     {
+        //                         fprintf(recordFile, "%ld\n", flags[g]);
+        //                     }
+        //                     //set written to true
+        //                     written = 1;
+        //                 }
+        //                 //if we fail recreate the file
+        //                 else
+        //                 {
+        //                     remove(FLAG_FILE);
+        //                     //recreate the file
+        //                     recordFile = fopen(FLAG_FILE,"w");
+        //                     for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
+        //                     {
+        //                         fprintf(recordFile, "%ld\n", flags[g]);
+        //                     }
+        //                     //set written to true
+        //                     written = 1;
+        //                 }
+        //         }
+        //     }
+        //     DEBUG_P(Tx delay: )
+        //     // PRINT_LONG(currentTimeTX)
+        //     // PRINT_LONG(startTimeTX)
+        //     PRINT_TIME(currentTimeTX - startTimeTX)
             
-        }
+        // }
         //this is the end of file char we have if we see it we will break the loop
         // if(ch == END_KEY)
         // {
