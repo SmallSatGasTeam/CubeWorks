@@ -201,7 +201,7 @@ void main(int argc,char* argv[])
             {
                 line[charCount++] = ch;
                 PRINT_DEBUG_c(ch)
-                DEBUG_PRINT(charCount)
+                PRINT_DEBUG(charCount)
             }
             //DEBUG_P(Im in the sub loop)
         }while(ch != 10 && !feof(txFile));
