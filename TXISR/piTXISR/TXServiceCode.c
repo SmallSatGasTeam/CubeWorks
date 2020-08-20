@@ -209,7 +209,7 @@ void main(int argc,char* argv[])
         for(int count = 0; count < MAX_BYTES_PER_LINE / 2; count++)
         {
             PRINT_DEBUG(count)
-            sscanf(line[temp], "%2hhx", &sendingData[count]);
+            sscanf(&line[temp], "%2hhx", &sendingData[count]);
             PRINT_HEX(sendingData[count])
             temp +=2;
         }
