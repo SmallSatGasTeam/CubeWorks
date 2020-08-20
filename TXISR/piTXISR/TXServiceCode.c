@@ -208,7 +208,7 @@ void main(int argc,char* argv[])
         
         //convert the data to hex
         int temp = 0;
-        for(int count = 0; count < MAX_BYTES_PER_LINE / 2;)
+        for(int count = 0; count < charCount / 2;)
         {
             PRINT_DEBUG(count)
             sscanf(&line[temp], "%2hhx", &sendingData[count]);
@@ -226,7 +226,6 @@ void main(int argc,char* argv[])
             //start the transmition time
             startTimeTX = millis();
             currentTimeTX = 0;
-            DEBUG_P(sending...)
             write(txPort, sendingData, charCount);
             DEBUG_P(done...)
             //this will let us print to the file
