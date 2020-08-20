@@ -200,23 +200,23 @@ void main(int argc,char* argv[])
             if(end && ch != TIME_DEVISOR && ch != 10) 
             {
                 line[charCount++] = ch;
-                PRINT_DEBUG_c(ch)
-                PRINT_DEBUG(charCount)
+                //PRINT_DEBUG_c(ch)
+                //PRINT_DEBUG(charCount)
             }
             //DEBUG_P(Im in the sub loop)
         }while(ch != 10 && !feof(txFile));
         
         //convert the data to hex
         int temp = 0;
-        for(int count = 0; count <= MAX_BYTES_PER_LINE / 2; count++)
+        for(int count = 0; count <= MAX_BYTES_PER_LINE / 2;)
         {
             PRINT_DEBUG(count)
             sscanf(&line[temp], "%2hhx", &sendingData[count]);
             PRINT_HEX(sendingData[count])
-            PRINT_DEBUG_c(line[temp])
-            PRINT_DEBUG_c(line[temp + 1])
-            PRINT_DEBUG(temp)
-            temp = count * 2;
+            //PRINT_DEBUG_c(line[temp])
+            //PRINT_DEBUG_c(line[temp + 1])
+            //PRINT_DEBUG(temp)
+            temp = ++count * 2;
         }
 
         if(ch == 10 || feof(txFile))
