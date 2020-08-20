@@ -150,7 +150,8 @@ void main(int argc,char* argv[])
     PRINT_TIME(currentTime - startTime)
 
     //write to the radio
-    write(txPort, "ES+W23003321", 13);
+    write(txPort, "ES+W23003321\r", 13);
+    while((currentTimeTX - startTimeTX) < DELAY_tx ) { }
 
     while(!feof(txFile))
     {
@@ -214,7 +215,7 @@ void main(int argc,char* argv[])
             int index = count;
             //PRINT_DEBUG(count)
             sscanf(&line[temp], "%2hhx", &sendingData[index]);
-            //PRINT_HEX(sendingData[count])
+            PRINT_HEX(sendingData[count])
             // PRINT_DEBUG_c(line[temp])
             // PRINT_DEBUG_c(line[temp + 1])
             // PRINT_DEBUG(temp)
