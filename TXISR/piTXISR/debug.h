@@ -8,6 +8,7 @@
 #define PRINT_DEBUG_CHAR(n) putchar(n);
 #define PRINT_TIME(n) printf("%jd milliseconds\n", (intmax_t)n);
 #define PRINT_LONG(n) printf(#n" %ld\n", n);
+#define PRINT_HEX(n) printf("hex value: %X\n", n);
 #else
 #define PRINT_DEBUG(n)
 #define PRINT_DEBUG_f(n) 
@@ -17,4 +18,5 @@
 #define PRINT_DEBUG_CHAR(n) 
 #define PRINT_TIME(n)
 #define PRINT_LONG(n)
+#define PRINT_HEX(n)
 #endif

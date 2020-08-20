@@ -217,9 +217,8 @@ void main(int argc,char* argv[])
             #ifdef DEBUG
                 for(int i = 0; i < charCount / 2; i++)
                 {
-                    PRINT_DEBUG_CHAR(sendingData[i]) 
+                    PRINT_HEX(sendingData[i]) 
                 }
-                PRINT_DEBUG_CHAR('\n')
             #endif
             //this line of code sends things out on the tx line
             //start the transmition time
