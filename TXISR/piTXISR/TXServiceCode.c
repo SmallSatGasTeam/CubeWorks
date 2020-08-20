@@ -135,7 +135,6 @@ void main(int argc,char* argv[])
     //set up array for tx, the max is 256, so we better not exceed that anyways so using an array of 256 is fine.
     char line[MAX_BYTES_PER_LINE] = {0};
     char timeStamp[SIZE_OF_TIME_STAMP];
-    xferData = &line;
     //get tx time
     fscanf(txFile, "%d", &transmissionWindow);
     PRINT_DEBUG(transmissionWindow)
@@ -205,13 +204,12 @@ void main(int argc,char* argv[])
             //DEBUG_P(Im in the sub loop)
         }while(ch != 10 && !feof(txFile));
         
-        //convert the data 
-        int temp = 0;
-        for(int count = 0; count < MAX_BYTES_PER_LINE; count += 2)
+        //convert the data to hex
+        for(int count = 0; count < MAX_BYTES_PER_LINE; count++)
         {
             PRINT_DEBUG(count)
-            sscanf(xferData, "%2hhx", &sendingData[count]);
-            PRINT_HEX(sendingData[temp++])
+            sscanf(line, "%2hhx", &sendingData[count]);
+            PRINT_HEX(sendingData[count])
             xferData += (2 * sizeof(char));
         }
 
