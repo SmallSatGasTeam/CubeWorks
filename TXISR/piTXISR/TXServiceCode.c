@@ -243,6 +243,8 @@ void main(int argc,char* argv[])
             while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
             { 
                 currentTimeTX = millis();
+                PRINT_LONG(currentTimeTX)
+                PRINT_LONG(startTimeTX)
                 if(!written)
                 {
                     
