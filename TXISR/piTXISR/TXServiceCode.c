@@ -275,7 +275,7 @@ void main(int argc,char* argv[])
         //     // PRINT_LONG(startTimeTX)
         //     PRINT_TIME(currentTimeTX - startTimeTX)
             
-        // }
+         }
         //this is the end of file char we have if we see it we will break the loop
         // if(ch == END_KEY)
         // {
