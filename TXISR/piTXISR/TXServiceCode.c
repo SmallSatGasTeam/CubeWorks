@@ -211,6 +211,7 @@ void main(int argc,char* argv[])
             PRINT_DEBUG(count)
             sscanf(&line[temp], "%2hhx", &sendingData[count]);
             PRINT_HEX(sendingData[count])
+            PRINT_DEBUG(temp)
             temp +=2;
         }
 
