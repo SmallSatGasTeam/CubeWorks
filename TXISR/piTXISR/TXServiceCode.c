@@ -213,12 +213,12 @@ void main(int argc,char* argv[])
         {
             //this look like it is uncessary but it is not sure why
             int index = count;
-            PRINT_DEBUG(count)
+            //PRINT_DEBUG(count)
             sscanf(&line[temp], "%2hhx", &sendingData[index]);
-            PRINT_HEX(sendingData[count])
-            PRINT_DEBUG_c(line[temp])
-            PRINT_DEBUG_c(line[temp + 1])
-            PRINT_DEBUG(temp)
+            //PRINT_HEX(sendingData[count])
+            // PRINT_DEBUG_c(line[temp])
+            // PRINT_DEBUG_c(line[temp + 1])
+            // PRINT_DEBUG(temp)
             temp = count * 2;
         }
 
@@ -230,11 +230,11 @@ void main(int argc,char* argv[])
             startTimeTX = millis();
             currentTimeTX = 0;
             write(txPort, sendingData, charCount);
-            DEBUG_P(done...)
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
             flags[dataType] = atoi(timeStamp);
+            DEBUG_P(done...)
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence. 
             while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
