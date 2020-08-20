@@ -200,8 +200,8 @@ void main(int argc,char* argv[])
             if(end && ch != TIME_DEVISOR && ch != 10) 
             {
                 line[charCount++] = ch;
-                //PRINT_DEBUG_c(ch)
-                //PRINT_DEBUG(charCount)
+                PRINT_DEBUG_c(ch)
+                PRINT_DEBUG(charCount)
             }
             //DEBUG_P(Im in the sub loop)
         }while(ch != 10 && !feof(txFile));
