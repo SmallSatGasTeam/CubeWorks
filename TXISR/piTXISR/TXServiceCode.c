@@ -130,9 +130,6 @@ void main(int argc,char* argv[])
     //set up the uart 
     setUpUart();
 
-    //write to the radio
-    write(txPort, "ES+W23003321", 13);
-
     //read in all the lines of a file
     char ch = 1;
     //set up array for tx, the max is 256, so we better not exceed that anyways so using an array of 256 is fine.
@@ -153,6 +150,9 @@ void main(int argc,char* argv[])
     }
     DEBUG_P(current Time - Start time :)
     PRINT_TIME(currentTime - startTime)
+
+    //write to the radio
+    write(txPort, "ES+W23003321", 13);
 
     while(!feof(txFile))
     {
@@ -206,8 +206,9 @@ void main(int argc,char* argv[])
         //convert the data 
         for(int count = 0; count < MAX_BYTES_PER_LINE / 2; count++)
         {
+            DEBUG_P(looping)
             sscanf(xferData, "%2hhx", &sendingData[count]);
-            xferData += 2;
+            xferData += (2 * sizeof(char));
         }
 
         if(ch == 10 || feof(txFile))
