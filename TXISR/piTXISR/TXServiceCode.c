@@ -230,7 +230,7 @@ void main(int argc,char* argv[])
             currentTimeTX = 0;
             for(int i = 0; i < charCount / 2; i++)
             {
-                PRINT_DEBUG_CHAR(sendingData[i])
+                PRINT_HEX(sendingData[i])
                 dprintf(txPort, "%X", sendingData[i]);
             }
             //write(txPort, sendingData, (charCount / 2));
