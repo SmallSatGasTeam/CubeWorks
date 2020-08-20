@@ -208,7 +208,7 @@ void main(int argc,char* argv[])
         //convert the data to hex
         int temp = 0;
         //PRINT_DEBUG(charCount / 2)
-        for(int count = 0; count <= (charCount / 2); count++)
+        for(int count = 0; count < (charCount / 2); count++)
         {
             //this look like it is uncessary but it is not sure why
             int index = count;
@@ -220,8 +220,9 @@ void main(int argc,char* argv[])
             // PRINT_DEBUG(temp)
             temp = count * 2;
         }
+        DEBUG_P(leaving loop)
 
-        if(ch == 10)
+        if(ch == 10 || feof(txFile))
         {
             //transmit the data
             //this line of code sends things out on the tx line
