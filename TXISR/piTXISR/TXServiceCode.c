@@ -206,11 +206,12 @@ void main(int argc,char* argv[])
         }while(ch != 10 && !feof(txFile));
         
         //convert the data 
+        int temp = 0;
         for(int count = 0; count < MAX_BYTES_PER_LINE; count += 2)
         {
             PRINT_DEBUG(count)
             sscanf(xferData, "%2hhx", &sendingData[count]);
-            PRINT_HEX(sendingData[count])
+            PRINT_HEX(sendingData[temp++])
             xferData += (2 * sizeof(char));
         }
 
