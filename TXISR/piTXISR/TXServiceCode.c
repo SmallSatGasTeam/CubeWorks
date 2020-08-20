@@ -18,13 +18,14 @@
 
 #define FLAG_FILE "./flagsFile.txt" //change this later for the real program
 #define FORMAT_FILE "./txFile.txt" //this is the file that dallan will creat
-#define UART_PORT "/dev/serial0" //this is serial port name, make sure this is correct for the final code
+#define UART_PORT "/dev/ttyAMA0" //this is serial port name, make sure this is correct for the final code
 
 //this is our time delay
 #define DELAY_tx 120
 
 //this defines are for the data types
-#define MAX_BYTES_PER_LINE 512
+//this needs to be double the normal size
+#define MAX_BYTES_PER_LINE 256
 #define MAX_NUM_OF_DATA_TYPES 5
 #define DELAY_UNTIL_TX_WINDOW 5000
 #define SIZE_OF_TIME_STAMP 10
@@ -85,6 +86,9 @@ void main(int argc,char* argv[])
     //gather user input
     int dataType = changeCharToInt(*argv[1]);
     int transmissionWindow = 0;
+    char *xferData;
+    char sendingData[MAX_NUM_OF_DATA_TYPES / 2]; 
+    
 
     FILE *txFile;
     if (!(txFile = fopen(FORMAT_FILE,"r")))
@@ -126,11 +130,15 @@ void main(int argc,char* argv[])
     //set up the uart 
     setUpUart();
 
+    //write to the radio
+    write(txPort, "ES+W23003321", 13);
+
     //read in all the lines of a file
     char ch = 1;
     //set up array for tx, the max is 256, so we better not exceed that anyways so using an array of 256 is fine.
     char line[MAX_BYTES_PER_LINE] = {0};
     char timeStamp[SIZE_OF_TIME_STAMP];
+    xferData = &line;
     //get tx time
     fscanf(txFile, "%d", &transmissionWindow);
     PRINT_DEBUG(transmissionWindow)
@@ -143,14 +151,8 @@ void main(int argc,char* argv[])
     { 
         currentTime = millis();
     }
-    //write to the radio
-    //NOTE a return carage needs to be added to the command (\r)
-    write(txPort, "ES+W23003321\r", 13);
     DEBUG_P(current Time - Start time :)
     PRINT_TIME(currentTime - startTime)
-    while((currentTimeTX - startTimeTX) < DELAY_tx ) { }
-    write(txPort, "47415350414353", 14);
-    while((currentTimeTX - startTimeTX) < DELAY_tx ) { }
 
     while(!feof(txFile))
     {
@@ -197,20 +199,24 @@ void main(int argc,char* argv[])
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
             if((dataType != PHOTO_TYPE || end) && ch != TIME_DEVISOR)line[charCount++] = ch;
-            else if(dataType != PHOTO_TYPE && ch == TIME_DEVISOR) line[charCount++] = ',';
             //PRINT_DEBUG_c(ch)
             //DEBUG_P(Im in the sub loop)
         }while(ch != 10 && !feof(txFile));
         
-        
+        //convert the data 
+        for(int count = 0; count < MAX_BYTES_PER_LINE / 2; count++)
+        {
+            sscanf(xferData, "%2hhx", &sendingData[count]);
+            xferData += 2;
+        }
 
         if(ch == 10 || feof(txFile))
         {
             //transmit the data
             #ifdef DEBUG
-                for(int i = 0; i < charCount; i++)
+                for(int i = 0; i < charCount / 2; i++)
                 {
-                    PRINT_DEBUG_CHAR(line[i]) 
+                    PRINT_DEBUG_CHAR(sendingData[i]) 
                 }
                 PRINT_DEBUG_CHAR('\n')
             #endif
@@ -218,7 +224,7 @@ void main(int argc,char* argv[])
             //start the transmition time
             startTimeTX = millis();
             currentTimeTX = 0;
-            write(txPort, line, charCount);
+            write(txPort, sendingData, charCount);
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
@@ -272,8 +278,7 @@ void main(int argc,char* argv[])
         //     break;
         // }
     } 
-    write(txPort, "47415350414353", 14);
-    while((currentTimeTX - startTimeTX) < DELAY_tx ) { }
+
      //give control of the port back to linuxs
     //  int disable = system(DISABLE);
     //  //if we fail reboot
