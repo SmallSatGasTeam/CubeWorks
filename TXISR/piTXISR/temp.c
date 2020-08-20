@@ -1,3 +1,41 @@
+Skip to content
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@ShawnBraden 
+Learn Git and GitHub without any code!
+Using the Hello World guide, you’ll start a branch, write comments, and open a pull request.
+
+
+SmallSatGasTeam
+/
+CubeWorks
+3
+1
+3
+Code
+Issues
+Pull requests
+1
+Actions
+Projects
+Wiki
+Security
+Insights
+Settings
+CubeWorks/TXISR/piTXISR/TXServiceCode.c
+@ShawnBraden
+ShawnBraden add hex to the file
+Latest commit ff23a83 7 days ago
+ History
+ 2 contributors
+@ShawnBraden@dkstevensaggie
+333 lines (301 sloc)  11 KB
+  
 #include <unistd.h>
 #include <sys/time.h>
 #include <sys/resource.h>
@@ -18,14 +56,13 @@
 
 #define FLAG_FILE "./flagsFile.txt" //change this later for the real program
 #define FORMAT_FILE "./txFile.txt" //this is the file that dallan will creat
-#define UART_PORT "/dev/ttyAMA0" //this is serial port name, make sure this is correct for the final code
+#define UART_PORT "/dev/serial0" //this is serial port name, make sure this is correct for the final code
 
 //this is our time delay
 #define DELAY_tx 120
 
 //this defines are for the data types
-//this needs to be double the normal size
-#define MAX_BYTES_PER_LINE 256
+#define MAX_BYTES_PER_LINE 512
 #define MAX_NUM_OF_DATA_TYPES 5
 #define DELAY_UNTIL_TX_WINDOW 5000
 #define SIZE_OF_TIME_STAMP 10
@@ -86,8 +123,6 @@ void main(int argc,char* argv[])
     //gather user input
     int dataType = changeCharToInt(*argv[1]);
     int transmissionWindow = 0;
-    char sendingData[(MAX_NUM_OF_DATA_TYPES / 2)] = {0}; 
-    
 
     FILE *txFile;
     if (!(txFile = fopen(FORMAT_FILE,"r")))
@@ -146,11 +181,14 @@ void main(int argc,char* argv[])
     { 
         currentTime = millis();
     }
+    //write to the radio
+    //NOTE a return carage needs to be added to the command (\r)
+    write(txPort, "ES+W23003321\r", 13);
     DEBUG_P(current Time - Start time :)
     PRINT_TIME(currentTime - startTime)
-
-    //write to the radio
-    write(txPort, "ES+W23003321", 13);
+    while((currentTimeTX - startTimeTX) < DELAY_tx ) { }
+    write(txPort, "47415350414353", 14);
+    while((currentTimeTX - startTimeTX) < DELAY_tx ) { }
 
     while(!feof(txFile))
     {
@@ -196,39 +234,29 @@ void main(int argc,char* argv[])
             }
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
-            if(end && ch != TIME_DEVISOR && ch != 10) 
-            {
-                line[charCount++] = ch;
-                //PRINT_DEBUG_c(ch)
-                //PRINT_DEBUG(charCount)
-            }
+            if((dataType != PHOTO_TYPE || end) && ch != TIME_DEVISOR)line[charCount++] = ch;
+            else if(dataType != PHOTO_TYPE && ch == TIME_DEVISOR) line[charCount++] = ',';
+            //PRINT_DEBUG_c(ch)
             //DEBUG_P(Im in the sub loop)
         }while(ch != 10 && !feof(txFile));
         
-        //convert the data to hex
-        int temp = 0;
-        //PRINT_DEBUG(charCount / 2)
-        for(int count = 0; count <= (charCount / 2); count++)
-        {
-            //this look like it is uncessary but it is not sure why
-            int index = count;
-            //PRINT_DEBUG(count)
-            sscanf(&line[temp], "%2hhx", &sendingData[index]);
-            //PRINT_HEX(sendingData[count])
-            // PRINT_DEBUG_c(line[temp])
-            // PRINT_DEBUG_c(line[temp + 1])
-            // PRINT_DEBUG(temp)
-            temp = count * 2;
-        }
+        
 
         if(ch == 10 || feof(txFile))
         {
             //transmit the data
+            #ifdef DEBUG
+                for(int i = 0; i < charCount; i++)
+                {
+                    PRINT_DEBUG_CHAR(line[i]) 
+                }
+                PRINT_DEBUG_CHAR('\n')
+            #endif
             //this line of code sends things out on the tx line
             //start the transmition time
             startTimeTX = millis();
             currentTimeTX = 0;
-            //write(txPort, sendingData, charCount);
+            write(txPort, line, charCount);
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
@@ -282,7 +310,8 @@ void main(int argc,char* argv[])
         //     break;
         // }
     } 
-
+    write(txPort, "47415350414353", 14);
+    while((currentTimeTX - startTimeTX) < DELAY_tx ) { }
      //give control of the port back to linuxs
     //  int disable = system(DISABLE);
     //  //if we fail reboot
@@ -338,5 +367,3 @@ int changeCharToInt(char a)
             }
     }
 }
-
-
