@@ -205,12 +205,13 @@ void main(int argc,char* argv[])
         }while(ch != 10 && !feof(txFile));
         
         //convert the data to hex
-        for(int count = 0; count < MAX_BYTES_PER_LINE; count++)
+        int temp = 0;
+        for(int count = 0; count < MAX_BYTES_PER_LINE / 2; count++)
         {
             PRINT_DEBUG(count)
-            sscanf(line, "%2hhx", &sendingData[count]);
+            sscanf(line[temp], "%2hhx", &sendingData[count]);
             PRINT_HEX(sendingData[count])
-            xferData += (2 * sizeof(char));
+            temp +=2;
         }
 
         if(ch == 10 || feof(txFile))
