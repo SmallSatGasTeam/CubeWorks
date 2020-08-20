@@ -208,7 +208,7 @@ void main(int argc,char* argv[])
         
         //convert the data to hex
         int temp = 0;
-        for(int count = 0; count < MAX_BYTES_PER_LINE / 2; count++)
+        for(int count = 0; count <= MAX_BYTES_PER_LINE / 2; count++)
         {
             PRINT_DEBUG(count)
             sscanf(&line[temp], "%2hhx", &sendingData[count]);
