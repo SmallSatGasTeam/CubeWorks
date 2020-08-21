@@ -241,6 +241,7 @@ void main(int argc,char* argv[])
                 //printf("%X ", &sendingData[q]);
                 dprintf(txPort, "%d", sendingData[q]);
             }
+            DEBUG_P(leaving loop)
             //write(txPort, sendingData, (charCount / 2));
             //this will let us print to the file
             int written = 0;
