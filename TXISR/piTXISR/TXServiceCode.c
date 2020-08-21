@@ -235,11 +235,11 @@ void main(int argc,char* argv[])
             for(int q = 0; q <= (charCount / 2); q++)
             {
                 printf("%X ", sendingData[q]);
-                dprintf(txPort, "%d", sendingData[q]);
+                //dprintf(txPort, "%d", sendingData[q]);
                 PRINT_DEBUG(q)
             }
             //dprintf(txPort, "\n\r");
-            //DEBUG_P(leaving loop)
+            DEBUG_P(leaving loop)
             //write(txPort, sendingData, (charCount / 2));
             //this will let us print to the file
             int written = 0;
