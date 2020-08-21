@@ -231,7 +231,7 @@ void main(int argc,char* argv[])
                 printf("%X ", sendingData[q]);
                 //dprintf(txPort, "%d", sendingData[q]);
             }
-            write(txPort, line, charCount);
+            //write(txPort, line, charCount);
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
