@@ -248,6 +248,7 @@ void main(int argc,char* argv[])
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence.
             currentTimeTX = millis(); 
+            PRINT_TIME(currentTime)
             //this stores the last sent data time
             flags[dataType] = atoi(timeStamp);
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
