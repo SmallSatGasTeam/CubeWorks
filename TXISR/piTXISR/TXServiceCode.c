@@ -41,7 +41,7 @@
 #define BOUD_RATE 9600
 
 int changeCharToInt(char a);
-int convertCharToHex (char lowByte, char hightByte);
+char convertCharToHex (char lowByte, char hightByte);
 
 //this sets control of the settings for our serial port
 struct termios options;
@@ -238,11 +238,11 @@ void main(int argc,char* argv[])
             {
                 //PRINT_DEBUG(q)
                 printf("%X ", sendingData[q]);
-                dprintf(txPort, "%d", sendingData[q]);
+                //dprintf(txPort, "%d", sendingData[q]);
             }
             dprintf(txPort, "\n\r");
             //DEBUG_P(leaving loop)
-            //write(txPort, sendingData, (charCount / 2));
+            write(txPort, sendingData, (charCount / 2));
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
@@ -377,12 +377,12 @@ int changeCharToInt(char a)
  * if it fails to convert the vaule it exits the program and sends an error message.
  * it returns the int value
  *******************************************************************************************/
-int convertCharToHex (char lowByte, char highByte)
+char convertCharToHex (char lowByte, char highByte)
 {
     //convert to ints
     char low = changeCharToInt(lowByte);
     char high = changeCharToInt(highByte);
     //shift high and add it to low.
-    int new = low + (high << 4);
+    char new = low + (high << 4);
     return new;
 }
