@@ -4,16 +4,13 @@
 #include <time.h>
 #include <fcntl.h>
 #include <termios.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <stdint.h>
 //Take just the DEBUG line out when your are done debugging and leave debug.h
 #define DEBUG
 #include "debug.h"
-
-#ifndef DEBUG
-    #include<stdio.h>
-#endif
 
 //enable and disable are set up in the make file,
 #define ENABLE "./configPinsTXISR"
@@ -27,7 +24,6 @@
 #define DELAY_tx 120
 
 //this defines are for the data types
-//this needs to be double the normal size
 #define MAX_BYTES_PER_LINE 256
 #define MAX_NUM_OF_DATA_TYPES 5
 #define DELAY_UNTIL_TX_WINDOW 5000
@@ -91,7 +87,6 @@ void main(int argc,char* argv[])
     int dataType = changeCharToInt(*argv[1]);
     int transmissionWindow = 0;
     char sendingData[(MAX_NUM_OF_DATA_TYPES / 2)] = {0}; 
-    
 
     FILE *txFile;
     if (!(txFile = fopen(FORMAT_FILE,"r")))
@@ -150,11 +145,11 @@ void main(int argc,char* argv[])
     { 
         currentTime = millis();
     }
+    //write to the radio
+    //NOTE a return carage needs to be added to the command (\r)
+    write(txPort, "ES+W23003321\r", 13);
     DEBUG_P(current Time - Start time :)
     PRINT_TIME(currentTime - startTime)
-
-    //write to the radio
-    write(txPort, "ES+W23003321\r", 13);
 
     while(!feof(txFile))
     {
@@ -200,12 +195,8 @@ void main(int argc,char* argv[])
             }
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
-            if(end && ch != TIME_DEVISOR && ch != 10) 
-            {
-                line[charCount++] = ch;
-                //PRINT_DEBUG_c(ch)
-                //PRINT_DEBUG(charCount)
-            }
+            if(end && ch != TIME_DEVISOR)line[charCount++] = ch;
+            //PRINT_DEBUG_c(ch)
             //DEBUG_P(Im in the sub loop)
         }while(ch != 10 && !feof(txFile));
         
@@ -225,7 +216,6 @@ void main(int argc,char* argv[])
             // PRINT_DEBUG(temp)
             temp = count * 2;
         }
-        //DEBUG_P(leaving loop)
 
         if(ch == 10 || feof(txFile))
         {
@@ -233,24 +223,19 @@ void main(int argc,char* argv[])
             //this line of code sends things out on the tx line
             //start the transmition time
             startTimeTX = millis();
+            currentTimeTX = 0;
             DEBUG_P(sending Data:)
             for(int q = 0; q <= (charCount / 2); q++)
             {
                 //PRINT_DEBUG(q)
                 printf("%X ", sendingData[q]);
-                dprintf(txPort, "%d", sendingData[q]);
+                //dprintf(txPort, "%d", sendingData[q]);
             }
-            //DEBUG_P(leaving loop)
-            //write(txPort, sendingData, (charCount / 2));
+            //write(txPort, line, charCount);
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
-            //flags[dataType] = atoi(timeStamp);
-            //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
-            //cause this will make no diffrence.
-            currentTimeTX = millis(); 
-            //this stores the last sent data time
-            //flags[dataType] = atoi(timeStamp);
+            flags[dataType] = atoi(timeStamp);
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence. 
             while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
