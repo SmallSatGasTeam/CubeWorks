@@ -231,6 +231,7 @@ void main(int argc,char* argv[])
             //this line of code sends things out on the tx line
             //start the transmition time
             startTimeTX = millis();
+            currentTimeTX = 0;
             DEBUG_P(Data:)
             for(int q = 0; q <= (charCount / 2); q++)
             {
