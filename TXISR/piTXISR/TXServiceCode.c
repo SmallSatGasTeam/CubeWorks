@@ -217,14 +217,14 @@ void main(int argc,char* argv[])
         //PRINT_DEBUG(charCount / 2)
         for(int count = 0; count < (charCount / 2); count++)
         {
-            PRINT_DEBUG(count)
+            //PRINT_DEBUG(count)
             //this func does not work I will have to write my own
             //sscanf(&line[temp], "%2hhx", &sendingData[index]);
             //I made a custom func to conver the data
             sendingData[count] = convertCharToHex(line[temp + 1], line[temp]);
             PRINT_HEX(sendingData[count])
-            PRINT_DEBUG_c(line[temp])
-            PRINT_DEBUG_c(line[temp + 1])
+            //PRINT_DEBUG_c(line[temp])
+            //PRINT_DEBUG_c(line[temp + 1])
             // PRINT_DEBUG(temp)
             temp = count * 2;
         }
