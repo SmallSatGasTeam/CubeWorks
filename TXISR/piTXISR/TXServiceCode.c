@@ -221,7 +221,7 @@ void main(int argc,char* argv[])
                 //sscanf(&line[temp], "%2hhx", &sendingData[index]);
                 //I made a custom func to conver the data
                 sendingData[count] = convertCharToHex(line[temp + 1], line[temp]);
-                //PRINT_HEX(sendingData[count])
+                PRINT_HEX(sendingData[count])
                 //PRINT_DEBUG_c(line[temp])
                 //PRINT_DEBUG_c(line[temp + 1])
                 // PRINT_DEBUG(temp)
@@ -236,11 +236,11 @@ void main(int argc,char* argv[])
             {
                 //PRINT_DEBUG(q)
                 printf("%X ", sendingData[q]);
-                //dprintf(txPort, "%d", sendingData[q]);
+                dprintf(txPort, "%d", sendingData[q]);
             }
             //dprintf(txPort, "\n\r");
             //DEBUG_P(leaving loop)
-            write(txPort, sendingData, (charCount / 2));
+            //write(txPort, sendingData, (charCount / 2));
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
