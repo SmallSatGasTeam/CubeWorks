@@ -216,8 +216,8 @@ void main(int argc,char* argv[])
             //this look like it is uncessary but it is not sure why
             int index = count;
             PRINT_DEBUG(count)
-            //sscanf(&line[temp], "%2hhx", &sendingData[index]);
-            //PRINT_HEX(sendingData[count])
+            sscanf(&line[temp], "%2hhx", &sendingData[index]);
+            PRINT_HEX(sendingData[index])
             // PRINT_DEBUG_c(line[temp])
             // PRINT_DEBUG_c(line[temp + 1])
             // PRINT_DEBUG(temp)
@@ -231,7 +231,7 @@ void main(int argc,char* argv[])
             //this line of code sends things out on the tx line
             //start the transmition time
             startTimeTX = millis();
-            currentTimeTX = 0;
+            currentTimeTX = millis();
             for(int i = 0; i <= charCount / 2; i++)
             {
                 PRINT_HEX(sendingData[i])
