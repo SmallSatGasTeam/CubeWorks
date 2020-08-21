@@ -37,6 +37,7 @@
 #define BOUD_RATE 9600
 
 int changeCharToInt(char a);
+int convertCharToHex (char lowByte, char hightByte);
 
 //this sets control of the settings for our serial port
 struct termios options;
