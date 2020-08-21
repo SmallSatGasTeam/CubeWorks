@@ -209,7 +209,7 @@ void main(int argc,char* argv[])
         
         //DEBUG_P(leaving loop)
 
-        if(ch == 10 )
+        if(ch == 10 || feof(txFile))
         {
             //convert the data to hex
             int temp = 0;
