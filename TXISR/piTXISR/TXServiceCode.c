@@ -158,14 +158,15 @@ void main(int argc,char* argv[])
 
     while(!feof(txFile))
     {
+        DEBUG_P(start:)
         //this checks the transmission window
         currentTime = millis();
         //break if we have passed the tx window
-        // if((currentTime - startTime) > transmissionWindow) 
-        // {
-        //     DEBUG_P(\nEnding>>>)
-        //     break;
-        // }
+        if((currentTime - startTime) > transmissionWindow) 
+        {
+            DEBUG_P(\nEnding>>>)
+            break;
+        }
 
         
         DEBUG_P(current Time - Start time:)
@@ -233,7 +234,7 @@ void main(int argc,char* argv[])
             //this line of code sends things out on the tx line
             //start the transmition time
             startTimeTX = millis();
-            DEBUG_P(sending Data:)
+            DEBUG_P(Data:)
             for(int q = 0; q <= (charCount / 2); q++)
             {
                 //PRINT_DEBUG(q)
@@ -292,7 +293,6 @@ void main(int argc,char* argv[])
             PRINT_TIME(currentTimeTX)
             PRINT_TIME(startTimeTX)
             PRINT_TIME(currentTimeTX - startTimeTX)
-            
         }
     } 
 
