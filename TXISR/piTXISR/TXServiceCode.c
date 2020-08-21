@@ -219,7 +219,7 @@ void main(int argc,char* argv[])
             //sscanf(&line[temp], "%2hhx", &sendingData[index]);
             //I made a custom func to conver the data
             sendingData[count] = convertCharToHex(line[temp + 1], line[temp]);
-            PRINT_HEX(sendingData[count])
+            //PRINT_HEX(sendingData[count])
             //PRINT_DEBUG_c(line[temp])
             //PRINT_DEBUG_c(line[temp + 1])
             // PRINT_DEBUG(temp)
@@ -248,7 +248,6 @@ void main(int argc,char* argv[])
             //flags[dataType] = atoi(timeStamp);
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence.
-            DEBUG_P(starting delay)
             currentTimeTX = millis(); 
             //this stores the last sent data time
             flags[dataType] = atoi(timeStamp);
