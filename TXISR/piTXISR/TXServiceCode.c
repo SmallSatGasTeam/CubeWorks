@@ -156,7 +156,7 @@ void main(int argc,char* argv[])
     //write to the radio
     write(txPort, "ES+W23003321\r", 13);
 
-    while(!feof(txFile))
+    while(1)
     {
        //this checks the transmission window
         //currentTime = millis();
@@ -227,7 +227,7 @@ void main(int argc,char* argv[])
         }
         //DEBUG_P(leaving loop)
 
-        if(ch == 10 || feof(txFile))
+        if(ch == 10)
         {
             //transmit the data
             //this line of code sends things out on the tx line
