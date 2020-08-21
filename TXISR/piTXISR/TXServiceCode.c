@@ -219,7 +219,7 @@ void main(int argc,char* argv[])
             //sscanf(&line[temp], "%2hhx", &sendingData[index]);
             //I made a custom func to conver the data
             sendingData[count] = convertCharToHex(line[temp + 1], line[temp]);
-            //PRINT_HEX(sendingData[count])
+            PRINT_HEX(sendingData[count])
             //PRINT_DEBUG_c(line[temp])
             //PRINT_DEBUG_c(line[temp + 1])
             // PRINT_DEBUG(temp)
@@ -235,10 +235,10 @@ void main(int argc,char* argv[])
             startTimeTX = millis();
             currentTimeTX = millis();
             DEBUG_P(sending Data:)
-            for(int i = 0; i < (charCount / 2); i++)
+            for(int q = 0; q < (charCount / 2); q++)
             {
-                //printf("%X ", &sendingData[i]);
-                dprintf(txPort, "%d", sendingData[i]);
+                printf("%X ", &sendingData[q]);
+                dprintf(txPort, "%d", sendingData[q]);
             }
             //write(txPort, sendingData, (charCount / 2));
             //this will let us print to the file
