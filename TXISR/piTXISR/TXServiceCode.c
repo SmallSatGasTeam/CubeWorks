@@ -231,9 +231,10 @@ void main(int argc,char* argv[])
             //start the transmition time
             startTimeTX = millis();
             currentTimeTX = millis();
-            for(int i = 0; i <= charCount / 2; i++)
+            printf("sending Data: ");
+            for(int i = 0; i < (charCount / 2); i++)
             {
-                PRINT_HEX(sendingData[i])
+                printf("%X", &sendingData[i]);
                 dprintf(txPort, "%X", sendingData[i]);
             }
             //write(txPort, sendingData, (charCount / 2));
