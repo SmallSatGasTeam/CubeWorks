@@ -21,7 +21,7 @@
 
 #define FLAG_FILE "./flagsFile.txt" //change this later for the real program
 #define FORMAT_FILE "./txFile.txt" //this is the file that dallan will creat
-#define UART_PORT "/dev/ttyAMA0" //this is serial port name, make sure this is correct for the final code
+#define UART_PORT "/dev/serial0" //this is serial port name, make sure this is correct for the final code
 
 //this is our time delay
 #define DELAY_tx 120
@@ -236,8 +236,8 @@ void main(int argc,char* argv[])
             DEBUG_P(sending Data:)
             for(int q = 0; q <= (charCount / 2); q++)
             {
-                PRINT_DEBUG(q)
-                //printf("%X ", &sendingData[q]);
+                //PRINT_DEBUG(q)
+                printf("%X ", &sendingData[q]);
                 dprintf(txPort, "%d", sendingData[q]);
             }
             DEBUG_P(leaving loop)
@@ -245,7 +245,7 @@ void main(int argc,char* argv[])
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
-            flags[dataType] = atoi(timeStamp);
+            //flags[dataType] = atoi(timeStamp);
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence.
             DEBUG_P(starting delay)
