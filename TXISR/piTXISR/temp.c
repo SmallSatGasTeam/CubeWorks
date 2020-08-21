@@ -85,6 +85,7 @@ void main(int argc,char* argv[])
     //gather user input
     int dataType = changeCharToInt(*argv[1]);
     int transmissionWindow = 0;
+    char sendingData[(MAX_NUM_OF_DATA_TYPES / 2)] = {0}; 
 
     FILE *txFile;
     if (!(txFile = fopen(FORMAT_FILE,"r")))
@@ -199,23 +200,38 @@ void main(int argc,char* argv[])
             //DEBUG_P(Im in the sub loop)
         }while(ch != 10 && !feof(txFile));
         
-        
+        //convert the data to hex
+        int temp = 0;
+        //PRINT_DEBUG(charCount / 2)
+        for(int count = 0; count <= (charCount / 2); count++)
+        {
+            //PRINT_DEBUG(count)
+            //this func does not work I will have to write my own
+            //sscanf(&line[temp], "%2hhx", &sendingData[index]);
+            //I made a custom func to conver the data
+            sendingData[count] = convertCharToHex(line[temp + 1], line[temp]);
+            //PRINT_HEX(sendingData[count])
+            //PRINT_DEBUG_c(line[temp])
+            //PRINT_DEBUG_c(line[temp + 1])
+            // PRINT_DEBUG(temp)
+            temp = count * 2;
+        }
 
         if(ch == 10 || feof(txFile))
         {
             //transmit the data
-            #ifdef DEBUG
-                for(int i = 0; i < charCount; i++)
-                {
-                    PRINT_DEBUG_CHAR(line[i]) 
-                }
-                PRINT_DEBUG_CHAR('\n')
-            #endif
             //this line of code sends things out on the tx line
             //start the transmition time
             startTimeTX = millis();
             currentTimeTX = 0;
-            write(txPort, line, charCount);
+            DEBUG_P(sending Data:)
+            for(int q = 0; q <= (charCount / 2); q++)
+            {
+                //PRINT_DEBUG(q)
+                printf("%X ", sendingData[q]);
+                dprintf(txPort, "%d", sendingData[q]);
+            }
+            //write(txPort, line, charCount);
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
@@ -299,7 +315,7 @@ void setUpUart()
 
 /*******************************************************************************************
  * setUpUart
- * this func will convert a char in to an int (works for 0 though 5)
+ * this func will convert a char in to an int (works for 0 though 9 and a - f)
  * if it fails to convert the vaule it exits the program and sends an error message.
  *******************************************************************************************/
 int changeCharToInt(char a)
@@ -319,6 +335,26 @@ int changeCharToInt(char a)
             return 4;
         case 53:
             return 5;
+        case 54:
+            return 6;
+        case 55:
+            return 7;
+        case 56:
+            return 8;
+        case 57:
+            return 9;
+        case 'a':
+            return 10;
+        case 'b':
+            return 11;
+        case 'c':
+            return 12;
+        case 'd':
+            return 13;
+        case 'e':
+            return 14;
+        case 'f':
+            return 15;
         default :
             {
                 DEBUG_P(invaild data type)
@@ -326,4 +362,19 @@ int changeCharToInt(char a)
                 exit(1);
             }
     }
+}
+/*******************************************************************************************
+ * Convertto hex
+ * this func will convert a char in to hex 
+ * if it fails to convert the vaule it exits the program and sends an error message.
+ * it returns the int value
+ *******************************************************************************************/
+int convertCharToHex (char lowByte, char highByte)
+{
+    //convert to ints
+    char low = changeCharToInt(lowByte);
+    char high = changeCharToInt(highByte);
+    //shift high and add it to low.
+    int new = low + (high << 4);
+    return new;
 }
