@@ -387,7 +387,7 @@ int convertCharToHex (char lowByte, char highByte)
     char low = changeCharToInt(lowByte);
     char high = changeCharToInt(highByte);
     //shift high and add it to low.
-    int new = low + (high << 4);
+    int new = low + (high >> 4);
     return new;
 }
 
