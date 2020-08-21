@@ -221,7 +221,7 @@ void main(int argc,char* argv[])
             //this func does not work I will have to write my own
             //sscanf(&line[temp], "%2hhx", &sendingData[index]);
             //I made a custom func to conver the data
-            sendingData[count] = convertCharToHex(line[temp], line[temp + 1]);
+            sendingData[count] = convertCharToHex(line[temp + 1], line[temp]);
             PRINT_HEX(sendingData[count])
             PRINT_DEBUG_c(line[temp])
             PRINT_DEBUG_c(line[temp + 1])
@@ -387,8 +387,6 @@ int convertCharToHex (char lowByte, char highByte)
     char low = changeCharToInt(lowByte);
     char high = changeCharToInt(highByte);
     //shift high and add it to low.
-    int new = low + (high >> 4);
+    int new = low + (high << 4);
     return new;
 }
-
-
