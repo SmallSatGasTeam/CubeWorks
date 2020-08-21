@@ -205,7 +205,7 @@ void main(int argc,char* argv[])
         int temp = 0;
         PRINT_DEBUG(charCount / 2)
         int q = 0;
-        for(q <= (charCount / 2); q++)
+        for(q; q <= (charCount / 2); q++)
         {
             PRINT_DEBUG(q)
             //this func does not work I will have to write my own
@@ -228,7 +228,7 @@ void main(int argc,char* argv[])
             
             DEBUG_P(sending Data:)
             int f = 0;
-            for(f <= (charCount / 2); f++)
+            for(f; f <= (charCount / 2); f++)
             {
                 PRINT_DEBUG(f)
                 printf("%X ", sendingData[f]);
