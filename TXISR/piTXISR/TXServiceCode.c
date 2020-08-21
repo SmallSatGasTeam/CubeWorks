@@ -239,7 +239,7 @@ void main(int argc,char* argv[])
                 //PRINT_DEBUG(q)
             }
             //dprintf(txPort, "\n\r");
-            DEBUG_P(leaving loop)
+            //DEBUG_P(leaving loop)
             //write(txPort, sendingData, (charCount / 2));
             //this will let us print to the file
             int written = 0;
@@ -250,7 +250,7 @@ void main(int argc,char* argv[])
             currentTimeTX = millis(); 
             PRINT_TIME(currentTime)
             //this stores the last sent data time
-            //flags[dataType] = atoi(timeStamp);
+            flags[dataType] = atoi(timeStamp);
             PRINT_LONG(flags[dataType])
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence. 
