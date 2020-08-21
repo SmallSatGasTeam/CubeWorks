@@ -156,7 +156,7 @@ void main(int argc,char* argv[])
     while(!feof(txFile))
     {
        //this checks the transmission window
-        //currentTime = millis();
+        currentTime = millis();
         //break if we have passed the tx window
         if((currentTime - startTime) > transmissionWindow) 
         {
@@ -165,7 +165,7 @@ void main(int argc,char* argv[])
         }
 
         
-        DEBUG_P(current Time - Start time :)
+        DEBUG_P(current Time - Start Time:)
         PRINT_TIME(currentTime - startTime)
         DEBUG_P(\nSending>>>)
         //get the size of each line in the file
@@ -235,7 +235,7 @@ void main(int argc,char* argv[])
             {
                 //PRINT_DEBUG(q)
                 printf("%X ", sendingData[q]);
-                //dprintf(txPort, "%d", sendingData[q]);
+                dprintf(txPort, "%d", sendingData[q]);
             }
             dprintf(txPort, "\n\r");
             //DEBUG_P(leaving loop)
