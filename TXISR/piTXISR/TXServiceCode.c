@@ -238,12 +238,12 @@ void main(int argc,char* argv[])
             startTimeTX = millis();
             currentTimeTX = millis();
             DEBUG_P(sending Data:)
-            for(int i = 0; i < (charCount / 2); i++)
-            {
-                printf("%X ", &sendingData[i]);
-                dprintf(txPort, "%d", sendingData[i]);
-            }
-            //write(txPort, sendingData, (charCount / 2));
+            // for(int i = 0; i < (charCount / 2); i++)
+            // {
+            //     printf("%X ", &sendingData[i]);
+            //     dprintf(txPort, "%d", sendingData[i]);
+            // }
+            write(txPort, sendingData, (charCount / 2));
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
