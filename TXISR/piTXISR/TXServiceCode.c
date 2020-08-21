@@ -227,8 +227,8 @@ void main(int argc,char* argv[])
             DEBUG_P(sending Data:)
             for(int f = 0; f <= (charCount / 2); f++)
             {
-                //PRINT_DEBUG(q)
-                printf("%X ", sendingData[f]);
+                PRINT_DEBUG(q)
+                //printf("%X ", sendingData[f]);
                 //dprintf(txPort, "%d", sendingData[q]);
             }
             //write(txPort, line, charCount);
