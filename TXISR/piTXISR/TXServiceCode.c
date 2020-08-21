@@ -132,8 +132,8 @@ void main(int argc,char* argv[])
     //read in all the lines of a file
     char ch = 1;
     //set up array for tx, the max is 256, so we better not exceed that anyways so using an array of 256 is fine.
-    char line[MAX_BYTES_PER_LINE] = {0};
-    char timeStamp[SIZE_OF_TIME_STAMP];
+    char line[MAX_BYTES_PER_LINE + 1] = {0};
+    char timeStamp[SIZE_OF_TIME_STAMP + 1];
     //get tx time
     fscanf(txFile, "%d", &transmissionWindow);
     PRINT_DEBUG(transmissionWindow)
@@ -204,6 +204,9 @@ void main(int argc,char* argv[])
             }
             //DEBUG_P(Im in the sub loop)
         }while(ch != 10 && !feof(txFile));
+
+        //add the end of string char
+        line[charCount + 1] = '\0';
         
         //convert the data to hex
         int temp = 0;
