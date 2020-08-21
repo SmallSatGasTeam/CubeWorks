@@ -203,8 +203,8 @@ void main(int argc,char* argv[])
         
         //convert the data to hex
         int temp = 0;
-        //PRINT_DEBUG(charCount / 2)
-        for(int count = 0; count < (charCount / 2); count++)
+        PRINT_DEBUG(charCount / 2)
+        for(int count = 0; count <= (charCount / 2); count++)
         {
             //PRINT_DEBUG(count)
             //this func does not work I will have to write my own
@@ -216,6 +216,7 @@ void main(int argc,char* argv[])
             //PRINT_DEBUG_c(line[temp + 1])
             // PRINT_DEBUG(temp)
             temp = count * 2;
+            if(count == charCount || count > charCount) break;
         }
         DEBUG_P(sending Data:)
         if(ch == 10 || feof(txFile))
