@@ -223,8 +223,8 @@ void main(int argc,char* argv[])
             //I made a custom func to conver the data
             sendingData[count] = convertCharToHex(line[temp], line[temp + 1]);
             PRINT_HEX(sendingData[count])
-            // PRINT_DEBUG_c(line[temp])
-            // PRINT_DEBUG_c(line[temp + 1])
+            PRINT_DEBUG_c(line[temp])
+            PRINT_DEBUG_c(line[temp + 1])
             // PRINT_DEBUG(temp)
             temp = count * 2;
         }
