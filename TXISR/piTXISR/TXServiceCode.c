@@ -213,8 +213,9 @@ void main(int argc,char* argv[])
         {
             //convert the data to hex
             int temp = 0;
+            int num = charCount / 2;
             //PRINT_DEBUG(charCount / 2)
-            for(int count = 0; count <= (charCount / 2); count++)
+            for(int count = 0; count <= num; count++)
             {
                 //PRINT_DEBUG(count)
                 //this func does not work I will have to write my own
@@ -222,8 +223,8 @@ void main(int argc,char* argv[])
                 //I made a custom func to conver the data
                 sendingData[count] = convertCharToHex(line[temp + 1], line[temp]);
                 PRINT_HEX(sendingData[count])
-                //PRINT_DEBUG_c(line[temp])
-                //PRINT_DEBUG_c(line[temp + 1])
+                PRINT_DEBUG_c(line[temp])
+                PRINT_DEBUG_c(line[temp + 1])
                 // PRINT_DEBUG(temp)
                 temp = count * 2;
             }
@@ -233,7 +234,7 @@ void main(int argc,char* argv[])
             // startTimeTX = millis();
             // currentTimeTX = 0;
             // DEBUG_P(Data:)
-            // for(int q = 0; q <= (charCount / 2); q++)
+            // for(int q = 0; q <= num; q++)
             // {
             //     printf("%X ", sendingData[q]);
             //     dprintf(txPort, "%d", sendingData[q]);
@@ -241,7 +242,7 @@ void main(int argc,char* argv[])
             // }
             // //dprintf(txPort, "\n\r");
             // //DEBUG_P(leaving loop)
-            // //write(txPort, sendingData, (charCount / 2));
+            // //write(txPort, sendingData, num);
             // //this will let us print to the file
             // int written = 0;
             // //this stores the last sent data time
