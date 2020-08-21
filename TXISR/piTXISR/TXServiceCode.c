@@ -215,16 +215,16 @@ void main(int argc,char* argv[])
             int temp = 0;
             int num = charCount / 2;
             PRINT_DEBUG(num)
-            for(int k = 0; k <= num; k++)
-            {
-                PRINT_DEBUG(num)
-                sendingData[k] = convertCharToHex(line[temp + 1], line[temp]);
-                temp = k * 2;
+            // for(int k = 0; k <= num; k++)
+            // {
+            //     PRINT_DEBUG(num)
+            //     sendingData[k] = convertCharToHex(line[temp + 1], line[temp]);
+            //     temp = k * 2;
 
-                //send data
-                printf("%X ", sendingData[k]);
-                dprintf(txPort, "%d", sendingData[k]);
-            }
+            //     //send data
+            //     printf("%X ", sendingData[k]);
+            //     dprintf(txPort, "%d", sendingData[k]);
+            // }
             
             //dprintf(txPort, "\n\r");
             DEBUG_P(leaving loop)
