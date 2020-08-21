@@ -5,7 +5,7 @@ sys.path.append("../")
 from Drivers.sunSensors import sunSensorDriver
 
 class SunSensorTest(unittest.TestCase):
-    sun = sunSensorDriver.SunSensor()
+    sun = sunSensorDriver.sunSensor()
     """
     A test case containing sets of assertions in the form of class methods.
     """
