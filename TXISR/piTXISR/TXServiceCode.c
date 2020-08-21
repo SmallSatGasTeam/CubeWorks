@@ -222,7 +222,7 @@ void main(int argc,char* argv[])
             //sscanf(&line[temp], "%2hhx", &sendingData[index]);
             //I made a custom func to conver the data
             sendingData[count] = convertCharToHex(line[temp], line[temp + 1]);
-            PRINT_DEBUG(sendingData[count])
+            PRINT_HEX(sendingData[count])
             // PRINT_DEBUG_c(line[temp])
             // PRINT_DEBUG_c(line[temp + 1])
             // PRINT_DEBUG(temp)
