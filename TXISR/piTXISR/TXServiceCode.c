@@ -233,7 +233,6 @@ void main(int argc,char* argv[])
             //this line of code sends things out on the tx line
             //start the transmition time
             startTimeTX = millis();
-            currentTimeTX = millis();
             DEBUG_P(sending Data:)
             for(int q = 0; q <= (charCount / 2); q++)
             {
@@ -248,7 +247,9 @@ void main(int argc,char* argv[])
             //this stores the last sent data time
             flags[dataType] = atoi(timeStamp);
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
-            //cause this will make no diffrence. 
+            //cause this will make no diffrence.
+            DEBUG_P(starting delay)
+            currentTimeTX = millis(); 
             while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
             { 
                 currentTimeTX = millis();
