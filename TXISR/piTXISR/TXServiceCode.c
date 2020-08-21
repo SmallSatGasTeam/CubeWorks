@@ -4,6 +4,7 @@
 #include <time.h>
 #include <fcntl.h>
 #include <termios.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <stdint.h>
@@ -11,15 +12,11 @@
 #define DEBUG
 #include "debug.h"
 
-#ifndef DEBUG
-    #include<stdio.h>
-#endif
-
 //enable and disable are set up in the make file,
 #define ENABLE "./configPinsTXISR"
 #define DISABLE "./configPinsTXISRDone"
 
-#define FLAG_FILE "./newFlags.txt" //change this later for the real program
+#define FLAG_FILE "./flagsFile.txt" //change this later for the real program
 #define FORMAT_FILE "./txFile.txt" //this is the file that dallan will creat
 #define UART_PORT "/dev/serial0" //this is serial port name, make sure this is correct for the final code
 
@@ -27,7 +24,6 @@
 #define DELAY_tx 120
 
 //this defines are for the data types
-//this needs to be double the normal size
 #define MAX_BYTES_PER_LINE 256
 #define MAX_NUM_OF_DATA_TYPES 5
 #define DELAY_UNTIL_TX_WINDOW 5000
@@ -39,10 +35,8 @@
 //it is place next to every place that the boud rate is used, you also need to change the define as it is used as well.
 //NOTE: this boud rate (9600) is the radio speed. We talk to it with a diffrent speed, in other words the 9600 is our divisor for the delay
 #define BOUD_RATE 9600
-#define END_OF_FILE '@'
 
 int changeCharToInt(char a);
-char convertCharToHex (char lowByte, char hightByte);
 
 //this sets control of the settings for our serial port
 struct termios options;
@@ -58,6 +52,7 @@ intmax_t millis()
     intmax_t a = ((current_time.tv_sec) * 1000) + ((current_time.tv_nsec) / 1000000);
     return a;
 }
+
 
 
 /*******************************************************************************************
@@ -157,7 +152,7 @@ void main(int argc,char* argv[])
     //write to the radio
     write(txPort, "ES+W23003321\r", 13);
 
-    while(ch != END_OF_FILE)
+    while(!feof(txFile))
     {
        //this checks the transmission window
         //currentTime = millis();
@@ -185,10 +180,10 @@ void main(int argc,char* argv[])
 
         do 
         {
-            //if(feof(txFile)) break;
+            if(feof(txFile)) break;
             ch = fgetc(txFile);
             //this collects the time stamp
-            if(!end && ch != END_OF_FILE)
+            if(!end && !feof(txFile))
             {
                 timeStamp[charTimeCount++] = ch;
                 //PRINT_DEBUG_c(ch)
@@ -208,7 +203,7 @@ void main(int argc,char* argv[])
                 //PRINT_DEBUG(charCount)
             }
             //DEBUG_P(Im in the sub loop)
-        }while(ch != 10 && ch != END_OF_FILE);
+        }while(ch != 10 && !feof(txFile));
         
         //convert the data to hex
         int temp = 0;
@@ -228,7 +223,7 @@ void main(int argc,char* argv[])
         }
         //DEBUG_P(leaving loop)
 
-        if(ch == 10 || ch == END_OF_FILE)
+        if(ch == 10 || feof(txFile))
         {
             //transmit the data
             //this line of code sends things out on the tx line
