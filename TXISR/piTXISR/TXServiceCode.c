@@ -239,8 +239,9 @@ void main(int argc,char* argv[])
             {
                 //PRINT_DEBUG(q)
                 printf("%X ", sendingData[q]);
-                dprintf(txPort, "%X", sendingData[q]);
+                dprintf(txPort, "%d", sendingData[q]);
             }
+            dprintf(txPort, "\r");
             //DEBUG_P(leaving loop)
             //write(txPort, sendingData, (charCount / 2));
             //this will let us print to the file
@@ -289,7 +290,7 @@ void main(int argc,char* argv[])
                         }
                 }
             }
-            DEBUG_P(\\nTx delay: )
+            DEBUG_P(\nTx delay: )
             PRINT_TIME(currentTimeTX)
             PRINT_TIME(startTimeTX)
             PRINT_TIME(currentTimeTX - startTimeTX)
