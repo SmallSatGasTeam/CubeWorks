@@ -250,11 +250,15 @@ void main(int argc,char* argv[])
             //cause this will make no diffrence.
             DEBUG_P(starting delay)
             currentTimeTX = millis(); 
+            //this stores the last sent data time
+            flags[dataType] = atoi(timeStamp);
+            //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
+            //cause this will make no diffrence. 
             while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
             { 
                 currentTimeTX = millis();
-                PRINT_LONG(currentTimeTX)
-                PRINT_LONG(startTimeTX)
+                // PRINT_LONG(currentTimeTX)
+                // PRINT_LONG(startTimeTX)
                 if(!written)
                 {
                     
@@ -286,10 +290,10 @@ void main(int argc,char* argv[])
                             written = 1;
                         }
                 }
-             }
+            }
             DEBUG_P(Tx delay: )
-            // PRINT_LONG(currentTimeTX)
-            // PRINT_LONG(startTimeTX)
+            PRINT_LONG(currentTimeTX)
+            PRINT_LONG(startTimeTX)
             PRINT_TIME(currentTimeTX - startTimeTX)
             
         }
