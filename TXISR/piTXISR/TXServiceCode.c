@@ -204,7 +204,8 @@ void main(int argc,char* argv[])
         //convert the data to hex
         int temp = 0;
         PRINT_DEBUG(charCount / 2)
-        for(int q = 0; q <= (charCount / 2); q++)
+        int q = 0;
+        for(; q <= (charCount / 2); q++)
         {
             PRINT_DEBUG(q)
             //this func does not work I will have to write my own
@@ -226,11 +227,12 @@ void main(int argc,char* argv[])
             startTimeTX = millis();
             
             DEBUG_P(sending Data:)
-            for(int f = 0; f <= (charCount / 2); f++)
+            int f = 0
+            for(; f <= (charCount / 2); f++)
             {
                 PRINT_DEBUG(f)
-                //printf("%X ", sendingData[f]);
-                //dprintf(txPort, "%d", sendingData[q]);
+                printf("%X ", sendingData[f]);
+                dprintf(txPort, "%d", sendingData[q]);
             }
             //write(txPort, line, charCount);
             //this will let us print to the file
