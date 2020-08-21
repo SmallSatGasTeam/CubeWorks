@@ -288,10 +288,10 @@ void main(int argc,char* argv[])
             //             }
             //     }
             //}
-            PRINT_TIME(currentTimeTX)
-            PRINT_TIME(startTimeTX)
-            PRINT_TIME(currentTimeTX - startTimeTX)
-        }
+            // PRINT_TIME(currentTimeTX)
+            // PRINT_TIME(startTimeTX)
+            // PRINT_TIME(currentTimeTX - startTimeTX)
+        //}
     } 
 
      //give control of the port back to linuxs
