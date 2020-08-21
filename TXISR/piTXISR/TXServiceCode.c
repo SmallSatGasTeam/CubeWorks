@@ -215,19 +215,10 @@ void main(int argc,char* argv[])
             int temp = 0;
             int num = charCount / 2;
             PRINT_DEBUG(num)
-            for(int count = 0; count <= num; count++)
+            for(int k = 0; k <= num; k++)
             {
-                PRINT_DEBUG(count)
-                PRINT_DEBUG(num)
-                //this func does not work I will have to write my own
-                //sscanf(&line[temp], "%2hhx", &sendingData[index]);
-                //I made a custom func to conver the data
-                sendingData[count] = convertCharToHex(line[temp + 1], line[temp]);
-                //PRINT_HEX(sendingData[count])
-                //PRINT_DEBUG_c(line[temp])
-                //PRINT_DEBUG_c(line[temp + 1])
-                // PRINT_DEBUG(temp)
-                temp = count * 2;
+                sendingData[k] = convertCharToHex(line[temp + 1], line[temp]);
+                temp = k * 2;
             }
             //transmit the data
             //this line of code sends things out on the tx line
