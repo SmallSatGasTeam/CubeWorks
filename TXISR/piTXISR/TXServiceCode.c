@@ -204,9 +204,11 @@ void main(int argc,char* argv[])
         //convert the data to hex
         int temp = 0;
         PRINT_DEBUG(charCount / 2)
-        for(int q = 0; q <= 51; q++)
+        for(char q = 0; q <= (charCount / 2); q++)
         {
             PRINT_DEBUG(q)
+            temp = q * 2;
+            PRINT_DEBUG(temp)
             //this func does not work I will have to write my own
             //sscanf(&line[temp], "%2hhx", &sendingData[index]);
             //I made a custom func to conver the data
@@ -214,8 +216,6 @@ void main(int argc,char* argv[])
             PRINT_HEX(sendingData[q])
             PRINT_DEBUG_c(line[temp])
             PRINT_DEBUG_c(line[temp + 1])
-            PRINT_DEBUG(temp)
-            temp = q * 2;
         }
         DEBUG_P(sending Data:)
         if(ch == 10 || feof(txFile))
