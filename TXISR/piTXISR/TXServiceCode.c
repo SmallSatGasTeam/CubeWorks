@@ -218,6 +218,7 @@ void main(int argc,char* argv[])
             for(int count = 0; count <= num; count++)
             {
                 PRINT_DEBUG(count)
+                PRINT_DEBUG(num)
                 //this func does not work I will have to write my own
                 //sscanf(&line[temp], "%2hhx", &sendingData[index]);
                 //I made a custom func to conver the data
