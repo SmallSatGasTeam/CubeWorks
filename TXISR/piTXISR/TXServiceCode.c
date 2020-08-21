@@ -86,7 +86,7 @@ void main(int argc,char* argv[])
     //gather user input
     int dataType = changeCharToInt(*argv[1]);
     int transmissionWindow = 0;
-    char sendingData[(MAX_NUM_OF_DATA_TYPES / 2)] = {0}; 
+    int sendingData[(MAX_NUM_OF_DATA_TYPES / 2)] = {0}; 
 
     FILE *txFile;
     if (!(txFile = fopen(FORMAT_FILE,"r")))
