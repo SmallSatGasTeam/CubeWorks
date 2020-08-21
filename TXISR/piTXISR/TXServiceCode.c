@@ -230,15 +230,15 @@ void main(int argc,char* argv[])
             //transmit the data
             //this line of code sends things out on the tx line
             //start the transmition time
-            startTimeTX = millis();
-            currentTimeTX = 0;
-            DEBUG_P(Data:)
-            for(int q = 0; q <= (charCount / 2); q++)
-            {
-                printf("%X ", sendingData[q]);
-                dprintf(txPort, "%d", sendingData[q]);
-                //PRINT_DEBUG(q)
-            }
+            // startTimeTX = millis();
+            // currentTimeTX = 0;
+            // DEBUG_P(Data:)
+            // for(int q = 0; q <= (charCount / 2); q++)
+            // {
+            //     printf("%X ", sendingData[q]);
+            //     dprintf(txPort, "%d", sendingData[q]);
+            //     //PRINT_DEBUG(q)
+            // }
             // //dprintf(txPort, "\n\r");
             // //DEBUG_P(leaving loop)
             // //write(txPort, sendingData, (charCount / 2));
