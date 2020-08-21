@@ -217,21 +217,15 @@ void main(int argc,char* argv[])
             PRINT_DEBUG(num)
             for(int k = 0; k <= num; k++)
             {
+                PRINT_DEBUG(num)
                 sendingData[k] = convertCharToHex(line[temp + 1], line[temp]);
                 temp = k * 2;
+
+                //send data
+                printf("%X ", sendingData[k]);
+                dprintf(txPort, "%d", sendingData[k]);
             }
-            //transmit the data
-            //this line of code sends things out on the tx line
-            //start the transmition time
-            // startTimeTX = millis();
-            // currentTimeTX = 0;
-            DEBUG_P(Data:)
-            for(int q = 0; q <= num; q++)
-            {
-                printf("%X ", sendingData[q]);
-                dprintf(txPort, "%d", sendingData[q]);
-                //PRINT_DEBUG(q)
-            }
+            
             //dprintf(txPort, "\n\r");
             //DEBUG_P(leaving loop)
             // //write(txPort, sendingData, num);
