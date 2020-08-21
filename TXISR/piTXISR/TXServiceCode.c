@@ -256,8 +256,6 @@ void main(int argc,char* argv[])
             while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
             { 
                 currentTimeTX = millis();
-                // PRINT_LONG(currentTimeTX)
-                // PRINT_LONG(startTimeTX)
                 if(!written)
                 {
                     
@@ -291,16 +289,11 @@ void main(int argc,char* argv[])
                 }
             }
             DEBUG_P(Tx delay: )
-            PRINT_LONG(currentTimeTX)
-            PRINT_LONG(startTimeTX)
+            PRINT_TIME(currentTimeTX)
+            PRINT_TIME(startTimeTX)
             PRINT_TIME(currentTimeTX - startTimeTX)
             
         }
-        //this is the end of file char we have if we see it we will break the loop
-        // if(ch == END_KEY)
-        // {
-        //     break;
-        // }
     } 
 
      //give control of the port back to linuxs
