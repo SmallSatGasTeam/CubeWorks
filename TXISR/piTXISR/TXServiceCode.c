@@ -240,6 +240,7 @@ void main(int argc,char* argv[])
                 printf("%X ", sendingData[q]);
                 dprintf(txPort, "%d", sendingData[q]);
             }
+            dprintf(txPort, "\n\r");
             //DEBUG_P(leaving loop)
             //write(txPort, sendingData, (charCount / 2));
             //this will let us print to the file
