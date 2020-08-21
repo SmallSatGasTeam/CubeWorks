@@ -39,6 +39,7 @@
 //it is place next to every place that the boud rate is used, you also need to change the define as it is used as well.
 //NOTE: this boud rate (9600) is the radio speed. We talk to it with a diffrent speed, in other words the 9600 is our divisor for the delay
 #define BOUD_RATE 9600
+#define END_OF_FILE '@'
 
 int changeCharToInt(char a);
 char convertCharToHex (char lowByte, char hightByte);
@@ -156,7 +157,7 @@ void main(int argc,char* argv[])
     //write to the radio
     write(txPort, "ES+W23003321\r", 13);
 
-    while(1)
+    while(ch != END_OF_FILE)
     {
        //this checks the transmission window
         //currentTime = millis();
@@ -184,10 +185,10 @@ void main(int argc,char* argv[])
 
         do 
         {
-            if(feof(txFile)) break;
+            //if(feof(txFile)) break;
             ch = fgetc(txFile);
             //this collects the time stamp
-            if(!end && !feof(txFile))
+            if(!end && ch != END_OF_FILE)
             {
                 timeStamp[charTimeCount++] = ch;
                 //PRINT_DEBUG_c(ch)
@@ -207,7 +208,7 @@ void main(int argc,char* argv[])
                 //PRINT_DEBUG(charCount)
             }
             //DEBUG_P(Im in the sub loop)
-        }while(ch != 10 && !feof(txFile));
+        }while(ch != 10 && ch != END_OF_FILE);
         
         //convert the data to hex
         int temp = 0;
@@ -227,7 +228,7 @@ void main(int argc,char* argv[])
         }
         //DEBUG_P(leaving loop)
 
-        if(ch == 10)
+        if(ch == 10 || ch == END_OF_FILE)
         {
             //transmit the data
             //this line of code sends things out on the tx line
