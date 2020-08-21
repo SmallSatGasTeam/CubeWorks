@@ -134,7 +134,7 @@ void main(int argc,char* argv[])
     char ch = 1;
     //set up array for tx, the max is 256, so we better not exceed that anyways so using an array of 256 is fine.
     char line[MAX_BYTES_PER_LINE] = {0};
-    char timeStamp[SIZE_OF_TIME_STAMP];
+    long timeStamp[SIZE_OF_TIME_STAMP];
     //get tx time
     fscanf(txFile, "%d", &transmissionWindow);
     PRINT_DEBUG(transmissionWindow)
@@ -234,9 +234,9 @@ void main(int argc,char* argv[])
             DEBUG_P(Data:)
             for(int q = 0; q <= (charCount / 2); q++)
             {
-                //PRINT_DEBUG(q)
-                //printf("%X ", sendingData[q]);
-                //dprintf(txPort, "%d", sendingData[q]);
+                PRINT_DEBUG(q)
+                printf("%X ", sendingData[q]);
+                dprintf(txPort, "%d", sendingData[q]);
             }
             //dprintf(txPort, "\n\r");
             //DEBUG_P(leaving loop)
