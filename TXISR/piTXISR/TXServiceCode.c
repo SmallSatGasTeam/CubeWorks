@@ -228,10 +228,6 @@ void main(int argc,char* argv[])
             int written = 0;
             //this stores the last sent data time
             flags[dataType] = atoi(timeStamp);
-            //this will let us print to the file
-            int written = 0;
-            //this stores the last sent data time
-            flags[dataType] = atoi(timeStamp);
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence.
             //this stores the last sent data time
