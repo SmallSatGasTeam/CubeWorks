@@ -159,7 +159,7 @@ void main(int argc,char* argv[])
     while(!feof(txFile))
     {
        //this checks the transmission window
-        currentTime = millis();
+        //currentTime = millis();
         //break if we have passed the tx window
         if((currentTime - startTime) > transmissionWindow) 
         {
@@ -168,7 +168,7 @@ void main(int argc,char* argv[])
         }
 
         
-        DEBUG_P(current Time - Start time:)
+        DEBUG_P(current Time - Start time :)
         PRINT_TIME(currentTime - startTime)
         DEBUG_P(\nSending>>>)
         //get the size of each line in the file
