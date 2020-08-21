@@ -225,12 +225,12 @@ void main(int argc,char* argv[])
             startTimeTX = millis();
             
             DEBUG_P(sending Data:)
-            // for(int q = 0; q <= (charCount / 2); q++)
-            // {
-            //     //PRINT_DEBUG(q)
-            //     printf("%X ", sendingData[q]);
-            //     //dprintf(txPort, "%d", sendingData[q]);
-            // }
+            for(int f = 0; f <= (charCount / 2); f++)
+            {
+                //PRINT_DEBUG(q)
+                printf("%X ", sendingData[f]);
+                //dprintf(txPort, "%d", sendingData[q]);
+            }
             //write(txPort, line, charCount);
             //this will let us print to the file
             int written = 0;
