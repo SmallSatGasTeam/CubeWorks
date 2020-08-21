@@ -215,9 +215,9 @@ void main(int argc,char* argv[])
         {
             //this look like it is uncessary but it is not sure why
             int index = count;
-            //PRINT_DEBUG(count)
-            sscanf(&line[temp], "%2hhx", &sendingData[index]);
-            PRINT_HEX(sendingData[count])
+            PRINT_DEBUG(count)
+            //sscanf(&line[temp], "%2hhx", &sendingData[index]);
+            //PRINT_HEX(sendingData[count])
             // PRINT_DEBUG_c(line[temp])
             // PRINT_DEBUG_c(line[temp + 1])
             // PRINT_DEBUG(temp)
