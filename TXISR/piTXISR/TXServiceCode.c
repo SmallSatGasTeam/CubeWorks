@@ -9,7 +9,7 @@
 #include <errno.h>
 #include <stdint.h>
 //Take just the DEBUG line out when your are done debugging and leave debug.h
-
+#define DEBUG
 #include "debug.h"
 
 //enable and disable are set up in the make file,
@@ -251,6 +251,7 @@ void main(int argc,char* argv[])
             PRINT_TIME(currentTime)
             //this stores the last sent data time
             flags[dataType] = atoi(timeStamp);
+            PRINT_LONG(flags[dataType])
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence. 
             while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
@@ -288,7 +289,6 @@ void main(int argc,char* argv[])
                         }
                 }
             }
-            DEBUG_P(\nTx delay: )
             PRINT_TIME(currentTimeTX)
             PRINT_TIME(startTimeTX)
             PRINT_TIME(currentTimeTX - startTimeTX)
