@@ -206,37 +206,38 @@ void main(int argc,char* argv[])
             //DEBUG_P(Im in the sub loop)
         }while(ch != 10 && !feof(txFile));
         
-        //convert the data to hex
-        int temp = 0;
-        //PRINT_DEBUG(charCount / 2)
-        for(int count = 0; count <= (charCount / 2); count++)
-        {
-            //PRINT_DEBUG(count)
-            //this func does not work I will have to write my own
-            //sscanf(&line[temp], "%2hhx", &sendingData[index]);
-            //I made a custom func to conver the data
-            sendingData[count] = convertCharToHex(line[temp + 1], line[temp]);
-            //PRINT_HEX(sendingData[count])
-            //PRINT_DEBUG_c(line[temp])
-            //PRINT_DEBUG_c(line[temp + 1])
-            // PRINT_DEBUG(temp)
-            temp = count * 2;
-        }
+        
         //DEBUG_P(leaving loop)
 
         if(ch == 10 || feof(txFile))
         {
+            //convert the data to hex
+            int temp = 0;
+            //PRINT_DEBUG(charCount / 2)
+            for(int count = 0; count <= (charCount / 2); count++)
+            {
+                //PRINT_DEBUG(count)
+                //this func does not work I will have to write my own
+                //sscanf(&line[temp], "%2hhx", &sendingData[index]);
+                //I made a custom func to conver the data
+                sendingData[count] = convertCharToHex(line[temp + 1], line[temp]);
+                //PRINT_HEX(sendingData[count])
+                //PRINT_DEBUG_c(line[temp])
+                //PRINT_DEBUG_c(line[temp + 1])
+                // PRINT_DEBUG(temp)
+                temp = count * 2;
+            }
             //transmit the data
             //this line of code sends things out on the tx line
             //start the transmition time
             startTimeTX = millis();
             DEBUG_P(Data:)
-            // for(int q = 0; q <= (charCount / 2); q++)
-            // {
-            //     //PRINT_DEBUG(q)
-            //     printf("%X ", sendingData[q]);
-            //     //dprintf(txPort, "%d", sendingData[q]);
-            // }
+            for(int q = 0; q <= (charCount / 2); q++)
+            {
+                //PRINT_DEBUG(q)
+                printf("%X ", sendingData[q]);
+                //dprintf(txPort, "%d", sendingData[q]);
+            }
             //dprintf(txPort, "\n\r");
             //DEBUG_P(leaving loop)
             write(txPort, sendingData, (charCount / 2));
