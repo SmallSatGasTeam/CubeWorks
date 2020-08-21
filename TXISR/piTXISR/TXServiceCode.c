@@ -209,85 +209,85 @@ void main(int argc,char* argv[])
         
         //DEBUG_P(leaving loop)
 
-        if(ch == 10 || feof(txFile))
-        {
-            //convert the data to hex
-            int temp = 0;
-            //PRINT_DEBUG(charCount / 2)
-            for(int count = 0; count <= (charCount / 2); count++)
-            {
-                //PRINT_DEBUG(count)
-                //this func does not work I will have to write my own
-                //sscanf(&line[temp], "%2hhx", &sendingData[index]);
-                //I made a custom func to conver the data
-                sendingData[count] = convertCharToHex(line[temp + 1], line[temp]);
-                PRINT_HEX(sendingData[count])
-                //PRINT_DEBUG_c(line[temp])
-                //PRINT_DEBUG_c(line[temp + 1])
-                // PRINT_DEBUG(temp)
-                temp = count * 2;
-            }
-            //transmit the data
-            //this line of code sends things out on the tx line
-            //start the transmition time
-            startTimeTX = millis();
-            currentTimeTX = 0;
-            DEBUG_P(Data:)
-            for(int q = 0; q <= (charCount / 2); q++)
-            {
-                printf("%X ", sendingData[q]);
-                dprintf(txPort, "%d", sendingData[q]);
-                //PRINT_DEBUG(q)
-            }
-            //dprintf(txPort, "\n\r");
-            //DEBUG_P(leaving loop)
-            //write(txPort, sendingData, (charCount / 2));
-            //this will let us print to the file
-            int written = 0;
-            //this stores the last sent data time
-            //flags[dataType] = atoi(timeStamp);
-            //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
-            //cause this will make no diffrence.
-            //this stores the last sent data time
-            flags[dataType] = atoi(timeStamp);
-            PRINT_LONG(flags[dataType])
-            //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
-            //cause this will make no diffrence. 
-            while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
-            { 
-                currentTimeTX = millis();
-                if(!written)
-                {
+        // if(ch == 10 || feof(txFile))
+        // {
+            // //convert the data to hex
+            // int temp = 0;
+            // //PRINT_DEBUG(charCount / 2)
+            // for(int count = 0; count <= (charCount / 2); count++)
+            // {
+            //     //PRINT_DEBUG(count)
+            //     //this func does not work I will have to write my own
+            //     //sscanf(&line[temp], "%2hhx", &sendingData[index]);
+            //     //I made a custom func to conver the data
+            //     sendingData[count] = convertCharToHex(line[temp + 1], line[temp]);
+            //     PRINT_HEX(sendingData[count])
+            //     //PRINT_DEBUG_c(line[temp])
+            //     //PRINT_DEBUG_c(line[temp + 1])
+            //     // PRINT_DEBUG(temp)
+            //     temp = count * 2;
+            // }
+            // //transmit the data
+            // //this line of code sends things out on the tx line
+            // //start the transmition time
+            // startTimeTX = millis();
+            // currentTimeTX = 0;
+            // DEBUG_P(Data:)
+            // for(int q = 0; q <= (charCount / 2); q++)
+            // {
+            //     printf("%X ", sendingData[q]);
+            //     dprintf(txPort, "%d", sendingData[q]);
+            //     //PRINT_DEBUG(q)
+            // }
+            // //dprintf(txPort, "\n\r");
+            // //DEBUG_P(leaving loop)
+            // //write(txPort, sendingData, (charCount / 2));
+            // //this will let us print to the file
+            // int written = 0;
+            // //this stores the last sent data time
+            // //flags[dataType] = atoi(timeStamp);
+            // //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
+            // //cause this will make no diffrence.
+            // //this stores the last sent data time
+            // flags[dataType] = atoi(timeStamp);
+            // PRINT_LONG(flags[dataType])
+            // //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
+            // //cause this will make no diffrence. 
+            // while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
+            // { 
+            //     currentTimeTX = millis();
+            //     if(!written)
+            //     {
                     
-                        //delete the existing data
-                        fclose(recordFile);
-                        if (recordFile = fopen(FLAG_FILE,"w"))
-                        {
-                            //if succesfull we will print it and set the written to true else we will try again.
-                            //reprint it
-                            //print the last sent time
-                            for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
-                            {
-                                fprintf(recordFile, "%ld\n", flags[g]);
-                            }
-                            //set written to true
-                            written = 1;
-                        }
-                        //if we fail recreate the file
-                        else
-                        {
-                            remove(FLAG_FILE);
-                            //recreate the file
-                            recordFile = fopen(FLAG_FILE,"w");
-                            for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
-                            {
-                                fprintf(recordFile, "%ld\n", flags[g]);
-                            }
-                            //set written to true
-                            written = 1;
-                        }
-                }
-            }
+            //             //delete the existing data
+            //             fclose(recordFile);
+            //             if (recordFile = fopen(FLAG_FILE,"w"))
+            //             {
+            //                 //if succesfull we will print it and set the written to true else we will try again.
+            //                 //reprint it
+            //                 //print the last sent time
+            //                 for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
+            //                 {
+            //                     fprintf(recordFile, "%ld\n", flags[g]);
+            //                 }
+            //                 //set written to true
+            //                 written = 1;
+            //             }
+            //             //if we fail recreate the file
+            //             else
+            //             {
+            //                 remove(FLAG_FILE);
+            //                 //recreate the file
+            //                 recordFile = fopen(FLAG_FILE,"w");
+            //                 for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
+            //                 {
+            //                     fprintf(recordFile, "%ld\n", flags[g]);
+            //                 }
+            //                 //set written to true
+            //                 written = 1;
+            //             }
+            //     }
+            //}
             PRINT_TIME(currentTimeTX)
             PRINT_TIME(startTimeTX)
             PRINT_TIME(currentTimeTX - startTimeTX)
