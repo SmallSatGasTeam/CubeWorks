@@ -237,8 +237,8 @@ void main(int argc,char* argv[])
             DEBUG_P(sending Data:)
             for(int i = 0; i < (charCount / 2); i++)
             {
-                printf("%X ", &sendingData[i]);
-                //dprintf(txPort, "%X", sendingData[i]);
+                //printf("%X ", &sendingData[i]);
+                dprintf(txPort, "%X", sendingData[i]);
             }
             write(txPort, sendingData, (charCount / 2));
             //this will let us print to the file
