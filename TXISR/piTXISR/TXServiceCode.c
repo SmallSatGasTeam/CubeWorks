@@ -214,7 +214,7 @@ void main(int argc,char* argv[])
             //convert the data to hex
             int temp = 0;
             int num = charCount / 2;
-            //PRINT_DEBUG(charCount / 2)
+            PRINT_DEBUG(num)
             for(int count = 0; count <= num; count++)
             {
                 PRINT_DEBUG(count)
@@ -233,7 +233,7 @@ void main(int argc,char* argv[])
             //start the transmition time
             // startTimeTX = millis();
             // currentTimeTX = 0;
-            // DEBUG_P(Data:)
+            DEBUG_P(Data:)
             for(int q = 0; q <= num; q++)
             {
                 printf("%X ", sendingData[q]);
