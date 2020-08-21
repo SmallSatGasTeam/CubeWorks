@@ -4,13 +4,16 @@
 #include <time.h>
 #include <fcntl.h>
 #include <termios.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <stdint.h>
 //Take just the DEBUG line out when your are done debugging and leave debug.h
 #define DEBUG
 #include "debug.h"
+
+#ifndef DEBUG
+    #include<stdio.h>
+#endif
 
 //enable and disable are set up in the make file,
 #define ENABLE "./configPinsTXISR"
