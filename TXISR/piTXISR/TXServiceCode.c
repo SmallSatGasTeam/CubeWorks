@@ -242,7 +242,7 @@ void main(int argc,char* argv[])
             }
             dprintf(txPort, "\n\r");
             //DEBUG_P(leaving loop)
-            write(txPort, sendingData, (charCount / 2));
+            //write(txPort, sendingData, (charCount / 2));
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
