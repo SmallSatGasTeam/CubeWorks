@@ -42,6 +42,7 @@ int changeCharToInt(char a);
 struct termios options;
 
 void setUpUart();
+char convertCharToHex (char lowByte, char highByte);
 
 //returns ms since the epoch
 intmax_t millis()
