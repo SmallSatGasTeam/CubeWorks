@@ -199,7 +199,7 @@ void main(int argc,char* argv[])
             //this if lets us not send the line number if this is a photo file
             if(end && ch != TIME_DEVISOR && ch != 10) 
             {
-                line[charCount++] = ch;
+                line[charCount++] = convertCharToHex(fgetc(txFile), ch);
                 //PRINT_DEBUG_c(ch)
                 //PRINT_DEBUG(charCount)
             }
@@ -211,28 +211,27 @@ void main(int argc,char* argv[])
 
         if(ch == '\n' || feof(txFile))
         {
-            //convert the data to hex
-            int temp = 0;
-            int num = charCount / 2;
-            PRINT_DEBUG(num)
-            // for(int k = 0; k <= num; k++)
-            // {
-            //     PRINT_DEBUG(num)
-            //     sendingData[k] = convertCharToHex(line[temp + 1], line[temp]);
-            //     temp = k * 2;
-
-            //     //send data
-            //     printf("%X ", sendingData[k]);
-            //     dprintf(txPort, "%d", sendingData[k]);
-            // }
-            
-            //dprintf(txPort, "\n\r");
-            DEBUG_P(leaving loop)
-            //write(txPort, sendingData, num);
+            //transmit the data
+            #ifdef DEBUG
+                for(int i = 0; i < charCount; i++)
+                {
+                    printf("%X", line[i]);
+                }
+                PRINT_DEBUG_CHAR('\n')
+            #endif
+            //this line of code sends things out on the tx line
+            //start the transmition time
+            startTimeTX = millis();
+            currentTimeTX = 0;
+            write(txPort, line, charCount);
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
-            //flags[dataType] = atoi(timeStamp);
+            flags[dataType] = atoi(timeStamp);
+            //this will let us print to the file
+            int written = 0;
+            //this stores the last sent data time
+            flags[dataType] = atoi(timeStamp);
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence.
             //this stores the last sent data time
