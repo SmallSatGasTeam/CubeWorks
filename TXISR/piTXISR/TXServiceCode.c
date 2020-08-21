@@ -204,8 +204,7 @@ void main(int argc,char* argv[])
         //convert the data to hex
         int temp = 0;
         PRINT_DEBUG(charCount / 2)
-        int q = 0;
-        for(q; q <= (charCount / 2); q++)
+        for(int q = 0; q <= 51; q++)
         {
             PRINT_DEBUG(q)
             //this func does not work I will have to write my own
@@ -232,7 +231,7 @@ void main(int argc,char* argv[])
             {
                 PRINT_DEBUG(f)
                 printf("%X ", sendingData[f]);
-                dprintf(txPort, "%d", sendingData[q]);
+                dprintf(txPort, "%d", sendingData[f]);
             }
             //write(txPort, line, charCount);
             //this will let us print to the file
