@@ -147,7 +147,7 @@ void main(int argc,char* argv[])
     { 
         currentTime = millis();
     }
-    DEBUG_P(current Time - Start time :)
+    DEBUG_P(current Time - Start Time:)
     PRINT_TIME(currentTime - startTime)
 
     //write to the radio
@@ -235,11 +235,11 @@ void main(int argc,char* argv[])
             {
                 //PRINT_DEBUG(q)
                 printf("%X ", sendingData[q]);
-                dprintf(txPort, "%d", sendingData[q]);
+                //dprintf(txPort, "%d", sendingData[q]);
             }
-            dprintf(txPort, "\n\r");
+            //dprintf(txPort, "\n\r");
             //DEBUG_P(leaving loop)
-            //write(txPort, sendingData, (charCount / 2));
+            write(txPort, sendingData, (charCount / 2));
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
