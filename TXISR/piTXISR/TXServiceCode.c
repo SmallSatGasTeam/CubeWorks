@@ -161,11 +161,11 @@ void main(int argc,char* argv[])
         //this checks the transmission window
         currentTime = millis();
         //break if we have passed the tx window
-        if((currentTime - startTime) > transmissionWindow) 
-        {
-            DEBUG_P(\nEnding>>>)
-            break;
-        }
+        // if((currentTime - startTime) > transmissionWindow) 
+        // {
+        //     DEBUG_P(\nEnding>>>)
+        //     break;
+        // }
 
         
         DEBUG_P(current Time - Start time:)
@@ -240,7 +240,7 @@ void main(int argc,char* argv[])
                 printf("%X ", sendingData[q]);
                 //dprintf(txPort, "%d", sendingData[q]);
             }
-            DEBUG_P(leaving loop)
+            //DEBUG_P(leaving loop)
             //write(txPort, sendingData, (charCount / 2));
             //this will let us print to the file
             int written = 0;
