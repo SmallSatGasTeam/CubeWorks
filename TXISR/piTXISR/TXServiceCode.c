@@ -41,6 +41,7 @@
 #define BOUD_RATE 9600
 
 int changeCharToInt(char a);
+int convertCharToHex (char lowByte, char hightByte);
 
 //this sets control of the settings for our serial port
 struct termios options;
@@ -216,10 +217,12 @@ void main(int argc,char* argv[])
         //PRINT_DEBUG(charCount / 2)
         for(int count = 0; count < (charCount / 2); count++)
         {
-            //this look like it is uncessary but it is not sure why
-            int index = count;
             PRINT_DEBUG(count)
+            //this func does not work I will have to write my own
             //sscanf(&line[temp], "%2hhx", &sendingData[index]);
+            //I made a custom func to conver the data
+            sendingData[count] = convertCharToHex(line[temp], line[temp + 1]);
+            PRINT_DEBUG(sendingData[count])
             // PRINT_DEBUG_c(line[temp])
             // PRINT_DEBUG_c(line[temp + 1])
             // PRINT_DEBUG(temp)
@@ -235,59 +238,59 @@ void main(int argc,char* argv[])
             startTimeTX = millis();
             currentTimeTX = millis();
             DEBUG_P(sending Data:)
-            // //for(int i = 0; i < (charCount / 2); i++)
-            // //{
-            //     //printf("%X ", &sendingData[i]);
-            //     //dprintf(txPort, "%X", sendingData[i]);
-            // //}
-            // //write(txPort, sendingData, (charCount / 2));
-            // //this will let us print to the file
-            // int written = 0;
-            // //this stores the last sent data time
-            // flags[dataType] = atoi(timeStamp);
-            // //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
-            // //cause this will make no diffrence. 
-            // while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
-            // { 
-            //     currentTimeTX = millis();
-            //     PRINT_LONG(currentTimeTX)
-            //     PRINT_LONG(startTimeTX)
-            //     if(!written)
-            //     {
+            for(int i = 0; i < (charCount / 2); i++)
+            {
+                printf("%X ", &sendingData[i]);
+                dprintf(txPort, "%d", sendingData[i]);
+            }
+            //write(txPort, sendingData, (charCount / 2));
+            //this will let us print to the file
+            int written = 0;
+            //this stores the last sent data time
+            flags[dataType] = atoi(timeStamp);
+            //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
+            //cause this will make no diffrence. 
+            while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
+            { 
+                currentTimeTX = millis();
+                PRINT_LONG(currentTimeTX)
+                PRINT_LONG(startTimeTX)
+                if(!written)
+                {
                     
-            //             //delete the existing data
-            //             fclose(recordFile);
-            //             if (recordFile = fopen(FLAG_FILE,"w"))
-            //             {
-            //                 //if succesfull we will print it and set the written to true else we will try again.
-            //                 //reprint it
-            //                 //print the last sent time
-            //                 for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
-            //                 {
-            //                     fprintf(recordFile, "%ld\n", flags[g]);
-            //                 }
-            //                 //set written to true
-            //                 written = 1;
-            //             }
-            //             //if we fail recreate the file
-            //             else
-            //             {
-            //                 remove(FLAG_FILE);
-            //                 //recreate the file
-            //                 recordFile = fopen(FLAG_FILE,"w");
-            //                 for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
-            //                 {
-            //                     fprintf(recordFile, "%ld\n", flags[g]);
-            //                 }
-            //                 //set written to true
-            //                 written = 1;
-            //             }
-            //     }
-             //}
-            // DEBUG_P(Tx delay: )
-            // // PRINT_LONG(currentTimeTX)
-            // // PRINT_LONG(startTimeTX)
-            //PRINT_TIME(currentTimeTX - startTimeTX)
+                        //delete the existing data
+                        fclose(recordFile);
+                        if (recordFile = fopen(FLAG_FILE,"w"))
+                        {
+                            //if succesfull we will print it and set the written to true else we will try again.
+                            //reprint it
+                            //print the last sent time
+                            for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
+                            {
+                                fprintf(recordFile, "%ld\n", flags[g]);
+                            }
+                            //set written to true
+                            written = 1;
+                        }
+                        //if we fail recreate the file
+                        else
+                        {
+                            remove(FLAG_FILE);
+                            //recreate the file
+                            recordFile = fopen(FLAG_FILE,"w");
+                            for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
+                            {
+                                fprintf(recordFile, "%ld\n", flags[g]);
+                            }
+                            //set written to true
+                            written = 1;
+                        }
+                }
+             }
+            DEBUG_P(Tx delay: )
+            // PRINT_LONG(currentTimeTX)
+            // PRINT_LONG(startTimeTX)
+            PRINT_TIME(currentTimeTX - startTimeTX)
             
         }
         //this is the end of file char we have if we see it we will break the loop
@@ -324,7 +327,7 @@ void setUpUart()
 
 /*******************************************************************************************
  * setUpUart
- * this func will convert a char in to an int (works for 0 though 5)
+ * this func will convert a char in to an int (works for 0 though 9 and a - f)
  * if it fails to convert the vaule it exits the program and sends an error message.
  *******************************************************************************************/
 int changeCharToInt(char a)
@@ -344,6 +347,26 @@ int changeCharToInt(char a)
             return 4;
         case 53:
             return 5;
+        case 54:
+            return 6;
+        case 55:
+            return 7;
+        case 58:
+            return 8;
+        case 59:
+            return 9;
+        case 'a':
+            return 10;
+        case 'b':
+            return 11;
+        case 'c':
+            return 12;
+        case 'd':
+            return 13;
+        case 'e':
+            return 14;
+        case 'f':
+            return 15;
         default :
             {
                 DEBUG_P(invaild data type)
@@ -351,6 +374,21 @@ int changeCharToInt(char a)
                 exit(1);
             }
     }
+}
+/*******************************************************************************************
+ * Convertto hex
+ * this func will convert a char in to hex 
+ * if it fails to convert the vaule it exits the program and sends an error message.
+ * it returns the int value
+ *******************************************************************************************/
+int convertCharToHex (char lowByte, char highByte)
+{
+    //convert to ints
+    int low = changeCharToInt(lowByte);
+    int high = changeCharToInt(highByte);
+    //shift high and add it to low.
+    int new = low + (high << 4);
+    return new;
 }
 
 
