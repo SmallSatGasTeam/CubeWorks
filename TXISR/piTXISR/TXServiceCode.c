@@ -134,7 +134,7 @@ void main(int argc,char* argv[])
     char ch = 1;
     //set up array for tx, the max is 256, so we better not exceed that anyways so using an array of 256 is fine.
     char line[MAX_BYTES_PER_LINE] = {0};
-    long timeStamp[SIZE_OF_TIME_STAMP];
+    char timeStamp[SIZE_OF_TIME_STAMP];
     //get tx time
     fscanf(txFile, "%d", &transmissionWindow);
     PRINT_DEBUG(transmissionWindow)
@@ -247,7 +247,7 @@ void main(int argc,char* argv[])
             //flags[dataType] = atoi(timeStamp);
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence.
-            currentTimeTX = millis(); 
+            //currentTimeTX = millis(); 
             //this stores the last sent data time
             flags[dataType] = atoi(timeStamp);
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
