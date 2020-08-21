@@ -181,6 +181,7 @@ void main(int argc,char* argv[])
         {
             if(feof(txFile)) break;
             ch = fgetc(txFile);
+            if(ch == 10) break;
             //this collects the time stamp
             if(!end && !feof(txFile))
             {
@@ -197,12 +198,12 @@ void main(int argc,char* argv[])
             //this if lets us not send the line number if this is a photo file
             if(end && ch != TIME_DEVISOR && ch != 10 && !feof(txFile))line[charCount++] = ch;
             PRINT_DEBUG_c(ch)
-            DEBUG_P(Im in the sub loop)
+            //DEBUG_P(Im in the sub loop)
         }while(ch != 10 && !feof(txFile));
         
         //convert the data to hex
         int temp = 0;
-        //PRINT_DEBUG(charCount / 2)
+        PRINT_DEBUG(charCount / 2)
         for(int count = 0; count <= (charCount / 2); count++)
         {
             //PRINT_DEBUG(count)
@@ -210,7 +211,7 @@ void main(int argc,char* argv[])
             //sscanf(&line[temp], "%2hhx", &sendingData[index]);
             //I made a custom func to conver the data
             sendingData[count] = convertCharToHex(line[temp + 1], line[temp]);
-            //PRINT_HEX(sendingData[count])
+            PRINT_HEX(sendingData[count])
             //PRINT_DEBUG_c(line[temp])
             //PRINT_DEBUG_c(line[temp + 1])
             // PRINT_DEBUG(temp)
