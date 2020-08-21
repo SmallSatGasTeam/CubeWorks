@@ -351,9 +351,9 @@ int changeCharToInt(char a)
             return 6;
         case 55:
             return 7;
-        case 58:
+        case 56:
             return 8;
-        case 59:
+        case 57:
             return 9;
         case 'a':
             return 10;
