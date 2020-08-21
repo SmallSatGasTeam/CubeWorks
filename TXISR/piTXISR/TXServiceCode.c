@@ -234,9 +234,9 @@ void main(int argc,char* argv[])
             DEBUG_P(Data:)
             for(int q = 0; q <= (charCount / 2); q++)
             {
-                PRINT_DEBUG(q)
                 printf("%X ", sendingData[q]);
                 dprintf(txPort, "%d", sendingData[q]);
+                PRINT_DEBUG(q)
             }
             //dprintf(txPort, "\n\r");
             //DEBUG_P(leaving loop)
