@@ -15,7 +15,7 @@ class testTransmissions():
 	datatype = -1
 	pictureNumber = -1
 
-	TRANSFER_WINDOW_BUFFER_TIME = 20 #30 seconds
+	TRANSFER_WINDOW_BUFFER_TIME = 10 #30 seconds
 	REBOOT_WAIT_TIME = 900 #15 minutes, 900 seconds
 
 	async def readNextTransferWindow(self, transferWindowFilename):
@@ -46,7 +46,7 @@ class testTransmissions():
 				#print(duration)
 				#print(datatype)
 				#print(pictureNumber)
-			await asyncio.sleep(10) #Checks transmission windows every 10 seconds
+			await asyncio.sleep(3) #Checks transmission windows every 10 seconds
 
 	async def main(self):
 		txWindowsPath = os.path.join(os.path.dirname(__file__), '../TXISR/data/txWindows.txt')
@@ -56,7 +56,7 @@ class testTransmissions():
 			print("main loop ", self.timeToNextWindow)
 			#if close enough, prep files
 			#wait until 5 seconds before, return True
-			if(self.timeToNextWindow is not -1 and self.timeToNextWindow<30): #If next window is in 2 minutes or less
+			if(self.timeToNextWindow is not -1 and self.timeToNextWindow<14): #If next window is in 2 minutes or less
 				if(self.datatype < 3): #Attitude, TTNC, or Deployment data
 					prepareFiles.prepareData(self.duration, self.datatype)
 					print("Preparing data")
