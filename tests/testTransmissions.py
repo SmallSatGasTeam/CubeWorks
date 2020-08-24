@@ -18,7 +18,7 @@ class testTransmission():
 	TRANSFER_WINDOW_BUFFER_TIME = 30 #30 seconds
 	REBOOT_WAIT_TIME = 900 #15 minutes, 900 seconds
 
-	async def readNextTransferWindow(transferWindowFilename):
+	async def readNextTransferWindow(self, transferWindowFilename):
 		while True:
 			#read the given transfer window file and extract the data for the soonest transfer window
 			transferWindowFile = open(transferWindowFilename)
@@ -36,32 +36,32 @@ class testTransmission():
 			if not(sendData == 0):
 				#print("Found next transfer window: ")
 				#print(sendData)
-				timeToNextWindow = float(sendData[0]) - time.time()
-				print("First loop ", timeToNextWindow)
-				duration = int(sendData[1])
-				datatype = int(sendData[2])
-				pictureNumber = int(sendData[3])
-				nextWindowTime = float(sendData[0])
+				self.timeToNextWindow = float(sendData[0]) - time.time()
+				print("First loop ", self.timeToNextWindow)
+				self.duration = int(sendData[1])
+				self.datatype = int(sendData[2])
+				self.pictureNumber = int(sendData[3])
+				self.nextWindowTime = float(sendData[0])
 				#print(timeToNextWindow)
 				#print(duration)
 				#print(datatype)
 				#print(pictureNumber)
 			await asyncio.sleep(10) #Checks transmission windows every 10 seconds
 
-	async def main():
+	async def main(self):
 		txWindowsPath = os.path.join(os.path.dirname(__file__), '../TXISR/data/txWindows.txt')
 		asyncio.create_task(pythonInterrupt.interrupt())
-		asyncio.create_task(readNextTransferWindow(txWindowsPath))
+		asyncio.create_task(self.readNextTransferWindow(txWindowsPath))
 		while True:
 			print("main loop ", timeToNextWindow)
 			#if close enough, prep files
 			#wait until 5 seconds before, return True
-			if(timeToNextWindow is not -1 and timeToNextWindow<60): #If next window is in 2 minutes or less
-				if(datatype < 3): #Attitude, TTNC, or Deployment data
-					prepareFiles.prepareData(duration, datatype)
+			if(self.timeToNextWindow is not -1 and self.timeToNextWindow<60): #If next window is in 2 minutes or less
+				if(self.datatype < 3): #Attitude, TTNC, or Deployment data
+					prepareFiles.prepareData(self.duration, self.datatype)
 					print("Preparing data")
 				else:
-					prepareFiles.preparePicture(duration, datatype, pictureNumber)
+					prepareFiles.preparePicture(self.duration, self.datatype, self.pictureNumber)
 					print("Preparing Picture data")
 				break
 			await asyncio.sleep(5)
