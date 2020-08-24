@@ -7,7 +7,8 @@ class ADC(Driver):
     """
     This class interfaces with the ADC to read the voltage on a specified channel
     """
-    csPin = 22
+    # Chip Select Pin. This is BOARD Pin 22, which is GPIO 6
+    csPin = 6
       
     spi_ch = 0
     spi = spidev.SpiDev()
@@ -24,7 +25,7 @@ class ADC(Driver):
         super().__init__("ADC")
         
     
-        GPIO.setmode(GPIO.BOARD)
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.csPin, GPIO.OUT, initial=GPIO.HIGH)
 
     def read(self, channel):
