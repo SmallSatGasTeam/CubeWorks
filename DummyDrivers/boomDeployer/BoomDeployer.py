@@ -9,7 +9,7 @@ class BoomDeployer(Driver):
         and how many times to burn before giving up.  Sets up the GPIO pin for use by the actuate method.
         """
         super().__init__("BoomDeployer")
-	"""
+        """
         # Initial values
         self.burnTime = 1
         self.waitTime = 3
@@ -33,14 +33,14 @@ class BoomDeployer(Driver):
         GPIO.setup(self.wireCutter2_high1, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.wireCutter2_high2,GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.wireCutter2_low1,GPIO.OUT, initial=GPIO.HIGH)
-	"""
+        """
 
     def deploy(self):
         """
         Loop a specified number of times, setting the correct GPIO pins to HIGH/LOW  to start/stop
 	the burn. Wait and then repeat with the other wirecutter mechanism
         """
-	"""
+        """
         for num in range(0, self.numTimes):
 	    #Turn on Wire Cutter 1
             GPIO.output(self.wireCutter1_high1, GPIO.HIGH)
@@ -68,8 +68,8 @@ class BoomDeployer(Driver):
             #Wait
             sleep(self.waitTime)
         GPIO.cleanup()
-	"""
-	print("Triggering dummy deploy")
+        """
+        print("Triggering dummy deploy")
     def read(self):
         """
         Left undefined as no data is collected by this component
