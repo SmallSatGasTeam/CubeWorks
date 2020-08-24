@@ -116,7 +116,7 @@ def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber):
 	print("Current time: ", int(time.time()))
 	print("Start time: ", windowStartTime)
 	
-	TXWindow_File = open("/home/pi/Comms/CubeWorks/TXISR/data/txWindows.txt", "a+")
+	TXWindow_File = open("/home/pi/Integration/CubeWorks/TXISR/data/txWindows.txt", "a+")
        
 	#write the data to the file,
 	TXWindow_File.write(str(windowStartTime)+',')
@@ -130,7 +130,7 @@ def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber):
 	
 def disableTransmissions():
 	# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
-	transmissionFlag_File = open("/home/pi/Comms/CubeWorks/TXISR/data/transmissionFlag.txt", "w")
+	transmissionFlag_File = open("/home/pi/Integration/CubeWorks/TXISR/data/transmissionFlag.txt", "w")
 	
 	# write the data to the file,
 	transmissionFlag_File.write("Disabled")
@@ -140,7 +140,7 @@ def disableTransmissions():
 	
 def enableTransmissions():
 	# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
-	transmissionFlag_File = open("/home/pi/Comms/CubeWorks/TXISR/data/transmissionFlag.txt", "w")
+	transmissionFlag_File = open("/home/pi/Integration/CubeWorks/TXISR/data/transmissionFlag.txt", "w")
 	
 	# write the data to the file,
 	transmissionFlag_File.write("Enabled")
@@ -150,7 +150,7 @@ def enableTransmissions():
 	
 def disableAX25():
 	# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
-	AX25Flag_File = open("/home/pi/Comms/CubeWorks/TXISR/data/AX25Flag.txt", "w")
+	AX25Flag_File = open("/home/pi/Integration/CubeWorks/TXISR/data/AX25Flag.txt", "w")
 	
 	# write the data to the file,
 	AX25Flag_File.write("Disabled")
@@ -170,7 +170,7 @@ def enableAX25():
 	
 def clearTXFile():
 	# This function clears the TX windows file
-	transmissionFlag_File = open("/home/pi/Comms/CubeWorks/TXISR/data/txWindows.txt", "w")
+	transmissionFlag_File = open("/home/pi/Integration/CubeWorks/TXISR/data/txWindows.txt", "w")
 	
 	# close file
 	transmissionFlag_File.close()
