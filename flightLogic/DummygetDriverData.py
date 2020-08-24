@@ -125,7 +125,8 @@ class AttitudeData():
 		packet = ''
 		timestamp = int4tohex(self.RTC.readSeconds())
 		packetType = int1tohex(0)
-		sunSensor1, sunSensor2, sunSensor3, sunSensor4, sunSensor5 = self.sunSensor.read()
+		allSunSensors = self.sunSensor.read()
+		sunSensor1, sunSensor2, sunSensor3, sunSensor4, sunSensor5 = [allSunSensors[i] for i in range(5)]
 		sunSensor1 = float4tohex(sunSensor1)
 		sunSensor2 = float4tohex(sunSensor2)
 		sunSensor3 = float4tohex(sunSensor3)

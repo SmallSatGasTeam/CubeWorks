@@ -11,15 +11,15 @@ Then, each line consists of a 10-letter string with the timestamp or index of th
 def prepareData(duration, dataType):
 	if (dataType == 0): #Attitude Data
 		packetLength = 51 #Packet length in bytes
-		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/Attitude_Data.txt') #Set data file path to respective file
+		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/data/Attitude_Data.txt') #Set data file path to respective file
 		print("Attitude Data selected")
 	elif (dataType == 1): #TTNC Data
 		packetLength = 118 #Packet length in bytes
-		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/TTNC_Data.txt') #Set data file path to respective file
+		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/data/TTNC_Data.txt') #Set data file path to respective file
 		print("TTNC Data selected")
 	else: #Deploy Data
 		packetLength = 36 #Packet length in bytes
-		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/Deploy_Data.txt') #Set data file path to respective file
+		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/data/Deploy_Data.txt') #Set data file path to respective file
 		print("Deploy Data selected")
 
 	packetTime = 120 + packetLength*8/9600 #Transmission time for 1 packet of size packetLength
@@ -29,10 +29,8 @@ def prepareData(duration, dataType):
 	print(transmissionFilePath)
 	txDataFile = open(transmissionFilePath, 'w') #Create and open TX File
 	txDataFile.write(str(duration*1000) + '\n') #Write first line to txData. Duration of window in milliseconds
-	print(txDataFile)
 	
 	progressFilePath = os.path.join(os.path.dirname(__file__), 'data/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
-	print(progressFilePath)
 	progressFile = open(progressFilePath) #Opens progress file as read only
 	progressList = progressFile.read().splitlines()
 	transmissionProgress = int(progressList[dataType])
