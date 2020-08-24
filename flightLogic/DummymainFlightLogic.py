@@ -2,14 +2,14 @@
 import sys
 sys.path.append('../')
 import os.path
-from flightLogic import getDriverData
+from flightLogic import DummygetDriverData
 import flightLogic.saveTofiles as saveTofiles
-from Drivers.antennaDoor.AntennaDoor import AntennaDoor as antennaDoor
-from flightLogic.missionModes.antennaDeploy import antennaMode as antennaMode
-from flightLogic.missionModes.preBoomDeploy import preBoomMode
-from flightLogic.missionModes.boomDeploy import boomMode
-from flightLogic.missionModes.postBoomDeploy import postBoomMode
-from flightLogic.missionModes import safe
+from DummyDrivers.antennaDoor.AntennaDoor import AntennaDoor as antennaDoor
+from flightLogic.DummymissionModes.antennaDeploy import antennaMode as antennaMode
+from flightLogic.DummymissionModes.preBoomDeploy import preBoomMode
+from flightLogic.DummymissionModes.boomDeploy import boomMode
+from flightLogic.DummymissionModes.postBoomDeploy import postBoomMode
+from flightLogic.DummymissionModes import safe
 import asyncio
 from TXISR import pythonInterrupt
 
