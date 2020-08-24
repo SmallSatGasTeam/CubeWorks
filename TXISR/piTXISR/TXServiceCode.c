@@ -4,6 +4,7 @@
 #include <time.h>
 #include <fcntl.h>
 #include <termios.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <stdint.h>
@@ -11,23 +12,18 @@
 #define DEBUG
 #include "debug.h"
 
-#ifndef DEBUG
-    #include<stdio.h>
-#endif
-
 //enable and disable are set up in the make file,
 #define ENABLE "./configPinsTXISR"
 #define DISABLE "./configPinsTXISRDone"
 
 #define FLAG_FILE "./flagsFile.txt" //change this later for the real program
 #define FORMAT_FILE "./txFile.txt" //this is the file that dallan will creat
-#define UART_PORT "/dev/ttyAMA0" //this is serial port name, make sure this is correct for the final code
+#define UART_PORT "/dev/serial0" //this is serial port name, make sure this is correct for the final code
 
 //this is our time delay
 #define DELAY_tx 120
 
 //this defines are for the data types
-//this needs to be double the normal size
 #define MAX_BYTES_PER_LINE 256
 #define MAX_NUM_OF_DATA_TYPES 5
 #define DELAY_UNTIL_TX_WINDOW 5000
@@ -46,6 +42,7 @@ int changeCharToInt(char a);
 struct termios options;
 
 void setUpUart();
+char convertCharToHex (char lowByte, char highByte);
 
 //returns ms since the epoch
 intmax_t millis()
@@ -56,6 +53,7 @@ intmax_t millis()
     intmax_t a = ((current_time.tv_sec) * 1000) + ((current_time.tv_nsec) / 1000000);
     return a;
 }
+
 
 
 /*******************************************************************************************
@@ -135,7 +133,7 @@ void main(int argc,char* argv[])
     //read in all the lines of a file
     char ch = 1;
     //set up array for tx, the max is 256, so we better not exceed that anyways so using an array of 256 is fine.
-    char line[MAX_BYTES_PER_LINE + 1] = {0};
+    char line[MAX_BYTES_PER_LINE] = {0};
     char timeStamp[SIZE_OF_TIME_STAMP];
     //get tx time
     fscanf(txFile, "%d", &transmissionWindow);
@@ -149,7 +147,7 @@ void main(int argc,char* argv[])
     { 
         currentTime = millis();
     }
-    DEBUG_P(current Time - Start time :)
+    DEBUG_P(current Time - Start Time:)
     PRINT_TIME(currentTime - startTime)
 
     //write to the radio
@@ -157,7 +155,7 @@ void main(int argc,char* argv[])
 
     while(!feof(txFile))
     {
-        //this checks the transmission window
+       //this checks the transmission window
         currentTime = millis();
         //break if we have passed the tx window
         if((currentTime - startTime) > transmissionWindow) 
@@ -167,7 +165,7 @@ void main(int argc,char* argv[])
         }
 
         
-        DEBUG_P(current Time - Start time:)
+        DEBUG_P(current Time - Start Time:)
         PRINT_TIME(currentTime - startTime)
         DEBUG_P(\nSending>>>)
         //get the size of each line in the file
@@ -201,100 +199,82 @@ void main(int argc,char* argv[])
             //this if lets us not send the line number if this is a photo file
             if(end && ch != TIME_DEVISOR && ch != 10) 
             {
-                line[charCount++] = ch;
+                line[charCount++] = convertCharToHex(fgetc(txFile), ch);
                 //PRINT_DEBUG_c(ch)
                 //PRINT_DEBUG(charCount)
             }
             //DEBUG_P(Im in the sub loop)
-        }while(ch != 10 && !feof(txFile));
-
-        //add the end of string char
-        line[charCount + 1] = '\0';
+        }while(ch != '\n' && !feof(txFile));
         
-        //convert the data to hex
-        int temp = 0;
-        //PRINT_DEBUG(charCount / 2)
-        for(int count = 0; count < (charCount / 2); count++)
-        {
-            //this look like it is uncessary but it is not sure why
-            int index = count;
-            PRINT_DEBUG(count)
-            //sscanf(&line[temp], "%2hhx", &sendingData[index]);
-            // PRINT_DEBUG_c(line[temp])
-            // PRINT_DEBUG_c(line[temp + 1])
-            // PRINT_DEBUG(temp)
-            temp = count * 2;
-        }
-        DEBUG_P(leaving loop)
+        
+        //DEBUG_P(leaving loop)
 
-        if(ch == 10 || feof(txFile))
+        if(ch == '\n' || feof(txFile))
         {
             //transmit the data
+            #ifdef DEBUG
+                for(int i = 0; i < charCount; i++)
+                {
+                    printf("%X", line[i]);
+                }
+                PRINT_DEBUG_CHAR('\n')
+            #endif
             //this line of code sends things out on the tx line
             //start the transmition time
             startTimeTX = millis();
-            currentTimeTX = millis();
-            DEBUG_P(sending Data:)
-            // //for(int i = 0; i < (charCount / 2); i++)
-            // //{
-            //     //printf("%X ", &sendingData[i]);
-            //     //dprintf(txPort, "%X", sendingData[i]);
-            // //}
-            // //write(txPort, sendingData, (charCount / 2));
-            // //this will let us print to the file
-            // int written = 0;
-            // //this stores the last sent data time
-            // flags[dataType] = atoi(timeStamp);
-            // //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
-            // //cause this will make no diffrence. 
-            // while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
-            // { 
-            //     currentTimeTX = millis();
-            //     PRINT_LONG(currentTimeTX)
-            //     PRINT_LONG(startTimeTX)
-            //     if(!written)
-            //     {
+            currentTimeTX = 0;
+            write(txPort, line, charCount);
+            //this will let us print to the file
+            int written = 0;
+            //this stores the last sent data time
+            flags[dataType] = atoi(timeStamp);
+            //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
+            //cause this will make no diffrence.
+            //this stores the last sent data time
+            flags[dataType] = atoi(timeStamp);
+            PRINT_LONG(flags[dataType])
+            //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
+            //cause this will make no diffrence. 
+            while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
+            { 
+                currentTimeTX = millis();
+                if(!written)
+                {
                     
-            //             //delete the existing data
-            //             fclose(recordFile);
-            //             if (recordFile = fopen(FLAG_FILE,"w"))
-            //             {
-            //                 //if succesfull we will print it and set the written to true else we will try again.
-            //                 //reprint it
-            //                 //print the last sent time
-            //                 for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
-            //                 {
-            //                     fprintf(recordFile, "%ld\n", flags[g]);
-            //                 }
-            //                 //set written to true
-            //                 written = 1;
-            //             }
-            //             //if we fail recreate the file
-            //             else
-            //             {
-            //                 remove(FLAG_FILE);
-            //                 //recreate the file
-            //                 recordFile = fopen(FLAG_FILE,"w");
-            //                 for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
-            //                 {
-            //                     fprintf(recordFile, "%ld\n", flags[g]);
-            //                 }
-            //                 //set written to true
-            //                 written = 1;
-            //             }
-            //     }
-             //}
-            // DEBUG_P(Tx delay: )
-            // // PRINT_LONG(currentTimeTX)
-            // // PRINT_LONG(startTimeTX)
-            //PRINT_TIME(currentTimeTX - startTimeTX)
-            
+                        //delete the existing data
+                        fclose(recordFile);
+                        if (recordFile = fopen(FLAG_FILE,"w"))
+                        {
+                            //if succesfull we will print it and set the written to true else we will try again.
+                            //reprint it
+                            //print the last sent time
+                            for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
+                            {
+                                fprintf(recordFile, "%ld\n", flags[g]);
+                            }
+                            //set written to true
+                            written = 1;
+                        }
+                        //if we fail recreate the file
+                        else
+                        {
+                            remove(FLAG_FILE);
+                            //recreate the file
+                            recordFile = fopen(FLAG_FILE,"w");
+                            for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
+                            {
+                                fprintf(recordFile, "%ld\n", flags[g]);
+                            }
+                            //set written to true
+                            written = 1;
+                        }
+                }
+            }
+            charCount = 0;
+            PRINT_TIME(currentTimeTX)
+            PRINT_TIME(startTimeTX)
+            PRINT_TIME(currentTimeTX - startTimeTX)
         }
-        //this is the end of file char we have if we see it we will break the loop
-        // if(ch == END_KEY)
-        // {
-        //     break;
-        // }
     } 
 
      //give control of the port back to linuxs
@@ -324,7 +304,7 @@ void setUpUart()
 
 /*******************************************************************************************
  * setUpUart
- * this func will convert a char in to an int (works for 0 though 5)
+ * this func will convert a char in to an int (works for 0 though 9 and a - f)
  * if it fails to convert the vaule it exits the program and sends an error message.
  *******************************************************************************************/
 int changeCharToInt(char a)
@@ -344,6 +324,26 @@ int changeCharToInt(char a)
             return 4;
         case 53:
             return 5;
+        case 54:
+            return 6;
+        case 55:
+            return 7;
+        case 56:
+            return 8;
+        case 57:
+            return 9;
+        case 'a':
+            return 10;
+        case 'b':
+            return 11;
+        case 'c':
+            return 12;
+        case 'd':
+            return 13;
+        case 'e':
+            return 14;
+        case 'f':
+            return 15;
         default :
             {
                 DEBUG_P(invaild data type)
@@ -352,5 +352,18 @@ int changeCharToInt(char a)
             }
     }
 }
-
-
+/*******************************************************************************************
+ * Convertto hex
+ * this func will convert a char in to hex 
+ * if it fails to convert the vaule it exits the program and sends an error message.
+ * it returns the int value
+ *******************************************************************************************/
+char convertCharToHex (char lowByte, char highByte)
+{
+    //convert to ints
+    char low = changeCharToInt(lowByte);
+    char high = changeCharToInt(highByte);
+    //shift high and add it to low.
+    char new = low + (high << 4);
+    return new;
+}
