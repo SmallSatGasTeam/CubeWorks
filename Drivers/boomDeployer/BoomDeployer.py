@@ -15,19 +15,25 @@ class BoomDeployer(Driver):
         self.numTimes = 1
 
         # Set up the GPIO pins for use
-        GPIO.setmode(GPIO.BOARD)
+        GPIO.setmode(GPIO.BCM)
 
-        #First Wirecutter
-        self.wireCutter1_high1 = 38
-        self.wireCutter1_high2 = 36
+        # First Wirecutter
+	# BOARD 38 is GPIO 28
+        self.wireCutter1_high1 = 28
+	# BOARD 36 is GPIO 27
+        self.wireCutter1_high2 = 27
+	# BOARD 7 is GPIO 7
         self.wireCutter1_low1 = 7
         GPIO.setup(self.wireCutter1_high1, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.wireCutter1_high2,GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.wireCutter1_low1,GPIO.OUT, initial=GPIO.HIGH)
 
         #Second Wirecutter
-        self.wireCutter2_high1 = 37
+	# BOARD 37 is GPIO 25
+        self.wireCutter2_high1 = 25
+	# BOARD 35 is GPIO 24
         self.wireCutter2_high2 = 35
+	# BOARD 29 is GPIO 29
         self.wireCutter2_low1 = 29
         GPIO.setup(self.wireCutter2_high1, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.wireCutter2_high2,GPIO.OUT, initial=GPIO.LOW)
