@@ -7,8 +7,8 @@ class ADC(Driver):
     """
     This class interfaces with the ADC to read the voltage on a specified channel
     """
-    # Chip Select Pin. This is BOARD Pin 22, which is GPIO 6
-    csPin = 6
+    # Chip Select Pin. This is BOARD Pin 22, which is GPIO 25
+    csPin = 25
       
     spi_ch = 0
     spi = spidev.SpiDev()

@@ -15,8 +15,8 @@ class TempSensor(Driver):
     spi0.open(0, 1)
     spi0.max_speed_hz = 10
     spi0.no_cs = True
-    # BOARD 26 is GPIO 26
-    spi0_cs = 26
+    # BOARD 26 is GPIO 7
+    spi0_cs = 7
     GPIO.setup(spi0_cs, GPIO.OUT, initial=GPIO.HIGH)
 
     spi1 = spidev.SpiDev()
@@ -24,8 +24,8 @@ class TempSensor(Driver):
     spi1.open(0, 1)
     spi1.max_speed_hz = 10
     spi1.no_cs = True
-    # BOARD 24 is GPIO 10
-    spi1_cs = 10
+    # BOARD 24 is GPIO 8
+    spi1_cs = 8
     GPIO.setup(spi1_cs, GPIO.OUT, initial=GPIO.HIGH)
 
     def __init__ (self):
