@@ -3,9 +3,9 @@ import os
 import time
 sys.path.append('../../')
 import asyncio
-from flightLogic.missionModes import safe
-from flightLogic.getDriverData import *
-import Drivers.eps.EPS as EPS
+from flightLogic.DummymissionModes import safe
+from flightLogic.DummygetDriverData import *
+import DummyDrivers.eps.EPS as EPS
 from TXISR import prepareFiles
 from TXISR import pythonInterrupt
 

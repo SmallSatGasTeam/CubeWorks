@@ -2,10 +2,10 @@ import sys
 import time
 sys.path.append('../../')
 import asyncio
-from flightLogic.missionModes import safe
-from flightLogic.getDriverData import *
-import Drivers.boomDeployer as boomDeployer
-#import Drivers.camera.Camera as camera
+from flightLogic.DummymissionModes import safe
+from flightLogic.DummygetDriverData import *
+import DummyDrivers.boomDeployer as boomDeployer
+import DummyDrivers.camera.Camera as camera
 from TXISR import pythonInterrupt
 
 
