@@ -1,17 +1,17 @@
-#This is the main file, to be run on startup of the Pi
+# This is the main file, to be run on startup of the Pi
 import sys
 sys.path.append('../')
 import os.path
-from flightLogic import DummygetDriverData as getDriverData
+from flightLogic import getDriverData
 import flightLogic.saveTofiles as saveTofiles
-from DummyDrivers.antennaDoor import AntennaDoor as antennaDoor
-from flightLogic.DummymissionModes.antennaDeploy import antennaMode
-from flightLogic.DummymissionModes.preBoomDeploy import preBoomMode
-from flightLogic.DummymissionModes.boomDeploy import boomMode
-from flightLogic.DummymissionModes.postBoomDeploy import postBoomMode
-from flightLogic.DummymissionModes import safe
-from TXISR import pythonInterrupt
+from Drivers.antennaDoor.AntennaDoor import AntennaDoor as antennaDoor
+from flightLogic.missionModes.antennaDeploy import antennaMode as antennaMode
+from flightLogic.missionModes.preBoomDeploy import preBoomMode
+from flightLogic.missionModes.boomDeploy import boomMode
+from flightLogic.missionModes.postBoomDeploy import postBoomMode
+from flightLogic.missionModes import safe
 import asyncio
+from TXISR import pythonInterrupt
 
 
 # from TXISR import interrupt
@@ -35,21 +35,22 @@ def __main__():
 
 async def executeFlightLogic():  # Open the file save object, start TXISR, and start Boot Mode data collection
 	# Variable setup
-	delay = 5  # 35 minute delay
+	delay = 1*60  # 35 minute delay
 	boot = True
 	save = saveTofiles.save()
 	# startTXISR(save)
 	ttncData = getDriverData.TTNCData(save)
 	attitudeData = getDriverData.AttitudeData(save)
 	safeMode = safe.safe(save)
+	interruptObject = INTERRUPT()
 
 	print('Starting data collection') #Setting up Background tasks for BOOT mode
 	tasks=[]
+	tasks.append(asyncio.create_task(pythonInterrupt.interrupt()))
 	tasks.append(asyncio.create_task(ttncData.collectTTNCData(0))) #Boot Mode is classified as 0
 	tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
 	tasks.append(asyncio.create_task(safeMode.thresholdCheck()))
 	tasks.append(asyncio.create_task(safeMode.heartBeat()))
-	tasks.append(asyncio.create_task(pythonInterrupt.interrupt()))
 
 	# Initialize all mission mode objects
 	# NOTE: the comms-tx is the only exception to this rule as it is to be handled differently than other mission modes
@@ -88,10 +89,12 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	print('Moving on to check antenna door status')
 	status = antennaDoor().readDoorStatus()
 	# this checks the bytes returned by the antennaDoor if any are 0 then doorOpen gets set to false
-	if status != (1,1,1,1) and lastMode not in (2,3,4): #This will need to be changed to reflect the real antenna
-		antennaDeployed = False
+	if antennaDeployed = True:
+		pass
+	elif status = (1,1,1,1): #This will need to be changed to reflect the real antenna
+		antennaDeployed = True
 	else:
-        	antennaDeployed = True
+        	antennaDeployed = False
 
 	recordData(bootCount, antennaDeployed, lastMode)
 
@@ -180,4 +183,7 @@ def readData():
 	return bootCount, antennaDeployed, lastMode
 
 
+# def startTXISR(saveobject):  # Setup for TXISR
+# This sets up the interupt on the uart pin that triggers when we get commincation over uart
+# thread.start(interrupt.watchReceptions(saveobject)) <-- TODO fix that import
 
