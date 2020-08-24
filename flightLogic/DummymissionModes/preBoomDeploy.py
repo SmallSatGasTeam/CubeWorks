@@ -1,10 +1,10 @@
 import sys
 sys.path.append('../../')
 import asyncio
-from flightLogic.missionModes import safe
-from flightLogic.getDriverData import *
-from Drivers.eps import EPS as EPS
-from Drivers.sunSensors import sunSensorDriver as sunSensorDriver
+from flightLogic.DummymissionModes import safe
+from flightLogic.DummygetDriverData import *
+from DummyDrivers.eps import EPS as EPS
+from DummyDrivers.sunSensors import sunSensorDriver as sunSensorDriver
 from TXISR import pythonInterrupt
 
 
