@@ -18,7 +18,7 @@ def processAX25(AX25):  #Placeholder function
 	#Check AX25 Transmission flag, if it is OK then open a pyserial connection and transmit the content of the packet
 	pass
 
-def processPacket(packetData):
+async def processPacket(packetData):
 	# Packet data comes in as hex, need to convet to binary to parse
 	binaryDataLength = len(packetData) * 4
 	binaryData = format(int(packetData,16), 'b').zfill(binaryDataLength)
@@ -85,7 +85,7 @@ def processPacket(packetData):
 			# Deploy boom
 			print("Deploy boom")
 			deployer = boomDeployer.BoomDeployer()
-			deployer.deploy()
+			await deployer.deploy()
 
 		if binaryData[5] == '0':
 			# Do not reboot

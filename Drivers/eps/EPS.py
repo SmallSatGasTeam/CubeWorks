@@ -26,7 +26,7 @@ class EPS(Driver):
 
     def enableUHF(self):
         #This method sends the command to the EPS to enable UHF Transmission, and sets the corresponding GPIO Pin high on the Pi
-	self.bus.write_byte_data(self.DEVICE_ADDR, 0x0E, 0x03)
+        self.bus.write_byte_data(self.DEVICE_ADDR, 0x0E, 0x03)
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(18, GPIO.OUT, initial = GPIO.HIGH)
         GPIO.output(18, GPIO.HIGH)

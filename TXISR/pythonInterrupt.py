@@ -29,9 +29,9 @@ async def interrupt():
 				leftovers = ''
 			for command in commands:
 				print(command)
-				packetProcessing.processPacket(command) #Process Command Packets
+				await packetProcessing.processPacket(command) #Process Command Packets
 			for ax25 in ax25Packets:
-				packetProcessing.processPacket(ax25) #Process AX.25 Packets
+				await packetProcessing.processPacket(ax25) #Process AX.25 Packets
 			await asyncio.sleep(5)
 		else: #No contents in serial buffer
 			print('buffer empty')

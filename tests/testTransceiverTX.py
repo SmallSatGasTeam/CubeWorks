@@ -3,7 +3,7 @@ sys.path.append('../')
 from Drivers.transceiverConfig import TransceiverConfig
 
 radio = TransceiverConfig()
-radio.writeData("ES+W23003321")
-radio.writeData("ES+W22003321")
+radio.writeData(b'ES+W23003321\r')
+radio.writeData(b'ES+W22003321')
 sleep(.15)
-radio.writeData("Hello there")
+radio.writeData(b'Hello there\r')

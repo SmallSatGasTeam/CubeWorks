@@ -10,24 +10,24 @@ class BoomDeployer(Driver):
         """
         super().__init__("BoomDeployer")
         # Initial values
-        self.burnTime = 1
-        self.waitTime = 3
-        self.numTimes = 3
+        self.burnTime = 2
+        self.waitTime = 10
+        self.numTimes = 1
 
         # Set up the GPIO pins for use
         GPIO.setmode(GPIO.BOARD)
 
         #First Wirecutter
-        self.wireCutter1_high1 = 36
-        self.wireCutter1_high2 = 38
+        self.wireCutter1_high1 = 38
+        self.wireCutter1_high2 = 36
         self.wireCutter1_low1 = 7
         GPIO.setup(self.wireCutter1_high1, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.wireCutter1_high2,GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.wireCutter1_low1,GPIO.OUT, initial=GPIO.HIGH)
 
         #Second Wirecutter
-        self.wireCutter2_high1 = 35
-        self.wireCutter2_high2 = 37
+        self.wireCutter2_high1 = 37
+        self.wireCutter2_high2 = 35
         self.wireCutter2_low1 = 29
         GPIO.setup(self.wireCutter2_high1, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.wireCutter2_high2,GPIO.OUT, initial=GPIO.LOW)
@@ -66,6 +66,7 @@ class BoomDeployer(Driver):
             #Wait
             await asyncio.sleep(self.waitTime)
             print('Loop executed once')
+
     def read(self):
         """
         Left undefined as no data is collected by this component
