@@ -42,6 +42,7 @@ class testTransmissions():
 					print("Calling TXServiceCode")
 					txisrCodePath = os.path.join(os.path.dirname(__file__), '../TXISR/TXServiceCode/TXService.run')
 					os.system(txisrCodePath + ' ' + str(self.datatype)) #Call TXISR Code
+					self.timeToNextWindow = -1
 					break
 				await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
 
