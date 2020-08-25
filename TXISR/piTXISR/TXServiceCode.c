@@ -105,18 +105,23 @@ void main(int argc,char* argv[])
         DEBUG_P(Failed to open the flags file)
         exit(1);
     }
+    else 
+    {
+         //NOTE: WE HAVE TO MAKE THE FLAGS FILE RIGHT OR WE WILL GET SYSTEM FALUIR.
+        for (int i =0; i < MAX_NUM_OF_DATA_TYPES; i++)
+        {
+          fscanf(recordFile, "%ld", &flags[i]);  
+          PRINT_TIME(flags[i])
+          recordFile.close();   
+        }
+    }
 
     //this is where we will store the last transmission
     //5 data types
     long flags[MAX_NUM_OF_DATA_TYPES];
     //pop the data types
     DEBUG_P(opening file)
-    //NOTE: WE HAVE TO MAKE THE FLAGS FILE RIGHT OR WE WILL GET SYSTEM FALUIR.
-    for (int i =0; i < MAX_NUM_OF_DATA_TYPES; i++)
-    {
-      fscanf(recordFile, "%ld", &flags[i]);  
-      PRINT_TIME(flags[i]);
-    }
+    
 
     //open the serial ports
     //NOTE: opening the serial port clears the buffer!!!
@@ -241,8 +246,7 @@ void main(int argc,char* argv[])
                 if(!written)
                 {
                     
-                        //delete the existing data
-                        fclose(recordFile);
+                        
                         if (recordFile = fopen(FLAG_FILE,"w"))
                         {
                             //if succesfull we will print it and set the written to true else we will try again.
@@ -268,11 +272,11 @@ void main(int argc,char* argv[])
                             //set written to true
                             written = 1;
                         }
-                }
-                else 
-                {
+                    //delete the existing data
+                    fclose(recordFile);
                     //sleep for the remainder of the delay
                     usleep(((DELAY_tx + (charCount / BOUD_RATE)) - (currentTimeTX - startTimeTX)) * 1000);
+
                 }
             }
             charCount = 0;
