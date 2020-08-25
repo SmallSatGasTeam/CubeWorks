@@ -269,11 +269,6 @@ void main(int argc,char* argv[])
                             written = 1;
                         }
                 }
-                else 
-                {
-                    //sleep for the remainder of the delay
-                    usleep(((DELAY_tx + (charCount / BOUD_RATE)) - (currentTimeTX - startTimeTX)) * 1000);
-                }
             }
             charCount = 0;
             PRINT_TIME(currentTimeTX)
