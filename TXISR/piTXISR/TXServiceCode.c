@@ -117,7 +117,7 @@ void main(int argc,char* argv[])
         {
           fscanf(recordFile, "%ld", &flags[i]);  
           PRINT_TIME(flags[i])
-          recordFile.close();   
+          fclose(recordFile);
         }
     }
 
