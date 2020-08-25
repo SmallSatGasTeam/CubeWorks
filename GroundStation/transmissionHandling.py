@@ -22,7 +22,7 @@ def packetSelect():
 			packet += int1tobin(int(input('Number from 0-4 corresponding to requested data type. See flight logic document: ')))
 			packet += int2tobin(int(input('If picture is requested, number of the picture that is requested: ')))
 			packet += '0000000'
-			print(hex(int(packet, 2))[2:].zfill(20))
+			return hex(int(packet, 2))[2:].zfill(20)
 
 		else:
 			#Command Packet
@@ -44,9 +44,17 @@ def packetSelect():
 
 def transmitPacket(packet):
 	serialPort = serial.Serial('/dev/serial0', 115200)
-	serialPort.write(b'ES+W22003321\r') #Changed based on which is transmitting
+	serialPort.write(b'ES+W23003321\r') #Changed based on which is transmitting
 	sleep(0.2)
-	serialPort.write(b'ES+W23003321\r')
+	serialPort.write(b'ES+W22003321\r')
+	sleep(0.2)
+	serialPort.write(b'ES+W22003321\r')
+	sleep(0.2)
+	serialPort.write(b'ES+W22003321\r')
+	sleep(0.2)
+	serialPort.write(b'ES+W22003321\r')
+	sleep(0.2)
+	serialPort.write(b'ES+W22003321\r')
 	sleep(0.2)
 	data = bytearray.fromhex(b'GASPACS'.hex() + packet + b'GASPACS'.hex())
 	serialPort.write(data)

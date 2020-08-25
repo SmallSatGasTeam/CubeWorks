@@ -29,7 +29,6 @@ class boomMode:
 		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(deployData.collectDeployData()))
 		self.__tasks.append(asyncio.create_task(self.safeMode.thresholdCheck()))
-		self.__tasks.append(asyncio.create_task(self.safeMode.heartBeat()))
 
 		# Deploy boom, take picture
 		await asyncio.sleep(5)

@@ -26,6 +26,7 @@ class safe:
 		self.__eps = EPS()
 		self.thresholdVoltage = 3.33 #Threshold Voltage
 		self.__saveObject = saveObject
+		self.heartbeatTask = asyncio.create_task(self.heartBeat())
 		#GPIO.setwarnings(False)
 		#GPIO.setmode(GPIO.BOARD) #Physical Pin numbering NOTE: 8/14/20, this threw an error 
 		#GPIO.setup(40, GPIO.OUT, initial=GPIO.LOW) #Sets pin 40 to be an output pin and sets the initial value to low (off)
@@ -36,16 +37,18 @@ class safe:
 		#send message to the arduino to power off the pi
 		#make sure we are not about to tx
 		if(self.__saveObject is not None and self.__saveObject.checkTxWindow()):
+			self.heartbeatTask.cancel() #Cancel the heartbeat task
 			#self.bus.write_byte(self.DEVICE_ADDR, time)
 			print('Sent power-off command')
 		else:
+			self.heartbeatTask.cancel() #Cancel the heartbeat task
 			#self.bus.write_byte(self.DEVICE_ADDR, time)
 			print('Send power-off command')
 
 		sleep(15) #If Pi hasn't turned off by now, must take drastic measures. Kill heartbeat code!
 		#system('pkill -9 python')
 		print("killing heartbeat code")
-		
+
 	async def thresholdCheck(self):
 		while True:
 			epsVoltage = self.__eps.getBusVoltage()

@@ -28,7 +28,7 @@ def prepareData(duration, dataType):
 	transmissionFilePath = os.path.join(os.path.dirname(__file__), 'data/txFile.txt') #File path to txFile. This is where data will be stored
 	txDataFile = open(transmissionFilePath, 'w') #Create and open TX File
 	txDataFile.write(str(duration*1000) + '\n') #Write first line to txData. Duration of window in milliseconds
-	
+
 	progressFilePath = os.path.join(os.path.dirname(__file__), 'data/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
 	progressFile = open(progressFilePath) #Opens progress file as read only
 	progressList = progressFile.read().splitlines()
@@ -39,12 +39,14 @@ def prepareData(duration, dataType):
 	lineNumber = 0 #Line to start adding data from
 	while True:
 		line = dataFile.readline()
+		print(line)
+		if(line==''):
+			lineNumber = 0
+			break
+
 		if(int(line[:10])>transmissionProgress): #This line is further ahead than the transmission progress, transmit going from this line forwards.
 			break
 
-		if(line==''): #End of file without finding a line further than transmission progress
-			lineNumber = 0
-			break
 
 		lineNumber += 1 #Advance by one line
 

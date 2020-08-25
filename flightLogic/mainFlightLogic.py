@@ -49,7 +49,6 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	tasks.append(asyncio.create_task(ttncData.collectTTNCData(0))) #Boot Mode is classified as 0
 	tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
 	tasks.append(asyncio.create_task(safeMode.thresholdCheck()))
-	tasks.append(asyncio.create_task(safeMode.heartBeat()))
 
 	# Initialize all mission mode objects
 	# NOTE: the comms-tx is the only exception to this rule as it is to be handled differently than other mission modes
