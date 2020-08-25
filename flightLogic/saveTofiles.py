@@ -13,11 +13,11 @@ import os.path
 class save:
     def __init__(self):
         #open the file when the calls is instantiated
-        self.__TTNC_File = open(os.path.dirname(__file__) + "/TTNC_Data.txt", "a+")
+        self.__TTNC_File = open(os.path.dirname(__file__) + "/data/TTNC_Data.txt", "a+")
         #open the file when the calls is instantiated
-        self.__Deploy_File = open(os.path.dirname(__file__) + "/Deploy_Data.txt", "a+")
+        self.__Deploy_File = open(os.path.dirname(__file__) + "/data/Deploy_Data.txt", "a+")
         #open the file when the calls is instantiated
-        self.__Attitude_File = open(os.path.dirname(__file__) + "/Attitude_Data.txt", "a+")
+        self.__Attitude_File = open(os.path.dirname(__file__) + "/data/Attitude_Data.txt", "a+")
 
     #write the data to the file,
     #NOTE: it is important that you put a : after the time stamp, this will

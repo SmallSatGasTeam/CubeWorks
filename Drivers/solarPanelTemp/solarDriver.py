@@ -8,14 +8,15 @@ class TempSensor(Driver):
     This class returns the temperature sensor values for both Endurosat solar panels.
     """
 
-    GPIO.setmode(GPIO.BOARD)
+    GPIO.setmode(GPIO.BCM)
 
     spi0 = spidev.SpiDev()
     # open SPI to Temp sensor0
     spi0.open(0, 1)
     spi0.max_speed_hz = 10
     spi0.no_cs = True
-    spi0_cs = 26
+    # BOARD 26 is GPIO 7
+    spi0_cs = 7
     GPIO.setup(spi0_cs, GPIO.OUT, initial=GPIO.HIGH)
 
     spi1 = spidev.SpiDev()
@@ -23,7 +24,8 @@ class TempSensor(Driver):
     spi1.open(0, 1)
     spi1.max_speed_hz = 10
     spi1.no_cs = True
-    spi1_cs = 24
+    # BOARD 24 is GPIO 8
+    spi1_cs = 8
     GPIO.setup(spi1_cs, GPIO.OUT, initial=GPIO.HIGH)
 
     def __init__ (self):

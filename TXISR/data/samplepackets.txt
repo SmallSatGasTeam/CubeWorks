@@ -1,2 +1,0 @@
-474153504143534047415350414353
--Enable TX 1, everything else 0

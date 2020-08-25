@@ -2,8 +2,8 @@ import sys
 sys.path.append('../../')
 import time
 from DummyDrivers.backupAntennaDeployer import BackupAntennaDeployer
-from DummyDrivers.antennaDoor import AntennaDoor as AntennaDoor
-from DummyDrivers.eps import EPS
+from DummyDrivers.antennaDoor import AntennaDoor
+import DummyDrivers.eps.EPS as EPS
 import asyncio
 from flightLogic.DummymissionModes import safe
 import flightLogic.DummygetDriverData as getDriverData

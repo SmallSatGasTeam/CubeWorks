@@ -12,11 +12,13 @@ class BackupAntennaDeployer(Driver):
         self.burnTime = 10
 
         # Set up the GPIO pins for use
-        GPIO.setmode(GPIO.BOARD)
+        GPIO.setmode(GPIO.BCM)
 
-        #Setup GPIO pins
-        self.primaryPin = 33
-        self.secondaryPin = 32
+        # Setup GPIO pins
+        # Primary Backup Pin: BOARD 33 which is GPIO 13
+        self.primaryPin = 13
+        # Secondary Backup Pin: BOARD 32 which is GPIO 12
+        self.secondaryPin = 12
         GPIO.setup(self.primaryPin,GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.secondaryPin,GPIO.OUT, initial=GPIO.LOW)
 

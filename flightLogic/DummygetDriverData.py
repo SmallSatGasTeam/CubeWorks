@@ -5,7 +5,6 @@ import asyncio
 import sys
 sys.path.append('../')
 import DummyDrivers as Drivers
-from DummyDrivers import *
 import struct
 import flightLogic.saveTofiles as saveTofiles
 
@@ -24,7 +23,7 @@ class TTNCData:
 		self.TempSensor = Drivers.solarPanelTemp.TempSensor()
 
 	async def getData(self, missionMode):
-		packet = ''
+		packet = ''		
 		# gets all TTNC data - need to pass in missionMode when calling it
 		timestamp = int4tohex(self.RTC.readSeconds())
 		packetType = int1tohex(1)
@@ -55,7 +54,7 @@ class TTNCData:
 
 		packet += gaspacsBytes + timestamp + packetType + mode + reboot_count + boombox_uv + SP_X_Plus_Temp + SP_Z_Plus_Temp + piTemp + EPSMCUTemp + Cell1Temp + BattVoltage + BCRCurrent + EPS3V3Current + EPS5VCurrent + SP_X_Voltage + SP_X_Plus_Current + SP_X_Minus_Current + SP_Y_Voltage + SP_Y_Plus_Current + SP_Y_Minus_Current + SP_Z_Voltage + gaspacsBytes
 
-		packetTimestamp = str(int(self.RTC.readSeconds())).zfill(10)+': '
+		packetTimestamp = str(int(self.RTC.readSeconds())).zfill(10)+':'
 		packet = packetTimestamp + packet
 		self.__ttncData = packet
 
@@ -94,7 +93,7 @@ class DeployData():
 		accelZ = float4tohex(accelZ)
 		packet = ''
 		packet += gaspacsBytes+timestamp+packetType+boombox_uv+accelX+accelY+accelZ
-		packetTimestamp = str(int(self.RTC.readSeconds())).zfill(10)+': '
+		packetTimestamp = str(int(self.RTC.readSeconds())).zfill(10)+':'
 		packet = packetTimestamp + packet
 		self.__deployData = packet
 
@@ -126,21 +125,21 @@ class AttitudeData():
 		packet = ''
 		timestamp = int4tohex(self.RTC.readSeconds())
 		packetType = int1tohex(0)
-		sunSensorList = self.sunSensor.read()
-		sunSensor1, sunSensor2, sunSensor3, sunSensor4, sunSensor5 = sunSensorList[0], sunSensorList[1], sunSensorList[2], sunSensorList[3], sunSensorList[4]
+		allSunSensors = self.sunSensor.read()
+		sunSensor1, sunSensor2, sunSensor3, sunSensor4, sunSensor5 = [allSunSensors[i] for i in range(5)]
 		sunSensor1 = float4tohex(sunSensor1)
 		sunSensor2 = float4tohex(sunSensor2)
 		sunSensor3 = float4tohex(sunSensor3)
 		sunSensor4 = float4tohex(sunSensor4)
 		sunSensor5 = float4tohex(sunSensor5)
-
+		
 		mag1, mag2, mag3 = self.Magnetometer.read()
 		mag1 = float4tohex(mag1)
 		mag2 = float4tohex(mag2)
 		mag3 = float4tohex(mag3)
-
+		
 		packet += gaspacsBytes + timestamp + packetType + sunSensor1 + sunSensor2 + sunSensor3 + sunSensor4 + sunSensor5 + mag1 + mag2 + mag3 + gaspacsBytes
-		packetTimestamp = str(int(self.RTC.readSeconds())).zfill(10)+': '
+		packetTimestamp = str(int(self.RTC.readSeconds())).zfill(10)+':'
 		packet = packetTimestamp + packet
 		self.__attitudeData = packet
 
