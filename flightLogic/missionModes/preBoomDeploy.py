@@ -9,7 +9,7 @@ from TXISR import pythonInterrupt
 
 
 class preBoomMode:
-	def __init__(self, saveobject):
+	def __init__(self, saveObject, safeModeObject):
 		self.thresholdVoltage = 3.5 #Threshold voltage to deploy AeroBoom.
 		self.criticalVoltage = 3.1 #Critical voltage, below this go to SAFE
 		self.darkVoltage = 1 #Average voltage from sunsors that, if below this, indicates GASPACS is in darkness
@@ -20,19 +20,17 @@ class preBoomMode:
 		self.maximumWaitTime = 240 #Max time GASPACS can wait, charging batteries, before SAFEing
 		self.timeWaited = 0
 		self.sunlightData = []
-		self.__getDataTTNC = TTNCData(saveobject)
-		self.__getDataAttitude = AttitudeData(saveobject)
+		self.__getTTNCData = TTNCData(saveObject)
+		self.__getAttitudeData = AttitudeData(saveObject)
 		self.__tasks = [] #Will be populated with tasks
-		self.saveobject = saveobject
-		self.safeMode = safe.safe(saveobject)
+		self.__saveOject = saveObject
+		self.__safeMode = safeModeObject
 
 	async def run(self):
-		ttncData = self.__getDataTTNC
-		attitudeData = self.__getDataAttitude
 		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt()))
-		self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(2))) #Pre-Boom is mode 2
-		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
-		self.__tasks.append(asyncio.create_task(self.safeMode.thresholdCheck()))
+		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(2))) #Pre-Boom is mode 2
+		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
+		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
 		self.__tasks.append(asyncio.create_task(self.sunCheck()))
 		self.__tasks.append(asyncio.create_task(self.batteryCheck()))
 		while True: #iterate through array, checking for set amount of dark minutes, then set amount of light minutes no greater than the maximum. When light minutes are greater than the maximum, empties array

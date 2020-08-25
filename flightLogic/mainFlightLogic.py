@@ -37,26 +37,26 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	# Variable setup
 	delay = 1*60  # 35 minute delay
 	boot = True
-	save = saveTofiles.save()
+	saveObject = saveTofiles.save()
 	# startTXISR(save)
-	ttncData = getDriverData.TTNCData(save)
-	attitudeData = getDriverData.AttitudeData(save)
-	safeMode = safe.safe(save)
+	ttncData = getDriverData.TTNCData(saveObject)
+	attitudeData = getDriverData.AttitudeData(saveObject)
+	safeModeObject = safe.safe(saveObject)
 
 	print('Starting data collection') #Setting up Background tasks for BOOT mode
 	tasks=[]
 	tasks.append(asyncio.create_task(pythonInterrupt.interrupt()))
 	tasks.append(asyncio.create_task(ttncData.collectTTNCData(0))) #Boot Mode is classified as 0
 	tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
-	tasks.append(asyncio.create_task(safeMode.thresholdCheck()))
+	tasks.append(asyncio.create_task(safeModeObject.thresholdCheck()))
 
 	# Initialize all mission mode objects
 	# NOTE: the comms-tx is the only exception to this rule as it is to be handled differently than other mission modes
 	# NOTE: Boot Mode is defined and executed in this document, instead of a separate mission mode
-	antennaDeploy = antennaMode(save)
-	preBoomDeploy = preBoomMode(save)
-	postBoomDeploy = postBoomMode(save)
-	boomDeploy = boomMode(save)
+	antennaDeploy = antennaMode(saveObject, safeModeObject)
+	preBoomDeploy = preBoomMode(saveObject, safeModeObject)
+	postBoomDeploy = postBoomMode(saveObject, safeModeObject)
+	boomDeploy = boomMode(saveObject, safeModeObject)
 
 	if(readData() == (None, None, None)):
 		print('Files are empty')

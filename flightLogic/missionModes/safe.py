@@ -28,8 +28,8 @@ class safe:
 		self.__saveObject = saveObject
 		self.heartbeatTask = asyncio.create_task(self.heartBeat())
 		#GPIO.setwarnings(False)
-		#GPIO.setmode(GPIO.BOARD) #Physical Pin numbering NOTE: 8/14/20, this threw an error 
-		#GPIO.setup(40, GPIO.OUT, initial=GPIO.LOW) #Sets pin 40 to be an output pin and sets the initial value to low (off)
+		#GPIO.setmode(GPIO.BCM) #Physical Pin numbering
+		#GPIO.setup(21, GPIO.OUT, initial=GPIO.LOW) #Sets pin 40 (GPIO 21) to be an output pin and sets the initial value to low (off)
 
 
 
@@ -59,12 +59,12 @@ class safe:
 				print('Threshold is good')
 			await asyncio.sleep(1) #check voltage every second
 
-	async def heartBeat(self): #Sets up up-and-down voltage on pin 40 for heartbeat with Arduino
+	async def heartBeat(self): #Sets up up-and-down voltage on pin 40 (GPIO 21) for heartbeat with Arduino
 		waitTime = 4
 		while True:
-			#GPIO.output(40, GPIO.HIGH)
+			#GPIO.output(21, GPIO.HIGH)
 			print("Heartbeat wave high")
 			await asyncio.sleep(waitTime/2)
-			#GPIO.output(40, GPIO.LOW)
+			#GPIO.output(21, GPIO.LOW)
 			print("Heartbeat wave low")
 			await asyncio.sleep(waitTime/2)

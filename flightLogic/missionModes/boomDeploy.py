@@ -11,23 +11,20 @@ from TXISR import pythonInterrupt
 
 
 class boomMode:
-	def __init__(self, saveobject):
-		self.__getDataTTNC = TTNCData(saveobject)
-		self.__getDataAttitude = AttitudeData(saveobject)
-		self.__getDataDeployData = DeployData(saveobject)
+	def __init__(self, saveObject, safeModeObject):
+		self.__getTTNCData = TTNCData(saveObject)
+		self.__getAttitudeData = AttitudeData(saveObject)
+		self.__getDeployData = DeployData(saveObject)
 		self.__tasks = []  # Empty list will be populated with all background tasks
-		self.safeMode = safe.safe(saveobject)
-		self.saveobject = saveobject
+		self.__safeMode = safeModeObject
+		self.__saveObject = saveObject
 
 	async def run(self):
 		# Setting up background processes
-		ttncData = self.__getDataTTNC
-		attitudeData = self.__getDataAttitude
-		deployData = DeployData(self.saveobject)
 		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt()))
-		self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(3)))  # Boom deploy is mode 3
-		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
-		self.__tasks.append(asyncio.create_task(deployData.collectDeployData()))
+		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(3)))  # Boom deploy is mode 3
+		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
+		self.__tasks.append(asyncio.create_task(self.__getDeployData(self.__saveObject).collectDeployData()))
 		self.__tasks.append(asyncio.create_task(self.safeMode.thresholdCheck()))
 
 		# Deploy boom, take picture
