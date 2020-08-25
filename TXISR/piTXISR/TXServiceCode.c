@@ -272,7 +272,7 @@ void main(int argc,char* argv[])
                 else 
                 {
                     //sleep for the remainder of the delay
-                    usleep((DELAY_tx + (charCount / BOUD_RATE)) - (currentTimeTX - startTimeTX));
+                    usleep((DELAY_tx + (charCount / BOUD_RATE)) - (currentTimeTX - startTimeTX) * 1000);
                 }
             }
             charCount = 0;
