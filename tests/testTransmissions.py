@@ -24,7 +24,6 @@ class testTransmissions():
 			asyncio.create_task(pythonInterrupt.interrupt())
 			asyncio.create_task(self.readNextTransferWindow(txWindowsPath))
 			while True:
-				print("main loop ", self.timeToNextWindow)
 				#if close enough, prep files
 				#wait until 5 seconds before, return True
 				if(self.timeToNextWindow is not -1 and self.timeToNextWindow<14): #If next window is in 2 minutes or less
@@ -66,7 +65,6 @@ class testTransmissions():
 				#print("Found next transfer window: ")
 				#print(sendData)
 				self.timeToNextWindow = float(sendData[0]) - time.time()
-				print("First loop ", self.timeToNextWindow)
 				self.duration = int(sendData[1])
 				self.datatype = int(sendData[2])
 				self.pictureNumber = int(sendData[3])
