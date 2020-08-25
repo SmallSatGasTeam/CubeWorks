@@ -42,7 +42,6 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	ttncData = getDriverData.TTNCData(save)
 	attitudeData = getDriverData.AttitudeData(save)
 	safeMode = safe.safe(save)
-	interruptObject = INTERRUPT()
 
 	print('Starting data collection') #Setting up Background tasks for BOOT mode
 	tasks=[]
@@ -89,12 +88,12 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	print('Moving on to check antenna door status')
 	status = antennaDoor().readDoorStatus()
 	# this checks the bytes returned by the antennaDoor if any are 0 then doorOpen gets set to false
-	if antennaDeployed = True:
+	if antennaDeployed == True:
 		pass
-	elif status = (1,1,1,1): #This will need to be changed to reflect the real antenna
-		antennaDeployed = True
+	elif status == (1,1,1,1): #This will need to be changed to reflect the real antenna
+		antennaDeployed == True
 	else:
-        	antennaDeployed = False
+        	antennaDeployed == False
 
 	recordData(bootCount, antennaDeployed, lastMode)
 

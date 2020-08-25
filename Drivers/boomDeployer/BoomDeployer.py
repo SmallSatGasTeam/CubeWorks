@@ -10,7 +10,7 @@ class BoomDeployer(Driver):
         """
         super().__init__("BoomDeployer")
         # Initial values
-        self.burnTime = 2
+        self.burnTime = 1
         self.waitTime = 10
         self.numTimes = 1
 

@@ -39,7 +39,6 @@ def prepareData(duration, dataType):
 	lineNumber = 0 #Line to start adding data from
 	while True:
 		line = dataFile.readline()
-		print(line)
 		if(int(line[:10])>transmissionProgress): #This line is further ahead than the transmission progress, transmit going from this line forwards.
 			break
 
