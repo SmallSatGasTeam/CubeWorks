@@ -97,7 +97,12 @@ void main(int argc,char* argv[])
         DEBUG_P(Failed to open file)
         exit(1);
     }
-
+    //this is where we will store the last transmission
+    //5 data types
+    long flags[MAX_NUM_OF_DATA_TYPES];
+    //pop the data types
+    DEBUG_P(opening file)
+        
     FILE *recordFile;
     if (!(recordFile = fopen(FLAG_FILE,"r+")))
     {
@@ -116,11 +121,7 @@ void main(int argc,char* argv[])
         }
     }
 
-    //this is where we will store the last transmission
-    //5 data types
-    long flags[MAX_NUM_OF_DATA_TYPES];
-    //pop the data types
-    DEBUG_P(opening file)
+
     
 
     //open the serial ports
