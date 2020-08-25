@@ -15,7 +15,6 @@ REBOOT_WAIT_TIME = 900 #15 minutes, 900 seconds
 class postBoomMode:
 
 	def __init__(self, saveobject):
-		self.postBoomTimeFile = open("postBoomTime.txt", "w+")
 		self.__getDataTTNC = TTNCData(saveobject)
 		self.__getDataAttitude =  AttitudeData(saveobject)
 		self.__tasks = [] # List will be populated with all background tasks
@@ -25,6 +24,7 @@ class postBoomMode:
 		self.__duration = -1
 		self.__datatype = -1
 		self.__pictureNumber = -1
+		self.__transmissionFlagFile = open(os.path.join(os.path.dirname(__file__), '../../TXISR/data/transmissionFlag.txt'))
 
 	async def run(self):
 		#Set up background processes
@@ -34,7 +34,6 @@ class postBoomMode:
 		self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(4))) #Post-boom is mode 4
 		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
-		self.__tasks.append(asyncio.create_task(self.__safeMode.heartBeat()))
 		self.__tasks.append(asyncio.create_task(self.readNextTransferWindow()))
 		self.__tasks.append(asyncio.create_task(self.rebootLoop()))
 		while True:
@@ -50,9 +49,13 @@ class postBoomMode:
 		windowTime = self.__nextWindowTime
 		while True:
 			if((windowTime-time.time()) <= 5):
-				txisrCodePath = os.path.join(os.path.dirname(__file__), '../../TXISR/TXServiceCode/TXService.run')
-				os.system(txisrCodePath + ' ' + str(self.__datatype)) #Call TXISR Code
-				return True
+				self.__transmissionFlagFile.seek(0)
+				if(self.__transmissionFlagFile.readline()=='Emabled'):
+					txisrCodePath = os.path.join(os.path.dirname(__file__), '../../TXISR/TXServiceCode/TXService.run')
+					os.system(txisrCodePath + ' ' + str(self.__datatype)) #Call TXISR Code
+					return True
+				else:
+					print('Transmission flag is not enabled')
 			await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
 
 	async def rebootLoop(self):

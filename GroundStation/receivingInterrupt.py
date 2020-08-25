@@ -47,7 +47,7 @@ def decodeData(data):
 	#Decode data, store raw data and decoded data in a file
 	packetType = data[0:2]
 	dataContent = []
-	dataFile = open(os.path.dirname(__file__) + '/receivedData.txt', 'w')
+	dataFile = open(os.path.join(os.path.dirname(__file__), 'data.txt'), 'w')
 	if packetType == '00': #Attitude Data
 		dataContent.append(0) #Datatype 0
 		dataContent.append(intFromHex(data[2:10])) #Timestamp, int 4
@@ -93,10 +93,10 @@ def decodeData(data):
 		dataContent.append(floatFromHex(data[34:42])) #Acceleration y, float 4
 		dataContent.append(floatFromHex(data[42:50])) #Acceleration z, float 4
 
-	dataFile.write('Raw Data: ' + data + '\n')
+	dataFile.write('Raw Data: ' + str(data) + '\n')
 	dataFile.write('Decoded Data in List Format: ' + str(dataContent) + '\n\n')
 
-	print('Raw Data: ' + data + '\n')
+	print('Raw Data: ' + str(data) + '\n')
 	print('Decoded Data in List Format: ' + str(dataContent) + '\n\n')
 
 def parseData(data, bracket): #Takes data string, in the form of hex, from async read serial function. Spits out all AX.25 packets and GASPACS packets contained inside, as well as remaining data to be put into the leftovers

@@ -32,7 +32,6 @@ class antennaMode:
 		self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(1))) #Antenna deploy is mission mode 1
 		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck())) #Check battery conditions, run safe mode if battery drops below safe level
-		self.__tasks.append(asyncio.create_task(self.__safeMode.heartBeat()))
 		eps=EPS()
 		while True: #Runs antenna deploy loop
 			if (eps.getBusVoltage()>self.deployVoltage):
