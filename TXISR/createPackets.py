@@ -30,7 +30,7 @@ else:
 	commandsList.append(input('Input 0 for do nothing, 1 for take a picture: '))
 	commandsList.append(input('Input 0 for do nothing, 1 for deploy boom: '))
 	commandsList.append(input('Input 0 for do nothing, 1 for reboot: '))
-	commandsList.append(input('Input 0 for disable TX, 1 for enable TX: '))
+	commandsList.append(input('Input 0 for disable AX25, 1 for enable AX25: '))
 	for command in commandsList:
 		if command == '0':
 			content += command
