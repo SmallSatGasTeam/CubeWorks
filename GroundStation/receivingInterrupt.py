@@ -170,3 +170,8 @@ def intFromHex(hex):
 
 def floatFromHex(hex):
 	return struct.unpack('!f', bytes.fromhex(hex))[0]
+def main():
+	asyncio.run(interrupt())
+
+if __name__ == '__main__':
+	main()
