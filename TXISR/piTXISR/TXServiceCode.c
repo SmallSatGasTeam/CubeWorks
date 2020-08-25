@@ -269,6 +269,7 @@ void main(int argc,char* argv[])
                             written = 1;
                         }
                 }
+                sleep(.1)
             }
             charCount = 0;
             PRINT_TIME(currentTimeTX)
