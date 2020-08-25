@@ -269,7 +269,8 @@ void main(int argc,char* argv[])
                             written = 1;
                         }
                 }
-                sleep(.1);
+                sleep(.1)
+                fprintf(DELAY_tx + (charCount / BOUD_RATE));
             }
             charCount = 0;
             PRINT_TIME(currentTimeTX)
