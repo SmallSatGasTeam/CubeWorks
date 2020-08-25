@@ -235,7 +235,7 @@ void main(int argc,char* argv[])
             //cause this will make no diffrence.
             //this stores the last sent data time
             flags[dataType] = atoi(timeStamp);
-            PRINT_LONG(flags[dataType])
+            //PRINT_LONG(flags[dataType])
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence. 
             while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
@@ -275,8 +275,11 @@ void main(int argc,char* argv[])
                 sleep((DELAY_tx + (charCount / BOUD_RATE))/1000);
             }
             charCount = 0;
+            DEBUG_P(TX end Time: )
             PRINT_TIME(currentTimeTX)
+            DEBUG_P(TX end start Time: )
             PRINT_TIME(startTimeTX)
+            DEBUG_P(Delta T: )
             PRINT_TIME(currentTimeTX - startTimeTX)
         }
     } 
