@@ -18,6 +18,34 @@ class testTransmissions():
 	TRANSFER_WINDOW_BUFFER_TIME = 10 #30 seconds
 	REBOOT_WAIT_TIME = 900 #15 minutes, 900 seconds
 
+	async def main(self):
+		while True:
+			txWindowsPath = os.path.join(os.path.dirname(__file__), '../TXISR/data/txWindows.txt')
+			asyncio.create_task(pythonInterrupt.interrupt())
+			asyncio.create_task(self.readNextTransferWindow(txWindowsPath))
+			while True:
+				print("main loop ", self.timeToNextWindow)
+				#if close enough, prep files
+				#wait until 5 seconds before, return True
+				if(self.timeToNextWindow is not -1 and self.timeToNextWindow<14): #If next window is in 2 minutes or less
+					if(self.datatype < 3): #Attitude, TTNC, or Deployment data
+						prepareFiles.prepareData(self.duration, self.datatype)
+						print("Preparing data")
+					else:
+						prepareFiles.preparePicture(self.duration, self.datatype, self.pictureNumber)
+						print("Preparing Picture data")
+					break
+				await asyncio.sleep(5)
+			windowTime = self.nextWindowTime
+			while True:
+				if((windowTime-time.time()) <= 5):
+					print("Calling TXServiceCode")
+					txisrCodePath = os.path.join(os.path.dirname(__file__), '../TXISR/TXServiceCode/TXService.run')
+					os.system(txisrCodePath + ' ' + str(self.datatype)) #Call TXISR Code
+					break
+				await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
+
+			
 	async def readNextTransferWindow(self, transferWindowFilename):
 		while True:
 			#read the given transfer window file and extract the data for the soonest transfer window
@@ -47,33 +75,6 @@ class testTransmissions():
 				#print(datatype)
 				#print(pictureNumber)
 			await asyncio.sleep(3) #Checks transmission windows every 10 seconds
-
-	async def main(self):
-		txWindowsPath = os.path.join(os.path.dirname(__file__), '../TXISR/data/txWindows.txt')
-		asyncio.create_task(pythonInterrupt.interrupt())
-		asyncio.create_task(self.readNextTransferWindow(txWindowsPath))
-		while True:
-			print("main loop ", self.timeToNextWindow)
-			#if close enough, prep files
-			#wait until 5 seconds before, return True
-			if(self.timeToNextWindow is not -1 and self.timeToNextWindow<14): #If next window is in 2 minutes or less
-				if(self.datatype < 3): #Attitude, TTNC, or Deployment data
-					prepareFiles.prepareData(self.duration, self.datatype)
-					print("Preparing data")
-				else:
-					prepareFiles.preparePicture(self.duration, self.datatype, self.pictureNumber)
-					print("Preparing Picture data")
-				break
-			await asyncio.sleep(5)
-		windowTime = self.nextWindowTime
-		while True:
-			if((windowTime-time.time()) <= 5):
-				print("Calling TXServiceCode")
-				txisrCodePath = os.path.join(os.path.dirname(__file__), '../TXISR/TXServiceCode/TXService.run')
-				os.system(txisrCodePath + ' ' + str(self.datatype)) #Call TXISR Code
-				return True
-			await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
-
 if __name__ == '__main__':
 	testtx = testTransmissions()
 	asyncio.run(testtx.main())
