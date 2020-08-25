@@ -3,6 +3,7 @@ Gets driver data for each data set. Also writes that data to files.
 """
 import asyncio
 import sys
+import os
 sys.path.append('../')
 import Drivers
 import struct
@@ -11,6 +12,17 @@ import flightLogic.saveTofiles as saveTofiles
 
 
 gaspacsBytes = str(b'GASPACS'.hex())
+
+def readBootCount():
+	try:
+		dataFile = open(os.path.dirname(__file__) + '/bootRecords')
+		return int(dataFile.readline().rstrip())
+	except:
+		try:
+			dataFileBackup = open(os.path.dirname(__file__) + '/backupBootRecords')
+			return int(dataFileBackup.readline().rstrip())
+		except:
+			print('Double file exception - are both files non-existent?')
 
 class TTNCData:
 	def __init__(self, saveobject):
@@ -28,7 +40,7 @@ class TTNCData:
 		timestamp = int4tohex(self.RTC.readSeconds())
 		packetType = int1tohex(1)
 		mode = int1tohex(missionMode)
-		reboot_count = int2tohex(0)  #TODO This needs to read in from Shawn's file
+		reboot_count = int2tohex(readBootCount())
 		#No need for await on these, since they're not sleeping
 		boombox_uv = float4tohex(self.UVDriver.read())
 		SP_X_Plus_Temp, SP_Z_Plus_Temp = self.TempSensor.read()
