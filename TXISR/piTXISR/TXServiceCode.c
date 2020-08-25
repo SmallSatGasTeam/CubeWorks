@@ -269,7 +269,7 @@ void main(int argc,char* argv[])
                             written = 1;
                         }
                 }
-                sleep((DELAY_tx + (charCount / BOUD_RATE))/1000)
+                sleep((DELAY_tx + (charCount / BOUD_RATE))/1000);
             }
             charCount = 0;
             PRINT_TIME(currentTimeTX)
