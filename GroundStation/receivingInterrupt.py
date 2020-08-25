@@ -36,10 +36,10 @@ async def interrupt():
 			for ax25 in ax25Packets:
 				#Process AX.25 Packets
 				print('AX.25 packet: ' + command)
-			await asyncio.sleep(5)
+			await asyncio.sleep(1)
 		else: #No contents in serial buffer
 			print('buffer empty')
-			await asyncio.sleep(3)
+			await asyncio.sleep(1)
 
 
 def decodeData(data):

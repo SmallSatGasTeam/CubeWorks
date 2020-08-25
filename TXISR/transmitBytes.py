@@ -3,9 +3,9 @@ import serial
 from time import sleep
 
 serialPort = serial.Serial('/dev/serial0', 115200)
-serialPort.write(b'ES+W22003321\r') #Changed based on which is transmitting
+serialPort.write(b'ES+W23003321\r') #Changed based on which is transmitting
 sleep(0.2)
-serialPort.write(b'ES+W23003321\r')
+serialPort.write(b'ES+W22003321\r')
 sleep(0.2)
 
 while True:

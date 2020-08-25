@@ -49,7 +49,7 @@ def transmitPacket(packet):
 	serialPort.write(b'ES+W23003321\r')
 	sleep(0.2)
 	data = bytearray.fromhex(b'GASPACS'.hex() + packet + b'GASPACS'.hex())
-	serialPort.write(encodedData)
+	serialPort.write(data)
 
 
 def int4tobin(num):
