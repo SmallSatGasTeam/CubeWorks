@@ -3,7 +3,7 @@ import serial
 from time import sleep
 
 def packetSelect():
-	creatingPacket = input('Type 0 for a pre-created packet, and type 1 for creating a new packet')
+	creatingPacket = input('Type 0 for a pre-created packet, and type 1 for creating a new packet, and type 2 for sending your own data bordered by GASPACS')
 	if(creatingPacket == '0'): #Pre-Created packet
 		packet = input('Select from these packet types:\n0 - deploy AeroBoom\n1 - Create Attitude Data transmission window in 30 seconds, with a 30 second duration\n')
 		if packet == '0':
@@ -12,7 +12,7 @@ def packetSelect():
 			return '0000000f000f00000000'
 		else:
 			print('Invalid pre-set packet')
-	else: #New packet
+	elif(creatingPacket == '1'): #New packet
 		typeOfPacket = input('Type 0 for Window Packet, 1 for Command Packet: ')
 		if(typeOfPacket == '0'):
 			#Window packet
@@ -41,6 +41,8 @@ def packetSelect():
 					content += '1'
 			content += '0'
 			return hex(int(content, 2))[2:].zfill(2)
+	else:
+		return input('Input hex content to send')
 
 def transmitPacket(packet):
 	serialPort = serial.Serial('/dev/serial0', 115200)
@@ -57,6 +59,7 @@ def transmitPacket(packet):
 	serialPort.write(b'ES+W22003321\r')
 	sleep(0.2)
 	data = bytearray.fromhex(b'GASPACS'.hex() + packet + b'GASPACS'.hex())
+	print('Sending Data')
 	serialPort.write(data)
 
 
