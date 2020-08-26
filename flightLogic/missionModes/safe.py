@@ -18,6 +18,7 @@ import RPi.GPIO as GPIO
 class safe:
 	def __init__(self, saveObject):
 		#Setup I2C bus for communication
+		self.DEVICE_ADDR = 0x08
 		self.__eps = EPS()
 		self.thresholdVoltage = 3.33 #Threshold Voltage
 		GPIO.setwarnings(False)
@@ -30,7 +31,7 @@ class safe:
 		#send message to the adruino to power off the pi
 		#make sure we are not about to tx
         	if(saveObject.checkTxWindow()):
-			self.bus.write_byte_data(self.DEVICE_ADDR, self.RegisterADR, time)
+			self.bus.write_byte(self.DEVICE_ADDR, time)
 
 	async def thresholdCheck(self):
 		while True:
