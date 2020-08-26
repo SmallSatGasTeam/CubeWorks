@@ -19,7 +19,7 @@ async def interrupt():
 	while True:
 		if serialport.in_waiting: #If there is content in the serial buffer, read it and act on it
 			print('Data in waiting')
-			data = str(serialport.read(serialport.in_waiting()).hex()) #This produces a list of nibbles (half bytes)
+			data = str(serialport.read(serialport.in_waiting).hex()) #This produces a list of nibbles (half bytes)
 			data = leftovers+data #Append any leftover data for evaluation
 			if leftovers != '':
 				leftoverEmpty = False
@@ -47,7 +47,7 @@ def decodeData(data):
 	#Decode data, store raw data and decoded data in a file
 	packetType = data[0:2]
 	dataContent = []
-	dataFile = open(os.path.join(os.path.dirname(__file__), 'data.txt'), 'w')
+	dataFile = open(os.path.join(os.path.dirname(__file__), 'data.txt'), 'a+')
 	if packetType == '00': #Attitude Data
 		dataContent.append(0) #Datatype 0
 		dataContent.append(intFromHex(data[2:10])) #Timestamp, int 4

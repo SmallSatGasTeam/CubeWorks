@@ -19,11 +19,10 @@ async def interrupt():
 	while True:
 		if serialport.in_waiting: #If there is content in the serial buffer, read it and act on it
 			print('Data in waiting')
-			data = str(serialport.read(serialport.in_waiting()).hex()) #This produces a list of nibbles (half bytes)
+			data = str(serialport.read(serialport.in_waiting).hex()) #This produces a list of nibbles (half bytes)
 			data = leftovers+data #Append any leftover data for evaluation
 			if leftovers != '':
 				leftoverEmpty = False
-				print('Leftovers are not empty!')
 			commands, ax25Packets = [], []
 			commands, ax25Packets, leftovers = parseData(data, gaspacsHex)
 			if leftovers != '' and leftoversEmpty == False:
@@ -37,10 +36,67 @@ async def interrupt():
 			for ax25 in ax25Packets:
 				#Process AX.25 Packets
 				print('AX.25 packet: ' + command)
-			await asyncio.sleep(0.1)
 		else: #No contents in serial buffer
 			print('buffer empty')
 			await asyncio.sleep(0.1)
+
+
+def decodeData(data):
+	#data is a string of hex bytes
+	#Decode data, store raw data and decoded data in a file
+	packetType = data[0:2]
+	dataContent = []
+	dataFile = open(os.path.join(os.path.dirname(__file__), 'data.txt'), 'w')
+	if packetType == '00': #Attitude Data
+		dataContent.append(0) #Datatype 0
+		dataContent.append(intFromHex(data[2:10])) #Timestamp, int 4
+		dataContent.append(floatFromHex(data[10:18])) #Sun-Sensor 1, float 4
+		dataContent.append(floatFromHex(data[18:26])) #Sun-Sensor 2, float 4
+		dataContent.append(floatFromHex(data[26:34])) #Sun-Sensor 3, float 4
+		dataContent.append(floatFromHex(data[34:42])) #Sun-Sensor 4, float 4
+		dataContent.append(floatFromHex(data[42:50])) #Sun-Sensor 5, float 4
+		dataContent.append(floatFromHex(data[50:58])) #Magnetic field x, float 4
+		dataContent.append(floatFromHex(data[58:66])) #Magnetic field y, float 4
+		dataContent.append(floatFromHex(data[66:74])) #Magnetic field z, float 4
+	elif packetType == '01': #TT&C Data
+		dataContent.append(1) #Datatype 1
+		dataContent.append(intFromHex(data[2:10])) #Timestamp, int 4
+		dataContent.append(intFromHex(data[10:12])) #Mission mode, int 1
+		dataContent.append(intFromHex(data[12:16])) #Reboot count, int 2
+		dataContent.append(floatFromHex(data[16:24])) #Boombox uv, float 4
+		dataContent.append(floatFromHex(data[24:32])) #SPX+ temp, float 4
+		dataContent.append(floatFromHex(data[32:40])) #SPZ+ temp, float 4
+		dataContent.append(floatFromHex(data[40:48])) #CPU temp, float 4
+		dataContent.append(floatFromHex(data[48:56])) #EPS MCU temp, float 4
+		dataContent.append(floatFromHex(data[56:64])) #Cell 1 battery temp, float 4
+		dataContent.append(floatFromHex(data[64:72])) #Cell 2 battery temp, float 4
+		dataContent.append(floatFromHex(data[72:80])) #Battery voltage, float 4
+		dataContent.append(floatFromHex(data[80:88])) #Battery current, float 4
+		dataContent.append(floatFromHex(data[88:96])) #BCR voltage, float 4
+		dataContent.append(floatFromHex(data[96:104])) #BCR current, float 4
+		dataContent.append(floatFromHex(data[104:112])) #EPS 3v3 current, float 4
+		dataContent.append(floatFromHex(data[112:120])) #EPS 5v current, float 4
+		dataContent.append(floatFromHex(data[120:128])) #SPX voltage, float 4
+		dataContent.append(floatFromHex(data[128:136])) #SPX+ current, float 4
+		dataContent.append(floatFromHex(data[136:144])) #SPX- current, float 4
+		dataContent.append(floatFromHex(data[144:152])) #SPY voltage, float 4
+		dataContent.append(floatFromHex(data[152:160])) #SPY+ current, float 4
+		dataContent.append(floatFromHex(data[160:168])) #SPY- current, float 4
+		dataContent.append(floatFromHex(data[168:176])) #SPZ voltage, float 4
+		dataContent.append(floatFromHex(data[176:184])) #SPZ+ current, float 4
+	else: #Deployment Data
+		dataContent.append(2) #Datatype 2
+		dataContent.append(intFromHex(data[2:18])) #Timestamp in ms, int 8
+		dataContent.append(floatFromHex(data[18:26])) #Boombox UV, float 4
+		dataContent.append(floatFromHex(data[26:34])) #Acceleration x, float 4
+		dataContent.append(floatFromHex(data[34:42])) #Acceleration y, float 4
+		dataContent.append(floatFromHex(data[42:50])) #Acceleration z, float 4
+
+	dataFile.write('Raw Data: ' + str(data) + '\n')
+	dataFile.write('Decoded Data in List Format: ' + str(dataContent) + '\n\n')
+
+	print('Raw Data: ' + str(data) + '\n')
+	print('Decoded Data in List Format: ' + str(dataContent) + '\n\n')
 
 def parseData(data, bracket): #Takes data string, in the form of hex, from async read serial function. Spits out all AX.25 packets and GASPACS packets contained inside, as well as remaining data to be put into the leftovers
 	searching = True
