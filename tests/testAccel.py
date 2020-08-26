@@ -6,6 +6,6 @@ from Drivers import Accelerometer
 
 
 if __name__ == '__main__':
-	accel = Accelerometer.Accelerometer()
+	accel = Accelerometer()
 	print(accel.read())
 	print(np.linalg.norm(accel.read()))

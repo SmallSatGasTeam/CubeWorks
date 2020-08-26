@@ -324,6 +324,7 @@ void setUpUart()
  *******************************************************************************************/
 int changeCharToInt(char a)
 {
+    PRINT_DEBUG_c(a)
     switch(a)
     {
         //use assci table to decode this part of the code

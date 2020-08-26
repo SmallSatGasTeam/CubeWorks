@@ -12,9 +12,9 @@ class preBoomMode:
 	def __init__(self, saveObject, safeModeObject):
 		self.thresholdVoltage = 3.5 #Threshold voltage to deploy AeroBoom.
 		self.criticalVoltage = 3.1 #Critical voltage, below this go to SAFE
-		self.darkVoltage = 1 #Average voltage from sunsors that, if below this, indicates GASPACS is in darkness
-		self.darkMinutes = 1 #How many minutes GASPACS must be on the dark side for before moving forward
-		self.lightMinimumMinutes = 1 #Minimum amount of time GASPACS must be on light side of orbit before deploying
+		self.darkVoltage = .1 #Average voltage from sunsors that, if below this, indicates GASPACS is in darkness
+		self.darkMinutes = .1 #How many minutes GASPACS must be on the dark side for before moving forward
+		self.lightMinimumMinutes = .1 #Minimum amount of time GASPACS must be on light side of orbit before deploying
 		self.lightMaximumMinutes = 60 #Maximum amount of time GASPACS may be on light side of orbit before deploying, must be less than 90 by a fair margin since less than half of orbit can be sun
 		self.batteryStatusOk = False
 		self.maximumWaitTime = 240 #Max time GASPACS can wait, charging batteries, before SAFEing
@@ -37,21 +37,25 @@ class preBoomMode:
 			i=0
 			darkLength = 0
 			lastDark = 0
+			#print(self.sunlightData)
 			while i < len(self.sunlightData): #Loop through sunlightData, checking for X minutes of darkness
 				if(self.sunlightData[i]<self.darkVoltage):
-					darkLength+=1 #It was in the dark for the 10 seconds recorded in the ith position of sunlightData
+					darkLength+=1 #It was in the dark for the 5 seconds recorded in the ith position of sunlightData
+					index = i
 				else:
+					if(darkLength>self.darkMinutes*12):
+						lastDark = i
+						break
 					darkLength = 0 #Maybe darkLength -=1 to avoid damage from one bad measurement? Maybe a smoother running average?
-				if(darkLength>self.darkMinutes*6): #If GASPACS has been in dark longer than the preset amount
-					lastDark = i
-					break
 				i+=1
+
+
 			print('Last Dark ' + str(lastDark))
 
 			if lastDark != 0: #Condition from previous while loop has  been met
 				q=lastDark
 				lightLength = 0
-				print("In Sunlight, looking for min minutes")
+				print("Now looking for min minutes of Sunlight")
 				while q < len(self.sunlightData):
 					if(self.sunlightData[q]>=self.darkVoltage):
 						lightLength+=1
@@ -66,18 +70,14 @@ class preBoomMode:
 						print('Returning and exiting')
 						return True #Go on to Boom Deploy Mode if the battery is Ok
 					q += 1
-			await asyncio.sleep(15) #Run this whole while loop every 15 seconds
+			await asyncio.sleep(5) #Run this whole while loop every 15 seconds
 
 	async def sunCheck(self):
 		sunSensor = sunSensorDriver.sunSensor()
 		while True: #Monitor the sunlight, record it in list NOTE: could be improved to halve calls
-			#print('Checking sunlight: '+str(self.sunlightData))
 			vList = sunSensor.read()
-			averageVoltage = sum(vList)/len(vList)
+			self.sunlightData.append(max(vList))
 			await asyncio.sleep(5)
-			averageVoltage += sum(vList)/len(vList)
-			self.sunlightData.append(averageVoltage/2)
-			await asyncio.sleep(5) #Every 10 seconds, record average solar panel voltage. Rough running average with two pieces to avoid jumps in avg. voltage
 
 	async def batteryCheck(self):
 		eps = EPS()
