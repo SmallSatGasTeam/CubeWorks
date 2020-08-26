@@ -31,15 +31,20 @@ async def interrupt():
 				print('Leftover bits in buffer: ' + leftovers)
 				leftovers = ''
 			for command in commands:
-				print('Data bordered by GASPACS in hex:' + command)
-				decodeData(command)
+				if command is not '':
+					print('Data bordered by GASPACS in hex:' + command)
+					decodeData(command)
+				else:
+					print('Empty packet failure')
+					return True
+
 			for ax25 in ax25Packets:
 				#Process AX.25 Packets
 				print('AX.25 packet: ' + command)
-			await asyncio.sleep(1)
+			await asyncio.sleep(0.01)
 		else: #No contents in serial buffer
 			print('buffer empty')
-			await asyncio.sleep(1)
+			await asyncio.sleep(0.05)
 
 
 def decodeData(data):
