@@ -1,6 +1,7 @@
 import sys
 sys.path.append('../')
 import os
+from Driver.camera import Camera
 from math import ceil
 from binascii import hexlify
 """
@@ -73,9 +74,13 @@ def prepareData(duration, dataType):
 
 def preparePicture(duration, dataType, pictureNumber):
 	if dataType == 3: #HQ Picture
-		dataFilePath = os.path.join(os.path.dirname(__file__), '../../../Pictures/'+str(pictureNumber)+'/HighRes/HighResOriginal'+str(pictureNumber)+'.jpg')
+		cam = Camera()
+		cam.compressHighResToFiles(pictureNumber)
+		dataFilePath = os.path.join(os.path.dirname(__file__), '../../../Pictures/'+str(pictureNumber)+'/HighRes/HighResOriginal'+str(pictureNumber)+'.bin')
 	else: #LQ picture
-		dataFilePath = os.path.join(os.path.dirname(__file__), '../../../Pictures/'+str(pictureNumber)+'/LowRes/LowResOriginal'+str(pictureNumber)+'.jpg')
+		cam = Camera()
+		cam.compressLowResToFiles(pictureNumber)
+		dataFilePath = os.path.join(os.path.dirname(__file__), '../../../Pictures/'+str(pictureNumber)+'/LowRes/LowResOriginal'+str(pictureNumber)+'.bin')
 
 	numPackets = ceil(duration*1000/(120 + 128*8/9600)) + 15 #How many picture packets can we transmit in the window? + 15 for safety
 
