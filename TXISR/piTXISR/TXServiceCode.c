@@ -227,6 +227,9 @@ void main(int argc,char* argv[])
                 for(int i = 0; i < charCount; i++)
                 {
                     printf("%X", line[i]);
+                    if (line[i] == 0) {
+                        PRINT_DEBUG_CHAR('0')
+                    }
                 }
                 PRINT_DEBUG_CHAR('\n')
             #endif
