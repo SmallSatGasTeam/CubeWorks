@@ -1,7 +1,7 @@
 import sys
 sys.path.append('../')
 import os
-from Driver.camera import Camera
+from Drivers.camera import Camera
 from math import ceil
 from binascii import hexlify
 """
@@ -107,7 +107,7 @@ def preparePicture(duration, dataType, pictureNumber):
 		substringOfData = pictureContent[position:position+256].decode()
 		if(len(substringOfData)<256): #EOF - Loop back to start
 			position = 256-len(substringOfData)
-			substringOfData += pictureContent[0:position]
+			substringOfData += pictureContent[0:position].decode()
 		else: #Nominal situation
 			position=position+256
 		txDataFile.write(str(dataSize).zfill(10)+':'+substringOfData+'\n')

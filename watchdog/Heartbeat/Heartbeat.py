@@ -11,10 +11,10 @@ def setUp():
     GPIO.setwarnings(False)
 
     # Use physical pin numbering
-    GPIO.setmode(GPIO.BOARD)
+    GPIO.setmode(GPIO.BCM)
 
-    # Set pin 40 to be an output pin and set initial value to low (off)
-    GPIO.setup(40, GPIO.OUT, initial=GPIO.LOW)
+    # Set pin 40(BCM 21) to be an output pin and set initial value to low (off)
+    GPIO.setup(21, GPIO.OUT, initial=GPIO.LOW)
 
 
 # this function sends a single pulse
@@ -24,9 +24,9 @@ def singlePulse():
     # wait a four seconds.
     sleep(waitTime)
     # send a pulse
-    GPIO.output(40, GPIO.HIGH)
+    GPIO.output(21, GPIO.HIGH)
     sleep(0.00005)
-    GPIO.output(40, GPIO.LOW)
+    GPIO.output(21, GPIO.LOW)
 
 
 def longTap():
@@ -34,8 +34,8 @@ def longTap():
     setUp()
     while True:
         # send a pulse
-        GPIO.output(40, GPIO.HIGH)
+        GPIO.output(21, GPIO.HIGH)
         sleep(waitTime/2)
-        GPIO.output(40, GPIO.LOW)
+        GPIO.output(21, GPIO.LOW)
         # wait a four seconds.
         sleep(waitTime/2)

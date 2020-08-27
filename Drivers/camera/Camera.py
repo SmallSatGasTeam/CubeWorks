@@ -49,14 +49,9 @@ class Camera(Driver):
         #Set up paths for low res picture and creates the packets directory
         lowResOriginalPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/LowResOriginal"+str(self.pictureNumber)+".jpg"
         lowResSSDVPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/LowResOriginal"+str(self.pictureNumber)+".bin"
-        lowResASCIIPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/LowResOriginal"+str(self.pictureNumber)+".txt"
-        makedirs(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/Packets", exist_ok=True)
-        lowResPacketPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/Packets/"
 
 
         ssdv_lowRes_picture = subprocess.run(["ssdv", "-e", lowResOriginalPath, lowResSSDVPath])
-        xxd_lowRes_picture = subprocess.run(["xxd", lowResSSDVPath, lowResASCIIPath])
-        split_lowRes_picture = subprocess.run(["split", "-b", "128", lowResASCIIPath, lowResPacketPath])
 
     def compressHighResToFiles(self,pictureNumber):
         """
@@ -67,11 +62,6 @@ class Camera(Driver):
         #Set up paths for high res picture and creates the packets directory
         highResOriginalPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".jpg"
         highResSSDVPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".bin"
-        highResASCIIPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".txt"
-        makedirs(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/Packets", exist_ok=True)
-        highResPacketPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/Packets/"
 
         ssdv_highRes_picture = subprocess.run(["ssdv", "-e", highResOriginalPath, highResSSDVPath])
-        xxd_highRes_picture = subprocess.run(["xxd", highResSSDVPath, highResASCIIPath])
-        split_highRes_picture = subprocess.run(["split", "-b", "128", highResASCIIPath, highResPacketPath])
 

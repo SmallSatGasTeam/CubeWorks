@@ -10,9 +10,10 @@ class BoomDeployer(Driver):
         """
         super().__init__("BoomDeployer")
         # Initial values
-        self.burnTime = 1
+        self.burnTimeWC1 = 5
+        self.burnTimeWC2 = 5
         self.waitTime = 10
-        self.numTimes = 1
+        self.numTimes = 3
 
         # Set up the GPIO pins for use
         GPIO.setmode(GPIO.BCM)
@@ -46,12 +47,13 @@ class BoomDeployer(Driver):
 	the burn. Wait and then repeat with the other wirecutter mechanism
         """
         for num in range(0, self.numTimes):
-	    #Turn on Wire Cutter 1
+            
+            #Turn on Wire Cutter 1
             GPIO.output(self.wireCutter1_high1, GPIO.HIGH)
             GPIO.output(self.wireCutter1_high2, GPIO.HIGH)
             GPIO.output(self.wireCutter1_low1, GPIO.LOW)
             #Burn for set number of seconds
-            await asyncio.sleep(self.burnTime)
+            await asyncio.sleep(self.burnTimeWC1)
             #Turn off Wire Cutter 1
             GPIO.output(self.wireCutter1_high1, GPIO.LOW)
             GPIO.output(self.wireCutter1_high2, GPIO.LOW)
@@ -64,13 +66,14 @@ class BoomDeployer(Driver):
             GPIO.output(self.wireCutter2_high2, GPIO.HIGH)
             GPIO.output(self.wireCutter2_low1, GPIO.LOW)
             #Burn for set number of seconds
-            await asyncio.sleep(self.burnTime)
+            await asyncio.sleep(self.burnTimeWC2)
             #Turn off Wire Cutter 2
             GPIO.output(self.wireCutter2_high1, GPIO.LOW)
             GPIO.output(self.wireCutter2_high2, GPIO.LOW)
             GPIO.output(self.wireCutter2_low1, GPIO.HIGH)
             #Wait
             await asyncio.sleep(self.waitTime)
+
             print('Loop executed once')
 
     def read(self):
