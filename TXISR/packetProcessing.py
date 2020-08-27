@@ -75,7 +75,7 @@ async def processPacket(packetData):
 		else:
 			# Take picture
 			print("Take picture")
-			cam = camera.Camera()
+			cam = Camera()
 			cam.takePicture()
 
 		if binaryData[4] == '0':
