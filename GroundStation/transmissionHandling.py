@@ -5,11 +5,27 @@ from time import sleep
 def packetSelect():
 	creatingPacket = input('Type 0 for a pre-created packet, and type 1 for creating a new packet, and type 2 for sending your own data bordered by GASPACS')
 	if(creatingPacket == '0'): #Pre-Created packet
-		packet = input('Select from these packet types:\n0 - deploy AeroBoom\n1 - Create Attitude Data transmission window in 30 seconds, with a 30 second duration\n')
+		packet = input('Select from these packet types:\n0 - deploy AeroBoom with enabled TX\n1 - Create Attitude Data transmission window in 30 seconds, with a 30 second duration\n2 - Disable TX\n3 - Take picture, enable TX\n4 - Clear TX windows and progress and enable TX\n5 - Reboot, enable TX\n6 - Create transmission window in 25 seconds, for 30 seconds, transmitting LQ picture number 0\n7 - Create transmission window in 25 seconds, for 30 seconds, transmitting TTNC data\n8 - Create a transmisison window in 25 seconds, for 30 seconds, transmitting deploy data\n9 - Create a transmission window in 25 seconds, for 30 seconds, transmitting HQ picture number 0\n')
 		if packet == '0':
 			return 'c8'
 		elif packet == '1':
 			return '0000000f000f00000000'
+		elif packet == '2':
+			return '80'
+		elif packet == '3':
+			return 'd0'
+		elif packet == '4':
+			return 'e0'
+		elif packet == '5':
+			return 'c4'
+		elif packet == '6':
+			return '0000000c800f02000000'
+		elif packet == '7':
+			return '0000000c800f00800000'
+		elif packet == '8':
+			return '0000000c800f01000000'
+		elif packet == '9':
+			return '0000000c800f01800000'
 		else:
 			print('Invalid pre-set packet')
 	elif(creatingPacket == '1'): #New packet
