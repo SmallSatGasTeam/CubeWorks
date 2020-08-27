@@ -4,6 +4,7 @@ import sys
 import os
 sys.path.append('../')
 import struct
+from binascii import hexlify
 
 """
 This file sets up the interrupt process. Every five seconds, the buffer of the serial port at /dev/serial0 is read.
@@ -26,11 +27,16 @@ async def interrupt():
 			if(input('Serial buffer empty - has transmission ended? (y or n) :') == 'y'):
 				break
 			print('Serial Buffer Empty')
-			await asyncio.sleep(0.5)
+			await asyncio.sleep(1.5)
 	#look through datafile for first occurence of 5566
 	byteSequence = '5566'
 	dataFile.close()
-	dataFile = open(os.path.join())
+	dataFile = open(os.path.join(os.path.dirname(__file__), 'pictureData.bin'), 'wb+')
+	data = str(hexlify(dataFile.read()).decode())
+	packetStart = data.find('556600000000')
+	print('First picture packet is at index ' + str(packetStart))
+	data = data[packetStart:]
+	dataFile.write(bytearray.fromhex(data))
 
 
 if __name__ == '__main__':
