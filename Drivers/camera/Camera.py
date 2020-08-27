@@ -50,9 +50,9 @@ class Camera(Driver):
         #Set up paths for low res picture and creates the packets directory
         lowResOriginalPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/LowResOriginal"+str(self.pictureNumber)+".jpg"
         lowResSSDVPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/LowResOriginal"+str(self.pictureNumber)+".bin"
-
+        print("before compress")
         ssdv_lowRes_picture = system('sudo /home/pi/ssdv/ssdv -e ' + str(lowResOriginalPath) + ' ' + str(lowResSSDVPath))
-
+        print("After compress")
     def compressHighResToFiles(self,pictureNumber):
         """
         Compresses the Low Res to files. Compresses with SSDV, converts from Hex to ASCII with xxd, splits into 128 byte files.
