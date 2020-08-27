@@ -10,7 +10,7 @@ sys.path.append('../')
 import time
 import os.path
 from os import system
-import Drivers.camera.Camera as camera
+from Drivers.camera import Camera
 import Drivers.boomDeployer as boomDeployer
 import smbus
 

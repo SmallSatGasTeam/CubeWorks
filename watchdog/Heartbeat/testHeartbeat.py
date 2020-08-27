@@ -1,4 +1,5 @@
 import Heartbeat
+import asyncio
 
 Heartbeat.setUp()
-Heartbeat.longTap()
+asyncio.run(Heartbeat.longTap())
