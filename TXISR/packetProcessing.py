@@ -96,7 +96,6 @@ async def processPacket(packetData):
 			bus = smbus.SMBus(1)
 			address = 0x08
 			bus.write_byte(address, 1)
-			system('pkill -9 python') #Kills all python code, including the heartbeat code
 
 		if binaryData[6] == '0':
 			# Turn off AX25
@@ -178,9 +177,13 @@ def clearTXFile():
 def clearTXProgress():
 	# This function will clear the file that saves which timestamp has been transmitted most recently for each data type
 	print("I don't know which file to clear!!!")
-	
-	
-	
+	progressFile = open("/home/pi/Integration/CubeWorks/TXISR/data/flagsFile.txt", "w")
+	progressFile.write('0\n')
+	progressFile.write('0\n')
+	progressFile.write('0\n')
+	progressFile.write('0\n')
+	progressFile.write('0\n')
+
 # Command packet
 # processPacket('C8')
 # TX Window Packet
