@@ -23,8 +23,15 @@ async def interrupt():
 			print('Data: ' + str(data))
 			dataFile.write(data)
 		else: #No contents in serial buffer
+			if(input('Serial buffer empty - has transmission ended? (y or n) :') == 'y'):
+				break
 			print('Serial Buffer Empty')
 			await asyncio.sleep(0.5)
+	#look through datafile for first occurence of 5566
+	byteSequence = '5566'
+	dataFile.close()
+	dataFile = open(os.path.join())
+
 
 if __name__ == '__main__':
 	asyncio.run(interrupt())
