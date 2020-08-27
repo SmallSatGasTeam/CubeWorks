@@ -18,23 +18,30 @@ async def interrupt():
 	leftoversEmpty = True
 	gaspacsHex = str(b'GASPACS'.hex())
 	dataFile = open(os.path.join(os.path.dirname(__file__), 'pictureData.bin'), 'wb')
+	counter = 0
 	while True:
 		if serialport.in_waiting: #If there is content in the serial buffer, read it and act on it
-			data = serialport.read(serialport.in_waiting) #This produces a list of nibbles (half bytes)
+			counter = 0
+			data = serialport.read(serialport.in_waiting).hex() #This produces a list of nibbles (half bytes)
 			print('Data: ' + str(data))
-			dataFile.write(data)
+			dataFile.write(bytearray.fromhex(data))
 		else: #No contents in serial buffer
-			if(input('Serial buffer empty - has transmission ended? (y or n) :') == 'y'):
+			counter +=1
+			print(counter)
+			if(counter>25):
 				break
-			await asyncio.sleep(15)
+			await asyncio.sleep(1)
 	#look through datafile for first occurence of 5566
 	byteSequence = '5566'
 	dataFile.close()
-	dataFile = open(os.path.join(os.path.dirname(__file__), 'pictureData.bin'), 'wb+')
-	data = str(hexlify(dataFile.read()).decode())
-	packetStart = data.find('556600000000')
+	dataFile = open(os.path.join(os.path.dirname(__file__), 'pictureData.bin'), 'rb')
+	dataFile.seek(0)
+	data = str(hexlify(dataFile.read()))[2:-1]
+	packetStart = data.find(byteSequence)
 	print('First picture packet is at index ' + str(packetStart))
 	data = data[packetStart:]
+	dataFile.close()
+	dataFile = open(os.path.join(os.path.dirname(__file__), 'pictureData.bin'), 'wb')
 	dataFile.write(bytearray.fromhex(data))
 
 
