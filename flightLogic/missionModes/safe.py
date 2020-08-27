@@ -27,9 +27,9 @@ class safe:
 		self.thresholdVoltage = 3.33 #Threshold Voltage
 		self.__saveObject = saveObject
 		self.heartbeatTask = asyncio.create_task(self.heartBeat())
-		#GPIO.setwarnings(False)
-		#GPIO.setmode(GPIO.BCM) #Physical Pin numbering
-		#GPIO.setup(21, GPIO.OUT, initial=GPIO.LOW) #Sets pin 40 (GPIO 21) to be an output pin and sets the initial value to low (off)
+		GPIO.setwarnings(False)
+		GPIO.setmode(GPIO.BCM) #Physical Pin numbering
+		GPIO.setup(21, GPIO.OUT, initial=GPIO.LOW) #Sets pin 40 (GPIO 21) to be an output pin and sets the initial value to low (off)
 
 
 
@@ -37,16 +37,15 @@ class safe:
 		#send message to the arduino to power off the pi
 		#make sure we are not about to tx
 		if(self.__saveObject is not None and self.__saveObject.checkTxWindow()):
+			self.bus.write_byte(self.DEVICE_ADDR, time)
 			self.heartbeatTask.cancel() #Cancel the heartbeat task
-			#self.bus.write_byte(self.DEVICE_ADDR, time)
 			print('Sent power-off command')
 		else:
+			self.bus.write_byte(self.DEVICE_ADDR, time)
 			self.heartbeatTask.cancel() #Cancel the heartbeat task
-			#self.bus.write_byte(self.DEVICE_ADDR, time)
 			print('Send power-off command')
 
-		sleep(15) #If Pi hasn't turned off by now, must take drastic measures. Kill heartbeat code!
-		#system('pkill -9 python')
+		sleep(15)
 		print("killing heartbeat code")
 
 	async def thresholdCheck(self):
@@ -54,7 +53,8 @@ class safe:
 			epsVoltage = self.__eps.getBusVoltage()
 			if epsVoltage < self.thresholdVoltage:
 				print("Going into SAFE. eps voltage was  "+ str(epsVoltage))
-				#self.run(10) #1 hour
+				self.run(10)
+				self.heartBeatTask.cancel()
 			else:
 				print('Threshold is good')
 			await asyncio.sleep(1) #check voltage every second
@@ -62,9 +62,9 @@ class safe:
 	async def heartBeat(self): #Sets up up-and-down voltage on pin 40 (GPIO 21) for heartbeat with Arduino
 		waitTime = 4
 		while True:
-			#GPIO.output(21, GPIO.HIGH)
+			GPIO.output(21, GPIO.HIGH)
 			print("Heartbeat wave high")
 			await asyncio.sleep(waitTime/2)
-			#GPIO.output(21, GPIO.LOW)
+			GPIO.output(21, GPIO.LOW)
 			print("Heartbeat wave low")
 			await asyncio.sleep(waitTime/2)
