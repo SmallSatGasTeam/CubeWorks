@@ -4,6 +4,7 @@ from picamera import PiCamera
 from os import listdir
 from os.path import expanduser
 from os import makedirs
+from os import system
 import subprocess
 
 class Camera(Driver):
@@ -50,8 +51,7 @@ class Camera(Driver):
         lowResOriginalPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/LowResOriginal"+str(self.pictureNumber)+".jpg"
         lowResSSDVPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/LowResOriginal"+str(self.pictureNumber)+".bin"
 
-
-        ssdv_lowRes_picture = subprocess.run(["ssdv", "-e", lowResOriginalPath, lowResSSDVPath])
+        ssdv_lowRes_picture = system('sudo /home/pi/ssdv/ssdv -e ' + str(lowResOriginalPath) + ' ' + str(lowResSSDVPath))
 
     def compressHighResToFiles(self,pictureNumber):
         """
@@ -63,5 +63,5 @@ class Camera(Driver):
         highResOriginalPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".jpg"
         highResSSDVPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".bin"
 
-        ssdv_highRes_picture = subprocess.run(["ssdv", "-e", highResOriginalPath, highResSSDVPath])
+        ssdv_highRes_picture = system('sudo /home/pi/ssdv/ssdv -e ' + str(highResOriginalPath) + ' ' + str(highResSSDVPath))
 
