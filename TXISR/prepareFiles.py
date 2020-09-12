@@ -76,11 +76,11 @@ def preparePicture(duration, dataType, pictureNumber):
 	if dataType == 3: #HQ Picture
 		cam = Camera()
 		cam.compressHighResToFiles(pictureNumber)
-		dataFilePath = os.path.join(os.path.dirname(__file__), '../../../Pictures/'+str(pictureNumber)+'/HighRes/HighResOriginal'+str(pictureNumber)+'.bin')
+		dataFilePath = os.path.join(os.path.dirname(__file__), '../Pictures/'+str(pictureNumber)+'/HighRes/HighResOriginal'+str(pictureNumber)+'.bin')
 	else: #LQ picture
 		cam = Camera()
 		cam.compressLowResToFiles(pictureNumber)
-		dataFilePath = os.path.join(os.path.dirname(__file__), '../../../Pictures/'+str(pictureNumber)+'/LowRes/LowResOriginal'+str(pictureNumber)+'.bin')
+		dataFilePath = os.path.join(os.path.dirname(__file__), '../Pictures/'+str(pictureNumber)+'/LowRes/LowResOriginal'+str(pictureNumber)+'.bin')
 
 	numPackets = ceil(duration*1000/(120 + 128*8/9600)) + 15 #How many picture packets can we transmit in the window? + 15 for safety
 
