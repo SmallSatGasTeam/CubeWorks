@@ -14,7 +14,8 @@ The CubeWorks software module is designed to run on a Raspberry Pi Zero W runnin
 
 ### Installation Process
 1. Image a Raspberry Pi with Raspbian and boot the Pi
-2. Use `sudo raspi-config` to set the proper network settings, set a user password, localisation options, and under Interfacing Options enable Camera, SPI, I2C, and Serial ("No" to login shell, "Yes" to serial interface)
+2. Use `sudo raspi-config` to set the proper network settings, set a user password, localisation options.
+3. Under Interfacing Options enable Camera, SSH, SPI, I2C, and Serial ("No" to login shell, "Yes" to serial interface)
 3. Update all packages with the commands: `sudo apt update` `sudo apt full-upgrade`
 4. Reboot, install the following dependencies:
 	- Python3, `sudo apt install python3`
