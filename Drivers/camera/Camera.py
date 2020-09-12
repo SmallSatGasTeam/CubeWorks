@@ -2,9 +2,10 @@ from Drivers.Driver import Driver
 from time import sleep
 from picamera import PiCamera
 from os import listdir
-from os.path import expanduser
+#from os.path import expanduser
 from os import makedirs
 from os import system
+from pathlib import Path
 import subprocess
 
 class Camera(Driver):
@@ -16,7 +17,8 @@ class Camera(Driver):
 
         self.highRes = (3280, 2464)
         self.lowRes = (640, 480)
-        self.pictureDirectoryPath = expanduser('~/Pictures')
+        #self.pictureDirectoryPath = expanduser('~/Pictures')
+        self.pictureDirectoryPath = Path(__file__).parent / "../Pictures"
         self.cam = None
         self.pictureNumber = 0
 
@@ -30,6 +32,7 @@ class Camera(Driver):
         #the way to count folders in directory is len(os.listdir(path of directory to count in))
         #you have to import OS
         #This also counts files in the total, but with the file structure we came up with this shouldn't be a problem
+        makedirs(self.pictureDirectoryPath, exist_ok=True)
         self.pictureNumber = len(listdir(self.pictureDirectoryPath))
         #count number of folders in directory, add 1 for current pic
 
