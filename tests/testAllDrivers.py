@@ -50,7 +50,6 @@ cpu = CpuTemperature()
 print("CPU Temp: ", cpu.read())
 
 # Test EPS Read
-""" EPS is throwing an error since it isn't plugged in well
 epsTest = EPS()
 print("MCU Temp in C: "+str(epsTest.getMCUTemp()))
 print("Cell 1 Temp in C: "+str(epsTest.getCell1Temp()))
@@ -69,7 +68,7 @@ print("Y- Solar Panel Current in A: "+str(epsTest.getSPYMinusCurrent()))
 print("Y+ Solar Panel Current in A: "+str(epsTest.getSPYPlusCurrent()))
 print("Z-Axis Solar Panel Voltage in V: "+str(epsTest.getSPZVoltage()))
 print("Z+ Solar Panel Current in A: "+str(epsTest.getSPZPlusVoltage()))
-"""
+
 # Test Magnetometer
 mag = Magnetometer()
 print("Magnetometer: ", mag.read())
