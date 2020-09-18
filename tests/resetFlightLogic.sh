@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # This file will do the following to reset the flight logic to its initial state:
 # - Erase all pictures
 # - Erase flight logic boot records and replace with 3 lines of 0s. Note, both bootRecords and backupBootRecords need to be reset.
