@@ -1,0 +1,4 @@
+#This is the code that handle the i2c communication with the esp
+#it ment to be abstract and it handles the sending and reciving commands for you.
+#It will just return the desired information
+

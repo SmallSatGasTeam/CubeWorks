@@ -1,6 +1,9 @@
 import sys
 sys.path.append('../')
 from Drivers.backupAntennaDeployer import BackupAntennaDeployer
-antennaDeployTest = BackupAntennaDeployer()
-antennaDeployTest.deploy()
+import asyncio
 
+antennaDeployTest = BackupAntennaDeployer()
+asyncio.run(antennaDeployTest.deployPrimary())
+print('Primary Done')
+asyncio.run(antennaDeployTest.deploySecondary())

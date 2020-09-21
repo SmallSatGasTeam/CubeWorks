@@ -18,14 +18,12 @@ class TransceiverConfig(Driver):
     """
     Writes the input to the transceiver over UART
     """
-    ser = serial.Serial("/dev/ttyAMA0")               #Open named port 
-    ser.baudrate = 115200                              #Set baud rate to 9600
-    ser.timeout = 1
+    ser = serial.Serial('/dev/serial0', 115200)
     data = input                              #Set data to the character 'a', 0x61 or 01100001
-    ser.write(data.encode()) #Send the data
-    response = ser.read(128)
+    ser.write(data) #Send the data
+    #response = ser.read(128)
     ser.close()
-    return response
+    #return response
   
   def setBeaconOn(self):
     """
@@ -33,7 +31,7 @@ class TransceiverConfig(Driver):
     Binary SCW: 11001101000001
     Hex SCW: 3341
     """
-    self.writeData("ES+W23003341")
+    self.writeData(b'ES+W23003341\r')
   
   def setBeaconOff(self):
     """
@@ -41,17 +39,17 @@ class TransceiverConfig(Driver):
     Binary SCW: 11001100000001
     Hex SCW: 3301
     """
-    self.writeData("ES+W23003301")
+    self.writeData(b'ES+W23003301\r')
 
   def setLowPowerMode(self):
     """
     Turns on Low Power Mode. Note: Any ESTTC command can be used to bring the transceiver out of low power mode
     """
-    self.writeData("ES+W23F4")
+    self.writeData(b'ES+W23F4\r')
 
   def read(self):
     """
     Returns the temperature from the transceiver internal temp sensor
     """
-    temp = self.writeData("ES+R230A")
+    temp = self.writeData(b'ES+R230A\r')
     return temp

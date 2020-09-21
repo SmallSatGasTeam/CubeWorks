@@ -7,30 +7,29 @@ import Drivers.eps.EPS as EPS
 import asyncio
 from flightLogic.missionModes import safe
 import flightLogic.getDriverData as getDriverData
+from TXISR import pythonInterrupt
 
 
 class antennaMode:
 
-	def __init__(self, saveobject):
+	def __init__(self, saveObject, safeModeObject):
 		self.deployVoltage = 3 #Threshold voltage to deploy
 		self.maximumWaitTime = 30 #Maximum time to wait for deployment before going to SAFE
 		self.timeWaited = 0 #Time already waited - zero
-		self.__getDataTTNC = getDriverData.TTNCData(saveobject)
-		self.__getDataAttitude = getDriverData.AttitudeData(saveobject)
+		self.__getTTNCData = getDriverData.TTNCData(saveObject)
+		self.__getAttitudeData = getDriverData.AttitudeData(saveObject)
 		self.__tasks = [] #List will be populated with background tasks to cancel them
-		self.__safeMode = safe.safe(saveobject)
+		self.__safeMode = safeModeObject
 		self.__antennaDeployer = BackupAntennaDeployer()
 		self.__antennaDoor = AntennaDoor()
 
 
 	async def run(self):
 		print('Antenna Deploy Running!')
-		ttncData = self.__getDataTTNC
-		attitudeData = self.__getDataAttitude
-		self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(1))) #Antenna deploy is mission mode 1
-		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
+		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt()))
+		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(1))) #Antenna deploy is mission mode 1
+		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck())) #Check battery conditions, run safe mode if battery drops below safe level
-		self.__tasks.append(asyncio.create_task(self.__safeMode.heartBeat()))
 		eps=EPS()
 		while True: #Runs antenna deploy loop
 			if (eps.getBusVoltage()>self.deployVoltage):

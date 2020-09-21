@@ -13,7 +13,10 @@ class AntennaDoor(Driver):
         self.bus = smbus.SMBus(self.DEVICE_BUS)
       
     def readDoorStatus(self):
-      #returns the status of all 4 antenna doors
-      doorStatus = self.bus.read_i2c_block_data(self.DEVICE_ADDR, self.RegisterADR, 1)
-      return doorStatus
+        #returns the status of all 4 antenna doors
+        # doorStatus = self.bus.read_i2c_block_data(self.DEVICE_ADDR, self.RegisterADR, 1)
+        # NOTE: THE BELOW LINE IS ONLY USED WHEN THE ANTENNA IS NOT CONNECTED
+        # REMOVE THE BELOW LINE FOR FLIGHT UNIT, UNCOMMENT THE ABOVE doorStatus LINE AND DEBUG
+        doorStatus = (1,1,1,1)
+        return doorStatus
 

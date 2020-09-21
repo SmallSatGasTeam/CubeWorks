@@ -1,5 +1,0 @@
-#!/bin/bash
-#TXISR CONFIG Reenable
-
-sed -i ‘s/enable_uart.*=.*/enable_uart=1/‘ /boot/config.txt
-systemctl restart serial-getty@ttyAMA0.service

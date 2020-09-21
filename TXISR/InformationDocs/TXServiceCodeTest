@@ -1,0 +1,7 @@
+					Test Procuder for the txisr (c code)
+
+
+1: run the program and make sure the the program runs with no erros
+2: run program and check the out put files make sure the files have been up dated with the correct time.
+3: connect the program to the radio and make sure it sends the correct data
+4: let program finish the trigger the isr again to see if it reconfigures the pins correctly
