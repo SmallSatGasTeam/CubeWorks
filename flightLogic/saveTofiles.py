@@ -23,8 +23,7 @@ class save:
     #NOTE: it is important that you put a : after the time stamp, this will
     #effect the txisr
     async def writeTTNC(self, data):
-        self.__TTNC_File.write(str(data))
-        self.__TTNC_File.write('\n')
+        self.__TTNC_File.write(str(data)+'\n')
 
     #this func will read the data from our file and then return that data
     async def getTTNC(self, time):
@@ -39,8 +38,7 @@ class save:
     #NOTE: it is important that you put a : after the time stamp, this will
     #effect the txisr
     async def writeDeploy(self, data):
-        self.__TTNC_File.write(str(data))
-        self.__Deploy_File.write('\n')
+        self.__TTNC_File.write(str(data)+'\n')
 
     #this func will read the data form our file and then return that data
     async def getDeploy(self):
@@ -54,8 +52,7 @@ class save:
     #NOTE: it is important that you put a : after the time stamp, this will
     #effect the txisr
     async def writeAttitude(self, data):
-        self.__Attitude_File.write(str(data))
-        self.__Attitude_File.write('\n')
+        self.__Attitude_File.write(str(data)+'\n')
 
 
     #this func will read the data form our file and then return that data

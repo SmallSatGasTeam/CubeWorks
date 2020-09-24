@@ -20,7 +20,7 @@ The CubeWorks software module is designed to run on a Raspberry Pi Zero W runnin
 4. Reboot, install the following dependencies:
 	- Python3, `sudo apt install python3`
 	- python3-pip, `sudo apt install python3-pip`
-
+	- NumPy, `sudo apt install python3-numpy`
 5. Clone this repository onto the pi, `git clone https://github.com/SmallSatGasTeam/CubeWorks.git`
 6. Move into the root directory of the project, `$ cd CubeWorks` 
 7. Install dependencies with `$ pip3 install -r requirements.txt`

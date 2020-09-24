@@ -162,7 +162,7 @@ void main(int argc,char* argv[])
     write(txPort, "ES+W23003321\r", 13);
     sleep(.120);
     write(txPort, "ES+W23003321\r", 13);
-
+    sleep(.120);
 
     while(!feof(txFile))
     {

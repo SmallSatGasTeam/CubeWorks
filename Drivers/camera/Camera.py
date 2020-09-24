@@ -44,6 +44,7 @@ class Camera(Driver):
         self.cam.resolution = self.highRes
         makedirs(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes", exist_ok=True)
         self.cam.capture(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".jpg")
+        return self.pictureNumber
 
     def compressLowResToFiles(self, pictureNumber):
         """
