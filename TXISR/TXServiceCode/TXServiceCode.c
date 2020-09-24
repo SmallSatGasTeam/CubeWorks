@@ -251,7 +251,7 @@ void main(int argc,char* argv[])
                 {
                     
                         //delete the existing data
-                        fclose(recordFile);
+                        //fclose(recordFile);
                         if (recordFile = fopen(FLAG_FILE,"w"))
                         {
                             //if succesfull we will print it and set the written to true else we will try again.
