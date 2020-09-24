@@ -277,6 +277,8 @@ void main(int argc,char* argv[])
                             //set written to true
                             written = 1;
                         }
+                    //delete the existing data
+                    fclose(recordFile);
                 }
                 sleep((DELAY_tx + (charCount / BOUD_RATE))/1000);
             }
