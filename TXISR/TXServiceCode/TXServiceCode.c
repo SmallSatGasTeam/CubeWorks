@@ -150,19 +150,14 @@ void main(int argc,char* argv[])
     DEBUG_P(current Time - Start Time:)
     PRINT_TIME(currentTime - startTime)
 
-    //write to the radio
+    //Send command to put the local radio into pipe mode
     write(txPort, "ES+W22003321\r", 13);
-    sleep(.120);
+    //Sleep for 1 second to allow time to go into pipe mode
+    sleep(1);
+    //Transmit command to put the remote radio into pipe mode
     write(txPort, "ES+W23003321\r", 13);
-    sleep(.120);
-    write(txPort, "ES+W23003321\r", 13);
-    sleep(.120);
-    write(txPort, "ES+W23003321\r", 13);
-    sleep(.120);
-    write(txPort, "ES+W23003321\r", 13);
-    sleep(.120);
-    write(txPort, "ES+W23003321\r", 13);
-    sleep(.120);
+    //Sleep for 1 second to allow time to go into pipe mode
+    sleep(1);
 
     while(!feof(txFile))
     {
