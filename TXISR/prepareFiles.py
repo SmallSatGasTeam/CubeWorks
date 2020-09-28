@@ -22,6 +22,7 @@ def prepareData(duration, dataType, startFromBeginning):
 		packetLength = 36 #Packet length in bytes
 		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/data/Deploy_Data.txt') #Set data file path to respective file
 		print("Deploy Data selected")
+	minFileSize = packetLength*2+12 #Minimum characters in file
 
 	packetTime = 120 + packetLength*8/9600 #Transmission time for 1 packet of size packetLength
 	numPackets = ceil(duration*1000/packetTime) + 15 #For safety, 15 extra packets compared to the number that will likely be transmitted
@@ -36,6 +37,10 @@ def prepareData(duration, dataType, startFromBeginning):
 	transmissionProgress = int(progressList[dataType])
 
 	dataFile = open(dataFilePath) #Open data file, this gets copied into txFile.
+	if(os.stat(dataFilePath).st_size>minFileSize): #File is of minimum length
+		continue
+	else:
+		return
 	#NOTE: THIS COULD CAUSE ERRORS WITH THE FILE SIMULTANEOUSLY BEING WRITTEN INTO. THIS IS #1 ON LIST OF THINGS TO FIX POST-CDR!!! @SHAWN
 	lineNumber = 0 #Line to start adding data from
 	while True:
