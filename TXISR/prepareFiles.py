@@ -75,7 +75,7 @@ def prepareData(duration, dataType, startFromBeginning):
 	dataFile.close()
 	txDataFile.close()
 
-def preparePicture(duration, dataType, pictureNumber):
+def preparePicture(duration, dataType, pictureNumber, startFromBeginning):
 	if dataType == 3: #HQ Picture
 		cam = Camera()
 		cam.compressHighResToFiles(pictureNumber)
@@ -99,20 +99,24 @@ def preparePicture(duration, dataType, pictureNumber):
 	progressFilePath = os.path.join(os.path.dirname(__file__), 'data/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
 	progressFile = open(progressFilePath) #Opens progress file as read only
 	progressList = progressFile.read().splitlines()
-	transmissionProgress = int(progressList[dataType])
+	# If Start From Beginning flag is not set (0), set transmissionProgress to the last transmitted packet. Else, set to 0 to start from beginning.
+	if (startFromBeginning == 0):
+		transmissionProgress = int(progressList[dataType])
+	else:
+		transmissionProgress = 0
 
 	pictureFile = open(dataFilePath, 'rb')
 	pictureContent = hexlify(pictureFile.read()) #Picture content is now a string with the hex data of the file in it
 	dataSize = 0
-	position = transmissionProgress*256
+	position = transmissionProgress*128
 
 	while dataSize < numPackets: #NOTE: @SHAWN THIS WILL BREAK IF THE FILE IS LESS THAN 128 bytes
-		substringOfData = pictureContent[position:position+256].decode()
-		if(len(substringOfData)<256): #EOF - Loop back to start
-			position = 256-len(substringOfData)
+		substringOfData = pictureContent[position:position+128].decode()
+		if(len(substringOfData)<128): #EOF - Loop back to start
+			position = 128-len(substringOfData)
 			substringOfData += pictureContent[0:position].decode()
 		else: #Nominal situation
-			position=position+256
+			position=position+128
 		txDataFile.write(str(dataSize).zfill(10)+':'+substringOfData+'\n')
 		dataSize+=1
 
