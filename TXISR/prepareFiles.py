@@ -9,7 +9,7 @@ This file sets up 2 methods, prepareData and preparePicture. prepareData is used
 Both prepare functions reset /TXISR/TXServiceCode/txFile.txt, and write to it the duration of the transmission window.
 Then, each line consists of a 10-letter string with the timestamp or index of the packet, folowed by ':' and then the hex content of the packet
 """
-def prepareData(duration, dataType):
+def prepareData(duration, dataType, startFromBeginning):
 	if (dataType == 0): #Attitude Data
 		packetLength = 51 #Packet length in bytes
 		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/data/Attitude_Data.txt') #Set data file path to respective file
@@ -53,9 +53,12 @@ def prepareData(duration, dataType):
 
 	dataFile.seek(0) #Reset progress in file and go to the right line. This is an inefficient way of doing this, but it *will* work
 	i=0
-	while i<lineNumber:
-		dataFile.readline()
-		i+=1
+
+	# If start from beginning flag is not set, read the lines up until the last transmitted line. This way the next time dataFile.readline() is called, the first non-transmitted packet is saved.
+	if (startFromBeginning == 0):
+		while i<lineNumber:
+			dataFile.readline()
+			i+=1
 
 	#Now, we are at the appropriate place in the file again. Start reading lines into transmission file
 	dataSize = 0 #How many lines have we written to Data file?

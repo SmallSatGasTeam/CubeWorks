@@ -24,6 +24,7 @@ class postBoomMode:
 		self.__duration = -1
 		self.__datatype = -1
 		self.__pictureNumber = -1
+		self.__startFromBeginning = -1
 		self.__transmissionFlagFile = open(os.path.join(os.path.dirname(__file__), '../../TXISR/data/transmissionFlag.txt'))
 		self.__txWindowsPath = os.path.join(os.path.dirname(__file__), '../../TXISR/data/txWindows.txt')
 
@@ -42,10 +43,10 @@ class postBoomMode:
 				#wait until 5 seconds before, return True
 				if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<14): #If next window is in 2 minutes or less
 					if(self.__datatype < 3): #Attitude, TTNC, or Deployment data
-						prepareFiles.prepareData(self.__duration, self.__datatype)
+						prepareFiles.prepareData(self.__duration, self.__datatype, self.__startFromBeginning)
 						print("Preparing data")
 					else:
-						prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber)
+						prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__startFromBeginning)
 						print("Preparing Picture data")
 					break
 				await asyncio.sleep(5)
@@ -100,6 +101,8 @@ class postBoomMode:
 				self.__datatype = int(sendData[2])
 				self.__pictureNumber = int(sendData[3])
 				self.__nextWindowTime = float(sendData[0])
+				self.__startFromBeginning = int(sendData[4])
+				#print(self.__startFromBeginning)
 				#print(self.__timeToNextWindow)
 				#print(self.__duration)
 				#print(self.__datatype)

@@ -47,7 +47,11 @@ async def processPacket(packetData):
 		pictureNumberDecimal = int(pictureNumberBinary,2)
 		print("Picture number: ", pictureNumberDecimal)
 
-		writeTXWindow(windowStartDecimal, windowDurationDecimal, dataTypeDecimal, pictureNumberDecimal)
+		# Get "Start From Beginning"
+		startFromBeginning = binaryData[73]
+		print("Start from beginning: ", startFromBeginning)
+
+		writeTXWindow(windowStartDecimal, windowDurationDecimal, dataTypeDecimal, pictureNumberDecimal, startFromBeginning)
 	else:
 		# This is a command packet
 		print("Command packet")
@@ -106,8 +110,8 @@ async def processPacket(packetData):
 			print("Turn on AX25")
 			enableAX25()
 
-def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber):
-	# This function will write the TX window packet information to a file. Pass in the window start (delta T), window duration, data type, and picture number.
+def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber, startFromBeginning):
+	# This function will write the TX window packet information to a file. Pass in the window start (delta T), window duration, data type, picture number, and Start From Beginning (1/0).
 	# Note that this function saves the window start as an actual time, not a delta T - this is critical.
 
 	# Convert window start from delta T to seconds since epoch
@@ -121,7 +125,8 @@ def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber):
 	TXWindow_File.write(str(windowStartTime)+',')
 	TXWindow_File.write(str(windowDuration)+',')
 	TXWindow_File.write(str(dataType)+',')
-	TXWindow_File.write(str(pictureNumber))
+	TXWindow_File.write(str(pictureNumber)+',')
+	TXWindow_File.write(str(startFromBeginning))
 	TXWindow_File.write('\n')
 	
 	# close file
