@@ -39,7 +39,6 @@ def packetSelect():
 			packet += int2tobin(int(input('If picture is requested, number of the picture that is requested: ')))
 			packet += input('Type 0 to start transmission where last transmission ended, type 1 to start from beginning: ')
 			packet += '000000'
-			print(packet)
 			return hex(int(packet, 2))[2:].zfill(20)
 
 		else:

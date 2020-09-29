@@ -52,7 +52,7 @@ def decodeData(data):
 	#Decode data, store raw data and decoded data in a file
 	packetType = data[0:2]
 	dataContent = []
-	dataFile = open(os.path.join(os.path.dirname(__file__), 'data.txt'), 'a+')
+	dataFile = open(os.path.join(os.path.dirname(__file__), 'ReceivedData/data.txt'), 'a+')
 	if packetType == '00': #Attitude Data
 		dataContent.append(0) #Datatype 0
 		dataContent.append(intFromHex(data[2:10])) #Timestamp, int 4
