@@ -38,7 +38,7 @@ def prepareData(duration, dataType, startFromBeginning):
 
 	dataFile = open(dataFilePath) #Open data file, this gets copied into txFile.
 	if(os.stat(dataFilePath).st_size>minFileSize): #File is of minimum length
-		continue
+		pass
 	else:
 		return
 	#NOTE: THIS COULD CAUSE ERRORS WITH THE FILE SIMULTANEOUSLY BEING WRITTEN INTO. THIS IS #1 ON LIST OF THINGS TO FIX POST-CDR!!! @SHAWN
