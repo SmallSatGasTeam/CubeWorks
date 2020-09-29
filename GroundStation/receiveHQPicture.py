@@ -17,7 +17,8 @@ async def interrupt():
 	leftovers = '' #Stores any half-packets for evaluation the next loop
 	leftoversEmpty = True
 	gaspacsHex = str(b'GASPACS'.hex())
-	dataFile = open(os.path.join(os.path.dirname(__file__), 'ReceivedPics/pictureData.bin'), 'wb')
+	filePath = 'Pictures/High_Quality/' + str(datetime.datetime.now() + 'pictureData.bin')
+	dataFile = open(os.path.join(os.path.dirname(__file__), filePath), 'wb')
 	counter = 0
 	while True:
 		if serialport.in_waiting: #If there is content in the serial buffer, read it and act on it
@@ -34,14 +35,14 @@ async def interrupt():
 	#look through datafile for first occurence of 5566
 	byteSequence = '5566'
 	dataFile.close()
-	dataFile = open(os.path.join(os.path.dirname(__file__), 'ReceivedPics/pictureData.bin'), 'rb')
+	dataFile = open(os.path.join(os.path.dirname(__file__), filePath), 'rb')
 	dataFile.seek(0)
 	data = str(hexlify(dataFile.read()))[2:-1]
 	packetStart = data.find(byteSequence)
 	print('First picture packet is at index ' + str(packetStart))
 	data = data[packetStart:]
 	dataFile.close()
-	dataFile = open(os.path.join(os.path.dirname(__file__), 'ReceivedPics/pictureData.bin'), 'wb')
+	dataFile = open(os.path.join(os.path.dirname(__file__), filePath), 'wb')
 	dataFile.write(bytearray.fromhex(data))
 
 

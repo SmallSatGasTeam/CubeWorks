@@ -4,6 +4,7 @@ import sys
 import os
 sys.path.append('../')
 import struct
+import datetime
 
 """
 This file sets up the interrupt process. Every five seconds, the buffer of the serial port at /dev/serial0 is read.
@@ -16,6 +17,9 @@ async def interrupt():
 	leftovers = '' #Stores any half-packets for evaluation the next loop
 	leftoversEmpty = True
 	gaspacsHex = str(b'GASPACS'.hex())
+	filePath = 'Data/TTNC_Data/TTNC_Data ' + str(datetime.datetime.now()) + '.txt'
+	dataFile = open(os.path.join(os.path.dirname(__file__), filePath), 'a+')
+
 	while True:
 		if serialport.in_waiting: #If there is content in the serial buffer, read it and act on it
 			print('Data in waiting')
@@ -33,7 +37,7 @@ async def interrupt():
 			for command in commands:
 				if command is not '':
 					print('Data bordered by GASPACS in hex:' + command)
-					decodeData(command)
+					decodeData(command, dataFile)
 				else:
 					print('Empty packet failure')
 					return True
@@ -47,12 +51,11 @@ async def interrupt():
 			await asyncio.sleep(0.05)
 
 
-def decodeData(data):
+def decodeData(data, dataFile):
 	#data is a string of hex bytes
 	#Decode data, store raw data and decoded data in a file
 	packetType = data[0:2]
 	dataContent = []
-	dataFile = open(os.path.join(os.path.dirname(__file__), 'ReceivedData/data.txt'), 'a+')
 	if packetType == '00': #Attitude Data
 		dataContent.append(0) #Datatype 0
 		dataContent.append(intFromHex(data[2:10])) #Timestamp, int 4
