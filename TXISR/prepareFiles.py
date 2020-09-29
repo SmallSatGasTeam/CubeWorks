@@ -11,15 +11,15 @@ Then, each line consists of a 10-letter string with the timestamp or index of th
 """
 def prepareData(duration, dataType, startFromBeginning):
 	if (dataType == 0): #Attitude Data
-		packetLength = 51 #Packet length in bytes
+		packetLength = 37 + 14 #Packet length in bytes plus the 7 GASPACS bytes on each end
 		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/data/Attitude_Data.txt') #Set data file path to respective file
 		print("Attitude Data selected")
 	elif (dataType == 1): #TTNC Data
-		packetLength = 118 #Packet length in bytes
+		packetLength = 92 + 14 #Packet length in bytes plus the 7 GASPACS bytes on each end
 		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/data/TTNC_Data.txt') #Set data file path to respective file
 		print("TTNC Data selected")
 	else: #Deploy Data
-		packetLength = 36 #Packet length in bytes
+		packetLength = 25 + 14 #Packet length in bytes plus the 7 GASPACS bytes on each end
 		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/data/Deploy_Data.txt') #Set data file path to respective file
 		print("Deploy Data selected")
 	minFileSize = packetLength*2+12 #Minimum characters in file
@@ -37,9 +37,13 @@ def prepareData(duration, dataType, startFromBeginning):
 	transmissionProgress = int(progressList[dataType])
 
 	dataFile = open(dataFilePath) #Open data file, this gets copied into txFile.
-	if(os.stat(dataFilePath).st_size>minFileSize): #File is of minimum length
+	print("data file size: ", os.stat(dataFilePath).st_size)
+	print("min file size: ", minFileSize)
+	if(os.stat(dataFilePath).st_size >= minFileSize): #File is of minimum length
+		print("enough data")
 		pass
 	else:
+		print("not enough data")
 		return
 	#NOTE: THIS COULD CAUSE ERRORS WITH THE FILE SIMULTANEOUSLY BEING WRITTEN INTO. THIS IS #1 ON LIST OF THINGS TO FIX POST-CDR!!! @SHAWN
 	lineNumber = 0 #Line to start adding data from
