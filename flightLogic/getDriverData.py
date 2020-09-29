@@ -63,8 +63,9 @@ class TTNCData:
 		SP_Y_Plus_Current = float4tohex(self.EPS.getSPYPlusCurrent())
 		SP_Y_Minus_Current = float4tohex(self.EPS.getSPYMinusCurrent())
 		SP_Z_Voltage = float4tohex(self.EPS.getSPZVoltage())
+		SP_Z_Plus_Current = float4tohex(self.EPS.getSPZPlusCurrent())
 
-		packet += gaspacsBytes + packetType + timestamp + mode + reboot_count + boombox_uv + SP_X_Plus_Temp + SP_Z_Plus_Temp + piTemp + EPSMCUTemp + Cell1Temp + BattVoltage + BCRCurrent + EPS3V3Current + EPS5VCurrent + SP_X_Voltage + SP_X_Plus_Current + SP_X_Minus_Current + SP_Y_Voltage + SP_Y_Plus_Current + SP_Y_Minus_Current + SP_Z_Voltage + gaspacsBytes
+		packet += gaspacsBytes + packetType + timestamp + mode + reboot_count + boombox_uv + SP_X_Plus_Temp + SP_Z_Plus_Temp + piTemp + EPSMCUTemp + Cell1Temp + Cell2Temp + BattVoltage + BattCurrent + BCRVoltage + BCRCurrent + EPS3V3Current + EPS5VCurrent + SP_X_Voltage + SP_X_Plus_Current + SP_X_Minus_Current + SP_Y_Voltage + SP_Y_Plus_Current + SP_Y_Minus_Current + SP_Z_Voltage + SP_Z_Plus_Current + gaspacsBytes
 
 		packetTimestamp = str(int(self.RTC.readSeconds())).zfill(10)+':'
 		packet = packetTimestamp + packet
