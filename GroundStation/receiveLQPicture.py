@@ -5,6 +5,7 @@ import os
 sys.path.append('../')
 import struct
 from binascii import hexlify
+import datetime
 
 """
 This file sets up the interrupt process. Every five seconds, the buffer of the serial port at /dev/serial0 is read.
@@ -17,7 +18,9 @@ async def interrupt():
 	leftovers = '' #Stores any half-packets for evaluation the next loop
 	leftoversEmpty = True
 	gaspacsHex = str(b'GASPACS'.hex())
-	filePath = 'Pictures/Low_Quality/' + str(datetime.datetime.now() + 'pictureData.bin')
+	folderPath = 'Pictures/Low_Quality/' + str(datetime.datetime.now())
+	os.makedirs(folderPath)
+	filePath = folderPath + '/pictureData.bin'
 	dataFile = open(os.path.join(os.path.dirname(__file__), filePath), 'wb')
 	counter = 0
 	while True:
