@@ -101,11 +101,11 @@ def decodeData(data, dataFile):
 		dataContent.append(floatFromHex(data[34:42])) #Acceleration y, float 4
 		dataContent.append(floatFromHex(data[42:50])) #Acceleration z, float 4
 
-	dataFile.write('Raw Data: ' + str(data) + '\n')
-	dataFile.write('Decoded Data in List Format: ' + str(dataContent) + '\n\n')
+	#dataFile.write('Raw Data: ' + str(data) + '\n')
+	dataFile.write(str(dataContent)[1:-1] + '\n')
 
-	print('Raw Data: ' + str(data) + '\n')
-	print('Decoded Data in List Format: ' + str(dataContent) + '\n\n')
+	#print('Raw Data: ' + str(data) + '\n')
+	print(str(dataContent)[1:-1] + '\n')
 
 def parseData(data, bracket): #Takes data string, in the form of hex, from async read serial function. Spits out all AX.25 packets and GASPACS packets contained inside, as well as remaining data to be put into the leftovers
 	searching = True
