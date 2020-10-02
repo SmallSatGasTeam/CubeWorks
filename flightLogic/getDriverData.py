@@ -105,7 +105,7 @@ class DeployData():
 		accelY = float4tohex(accelY)
 		accelZ = float4tohex(accelZ)
 		packet = ''
-		packet += gaspacsBytes + packetType + timestamp + boombox_uv + accelX + accelY + accelZ
+		packet += gaspacsBytes + packetType + timestamp + boombox_uv + accelX + accelY + accelZ + gaspacsBytes
 		packetTimestamp = str(int(self.RTC.readSeconds())).zfill(10)+':'
 		packet = packetTimestamp + packet
 		self.__deployData = packet
