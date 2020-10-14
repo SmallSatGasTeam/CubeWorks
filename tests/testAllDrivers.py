@@ -67,7 +67,7 @@ print("Y-Axis Solar Panel Voltage in V: "+str(epsTest.getSPYVoltage()))
 print("Y- Solar Panel Current in A: "+str(epsTest.getSPYMinusCurrent()))
 print("Y+ Solar Panel Current in A: "+str(epsTest.getSPYPlusCurrent()))
 print("Z-Axis Solar Panel Voltage in V: "+str(epsTest.getSPZVoltage()))
-print("Z+ Solar Panel Current in A: "+str(epsTest.getSPZPlusVoltage()))
+print("Z+ Solar Panel Current in A: "+str(epsTest.getSPZPlusCurrent()))
 
 # Test Magnetometer
 mag = Magnetometer()
