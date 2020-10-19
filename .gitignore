@@ -123,6 +123,8 @@ a.out
 
 # Flight logic data files
 flightLogic/data/*
+flightLogic/bootRecords
+flightLogic/backupBootRecords
 
 # Picture Files
 Pictures/*
