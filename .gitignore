@@ -122,9 +122,7 @@ a.out
 ### GASPACS FILES ###
 
 # Flight logic data files
-flightLogic/data/
-flightLogic/bootRecords
-flightLogic/backupBootRecords
+flightLogic/data/*
 
 # Picture Files
-Pictures/
+Pictures/*
