@@ -4,7 +4,7 @@ import sys
 import os
 sys.path.append('../')
 import struct
-import datetime
+import time
 
 """
 This file sets up the interrupt process. Every five seconds, the buffer of the serial port at /dev/serial0 is read.
@@ -17,7 +17,7 @@ async def interrupt():
 	leftovers = '' #Stores any half-packets for evaluation the next loop
 	leftoversEmpty = True
 	gaspacsHex = str(b'GASPACS'.hex())
-	filePath = 'Data/TTNC_Data/TTNC_Data ' + str(datetime.datetime.now()) + '.txt'
+	filePath = 'Data/TTNC_Data/TTNC_Data_' + time.strftime("%Y-%m-%d_%H:%M:%S") + '.txt'
 	dataFile = open(os.path.join(os.path.dirname(__file__), filePath), 'a+')
 
 	while True:

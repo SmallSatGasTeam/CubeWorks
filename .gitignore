@@ -128,3 +128,7 @@ flightLogic/backupBootRecords
 
 # Picture Files
 Pictures/*
+
+# Ground Station data files
+GroundStation/Data
+GroundStation/Pictures
