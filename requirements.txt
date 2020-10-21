@@ -6,4 +6,3 @@ adafruit-circuitpython-lis2mdl
 spidev
 picamera
 smbus
-
