@@ -32,9 +32,15 @@ def prepareData(duration, dataType, startFromBeginning):
 	txDataFile.write(str(duration*1000) + '\n') #Write first line to txData. Duration of window in milliseconds
 
 	progressFilePath = os.path.join(os.path.dirname(__file__), 'data/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
-	progressFile = open(progressFilePath) #Opens progress file as read only
+	progressFile = open(progressFilePath, 'r+') #Opens progress file as read only
 	progressList = progressFile.read().splitlines()
-	transmissionProgress = int(progressList[dataType])
+
+	# Try reading transmission progress from file, if that fails (file is blank) set progress to 0 and write 5 lines of 0's
+	try:
+		transmissionProgress = int(progressList[dataType])
+	except:
+		transmissionProgress = 0
+		progressFile.write("0\n0\n0\n0\n0\n")
 
 	dataFile = open(dataFilePath) #Open data file, this gets copied into txFile.
 	print("data file size: ", os.stat(dataFilePath).st_size)
