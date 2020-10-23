@@ -13,6 +13,7 @@ from os import system
 from Drivers.camera import Camera
 import Drivers.boomDeployer as boomDeployer
 import smbus
+import hmac
 
 def processAX25(AX25):  #Placeholder function
 	#Check AX25 Transmission flag, if it is OK then open a pyserial connection and transmit the content of the packet
@@ -51,7 +52,25 @@ async def processPacket(packetData):
 		startFromBeginning = binaryData[73]
 		print("Start from beginning: ", startFromBeginning)
 
-		writeTXWindow(windowStartDecimal, windowDurationDecimal, dataTypeDecimal, pictureNumberDecimal, startFromBeginning)
+		# Get the appended hash - it is a 16 byte (128 bit) value
+		# Note: there are 6 dead bits after the schedule bits
+		receivedHash = binaryData[80:209]
+		print("Received Hash: ", receivedHash)
+
+		# Generated hash from received data
+		key = b'SECRETKEY'
+		generatedHash = hmac.new(key, bytes(binaryData[0:80], 'utf-8'))
+		generatedHashHex = generatedHash.hexdigest()
+		generatedHashLength = len(generatedHashHex) * 4
+		generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)
+		print("Generated hash: ", generatedHashBinary)
+		if receivedHash == generatedHashBinary:
+			print("Hashes match! Writing window")
+			writeTXWindow(windowStartDecimal, windowDurationDecimal, dataTypeDecimal, pictureNumberDecimal, startFromBeginning)
+
+		else:
+			print("Hashes do not match, will not save window!")
+
 	else:
 		# This is a command packet
 		print("Command packet")
