@@ -92,12 +92,9 @@ def encrypt(packet):
 	key = b'SECRETKEY'
 	binaryPacketLength = len(packet) * 4
 	binaryPacket = bytes(format(int(packet,16), 'b').zfill(binaryPacketLength), 'utf8')
-	print(binaryPacket)
 	hash = hmac.new(key, binaryPacket)
 	hashhex = hash.hexdigest()
-	print(hashhex)
 	fullpacket = packet + hashhex
-	print(fullpacket)
 	return fullpacket
 
 def main():
