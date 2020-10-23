@@ -1,5 +1,5 @@
 import sys
-import os
+import subprocess
 import time
 sys.path.append('../../')
 import asyncio
@@ -57,7 +57,8 @@ class postBoomMode:
 					if(self.__transmissionFlagFile.readline()=='Enabled'):
 						txisrCodePath = os.path.join(os.path.dirname(__file__), '../../TXISR/TXServiceCode/TXService.run')
 						print(self.__datatype)
-						os.system(txisrCodePath + ' ' + str(self.__datatype)) #Call TXISR Code
+						subprocess.Popen([txisrCodePath, str(self.__datatype)])
+						#os.system(txisrCodePath + ' ' + str(self.__datatype) + ' &') #Call TXISR Code
 						self.__timeToNextWindow = -1
 						break
 					else:
