@@ -23,6 +23,7 @@ async def processPacket(packetData):
 	# Packet data comes in as hex, need to convet to binary to parse
 	binaryDataLength = len(packetData) * 4
 	binaryData = format(int(packetData,16), 'b').zfill(binaryDataLength)
+	secretKey = b'SECRETKEY'
 
 	if binaryData[0] == '0':
 		# This is a TX Schedule packet.
@@ -58,8 +59,7 @@ async def processPacket(packetData):
 		print("Received Hash: ", receivedHash)
 
 		# Generated hash from received data
-		key = b'SECRETKEY'
-		generatedHash = hmac.new(key, bytes(binaryData[0:80], 'utf-8'))
+		generatedHash = hmac.new(secretKey, bytes(binaryData[0:80], 'utf-8'))
 		generatedHashHex = generatedHash.hexdigest()
 		generatedHashLength = len(generatedHashHex) * 4
 		generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)
@@ -74,60 +74,78 @@ async def processPacket(packetData):
 	else:
 		# This is a command packet
 		print("Command packet")
-		if binaryData[1] == '0':
-			# Turn off Transmitter
-			print("Turn off Transmissions")
-			disableTransmissions()
-		else:
-			#Turn on Transmitter
-			print("Turn on Transmitter")
-			enableTransmissions()
 
-		if binaryData[2] == '0':
-			# DO NOT Clear TX Schedule and Progress
-			print("Do NOT Clear TX Schedule and Progress")
-		else:
-			# Clear TX Schedule & Progress
-			print("Clear TX Schedule and Progress")
-			clearTXFile()
-			clearTXProgress()
+		# Validate HMAC Hash
+		# Note, hash is 16 bytes (128 bits). Command packet is 1 byte (8 bits)
+		receivedHash = binaryData[8:137]
+		print("Received Hash: ", receivedHash)
 
-		if binaryData[3] == '0':
-			# Do not take picture
-			print("Do not take picture")
-		else:
-			# Take picture
-			print("Take picture")
-			cam = Camera()
-			cam.takePicture()
+		# Generated hash from received data
+		generatedHash = hmac.new(secretKey, bytes(binaryData[0:8], 'utf-8'))
+		generatedHashHex = generatedHash.hexdigest()
+		generatedHashLength = len(generatedHashHex) * 4
+		generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)
+		print("Generated hash: ", generatedHashBinary)
+		if receivedHash == generatedHashBinary:
+			print("Hashes match! Executing commands")
 
-		if binaryData[4] == '0':
-			# Do not deploy boom
-			print("Do not deploy boom")
-		else:
-			# Deploy boom
-			print("Deploy boom")
-			deployer = boomDeployer.BoomDeployer()
-			await deployer.deploy()
+			if binaryData[1] == '0':
+				# Turn off Transmitter
+				print("Turn off Transmissions")
+				disableTransmissions()
+			else:
+				#Turn on Transmitter
+				print("Turn on Transmitter")
+				enableTransmissions()
 
-		if binaryData[5] == '0':
-			# Do not reboot
-			print("Do not reboot")
-		else:
-			#Send reboot command to Beetle
-			print("Reboot")
-			bus = smbus.SMBus(1)
-			address = 0x08
-			bus.write_byte(address, 1)
+			if binaryData[2] == '0':
+				# DO NOT Clear TX Schedule and Progress
+				print("Do NOT Clear TX Schedule and Progress")
+			else:
+				# Clear TX Schedule & Progress
+				print("Clear TX Schedule and Progress")
+				clearTXFile()
+				clearTXProgress()
 
-		if binaryData[6] == '0':
-			# Turn off AX25
-			print("Turn off AX25")
-			disableAX25()
+			if binaryData[3] == '0':
+				# Do not take picture
+				print("Do not take picture")
+			else:
+				# Take picture
+				print("Take picture")
+				cam = Camera()
+				cam.takePicture()
+
+			if binaryData[4] == '0':
+				# Do not deploy boom
+				print("Do not deploy boom")
+			else:
+				# Deploy boom
+				print("Deploy boom")
+				deployer = boomDeployer.BoomDeployer()
+				await deployer.deploy()
+
+			if binaryData[5] == '0':
+				# Do not reboot
+				print("Do not reboot")
+			else:
+				#Send reboot command to Beetle
+				print("Reboot")
+				bus = smbus.SMBus(1)
+				address = 0x08
+				bus.write_byte(address, 1)
+
+			if binaryData[6] == '0':
+				# Turn off AX25
+				print("Turn off AX25")
+				disableAX25()
+			else:
+				#Turn on AX25
+				print("Turn on AX25")
+				enableAX25()
 		else:
-			#Turn on AX25
-			print("Turn on AX25")
-			enableAX25()
+			print("Hashes do not match, will not execute commands!")
+
 
 def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber, startFromBeginning):
 	# This function will write the TX window packet information to a file. Pass in the window start (delta T), window duration, data type, picture number, and Start From Beginning (1/0).
