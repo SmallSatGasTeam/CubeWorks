@@ -51,17 +51,11 @@ def packetSelect():
 			commandsList.append(input('Input 0 for do nothing, 1 for deploy boom: '))
 			commandsList.append(input('Input 0 for do nothing, 1 for reboot: '))
 			commandsList.append(input('Input 0 for disable AX25, 1 for enable AX25: '))
-			for i in range(0, len(commandsList)):
-				if i is 0:
-					if command == '0':
-						content += '00'
-					else:
-						content += '01'
+			for command in commandsList:
+				if command == '0':
+					content += '00000000'
 				else:
-					if command == '0':
-						content += command
-					else:
-						content += '1'
+					content += '00000001'
 		
 			return hex(int(content, 2))[2:].zfill(2)
 	else:
