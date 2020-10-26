@@ -25,41 +25,40 @@ async def processPacket(packetData):
 	binaryData = format(int(packetData,16), 'b').zfill(binaryDataLength)
 	secretKey = b'SECRETKEY'
 
-	if binaryData[0] == '0':
+	if binaryData[0:8] == '00000000':
 		# This is a TX Schedule packet.
 		print("TX Schedule Packet")
 
 		# Get window start delta T
-		windowStartBinary = binaryData[1:33]
+		windowStartBinary = binaryData[8:40]
 		windowStartDecimal = int(windowStartBinary,2)
 		print("Window start in seconds: ", windowStartDecimal)
 
 		# Get window duration
-		windowDurationBinary = binaryData[33:49]
+		windowDurationBinary = binaryData[40:56]
 		windowDurationDecimal = int(windowDurationBinary,2)
 		print("Window duration in seconds: ", windowDurationDecimal)
 
 		# Get data type
-		dataTypeBinary = binaryData[49:57]
+		dataTypeBinary = binaryData[56:64]
 		dataTypeDecimal = int(dataTypeBinary,2)
 		print("Data type: ", dataTypeDecimal)
 
 		# Get picture number
-		pictureNumberBinary = binaryData[57:73]
+		pictureNumberBinary = binaryData[64:80]
 		pictureNumberDecimal = int(pictureNumberBinary,2)
 		print("Picture number: ", pictureNumberDecimal)
 
 		# Get "Start From Beginning"
-		startFromBeginning = binaryData[73]
+		startFromBeginning = binaryData[80]
 		print("Start from beginning: ", startFromBeginning)
 
 		# Get the appended hash - it is a 16 byte (128 bit) value
-		# Note: there are 6 dead bits after the schedule bits
-		receivedHash = binaryData[80:209]
+		receivedHash = binaryData[81:210]
 		print("Received Hash: ", receivedHash)
 
 		# Generated hash from received data
-		generatedHash = hmac.new(secretKey, bytes(binaryData[0:80], 'utf-8'))
+		generatedHash = hmac.new(secretKey, bytes(binaryData[0:81], 'utf-8'))
 		generatedHashHex = generatedHash.hexdigest()
 		generatedHashLength = len(generatedHashHex) * 4
 		generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)
@@ -77,11 +76,11 @@ async def processPacket(packetData):
 
 		# Validate HMAC Hash
 		# Note, hash is 16 bytes (128 bits). Command packet is 1 byte (8 bits)
-		receivedHash = binaryData[8:137]
+		receivedHash = binaryData[56:185]
 		print("Received Hash: ", receivedHash)
 
 		# Generated hash from received data
-		generatedHash = hmac.new(secretKey, bytes(binaryData[0:8], 'utf-8'))
+		generatedHash = hmac.new(secretKey, bytes(binaryData[0:56], 'utf-8'))
 		generatedHashHex = generatedHash.hexdigest()
 		generatedHashLength = len(generatedHashHex) * 4
 		generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)
@@ -89,7 +88,7 @@ async def processPacket(packetData):
 		if receivedHash == generatedHashBinary:
 			print("Hashes match! Executing commands")
 
-			if binaryData[1] == '0':
+			if binaryData[8:16] == '00000000':
 				# Turn off Transmitter
 				print("Turn off Transmissions")
 				disableTransmissions()
@@ -98,7 +97,7 @@ async def processPacket(packetData):
 				print("Turn on Transmitter")
 				enableTransmissions()
 
-			if binaryData[2] == '0':
+			if binaryData[16:24] == '00000000':
 				# DO NOT Clear TX Schedule and Progress
 				print("Do NOT Clear TX Schedule and Progress")
 			else:
@@ -107,7 +106,7 @@ async def processPacket(packetData):
 				clearTXFile()
 				clearTXProgress()
 
-			if binaryData[3] == '0':
+			if binaryData[24:32] == '00000000':
 				# Do not take picture
 				print("Do not take picture")
 			else:
@@ -116,7 +115,7 @@ async def processPacket(packetData):
 				cam = Camera()
 				cam.takePicture()
 
-			if binaryData[4] == '0':
+			if binaryData[32:40] == '00000000':
 				# Do not deploy boom
 				print("Do not deploy boom")
 			else:
@@ -125,7 +124,7 @@ async def processPacket(packetData):
 				deployer = boomDeployer.BoomDeployer()
 				await deployer.deploy()
 
-			if binaryData[5] == '0':
+			if binaryData[40:48] == '00000000':
 				# Do not reboot
 				print("Do not reboot")
 			else:
@@ -135,7 +134,7 @@ async def processPacket(packetData):
 				address = 0x08
 				bus.write_byte(address, 1)
 
-			if binaryData[6] == '0':
+			if binaryData[48:56] == '00000000':
 				# Turn off AX25
 				print("Turn off AX25")
 				disableAX25()
