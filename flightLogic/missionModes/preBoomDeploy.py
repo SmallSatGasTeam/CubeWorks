@@ -14,7 +14,7 @@ class preBoomMode:
 		self.criticalVoltage = 3.1 #Critical voltage, below this go to SAFE
 		self.darkVoltage = .1 #Average voltage from sunsors that, if below this, indicates GASPACS is in darkness
 		self.darkMinutes = .2 #How many minutes GASPACS must be on the dark side for before moving forward
-		self.lightMinimumMinutes = .2 #Minimum amount of time GASPACS must be on light side of orbit before deploying
+		self.lightMinimumMinutes = 5 #Minimum amount of time GASPACS must be on light side of orbit before deploying
 		self.lightMaximumMinutes = 60 #Maximum amount of time GASPACS may be on light side of orbit before deploying, must be less than 90 by a fair margin since less than half of orbit can be sun
 		self.batteryStatusOk = False
 		self.maximumWaitTime = 240 #Max time GASPACS can wait, charging batteries, before SAFEing
