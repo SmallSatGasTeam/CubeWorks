@@ -23,6 +23,7 @@ async def processPacket(packetData):
 	print('Processing packet')
 	# Packet data comes in as hex, need to convet to binary to parse
 	binaryDataLength = len(packetData) * 4
+	print('bin data len' + str(binaryDataLength))
 	binaryData = format(int(packetData,16), 'b').zfill(binaryDataLength)
 	secretKey = b'SECRETKEY'
 
