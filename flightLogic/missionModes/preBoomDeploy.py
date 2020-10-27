@@ -62,10 +62,10 @@ class preBoomMode:
 					else:
 						lightLength = 0 #Maybe lightLength -=1 to avoid 1 bad measurement resetting everything
 
-					if(lightLength>self.lightMaximumMinutes*6): #Has been in the light for too long
+					if(lightLength>self.lightMaximumMinutes*12): #Has been in the light for too long
 						self.sunlightData.clear() #Reset array of data
 						break
-					if(lightLength>self.lightMinimumMinutes*6 and self.batteryStatusOk==True):
+					if(lightLength>self.lightMinimumMinutes*12 and self.batteryStatusOk==True):
 						self.cancelAllTasks(self.__tasks) #Cancel all background processes
 						print('Returning and exiting')
 						return True #Go on to Boom Deploy Mode if the battery is Ok
