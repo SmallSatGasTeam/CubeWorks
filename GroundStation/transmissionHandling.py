@@ -56,7 +56,6 @@ def packetSelect():
 					content += '00000000'
 				else:
 					content += '00000001'
-		
 			return hex(int(content, 2))[2:].zfill(14)
 	else:
 		return input('Input hex content to send')
