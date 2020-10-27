@@ -38,13 +38,13 @@ def packetSelect():
 			packet += int2tobin(int(input('Input the duration of the window in seconds: ')))
 			packet += int1tobin(int(input('Number from 0-4 corresponding to requested data type. See flight logic document: ')))
 			packet += int2tobin(int(input('If picture is requested, number of the picture that is requested: ')))
-			packet += input('Type 0 to start transmission where last transmission ended, type 1 to start from beginning: ')
-			return hex(int(packet, 2))[2:].zfill(20)
+			packet += int1tobin(int(input('Type 0 to start transmission where last transmission ended, type 1 to start from beginning: ')))
+			return hex(int(packet, 2))[2:].zfill(22)
 
 		else:
 			#Command Packet
 			commandsList = []
-			content = '1'
+			content = '00000001'
 			commandsList.append(input('Input 0 for disable TX, 1 for enable TX: '))
 			commandsList.append(input('Input 0 for do nothing, 1 for erase all TX windows and progress: '))
 			commandsList.append(input('Input 0 for do nothing, 1 for take a picture: '))
@@ -57,7 +57,7 @@ def packetSelect():
 				else:
 					content += '00000001'
 		
-			return hex(int(content, 2))[2:].zfill(2)
+			return hex(int(content, 2))[2:].zfill(14)
 	else:
 		return input('Input hex content to send')
 
