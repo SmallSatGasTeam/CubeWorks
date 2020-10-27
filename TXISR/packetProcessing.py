@@ -60,7 +60,6 @@ async def processPacket(packetData):
 
 		# Generated hash from received data
 		generatedHash = hmac.new(secretKey, bytes(binaryData[0:81], 'utf-8'))
-		print(bytes(binaryData[0:81]))
 		generatedHashHex = generatedHash.hexdigest()
 		generatedHashLength = len(generatedHashHex) * 4
 		generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)
