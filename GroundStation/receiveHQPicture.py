@@ -18,9 +18,10 @@ async def interrupt():
 	leftovers = '' #Stores any half-packets for evaluation the next loop
 	leftoversEmpty = True
 	gaspacsHex = str(b'GASPACS'.hex())
-	folderPath = 'Pictures/High_Quality/' + time.strftime("%Y-%m-%d_%H:%M:%S")
+	currtime = time.strftime("%Y-%m-%d_%H:%M:%S")
+	folderPath = 'Pictures/High_Quality/' + currtime
 	os.makedirs(folderPath)
-	filePath = folderPath + '/pictureData.bin'
+	filePath = folderPath + '/HQpictureData_' + currtime + '.bin'
 	dataFile = open(os.path.join(os.path.dirname(__file__), filePath), 'wb')
 	counter = 0
 	while True:
@@ -48,7 +49,7 @@ async def interrupt():
 	dataFile = open(os.path.join(os.path.dirname(__file__), filePath), 'wb')
 	dataFile.write(bytearray.fromhex(data))
 
-	os.system('sudo /home/pi/ssdv/ssdv -d ' + filePath + ' ' + folderPath + '/picture.jpeg')
+	os.system('sudo /home/pi/ssdv/ssdv -d ' + filePath + ' ' + folderPath + '/HQpicture_' + currtime + '.jpeg')
 
 if __name__ == '__main__':
 	asyncio.run(interrupt())
