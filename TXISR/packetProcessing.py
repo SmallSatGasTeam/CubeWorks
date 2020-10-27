@@ -20,6 +20,7 @@ def processAX25(AX25):  #Placeholder function
 	pass
 
 async def processPacket(packetData):
+	print('Processing packet')
 	# Packet data comes in as hex, need to convet to binary to parse
 	binaryDataLength = len(packetData) * 4
 	binaryData = format(int(packetData,16), 'b').zfill(binaryDataLength)
@@ -59,6 +60,7 @@ async def processPacket(packetData):
 
 		# Generated hash from received data
 		generatedHash = hmac.new(secretKey, bytes(binaryData[0:81], 'utf-8'))
+		print(bytes(binaryData[0:81]))
 		generatedHashHex = generatedHash.hexdigest()
 		generatedHashLength = len(generatedHashHex) * 4
 		generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)
