@@ -56,7 +56,7 @@ async def processPacket(packetData):
 		print("Start from beginning: ", startFromBeginning)
 
 		# Get the appended hash - it is a 16 byte (128 bit) value
-		receivedHash = binaryData[88:216]
+		receivedHash = binaryData[88:]
 		print("Received Hash: ", receivedHash)
 
 		# Generated hash from received data
