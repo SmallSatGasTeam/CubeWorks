@@ -52,11 +52,11 @@ async def processPacket(packetData):
 		print("Picture number: ", pictureNumberDecimal)
 
 		# Get "Start From Beginning"
-		startFromBeginning = binaryData[80]
+		startFromBeginning = binaryData[80:88]
 		print("Start from beginning: ", startFromBeginning)
 
 		# Get the appended hash - it is a 16 byte (128 bit) value
-		receivedHash = binaryData[81:210]
+		receivedHash = binaryData[88:216]
 		print("Received Hash: ", receivedHash)
 
 		# Generated hash from received data
