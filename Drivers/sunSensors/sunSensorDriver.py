@@ -11,6 +11,7 @@ class sunSensor(Driver):
 
     def __init__(self):
         super().__init__("Sun Sensor")
+        print("Initializing sun sensor")
 
     def read(self):
         """
@@ -18,8 +19,13 @@ class sunSensor(Driver):
         """
         self.voltageList = []
         for i in range(0, 5):
-            self.voltageList.append(self.adc.read(self.adcChannel[i]))
-            #print(self.adcChannel[i])
-            #print(self.adc.read(5))
+            #self.voltageList.append(self.adc.read(self.adcChannel[i]))
+            
+            value = self.adc.read(self.adcChannel[i])
+            print(value)
+            self.voltageList.append(value)
             #sleep(.1)
         return self.voltageList
+
+    def close(self):
+        self.adc.close()
