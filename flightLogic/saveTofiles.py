@@ -38,7 +38,7 @@ class save:
     #NOTE: it is important that you put a : after the time stamp, this will
     #effect the txisr
     async def writeDeploy(self, data):
-        self.__TTNC_File.write(str(data)+'\n')
+        self.__Deploy_File.write(str(data)+'\n')
 
     #this func will read the data form our file and then return that data
     async def getDeploy(self):

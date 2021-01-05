@@ -14,7 +14,7 @@ class preBoomMode:
 		self.criticalVoltage = 3.1 #Critical voltage, below this go to SAFE
 		self.darkVoltage = .1 #Average voltage from sunsors that, if below this, indicates GASPACS is in darkness
 		self.darkMinutes = .2 #How many minutes GASPACS must be on the dark side for before moving forward
-		self.lightMinimumMinutes = .2 #Minimum amount of time GASPACS must be on light side of orbit before deploying
+		self.lightMinimumMinutes = 5 #Minimum amount of time GASPACS must be on light side of orbit before deploying
 		self.lightMaximumMinutes = 60 #Maximum amount of time GASPACS may be on light side of orbit before deploying, must be less than 90 by a fair margin since less than half of orbit can be sun
 		self.batteryStatusOk = False
 		self.maximumWaitTime = 240 #Max time GASPACS can wait, charging batteries, before SAFEing
@@ -62,10 +62,10 @@ class preBoomMode:
 					else:
 						lightLength = 0 #Maybe lightLength -=1 to avoid 1 bad measurement resetting everything
 
-					if(lightLength>self.lightMaximumMinutes*6): #Has been in the light for too long
+					if(lightLength>self.lightMaximumMinutes*12): #Has been in the light for too long
 						self.sunlightData.clear() #Reset array of data
 						break
-					if(lightLength>self.lightMinimumMinutes*6 and self.batteryStatusOk==True):
+					if(lightLength>self.lightMinimumMinutes*12 and self.batteryStatusOk==True):
 						self.cancelAllTasks(self.__tasks) #Cancel all background processes
 						print('Returning and exiting')
 						return True #Go on to Boom Deploy Mode if the battery is Ok

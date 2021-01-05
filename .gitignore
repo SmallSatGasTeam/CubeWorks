@@ -117,3 +117,18 @@ doxygen
 
 # Executables
 a.out
+
+
+### GASPACS FILES ###
+
+# Flight logic data files
+flightLogic/data/*
+flightLogic/bootRecords
+flightLogic/backupBootRecords
+
+# Picture Files
+Pictures/*
+
+# Ground Station data files
+GroundStation/Data
+GroundStation/Pictures

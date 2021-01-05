@@ -1,6 +1,7 @@
 import asyncio
 import serial
 from time import sleep
+import hmac
 
 def packetSelect():
 	creatingPacket = input('Type 0 for a pre-created packet, and type 1 for creating a new packet, and type 2 for sending your own data bordered by GASPACS')
@@ -32,18 +33,18 @@ def packetSelect():
 		typeOfPacket = input('Type 0 for Window Packet, 1 for Command Packet: ')
 		if(typeOfPacket == '0'):
 			#Window packet
-			packet = '0'
+			packet = '00000000'
 			packet += int4tobin(int(input('Input the number of seconds until window start: ')))
 			packet += int2tobin(int(input('Input the duration of the window in seconds: ')))
 			packet += int1tobin(int(input('Number from 0-4 corresponding to requested data type. See flight logic document: ')))
 			packet += int2tobin(int(input('If picture is requested, number of the picture that is requested: ')))
-			packet += '0000000'
-			return hex(int(packet, 2))[2:].zfill(20)
+			packet += int1tobin(int(input('Type 0 to start transmission where last transmission ended, type 1 to start from beginning: ')))
+			return hex(int(packet, 2))[2:].zfill(22)
 
 		else:
 			#Command Packet
 			commandsList = []
-			content = '1'
+			content = '00000001'
 			commandsList.append(input('Input 0 for disable TX, 1 for enable TX: '))
 			commandsList.append(input('Input 0 for do nothing, 1 for erase all TX windows and progress: '))
 			commandsList.append(input('Input 0 for do nothing, 1 for take a picture: '))
@@ -52,30 +53,23 @@ def packetSelect():
 			commandsList.append(input('Input 0 for disable AX25, 1 for enable AX25: '))
 			for command in commandsList:
 				if command == '0':
-					content += command
+					content += '00000000'
 				else:
-					content += '1'
-			content += '0'
-			return hex(int(content, 2))[2:].zfill(2)
+					content += '00000001'
+			return hex(int(content, 2))[2:].zfill(14)
 	else:
 		return input('Input hex content to send')
 
 def transmitPacket(packet):
 	serialPort = serial.Serial('/dev/serial0', 115200)
 	serialPort.write(b'ES+W23003321\r') #Changed based on which is transmitting
-	sleep(0.2)
+	sleep(1)
 	serialPort.write(b'ES+W22003321\r')
-	sleep(0.2)
-	serialPort.write(b'ES+W22003321\r')
-	sleep(0.2)
-	serialPort.write(b'ES+W22003321\r')
-	sleep(0.2)
-	serialPort.write(b'ES+W22003321\r')
-	sleep(0.2)
-	serialPort.write(b'ES+W22003321\r')
-	sleep(0.2)
+	sleep(1)
 	data = bytearray.fromhex(b'GASPACS'.hex() + packet + b'GASPACS'.hex())
 	print('Sending Data')
+	print(b'GASPACS'.hex() + packet + b'GASPACS'.hex())
+	print(data)
 	serialPort.write(data)
 
 
@@ -91,10 +85,21 @@ def int2tobin(num):
 	#takes a 2 byte integer, returns a binary representation of it
 	return str(format(num, '016b'))[-16:]
 
+def encrypt(packet):
+	#encrypt packet using hmac and append hash to the end of the packet
+	key = b'SECRETKEY'
+	binaryPacketLength = len(packet) * 4
+	binaryPacket = bytes(format(int(packet,16), 'b').zfill(binaryPacketLength), 'utf8')
+	hash = hmac.new(key, binaryPacket)
+	hashhex = hash.hexdigest()
+	fullpacket = packet + hashhex
+	return fullpacket
+
 def main():
 	while True:
 		packet = packetSelect()
-		transmitPacket(packet)
+		encryptedPacket = encrypt(packet)
+		transmitPacket(encryptedPacket)
 
 if __name__ == '__main__':
 	main()

@@ -4,6 +4,7 @@ import sys
 import os
 sys.path.append('../')
 import struct
+import time
 
 """
 This file sets up the interrupt process. Every five seconds, the buffer of the serial port at /dev/serial0 is read.
@@ -16,6 +17,9 @@ async def interrupt():
 	leftovers = '' #Stores any half-packets for evaluation the next loop
 	leftoversEmpty = True
 	gaspacsHex = str(b'GASPACS'.hex())
+	filePath = 'Data/TTNC_Data/TTNC_Data_' + time.strftime("%Y-%m-%d_%H:%M:%S") + '.txt'
+	dataFile = open(os.path.join(os.path.dirname(__file__), filePath), 'a+')
+
 	while True:
 		if serialport.in_waiting: #If there is content in the serial buffer, read it and act on it
 			print('Data in waiting')
@@ -33,7 +37,7 @@ async def interrupt():
 			for command in commands:
 				if command is not '':
 					print('Data bordered by GASPACS in hex:' + command)
-					decodeData(command)
+					decodeData(command, dataFile)
 				else:
 					print('Empty packet failure')
 					return True
@@ -47,12 +51,11 @@ async def interrupt():
 			await asyncio.sleep(0.05)
 
 
-def decodeData(data):
+def decodeData(data, dataFile):
 	#data is a string of hex bytes
 	#Decode data, store raw data and decoded data in a file
 	packetType = data[0:2]
 	dataContent = []
-	dataFile = open(os.path.join(os.path.dirname(__file__), 'data.txt'), 'a+')
 	if packetType == '00': #Attitude Data
 		dataContent.append(0) #Datatype 0
 		dataContent.append(intFromHex(data[2:10])) #Timestamp, int 4
@@ -98,11 +101,11 @@ def decodeData(data):
 		dataContent.append(floatFromHex(data[34:42])) #Acceleration y, float 4
 		dataContent.append(floatFromHex(data[42:50])) #Acceleration z, float 4
 
-	dataFile.write('Raw Data: ' + str(data) + '\n')
-	dataFile.write('Decoded Data in List Format: ' + str(dataContent) + '\n\n')
+	#dataFile.write(str(data)[1:-1] + '\n')
+	dataFile.write(str(dataContent)[1:-1] + '\n')
 
-	print('Raw Data: ' + str(data) + '\n')
-	print('Decoded Data in List Format: ' + str(dataContent) + '\n\n')
+	#print('Raw Data: ' + str(data) + '\n')
+	print(str(dataContent)[1:-1] + '\n')
 
 def parseData(data, bracket): #Takes data string, in the form of hex, from async read serial function. Spits out all AX.25 packets and GASPACS packets contained inside, as well as remaining data to be put into the leftovers
 	searching = True

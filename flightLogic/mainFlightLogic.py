@@ -177,6 +177,11 @@ def readData():
 			# In this except statement, the files are corrupted, so we rewrite both of them
 		except:
 			print('Double File exception - are both files non-existant?')	
+			bootFile = open(os.path.dirname(__file__) + "/bootRecords", "w")
+			backupBootFile = open(os.path.dirname(__file__) + "/backupBootRecords", "w")
+			bootFile.write('0\n0\n0\n')
+			backupBootFile.write('0\n0\n0\n')
+
 	recordData(bootCount, antennaDeployed, lastMode)
 	return bootCount, antennaDeployed, lastMode
 
