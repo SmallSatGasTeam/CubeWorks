@@ -126,6 +126,8 @@ flightLogic/data/*
 flightLogic/bootRecords
 flightLogic/backupBootRecords
 
+# TXISR Data Files
+TXISR/data/*
 # Picture Files
 Pictures/*
 
