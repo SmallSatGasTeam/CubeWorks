@@ -1,4 +1,5 @@
 import sys
+import subprocess
 import os
 import time
 sys.path.append('../../')
@@ -8,6 +9,9 @@ from flightLogic.DummygetDriverData import *
 import DummyDrivers.eps.EPS as EPS
 from TXISR import prepareFiles
 from TXISR import pythonInterrupt
+from protectionProticol.fileProtection import FileReset
+
+fileChecker = FileReset()
 
 TRANSFER_WINDOW_BUFFER_TIME = 30 #30 seconds
 REBOOT_WAIT_TIME = 900 #15 minutes, 900 seconds
@@ -25,6 +29,11 @@ class postBoomMode:
 		self.__duration = -1
 		self.__datatype = -1
 		self.__pictureNumber = -1
+		self.__startFromBeginning = -1
+		fileChecker.checkFile("../TXISR/data/transmissionFlag.txt")
+		fileChecker.checkFile("../TXSIR/data/txWindows.txt")
+		self.__transmissionFlagFile = open("../TXISR/data/transmissionFlag.txt")
+		self.__txWindowsPath = ("../TXISE/data/txWindows.txt")
 
 	async def run(self):
 		#Set up background processes
@@ -34,6 +43,7 @@ class postBoomMode:
 		self.__tasks.append(asyncio.create_task(ttncData.collectTTNCData(4))) #Post-boom is mode 4
 		self.__tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
+		fileChecker.checkFile("../TXISR/data/txWindows.txt")
 		self.__tasks.append(asyncio.create_task(self.__safeMode.heartBeat()))
 		self.__tasks.append(asyncio.create_task(self.readNextTransferWindow()))
 		self.__tasks.append(asyncio.create_task(self.rebootLoop()))
@@ -50,6 +60,8 @@ class postBoomMode:
 		windowTime = self.__nextWindowTime
 		while True:
 			if((windowTime-time.time()) <= 5):
+				# Check the files before adding them as objects
+				fileChecker.checkFile("../TXISR/data/transmissionFlag.txt")
 				txisrCodePath = os.path.join(os.path.dirname(__file__), '../../TXISR/TXServiceCode/TXService.run')
 				os.system(txisrCodePath + ' ' + str(self.__datatype)) #Call TXISR Code
 				return True
@@ -71,6 +83,7 @@ class postBoomMode:
 	async def readNextTransferWindow(self, transferWindowFilename):
 		while True:
 			#read the given transfer window file and extract the data for the soonest transfer window
+			fileChecker.checkFile(transferWindowFilename)
 			transferWindowFile = open(transferWindowFilename)
 			sendData = 0
 			soonestWindowTime = 0

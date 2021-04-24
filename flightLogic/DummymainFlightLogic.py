@@ -200,5 +200,3 @@ def readData():
 # def startTXISR(saveobject):  # Setup for TXISR
 # This sets up the interupt on the uart pin that triggers when we get commincation over uart
 # thread.start(interrupt.watchReceptions(saveobject)) <-- TODO fix that import
-
-asyncio.run(executeFlightLogic())
