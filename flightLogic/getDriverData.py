@@ -8,10 +8,17 @@ sys.path.append('../')
 import Drivers
 import struct
 import flightLogic.saveTofiles as saveTofiles
+from protectionProticol.fileProtection as FileReset
+from datetime import datetime
+from inspect import currentframe, getframeinfo
 
+fileChecker = FileReset()
 
+DEBUG = True
 
 gaspacsBytes = str(b'GASPACS'.hex())
+
+SP_Plus_TempMin = -40
 
 def readBootCount():
 	try:
