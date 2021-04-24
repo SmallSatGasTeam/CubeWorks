@@ -10,6 +10,7 @@ from flightLogic.missionModes.preBoomDeploy import preBoomMode
 from flightLogic.missionModes.boomDeploy import boomMode
 from flightLogic.missionModes.postBoomDeploy import postBoomMode
 from flightLogic.missionModes import safe
+from protectionProticol.fileProtection import FileReset
 import asyncio
 from TXISR import pythonInterrupt
 
@@ -28,6 +29,7 @@ from TXISR import pythonInterrupt
 # NOTE: DO NOTE record safe mode in the bootRecords file
 ##################################################################################################################
 
+fileChecker = FileReset()
 
 def __main__():
 	asyncio.run(executeFlightLogic())
@@ -133,7 +135,8 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 
 def recordData(bootCount, antennaDeployed, lastMode):
 	# write to the boot file, "w" option in write overwrites the file
-	new = open(os.path.dirname(__file__) + "/bootRecords", "w+")
+	fileChecker,checkFile("../flightLogic/bootRecords.txt")
+	new = open("../flightLogic/bootRecords.txt", "w+")
 	new.write(str(bootCount) + '\n')
 	if antennaDeployed:
 		new.write(str(1)+'\n')
@@ -143,7 +146,8 @@ def recordData(bootCount, antennaDeployed, lastMode):
 	new.close()
 
 	# write to the the back up file
-	new = open(os.path.dirname(__file__) + "/backupBootRecords", "w+")
+	fileChecker.checkFile("../flightLogic/backupBootRecords.txt")
+	new = open("../flightLogic/backupBootRecords.txt", "w+")
 	new.write(str(bootCount) + '\n')
 	if antennaDeployed:
 		new.write(str(1)+'\n')
@@ -160,8 +164,9 @@ def readData():
 	# Line 2 = antenna deployed?
 	# Line 2 = last mission mode
 	bootCount,antennaDeployed,lastMode = None, None, None
+	fileChecker.checkFile("../flightLogic/bootRecords.txt")
 	try:
-		bootFile = open(os.path.dirname(__file__) + "/bootRecords", "r")
+		bootFile = open("../flightLogic/bootRecords", "r")
 		bootCount = int(bootFile.readline().rstrip())
 		antennaDeployed = bool(int(bootFile.readline().rstrip()))
 		lastMode = int(bootFile.readline().rstrip())
@@ -169,7 +174,8 @@ def readData():
 	except:
 		try:
 			print('File exception')
-			bootFile = open(os.path.dirname(__file__) + "/backupBootRecords", "r")
+			fileChecker.checkFile("../flightLogic/backupBootRecords.txt")
+			bootFile = open("../flightLogic/backupBootRecords.txt", "r")
 			bootCount = int(bootFile.readline().rstrip())
 			antennaDeployed = bool(int(bootFile.readline().rstrip()))
 			lastMode = int(bootFile.readline().rstrip())
