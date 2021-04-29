@@ -6,6 +6,13 @@ from flightLogic.getDriverData import *
 from Drivers.eps import EPS as EPS
 from Drivers.sunSensors import sunSensorDriver as sunSensorDriver
 from TXISR import pythonInterrupt
+from inspect import currentframe, getframeinfo
+
+
+sunSensorMin = 0.0
+sunSensorMax = 3.3
+getBusVoltageMin = 0
+getBusVoltageMax = 100
 
 
 class preBoomMode:
@@ -75,13 +82,34 @@ class preBoomMode:
 	async def sunCheck(self):
 		sunSensor = sunSensorDriver.sunSensor()
 		while True: #Monitor the sunlight, record it in list NOTE: could be improved to halve calls
-			vList = sunSensor.read()
+			try:
+				vList = [0.0, 0.0, 0.0, 0.0, 0.0]
+				vList = sunSensor.read()
+				size = 0
+				while size < 5:
+					if (vList[size] < sunSensorMin) | (vList[size] > sunSensorMax):
+				 		raise unexpectedValue
+					size += 1
+			except Exception as e:
+				print("Failure to pull sunSensor data. Received error:", repr(e), 
+				getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
+				vList[0] = sunSensorMax + 1
+
 			self.sunlightData.append(max(vList))
 			await asyncio.sleep(5)
 
 	async def batteryCheck(self):
 		eps = EPS()
 		while True: #Checking the battery voltage to see if it's ready for deployment, if it is too low for too long --> SAFE
+			try:
+				BusVoltage = eps.getBusVoltage()
+				if(BusVoltage < getBusVoltageMin | BusVoltage > getBusVoltageMax):
+					raise unexpectedValue
+			except Exception as e:
+				print("Failed to retrieve BusVoltage, got", BusVoltage, "instead. Received error: ", 
+				repr(e), getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
+				BusVoltage = getBusVoltageMax + 1
+			
 			if (eps.getBusVoltage()>self.thresholdVoltage):
 				print('Battery above threshold voltage for deployment')
 				self.batteryStatusOk=True
@@ -91,7 +119,7 @@ class preBoomMode:
 				self.batteryStatusOk=False
 
 				if(self.timeWaited*12 > self.maximumWaitTime): #5 seconds every wait
-						self.safeMode.run(10) #1 hour
+						self.__safeMode.run(10) #1 hour
 						print('Battery too low for too long. Rebooting')
 						self.timeWaited = 0
 						await asyncio.sleep(5)
@@ -106,3 +134,7 @@ class preBoomMode:
 				t.cancel()
 		except asyncio.exceptions.CancelledException:
 			print("Caught thrown exception in cancelling background task")
+
+class unexpectedValue(Exception):
+	print("Received unexpected value.")
+	pass
