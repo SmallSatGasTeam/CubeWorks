@@ -1,6 +1,7 @@
 import sys
 import subprocess
 import time
+import os
 sys.path.append('../../')
 import asyncio
 from flightLogic.missionModes import safe
@@ -8,6 +9,10 @@ from flightLogic.getDriverData import *
 import Drivers.eps.EPS as EPS
 from TXISR import prepareFiles
 from TXISR import pythonInterrupt
+from protectionProticol.fileProtection import FileReset
+
+
+fileChecker = FileReset()
 
 TRANSFER_WINDOW_BUFFER_TIME = 10 #30 seconds
 REBOOT_WAIT_TIME = 900 #15 minutes, 900 seconds
@@ -25,8 +30,10 @@ class postBoomMode:
 		self.__datatype = -1
 		self.__pictureNumber = -1
 		self.__startFromBeginning = -1
-		self.__transmissionFlagFile = open(os.path.join(os.path.dirname(__file__), '../../TXISR/data/transmissionFlag.txt'))
-		self.__txWindowsPath = os.path.join(os.path.dirname(__file__), '../../TXISR/data/txWindows.txt')
+		fileChecker.checkFile("../TXISR/data/transmissionFlag.txt")
+		self.__transmissionFlagFile = open('../TXISR/data/transmissionFlag.txt')
+		self.__txWindowsPath = ('../TXISR/data/txWindows.txt')
+		fileChecker.checkFile(self.__txWindowsPath)
 
 	async def run(self):
 		#Set up background processes
@@ -53,9 +60,10 @@ class postBoomMode:
 			windowTime = self.__nextWindowTime
 			while True:
 				if((windowTime-time.time()) <= 5):
+					fileChecker.checkFile('../TXISR/data/transmissionFlag.txt')
 					self.__transmissionFlagFile.seek(0)
 					if(self.__transmissionFlagFile.readline()=='Enabled'):
-						txisrCodePath = os.path.join(os.path.dirname(__file__), '../../TXISR/TXServiceCode/TXService.run')
+						txisrCodePath = ('../TXISR/TXServiceCode/TXService.run')
 						print(self.__datatype)
 						subprocess.Popen([txisrCodePath, str(self.__datatype)])
 						#os.system(txisrCodePath + ' ' + str(self.__datatype) + ' &') #Call TXISR Code
@@ -82,6 +90,7 @@ class postBoomMode:
 	async def readNextTransferWindow(self, transferWindowFilename):
 		while True:
 			#read the given transfer window file and extract the data for the soonest transfer window
+			fileChecker.checkFile(transferWindowFilename)
 			transferWindowFile = open(transferWindowFilename)
 			sendData = 0
 			soonestWindowTime = 0

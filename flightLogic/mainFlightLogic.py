@@ -135,7 +135,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 
 def recordData(bootCount, antennaDeployed, lastMode):
 	# write to the boot file, "w" option in write overwrites the file
-	fileChecker,checkFile("../flightLogic/bootRecords.txt")
+	fileChecker.checkFile("../flightLogic/bootRecords.txt")
 	new = open("../flightLogic/bootRecords.txt", "w+")
 	new.write(str(bootCount) + '\n')
 	if antennaDeployed:
@@ -183,8 +183,10 @@ def readData():
 			# In this except statement, the files are corrupted, so we rewrite both of them
 		except:
 			print('Double File exception - are both files non-existant?')	
-			bootFile = open(os.path.dirname(__file__) + "/bootRecords", "w")
-			backupBootFile = open(os.path.dirname(__file__) + "/backupBootRecords", "w")
+			fileChecker.checkFile("../flightLogic/bootRecords.txt")
+			bootFile = open("../flightLogic/bootRecords.txt", "w")
+			fileChecker.checkFile("../flightLogic/backupBootRecords.txt")
+			backupBootFile = open("../flightLogic/backupBootRecords.txt", "w")
 			bootFile.write('0\n0\n0\n')
 			backupBootFile.write('0\n0\n0\n')
 

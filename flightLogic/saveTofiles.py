@@ -9,24 +9,38 @@
 #down.
 #####################################################################
 import os.path
+import asyncio
+import time
+from protectionProticol.fileProtection import FileReset
+
+
+fileChecker = FileReset()
 
 class save:
     def __init__(self):
+        #check the file to make sure it is their        
+        fileChecker.checkFile("../flightLogic/data/TTNC_Data.txt")
         #open the file when the calls is instantiated
-        self.__TTNC_File = open(os.path.dirname(__file__) + "/data/TTNC_Data.txt", "a+")
+        self.__TTNC_File = open("../flightLogic/data/TTNC_Data.txt", "a+")
+        #check the file to make sure it is their
+        fileChecker.checkFile("../flightLogic/data/Deploy_Data.txt")
         #open the file when the calls is instantiated
-        self.__Deploy_File = open(os.path.dirname(__file__) + "/data/Deploy_Data.txt", "a+")
+        self.__Deploy_File = open("../flightLogic/data/Deploy_Data.txt", "a+")
+        #check the file to make sure it is their
+        fileChecker.checkFile("../flightLogic/data/Attitude_Data.txt")
         #open the file when the calls is instantiated
-        self.__Attitude_File = open(os.path.dirname(__file__) + "/data/Attitude_Data.txt", "a+")
+        self.__Attitude_File = open("../flightLogic/data/Attitude_Data.txt", "a+")
 
     #write the data to the file,
     #NOTE: it is important that you put a : after the time stamp, this will
     #effect the txisr
     async def writeTTNC(self, data):
+        fileChecker.checkFile("../flightLogic/data/TTNC_Data.txt")
         self.__TTNC_File.write(str(data)+'\n')
 
     #this func will read the data from our file and then return that data
     async def getTTNC(self, time):
+        fileChecker.checkFile("../flightLogic/data/TTNC_Data.txt")
         temp = []
         for i in self.__TTNC_File:
             if (int(i[0]) >= time):
@@ -38,10 +52,12 @@ class save:
     #NOTE: it is important that you put a : after the time stamp, this will
     #effect the txisr
     async def writeDeploy(self, data):
+        fileChecker.checkFile("../flightLogic/data/Deploy_Data.txt")
         self.__Deploy_File.write(str(data)+'\n')
 
     #this func will read the data form our file and then return that data
     async def getDeploy(self):
+        fileChecker.checkFile("../flightLogic/data/Deploy_Data.txt")
         temp = []
         for i in self.__Deploy_File:
             if (int(i[0]) >= time):
@@ -52,11 +68,13 @@ class save:
     #NOTE: it is important that you put a : after the time stamp, this will
     #effect the txisr
     async def writeAttitude(self, data):
+        fileChecker.checkFile("../flightLogic/data/Attitude_Data.txt")
         self.__Attitude_File.write(str(data)+'\n')
 
 
     #this func will read the data form our file and then return that data
     async def getAttitudeData(self):
+        fileChecker.checkFile("../flightLogic/data/Attitude_Data.txt")
         temp = []
         for i in self.__Attitude_File:
             if (int(i[0]) >= time):
@@ -66,6 +84,8 @@ class save:
     #this will check if it is time to tx or not and then return a bool
     #TODO: how are we saving tx times?
     def checkTxWindow(self):
+        fileChecker.checkFile("../TXISR/data/txWindows.txt")
+        txWindows = open("../TXISR/data/txWindows.txt")
         timeToTx = txWindows.readlines()
         for i in timeToTx:
             if (i - 10000) <= round(time.time() * 1000):
