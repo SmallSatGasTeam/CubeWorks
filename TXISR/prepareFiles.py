@@ -4,6 +4,11 @@ import os
 from Drivers.camera import Camera
 from math import ceil
 from binascii import hexlify
+from protectionProticol.fileProtection import FileReset
+
+
+fileChecker = FileReset()
+
 """
 This file sets up 2 methods, prepareData and preparePicture. prepareData is used for Attitude Data, TTNC Data, and Deploy Data. preparePicture is used to prepare the HQ or LQ pictures
 Both prepare functions reset /TXISR/TXServiceCode/txFile.txt, and write to it the duration of the transmission window.
@@ -12,26 +17,31 @@ Then, each line consists of a 10-letter string with the timestamp or index of th
 def prepareData(duration, dataType, startFromBeginning):
 	if (dataType == 0): #Attitude Data
 		packetLength = 37 + 14 #Packet length in bytes plus the 7 GASPACS bytes on each end
-		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/data/Attitude_Data.txt') #Set data file path to respective file
+		fileChecker.checkFile('../flightLogic/data/Attitude_Data.txt')
+		dataFilePath = ('../flightLogic/data/Attitude_Data.txt') #Set data file path to respective file
 		print("Attitude Data selected")
 	elif (dataType == 1): #TTNC Data
 		packetLength = 92 + 14 #Packet length in bytes plus the 7 GASPACS bytes on each end
-		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/data/TTNC_Data.txt') #Set data file path to respective file
+		fileChecker.checkFile('../flightLogic/data/TTNC_Data.txt')
+		dataFilePath = ('../flightLogic/data/TTNC_Data.txt') #Set data file path to respective file		
 		print("TTNC Data selected")
 	else: #Deploy Data
 		packetLength = 25 + 14 #Packet length in bytes plus the 7 GASPACS bytes on each end
-		dataFilePath = os.path.join(os.path.dirname(__file__), '../flightLogic/data/Deploy_Data.txt') #Set data file path to respective file
+		fileChecker.checkFile('../flightLogic/data/Deploy_Data.txt')
+		dataFilePath = ('../flightLogic/data/Deploy_Data.txt') #Set data file path to respective file		
 		print("Deploy Data selected")
 	minFileSize = packetLength*2+12 #Minimum characters in file
 
 	packetTime = 120 + packetLength*8/9600 #Transmission time for 1 packet of size packetLength
 	numPackets = ceil(duration*1000/packetTime) + 15 #For safety, 15 extra packets compared to the number that will likely be transmitted
 
-	transmissionFilePath = os.path.join(os.path.dirname(__file__), 'data/txFile.txt') #File path to txFile. This is where data will be stored
+	transmissionFilePath = ('../data/txFile.txt') #File path to txFile. This is where data will be stored
+	fileChecker.checkFile(transmissionFilePath)	
 	txDataFile = open(transmissionFilePath, 'w') #Create and open TX File
 	txDataFile.write(str(duration*1000) + '\n') #Write first line to txData. Duration of window in milliseconds
 
-	progressFilePath = os.path.join(os.path.dirname(__file__), 'data/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
+	progressFilePath = ('../data/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
+	fileChecker.checkFile(transmissionFilePath)	
 	progressFile = open(progressFilePath, 'r+') #Opens progress file as read only
 	progressList = progressFile.read().splitlines()
 
@@ -42,6 +52,7 @@ def prepareData(duration, dataType, startFromBeginning):
 		transmissionProgress = 0
 		progressFile.write("0\n0\n0\n0\n0\n")
 
+	fileChecker.checkFile(dataFilePath)
 	dataFile = open(dataFilePath) #Open data file, this gets copied into txFile.
 	print("data file size: ", os.stat(dataFilePath).st_size)
 	print("min file size: ", minFileSize)
@@ -102,16 +113,19 @@ def preparePicture(duration, dataType, pictureNumber, startFromBeginning):
 
 	numPackets = ceil(duration*1000/(120 + 128*8/9600)) + 15 #How many picture packets can we transmit in the window? + 15 for safety
 
-	transmissionFilePath = os.path.join(os.path.dirname(__file__), 'data/txFile.txt') #File path to txFile. This is where data will be stored
+	transmissionFilePath = ('../TXISR/data/txFile.txt') #File path to txFile. This is where data will be stored
+	fileChecker.checkFile(transmissionFilePath)
 	try:
 		os.remove(transmissionFilePath) #Remove txFile
 	except:
 		pass #FileNotFoundError is thrown if file doesn't exist
 	print('got here')
+	fileChecker.checkFile(transmissionFilePath)
 	txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
 	txDataFile.write(str(duration*1000) + '\n') #Write first line to txData. Duration of window in milliseconds
 
-	progressFilePath = os.path.join(os.path.dirname(__file__), 'data/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
+	progressFilePath = ('../TXISR/data/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
+	fileChecker.checkFile(progressFilePath)
 	progressFile = open(progressFilePath) #Opens progress file as read only
 	progressList = progressFile.read().splitlines()
 	# If Start From Beginning flag is not set (0), set transmissionProgress to the last transmitted packet. Else, set to 0 to start from beginning.

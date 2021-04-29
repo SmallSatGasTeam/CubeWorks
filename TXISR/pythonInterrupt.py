@@ -3,13 +3,20 @@ import asyncio
 import sys
 sys.path.append('../')
 import TXISR.packetProcessing as packetProcessing
+from protectionProticol.fileProtection import FileReset
+
+
+fileChecker = FileReset()
+
 """
 This file sets up the interrupt process. Every five seconds, the buffer of the serial port at /dev/serial0 is read.
 Content is split up into AX.25 Packets, and Command Packets. The data is passed to Jack's packetProcessing.py methods.
 TODO: Implement AX.25 digipeating, probably in packetProcessing.py
 To defray the possibility of half a packet being in the buffer, any half-packets are stored and evaluated the next time around
 """
+
 async def interrupt():
+	fileChecker.fullReset()
 	serialport = serial.Serial('/dev/serial0', 115200) #Open serial port. Currently /dev/serial0, might change to the PL011 port for flight article
 	leftovers = '' #Stores any half-packets for evaluation the next loop
 	leftoversEmpty = True
@@ -38,6 +45,7 @@ async def interrupt():
 			await asyncio.sleep(3)
 
 def parseData(data, bracket): #Takes data string, in the form of hex, from async read serial function. Spits out all AX.25 packets and GASPACS packets contained inside, as well as remaining data to be put into the leftovers
+	fileChecker.fullReset()
 	searching = True
 	gaspacsPackets = []
 	ax25Packets = []
@@ -78,6 +86,7 @@ def searchAX25(data): #Finds AX.25 packets stored in the data string, which is a
 
 def searchGASPACS(data, str): #Must be passed as a string of hex, for both parameters
 	#Finds command or window packets, bracketed by <str> in <data>. Removes the brackets and the contents in between from <data>. Returns the command contents
+	fileChecker.fullReset()
 	content=''
 	occurences = findOccurences(data, str)
 	modifiedString = data
