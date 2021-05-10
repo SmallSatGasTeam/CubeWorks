@@ -1,6 +1,8 @@
 from Drivers.Driver import Driver
 from Drivers.adc import ADC_Driver
 from time import sleep
+
+
 class sunSensor(Driver):
     """
     This class calls the ADC driver and asks for data from the UV channel
