@@ -42,6 +42,6 @@ class sunSensor(Driver):
 
         self.voltageList = v
 
-        print("Dummy sun sensor driver voltage list: ", self.voltageList, "Time, interval, switch: ", getTime, interval, switch)
+        print("Dummy sun sensor driver voltage list: ", self.voltageList, "Time, interval, switch: ", getTime%interval, interval, switch)
 
         return self.voltageList
