@@ -159,7 +159,8 @@ class TTNCData:
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve BattVoltage. Exception: ", repr(e), 
-			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
+			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno,
+			"Received: ", BattVoltage)
 			BattVoltage = float4tohex(BattVoltageMax + 1)
 
 		try:
@@ -177,7 +178,8 @@ class TTNCData:
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve BCRVoltage. Exception: ", repr(e), 
-			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
+			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno, 
+			"Received: ", BCRVoltage)
 			BCRVoltage = float4tohex(BCRVoltageMax + 1)
 
 		try:
