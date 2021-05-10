@@ -4,7 +4,9 @@ import asyncio
 from flightLogic.missionModes import safe
 from flightLogic.getDriverData import *
 from Drivers.eps import EPS as EPS
-from Drivers.sunSensors import sunSensorDriver as sunSensorDriver
+from Drivers.sunSensors import sunSensorDriver
+"""DO NOT PUSH LINE 9 TO MASTER! THIS IS FOR TESTING PURPOSES ONLY."""
+from DummyDrivers.sunSensors import sunSensorDriver as DummySunSensorDriver
 from TXISR import pythonInterrupt
 from inspect import currentframe, getframeinfo
 
@@ -13,6 +15,8 @@ sunSensorMin = 0.0
 sunSensorMax = 3.3
 getBusVoltageMin = 0
 getBusVoltageMax = 100
+
+DummySunSensor = True
 
 
 class preBoomMode:
@@ -80,7 +84,11 @@ class preBoomMode:
 			await asyncio.sleep(5) #Run this whole while loop every 15 seconds
 
 	async def sunCheck(self):
-		sunSensor = sunSensorDriver.sunSensor()
+		"""DO NOT PUSH THIS IF STATEMENT TO MASTER. THIS IS FOR TESTING PURPOSES ONLY"""
+		if DummySunSensor:
+			sunSensor = DummySunSensorDriver.sunSensor()
+		else:
+			sunSensor = sunSensorDriver.sunSensor()
 		while True: #Monitor the sunlight, record it in list NOTE: could be improved to halve calls
 			try:
 				vList = [0.0, 0.0, 0.0, 0.0, 0.0]
@@ -103,7 +111,7 @@ class preBoomMode:
 		while True: #Checking the battery voltage to see if it's ready for deployment, if it is too low for too long --> SAFE
 			try:
 				BusVoltage = eps.getBusVoltage()
-				if(BusVoltage < getBusVoltageMin | BusVoltage > getBusVoltageMax):
+				if(BusVoltage < getBusVoltageMin) | (BusVoltage > getBusVoltageMax):
 					raise unexpectedValue
 			except Exception as e:
 				print("Failed to retrieve BusVoltage, got", BusVoltage, "instead. Received error: ", 
