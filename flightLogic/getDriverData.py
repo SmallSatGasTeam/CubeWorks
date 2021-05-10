@@ -8,7 +8,7 @@ sys.path.append('../')
 import Drivers
 import struct
 import flightLogic.saveTofiles as saveTofiles
-from protectionProticol.fileProtection as FileReset
+from protectionProticol.fileProtection import FileReset
 from datetime import datetime
 from inspect import currentframe, getframeinfo
 
