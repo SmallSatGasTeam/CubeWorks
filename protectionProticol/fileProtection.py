@@ -22,7 +22,7 @@ class FileReset():
             "../flightLogic/data/TTNC_Data.txt" ]
         self.__filePath = ""
         self.fullReset()
-​
+
     def __reset(self):
         """Opens and erases file, certain files are then filled with required text. If there is no file under a certain file path, it will create the file."""
         # Depending on the file path, replaces the empty file with a string of text based on what data will be written in the file
@@ -64,20 +64,20 @@ class FileReset():
             # Otherwise it just closes the file
             else:
                 file.close()
-​
+
     def individualReset(self, newFile):
         self.__filePath = newFile
         """Allows the manual reset of a single file."""
         # Runs reset once for a single file
         self.__reset()
         print("File being reset " + self.__filePath)
-​
+
     # This check a single file to see if it will open or not if not it resets it 
     def checkFile(self, newFile):
         self.__filePath = newFile
         
         self.dirProtection()
-​
+
         try:
             file = open(self.__filePath)
         except OSError:
@@ -86,12 +86,12 @@ class FileReset():
         else:
             file.close()
             print("File is ok " + self.__filePath)
-​
+
     # This checks a single directory to see if it exists
     def checkDir(self, path):
         isdir = os.path.isdir(path)    
         return isdir
-​
+
     # This makes the diretory if it files
     def dirProtection(self):  
         count = 0
@@ -101,7 +101,7 @@ class FileReset():
                 break
             count += 1
         dirPath = self.__filePath[:len(self.__filePath) - count]
-​
+        
         # Check directory
         # The dir doesnt exist recreate it
         if(not self.checkDir(dirPath)):
