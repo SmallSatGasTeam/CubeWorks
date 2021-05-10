@@ -3,9 +3,6 @@ from Drivers.adc import ADC_Driver
 from time import sleep
 
 
-DEBUG = True
-
-
 class sunSensor(Driver):
     """
     This class calls the ADC driver and asks for data from the UV channel
@@ -22,9 +19,6 @@ class sunSensor(Driver):
         """
         This function calls the read function of the ADC for each channel a sun sensor has and return a list of the voltages
         """
-        if DEBUG:
-            print("Collecting sunlight sensor data.")
-
         self.voltageList = []
         for i in range(0, 5):
             #self.voltageList.append(self.adc.read(self.adcChannel[i]))
