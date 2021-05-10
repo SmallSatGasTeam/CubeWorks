@@ -1,7 +1,8 @@
 import os
 import sys
 sys.path.append('../../')
-​
+
+
 class FileReset():
     """Checks to ensure that data files exist after reboot. Use "asyncio.run(FileReset.fullReset())" to run.
     
