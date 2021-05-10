@@ -155,7 +155,7 @@ class TTNCData:
 
 		try:
 			BattVoltage = float4tohex(self.EPS.getBusVoltage())
-			if (BattVoltage < float4tohex(BattVoltageMin)) | (BattVoltage > float4tohex(BattVoltageMax)):
+			if ((BattVoltage < float4tohex(BattVoltageMin)) & (BattVoltage > str(80000000))) | ((BattVoltage > float4tohex(BattVoltageMax)) & (BattVoltage < str(80000000))):
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve BattVoltage. Exception: ", repr(e), 
@@ -173,7 +173,7 @@ class TTNCData:
 
 		try:
 			BCRVoltage = float4tohex(self.EPS.getBCRVoltage())
-			if (BCRVoltage < float4tohex(BCRVoltageMin)) | (BCRVoltage > float4tohex(BCRVoltageMax)):
+			if ((BCRVoltage < float4tohex(BCRVoltageMin)) & (BCRVoltage > str(80000000))) | ((BCRVoltage > float4tohex(BCRVoltageMax)) & (BCRVoltage < str(80000000))):
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve BCRVoltage. Exception: ", repr(e), 
