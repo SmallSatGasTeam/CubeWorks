@@ -60,7 +60,8 @@ class preBoomMode:
 						break
 					darkLength = 0 #Maybe darkLength -=1 to avoid damage from one bad measurement? Maybe a smoother running average?
 				i+=1
-			print("Dark Length: ", darkLength)
+			if DEBUG:
+				print("Dark Length: ", darkLength)
 
 
 			print('Last Dark ' + str(lastDark))
@@ -83,7 +84,8 @@ class preBoomMode:
 						print('Returning and exiting')
 						return True #Go on to Boom Deploy Mode if the battery is Ok
 					q += 1
-				print("Light length: ", lightLength)
+				if DEBUG:
+					print("Light length: ", lightLength)
 			await asyncio.sleep(5) #Run this whole while loop every 15 seconds
 
 	async def sunCheck(self):
