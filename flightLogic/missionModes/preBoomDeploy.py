@@ -17,6 +17,7 @@ getBusVoltageMin = 0
 getBusVoltageMax = 100
 
 DummySunSensor = True
+DEBUG = True
 
 
 class preBoomMode:
@@ -93,13 +94,15 @@ class preBoomMode:
 			try:
 				vList = [0.0, 0.0, 0.0, 0.0, 0.0]
 				vList = sunSensor.read()
+				if DEBUG:
+					print("Pre boom deploy sun sensor values: ", vList)
 				size = 0
 				while size < 5:
 					if (vList[size] < sunSensorMin) | (vList[size] > sunSensorMax):
 				 		raise unexpectedValue
 					size += 1
 			except Exception as e:
-				print("Failure to pull sunSensor data. Received error:", repr(e), 
+				print("Failure to pull sunSensor data. Received error:", repr(e),
 				getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 				vList[0] = sunSensorMax + 1
 
