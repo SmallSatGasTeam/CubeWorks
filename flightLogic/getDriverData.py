@@ -407,19 +407,19 @@ class AttitudeData():
 			allSunSensors = self.sunSensor.read()
 			sunSensor1, sunSensor2, sunSensor3, sunSensor4, sunSensor5 = [allSunSensors[i] for i in range(5)]
 
-			if(sunSensor1 < float4tohex(sunSensorMin)) | (sunSensor1 > float4tohex(sunSensorMax)):
+			if(sunSensor1 < sunSensorMin) | (sunSensor1 > sunSensorMax):
 					raise unexpectedValue
 
-			if(sunSensor2 < float4tohex(sunSensorMin)) | (sunSensor2 > float4tohex(sunSensorMax)):
+			if(sunSensor2 < sunSensorMin) | (sunSensor2 > sunSensorMax):
 				raise unexpectedValue
 
-			if(sunSensor3 < float4tohex(sunSensorMin)) | (sunSensor3 > float4tohex(sunSensorMax)):
+			if(sunSensor3 < sunSensorMin) | (sunSensor3 > sunSensorMax):
 				raise unexpectedValue
 
-			if(sunSensor4 < float4tohex(sunSensorMin)) | (sunSensor4 > float4tohex(sunSensorMax)):
+			if(sunSensor4 < sunSensorMin) | (sunSensor4 > sunSensorMax):
 				raise unexpectedValue
 
-			if (sunSensor5 < float4tohex(sunSensorMin)) | (sunSensor5 > float4tohex(sunSensorMax)):
+			if(sunSensor5 < sunSensorMin) | (sunSensor5 > sunSensorMax):
 				raise unexpectedValue
 		except Exception as e:
 			print("Failed to pull data from sunSensor. Exception: ", repr(e), 

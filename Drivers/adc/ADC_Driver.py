@@ -44,9 +44,9 @@ class ADC(Driver):
         msg = (channel << 3) 
         msg = [msg, 0b00000000]
 
-        print("Channel: ", channel)
-        print("Sent message: ", bin(msg[0]), bin(msg[1]))
-        print("Spi channel: ", self.spi)
+        # print("Channel: ", channel)
+        # print("Sent message: ", bin(msg[0]), bin(msg[1]))
+        # print("Spi channel: ", self.spi)
 
         reply = self.spi.xfer2(msg)
         value = (reply[1] + (reply[0] * 256))*(3.3/4096)
