@@ -493,7 +493,6 @@ class AttitudeData():
 		mag2 = float4tohex(mag2)
 		mag3 = float4tohex(mag3)
 
-		print("timestamp: ", timestamp, "\npacketType: ", packetType, "\nsunSensor1: ", sunSensor1, "\nsunSensor2: ", sunSensor2, "\nsunSensor3: ", sunSensor3, "\nsunSensor4: ", sunSensor4, "\nsunSensor5 :", sunSensor5, "\nmag1: ", mag1, "\nmag2: ", mag2, "\nmag3: ", mag3)
 		packet += gaspacsBytes + packetType + timestamp + sunSensor1 + sunSensor2 + sunSensor3 + sunSensor4 + sunSensor5 + mag1 + mag2 + mag3 + gaspacsBytes
 		#Print statement for debugging
 		#print("timestamp: ", timestamp, "\npacketType: ", packetType, "\nsunSensor1: ", sunSensor1, "\nsunSensor2: ", sunSensor2, "\nsunSensor3: ", sunSensor3, "\nsunSensor4: ", sunSensor4, "\nsunSensor5 :", sunSensor5, "\nmag1: ", mag1, "\nmag2: ", mag2, "\nmag3: ", mag3)
