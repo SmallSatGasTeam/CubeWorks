@@ -115,6 +115,7 @@ class preBoomMode:
 
 	async def batteryCheck(self):
 		eps = EPS()
+		print("THIS IS A TEST")
 		while True: #Checking the battery voltage to see if it's ready for deployment, if it is too low for too long --> SAFE
 			try:
 				BusVoltage = eps.getBusVoltage()
