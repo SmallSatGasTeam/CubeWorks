@@ -29,8 +29,8 @@ class sunSensor(Driver):
         #Sun length is the amount of time the satellite will be in the sun
         sunLength = 2
 
-        interval = (sunLength*60)/.4
-        switch = interval*.6
+        interval = sunLength*60
+        switch = 20
 
         if ((getTime % interval) == 0) | ((getTime % interval) == switch):
             v[0] = 1.5
