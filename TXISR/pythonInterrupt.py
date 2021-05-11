@@ -21,7 +21,7 @@ async def interrupt():
 		serialport = serial.Serial('/dev/serial0', 115200) #Open serial port. Currently /dev/serial0, might change to the PL011 port for flight article
 	except Exception as e:
 		print("Failed to open serialport. Exception:", repr(e))
-		serialport = None
+		serialport = serial.Serial(None)
 
 	leftovers = '' #Stores any half-packets for evaluation the next loop
 	leftoversEmpty = True
