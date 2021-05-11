@@ -18,6 +18,7 @@ async def interrupt():
 	leftoversEmpty = True
 	gaspacsHex = str(b'GASPACS'.hex())
 	filePath = 'Data/Deploy_Data/Deploy_Data_' + time.strftime("%Y-%m-%d_%H:%M:%S") + '.txt'
+	fileChecker.checkFile(filePath)
 	dataFile = open(os.path.join(os.path.dirname(__file__), filePath), 'a+')
 
 	while True:
