@@ -294,15 +294,15 @@ class TTNCData:
 			SP_Z_Plus_Current = float4tohex(SP_Plus_CurrentMax + 1)
 
 			
-		print("packet type: " + packetType + "\ntimestamp: "+ timestamp + "\nmode: " + mode + 
-		"\nreboot count: " + reboot_count + "\nboombox uv: " + boombox_uv + 
-		"\nSPXPlusTemp " + SP_X_Plus_Temp + "\nSPZPlusTemp " + SP_Z_Plus_Temp + 
-		"\npitemp " + piTemp + "\nEPSMCUTemp " + EPSMCUTemp + "\nCell1Temp " + Cell1Temp + 
-		"\nCell2Temp " + Cell2Temp + "\nBattVoltage " + BattVoltage + "\nBattCurrent: " + BattCurrent + 
-		"\nBCRVoltage " + BCRVoltage + "\nBCRCurrent " + BCRCurrent + "\nE3V3Current " + EPS3V3Current + 
-		"\nEPS5VCurrent " + EPS5VCurrent + "\nSPXV " + SP_X_Voltage + "\nSPXPlusCurr " + SP_X_Plus_Current + 
-		"\nSPXMinusCurr " + SP_X_Minus_Current + "\nSPYV " + SP_Y_Voltage + "\nSPYPlusCurr " + SP_Y_Plus_Current + 
-		"\n SPYMinCurr " + SP_Y_Minus_Current + "\nSPZV " + SP_Z_Voltage + "\nSPZPlusCurr " + SP_Z_Plus_Current)
+		# print("packet type: " + packetType + "\ntimestamp: "+ timestamp + "\nmode: " + mode + 
+		# "\nreboot count: " + reboot_count + "\nboombox uv: " + boombox_uv + 
+		# "\nSPXPlusTemp " + SP_X_Plus_Temp + "\nSPZPlusTemp " + SP_Z_Plus_Temp + 
+		# "\npitemp " + piTemp + "\nEPSMCUTemp " + EPSMCUTemp + "\nCell1Temp " + Cell1Temp + 
+		# "\nCell2Temp " + Cell2Temp + "\nBattVoltage " + BattVoltage + "\nBattCurrent: " + BattCurrent + 
+		# "\nBCRVoltage " + BCRVoltage + "\nBCRCurrent " + BCRCurrent + "\nE3V3Current " + EPS3V3Current + 
+		# "\nEPS5VCurrent " + EPS5VCurrent + "\nSPXV " + SP_X_Voltage + "\nSPXPlusCurr " + SP_X_Plus_Current + 
+		# "\nSPXMinusCurr " + SP_X_Minus_Current + "\nSPYV " + SP_Y_Voltage + "\nSPYPlusCurr " + SP_Y_Plus_Current + 
+		# "\n SPYMinCurr " + SP_Y_Minus_Current + "\nSPZV " + SP_Z_Voltage + "\nSPZPlusCurr " + SP_Z_Plus_Current)
 
 		packet += (gaspacsBytes + packetType + timestamp + mode + reboot_count + 
 		boombox_uv + SP_X_Plus_Temp + SP_Z_Plus_Temp + piTemp + EPSMCUTemp + Cell1Temp + 
@@ -432,9 +432,9 @@ class AttitudeData():
 		packet = ''
 
 		try:
+			timestamp = int4tohex(self.RTC.readSeconds())
 			if (self.RTC.readSeconds() < RTCMin) | (self.RTC.readSeconds() > RTCMax):
 				raise unexpectedValue
-			timestamp = int4tohex(self.RTC.readSeconds())
 		except Exception as e:
 			# redundant RTC try/except
 			# if no RTC works, continue with exception
@@ -471,11 +471,11 @@ class AttitudeData():
 			sunSensor4 = sunSensorMax + 1
 			sunSensor5 = sunSensorMax + 1
 
-			sunSensor1 = float4tohex(sunSensor1)
-			sunSensor2 = float4tohex(sunSensor2)
-			sunSensor3 = float4tohex(sunSensor3)
-			sunSensor4 = float4tohex(sunSensor4)
-			sunSensor5 = float4tohex(sunSensor5)
+		sunSensor1 = float4tohex(sunSensor1)
+		sunSensor2 = float4tohex(sunSensor2)
+		sunSensor3 = float4tohex(sunSensor3)
+		sunSensor4 = float4tohex(sunSensor4)
+		sunSensor5 = float4tohex(sunSensor5)
 
 		try:
 			mag1, mag2, mag3 = self.Magnetometer.read()
@@ -493,6 +493,7 @@ class AttitudeData():
 		mag2 = float4tohex(mag2)
 		mag3 = float4tohex(mag3)
 
+		print("timestamp: ", timestamp, "\npacketType: ", packetType, "\nsunSensor1: ", sunSensor1, "\nsunSensor2: ", sunSensor2, "\nsunSensor3: ", sunSensor3, "\nsunSensor4: ", sunSensor4, "\nsunSensor5 :", sunSensor5, "\nmag1: ", mag1, "\nmag2: ", mag2, "\nmag3: ", mag3)
 		packet += gaspacsBytes + packetType + timestamp + sunSensor1 + sunSensor2 + sunSensor3 + sunSensor4 + sunSensor5 + mag1 + mag2 + mag3 + gaspacsBytes
 		#Print statement for debugging
 		#print("timestamp: ", timestamp, "\npacketType: ", packetType, "\nsunSensor1: ", sunSensor1, "\nsunSensor2: ", sunSensor2, "\nsunSensor3: ", sunSensor3, "\nsunSensor4: ", sunSensor4, "\nsunSensor5 :", sunSensor5, "\nmag1: ", mag1, "\nmag2: ", mag2, "\nmag3: ", mag3)
