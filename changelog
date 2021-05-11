@@ -1,0 +1,19 @@
+READ ME: 
+**********************************************************************************
+This is the change log, here is the format
+
+#change number <the change made> "file name" SHORT reason why change was made
+
+Note:  You need to mark each change with a comment that has THAT PARTICULAR 
+CHANGE NUMBER. 
+
+Add line numbers.
+
+**All chnages that change the flow, logic, and/or function of the code base must 
+be repoerted. 
+**********************************************************************************
+
+#1 <Added DummySunSensor to preBoomDeploy> "flightLogic/missionModes/preBoomDeploy.py"
+    Lines 8-9 & 92-95
+    Testing is kind of the worst if we're relying on having to turn the lights
+    off and on in the lab so adding this in makes testing more streamlined and repeatable.
