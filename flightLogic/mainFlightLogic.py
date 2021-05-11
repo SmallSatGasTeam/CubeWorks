@@ -64,7 +64,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 		print('Files are empty')
 		bootCount, antennaDeployed, lastMode = 0,False,0
 	else:
-		bootCount, antennaDeployed, lastMode = readData()  # Read in data from files
+		bootCount, antennaDeployed, lastMode = readData()  # Read in data from files -------- filechecker needed?
 	bootCount += 1  # Increment boot count
 	recordData(bootCount, antennaDeployed, lastMode)
 
@@ -107,12 +107,12 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	elif lastMode == 4:
 		print('Running Post Boom Deploy')
 		lastMode = 4
-		# TRY/EXCEPT
+		# TRY/EXCEPT postBoomDeploys
 		await asyncio.gather(postBoomDeploy.run())
 	else:
 		print('Running preBoom Deploy')
 		lastMode = 2
-		# TRY/EXCEPT
+		# TRY/EXCEPT preBoomDeploys
 		await asyncio.gather(preBoomDeploy.run())
 
 
@@ -171,7 +171,7 @@ def readData():
 	bootCount,antennaDeployed,lastMode = None, None, None
 	fileChecker.checkFile("../flightLogic/bootRecords.txt")
 	try:
-		bootFile = open("../flightLogic/bootRecords", "r")
+		bootFile = open("../flightLogic/bootRecords.txt", "r")
 		bootCount = int(bootFile.readline().rstrip())
 		antennaDeployed = bool(int(bootFile.readline().rstrip()))
 		lastMode = int(bootFile.readline().rstrip())
