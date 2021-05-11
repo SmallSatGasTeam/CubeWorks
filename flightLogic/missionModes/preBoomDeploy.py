@@ -13,8 +13,8 @@ from inspect import currentframe, getframeinfo
 
 sunSensorMin = 0.0
 sunSensorMax = 3.3
-getBusVoltageMin = 0
-getBusVoltageMax = 100
+getBusVoltageMin = 3.5
+getBusVoltageMax = 5.1
 
 DummySunSensor = True
 DEBUG = False
@@ -123,7 +123,7 @@ class preBoomMode:
 			except Exception as e:
 				print("Failed to retrieve BusVoltage, got", BusVoltage, "instead. Received error: ", 
 				repr(e), getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
-				BusVoltage = getBusVoltageMax + 1
+				BusVoltage = 4.18
 			
 			if (eps.getBusVoltage()>self.thresholdVoltage):
 				print('Battery above threshold voltage for deployment')
