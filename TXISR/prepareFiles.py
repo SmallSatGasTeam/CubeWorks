@@ -134,6 +134,7 @@ def preparePicture(duration, dataType, pictureNumber, startFromBeginning):
 	else:
 		transmissionProgress = 0
 
+	fileChecker.checkFile(dataFilePath)
 	pictureFile = open(dataFilePath, 'rb')
 	pictureContent = hexlify(pictureFile.read()) #Picture content is now a string with the hex data of the file in it
 	dataSize = 0
