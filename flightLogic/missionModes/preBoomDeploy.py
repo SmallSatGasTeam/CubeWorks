@@ -125,7 +125,7 @@ class preBoomMode:
 				repr(e), getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 				BusVoltage = 4.18
 			
-			if BusVoltage > self.thresholdVoltage:
+			if (BusVoltage > self.thresholdVoltage):
 				print('Battery above threshold voltage for deployment')
 				self.batteryStatusOk=True
 				self.timeWaited = 0
