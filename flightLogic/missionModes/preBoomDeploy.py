@@ -117,6 +117,7 @@ class preBoomMode:
 		eps = EPS()
 		print("THIS IS A TEST")
 		while True: #Checking the battery voltage to see if it's ready for deployment, if it is too low for too long --> SAFE
+			print("THIS WHILE LOOP IS WORKING")
 			try:
 				BusVoltage = eps.getBusVoltage()
 				print("This is the BusVoltage:" + BusVoltage)
