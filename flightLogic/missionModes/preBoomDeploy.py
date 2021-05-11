@@ -117,16 +117,14 @@ class preBoomMode:
 		eps = EPS()
 		while True: #Checking the battery voltage to see if it's ready for deployment, if it is too low for too long --> SAFE
 			try:
-				print("THE TRY IS WORKING")
 				BusVoltage = eps.getBusVoltage()
-				print("THE TRY IS STILL WORKING")
 				if(BusVoltage < getBusVoltageMin) | (BusVoltage > getBusVoltageMax):
 					raise unexpectedValue
 			except Exception as e:
 				print("IT FAILED WE ARE IN EXCEPT NOW")
+				BusVoltage = 4.18
 				print("Failed to retrieve BusVoltage, got", BusVoltage, "instead. Received error: ", 
 				repr(e), getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
-				BusVoltage = 4.18
 			
 			if (BusVoltage > self.thresholdVoltage):
 				print('Battery above threshold voltage for deployment')
