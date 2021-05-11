@@ -119,11 +119,11 @@ class preBoomMode:
 			try:
 				print("THE TRY IS WORKING")
 				BusVoltage = eps.getBusVoltage()
-				print("This is the BusVoltage:" + BusVoltage)
-				print("This is the threshold" + self.thresholdVoltage)
+				print("THE TRY IS STILL WORKING")
 				if(BusVoltage < getBusVoltageMin) | (BusVoltage > getBusVoltageMax):
 					raise unexpectedValue
 			except Exception as e:
+				print("IT FAILED WE ARE IN EXCEPT NOW")
 				print("Failed to retrieve BusVoltage, got", BusVoltage, "instead. Received error: ", 
 				repr(e), getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 				BusVoltage = 4.18
