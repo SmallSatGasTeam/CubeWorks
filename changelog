@@ -18,3 +18,15 @@ be repoerted.
     Testing is kind of the worst if we're relying on having to turn the lights
     off and on in the lab so adding this in makes testing more streamlined and repeatable.
     THIS MUST BE REMOVED BEFORE PUSHING TO MASTER
+
+#2 <Rearranged getDriverData> "flightLogic/getDriverData.py"
+    Throughtout 
+    Moved variables up in code so that they are assigned before being called
+
+#3 <Added try catch statement to the pi camera in boomDeploy> "flightLogic/missionModes/boomDeploy.py"
+    Lines 36-39
+    We added a try catch statement so that the flight logic would move past preBoomDeploy into postBoomDeploy
+
+#4 <Added try catch statement to python.interrupt> "TXISR/pythonInterrupt.py"
+    Lines 20-24, 30-54
+    The try catch was added to make the system continue past preBoomDeploy
