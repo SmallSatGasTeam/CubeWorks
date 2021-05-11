@@ -62,7 +62,7 @@ class postBoomMode:
 			if((windowTime-time.time()) <= 5):
 				# Check the files before adding them as objects
 				fileChecker.checkFile("../TXISR/data/transmissionFlag.txt")
-				txisrCodePath = os.path.join(os.path.dirname(__file__), '../../TXISR/TXServiceCode/TXService.run')
+				txisrCodePath = '../TXISR/TXServiceCode/TXService.run'
 				os.system(txisrCodePath + ' ' + str(self.__datatype)) #Call TXISR Code
 				return True
 			await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds

@@ -17,7 +17,12 @@ To defray the possibility of half a packet being in the buffer, any half-packets
 
 async def interrupt():
 	fileChecker.fullReset()
-	serialport = serial.Serial('/dev/serial0', 115200) #Open serial port. Currently /dev/serial0, might change to the PL011 port for flight article
+	try:
+		serialport = serial.Serial('/dev/serial0', 115200) #Open serial port. Currently /dev/serial0, might change to the PL011 port for flight article
+	except Exception as e:
+		print("Failed to open serialport. Exception:", repr(e))
+		serialport = None
+
 	leftovers = '' #Stores any half-packets for evaluation the next loop
 	leftoversEmpty = True
 	gaspacsHex = str(b'GASPACS'.hex())
