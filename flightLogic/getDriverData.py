@@ -27,11 +27,11 @@ Cell1TempMax = 155.0
 Cell2TempMin = -40.0
 Cell2TempMax = 155.0
 BattVoltageMin = 3.5
-BattVoltageMax = 5.1
+BattVoltageMax = 4.12
 BattCurrentMin = 0.0
 BattCurrentMax = 9.0
 BCRVoltageMin = 4.08
-BCRVoltageMax = 5.1
+BCRVoltageMax = 4.12
 BCRCurrentMin = .215
 BCRCurrentMax = .875
 SP_VoltageMin = 0.0
@@ -95,20 +95,24 @@ class TTNCData:
 		reboot_count = int2tohex(readBootCount())
 		#No need for await on these, since they're not sleeping
 		try:
-			boombox_uv = float4tohex(self.UVDriver.read())
+			boombox_uv = float4tohex(self.UVDriver.read()) 
 			if (boombox_uv < float4tohex(boombox_uvMin)) | (boombox_uv > float4tohex(boombox_uvMax)):
 				raise unexpectedValue
 		except Exception as e:
+			# add redundant UVDriver TRY/EXCEPT
+			# if no drivers can be called, continue with exception
 			print ("failed to return boombox_uv. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 			boombox_uv = float4tohex(boombox_uvMax + 1)
 
 		try:
-			SP_X_Plus_Temp, SP_Z_Plus_Temp = self.TempSensor.read()
+			SP_X_Plus_Temp, SP_Z_Plus_Temp = self.TempSensor.read() 
 			if ((SP_X_Plus_Temp < SP_Plus_TempMin) | (SP_X_Plus_Temp > SP_Plus_TempMax) |
 			 (SP_Z_Plus_Temp < SP_Plus_TempMin) | (SP_Z_Plus_Temp > SP_Plus_TempMax)):
 				raise unexpectedValue
 		except Exception as e:
+			# add redundant TempSensor TRY/EXCEPT
+			# if no drivers can be called, continue with exception
 			print("Failed to retrieve temp sensor. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 			SP_X_Plus_Temp = SP_Plus_TempMax + 1
@@ -122,10 +126,13 @@ class TTNCData:
 			if (piTemp < float4tohex(piTempMin)) | (piTemp > float4tohex(piTempMax)):
 				raise unexpectedValue
 		except Exception as e:
+			# add redundant CpuTempSensor TRY/EXCEPT
+			# if no drivers can be called, continue with exception
 			print("Failed to retrieve cpuTempSensor. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 			piTemp = float4tohex(piTempMax + 1)
-
+# TRY/EXCEPT needs to be added for EPS, it gets used several times in this block of code (136-295)
+#________________________________________________________________________________________
 		try:
 			EPSMCUTemp = float4tohex(self.EPS.getMCUTemp())
 			if ((EPSMCUTemp < float4tohex(EPSMCUMin)) & (EPSMCUTemp > str(80000000))) | ((EPSMCUTemp > float4tohex(EPSMCUMax)) & (EPSMCUTemp < str(80000000))):
@@ -285,12 +292,14 @@ class TTNCData:
 
 		#print("packet type: " + packetType + "\ntimestamp: "+ timestamp + "\nmode: " + mode + "\nreboot count: " + reboot_count + "\nboombox uv: " + boombox_uv + "\nSPXPlusTemp " + SP_X_Plus_Temp + "\nSPZPlusTemp " + SP_Z_Plus_Temp + "\npitemp " + piTemp + "\nEPSMCUTemp " + EPSMCUTemp + "\nCell1Temp " + Cell1Temp + "\nCell2Temp " + Cell2Temp + "\nBattVoltage " + BattVoltage + "\nBattCurrent: " + BattCurrent + "\nBCRVoltage " + BCRVoltage + "\nBCRCurrent " + BCRCurrent + "\nE3V3Current " + EPS3V3Current + "\nEPS5VCurrent " + EPS5VCurrent + "\nSPXV " + SP_X_Voltage + "\nSPXPlusCurr " + SP_X_Plus_Current + "\nSPXMinusCurr " + SP_X_Minus_Current + "\nSPYV " + SP_Y_Voltage + "\nSPYPlusCurr " + SP_Y_Plus_Current + "\n SPYMinCurr " + SP_Y_Minus_Current + "\nSPZV " + SP_Z_Voltage + "\nSPZPlusCurr " + SP_Z_Plus_Current)
 		packet += gaspacsBytes + packetType + timestamp + mode + reboot_count + boombox_uv + SP_X_Plus_Temp + SP_Z_Plus_Temp + piTemp + EPSMCUTemp + Cell1Temp + Cell2Temp + BattVoltage + BattCurrent + BCRVoltage + BCRCurrent + EPS3V3Current + EPS5VCurrent + SP_X_Voltage + SP_X_Plus_Current + SP_X_Minus_Current + SP_Y_Voltage + SP_Y_Plus_Current + SP_Y_Minus_Current + SP_Z_Voltage + SP_Z_Plus_Current + gaspacsBytes
-		
+#___________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________		
 		try:
 			if (self.RTC.readSeconds() < RTCMin) | (self.RTC.readSeconds() > RTCMax):
 				raise unexpectedValue
 			packetTimestamp = str(int(self.RTC.readSeconds())).zfill(10)+':'
 		except Exception as e:
+			# add redundant RTC's TRY/EXCEPT
+			# if no drivers can be called, continue with exception
 			print("Failed to pull from RTC. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 
@@ -299,7 +308,7 @@ class TTNCData:
 
 	async def writeData(self):
 		#writes TTNC data array to file
-		await self.__save.writeTTNC(self.__ttncData)
+		await self.__save.writeTTNC(self.__ttncData) # filechecker?
 
 	async def collectTTNCData(self, mMode):
 		# Data collection loop
@@ -308,7 +317,7 @@ class TTNCData:
 			await self.getData(mMode)
 			# Write data to file
 			print("getting TTNC data")
-			await self.writeData()
+			await self.writeData() # filechecker?
 			# Sleep for 120 seconds (0.0083 Hz)
 			await asyncio.sleep(120)
 
@@ -316,7 +325,7 @@ class DeployData():
 	def __init__(self, saveobject):
 		self.__save = saveobject
 		self.RTC = Drivers.rtc.RTC()
-		self.UVDriver = Drivers.UV.UVDriver()
+		self.UVDriver = Drivers.UV.UVDriver() #may need to rework this if reduntant drivers are added
 		self.__deployData = None
 		self.Accelerometer = Drivers.Accelerometer()
 
@@ -329,6 +338,8 @@ class DeployData():
 			if (timestamp < int8tohex(RTCMinMil)) | (timestamp > int8tohex(RTCMaxMil)):
 				raise unexpectedValue
 		except Exception as e:
+			# Add reduntant RTC try/except
+			# if no RTC iterations can be called, continue with exception
 			print("Failed to pull clock data from RTC. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 
@@ -339,6 +350,8 @@ class DeployData():
 			if (boombox_uv < float4tohex(boombox_uvMin)) | (boombox_uv > float4tohex(boombox_uvMax)):
 				raise unexpectedValue
 		except Exception as e:
+			# add redundant UVDriver try/except
+			# if no UVDrivers work, continue with exception
 			print("Failed to pull UVdriver data. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 			boombox_uv = float4tohex(boombox_uvMax + 1)
@@ -349,6 +362,8 @@ class DeployData():
 		(accelZ < accelMin) | (accelZ > accelMax)):
 				raise unexpectedValue
 		except Exception as e:
+			# add redundant UVDriver try/except
+			# if no UVDrivers work, continue with exception
 			print("Failed to pull Accelerometer. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 			accelX, accelY, accelZ = accelMax + 1, accelMax + 1, accelMax + 1
@@ -364,6 +379,8 @@ class DeployData():
 				raise unexpectedValue
 			packetTimestamp = str(int(self.RTC.readSeconds())).zfill(10)+':'
 		except Exception as e:
+			# add redundant RTC try/except
+			# if no RTC iterations work, continue with exception
 			print("Failed to pull clock data from RTC. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 
@@ -372,7 +389,7 @@ class DeployData():
 
 	async def writeData(self):
 		#writes Boom Deployment data array to file
-		await self.__save.writeDeploy(self.__deployData)
+		await self.__save.writeDeploy(self.__deployData) # filechecker?
 
 	async def collectDeployData(self):
 		# Data collection loop
@@ -380,7 +397,7 @@ class DeployData():
 			# Get Deploy data
 			await self.getData()
 			# Write data to file
-			await self.writeData()
+			await self.writeData() # filechecker?
 			print("getting deployment data")
 			# Sleep for 50 ms (20Hz)
 			await asyncio.sleep(0.05)
@@ -388,7 +405,7 @@ class DeployData():
 class AttitudeData():
 	def __init__(self, saveobject):
 		self.save = saveobject
-		self.RTC = Drivers.rtc.RTC()
+		self.RTC = Drivers.rtc.RTC() # may need rework with redundant drivers
 		self.__attitudeData = None
 		self.sunSensor = Drivers.sunSensors.sunSensorDriver.sunSensor()
 		self.Magnetometer = Drivers.Magnetometer()
@@ -402,13 +419,15 @@ class AttitudeData():
 				raise unexpectedValue
 			timestamp = int4tohex(self.RTC.readSeconds())
 		except Exception as e:
+			# redundant RTC try/except
+			# if no RTC works, continue with exception
 			print("Failed to retrieve RTC data. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 
 		packetType = int1tohex(0)
 
 		try:
-			allSunSensors = self.sunSensor.read()
+			allSunSensors = self.sunSensor.read() 
 			sunSensor1, sunSensor2, sunSensor3, sunSensor4, sunSensor5 = [allSunSensors[i] for i in range(5)]
 
 			if(sunSensor1 < sunSensorMin) | (sunSensor1 > sunSensorMax):
@@ -426,6 +445,7 @@ class AttitudeData():
 			if(sunSensor5 < sunSensorMin) | (sunSensor5 > sunSensorMax):
 				raise unexpectedValue
 		except Exception as e:
+			# redundant sunSensor try/except, if none work, continue with exception
 			print("Failed to pull data from sunSensor. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 			sunSensor1 = sunSensorMax + 1
@@ -446,6 +466,7 @@ class AttitudeData():
 			(mag3 < magnetometerMin) | (mag3 > magnetometerMax)):
 			    raise unexpectedValue
 		except Exception as e:
+			# redundant Magnetometers try/except
 			print("Magnetometer values:", mag1, mag2, mag3, "Max and min", magnetometerMax, magnetometerMin)
 			print("Failed to pull from Magnetometer. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
@@ -463,6 +484,7 @@ class AttitudeData():
 				raise unexpectedValue
 			packetTimestamp = str(int(self.RTC.readSeconds())).zfill(10)+':'
 		except Exception as e:
+			# redundant rtc try/except
 			print("Failed to pull clock data from RTC. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 		
@@ -471,15 +493,15 @@ class AttitudeData():
 
 	async def writeData(self):
 		#writes Attitude Data array to file
-		await self.save.writeAttitude(self.__attitudeData)
+		await self.save.writeAttitude(self.__attitudeData) # filechecker?
 
 	async def collectAttitudeData(self):
 		# Data collection loop
 		while True:
 			# Get Attitude data
-			await self.getData()
+			await self.getData() # filechecker?
 			# Write data to file
-			await self.writeData()
+			await self.writeData() # filechecker?
 			print("getting attitude data")
 			# Sleep for 1 second (1 Hz)
 			await asyncio.sleep(1)
