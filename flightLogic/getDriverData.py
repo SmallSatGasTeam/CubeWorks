@@ -31,7 +31,7 @@ BattVoltageMax = 4.12
 BattCurrentMin = 0.0
 BattCurrentMax = 9.0
 BCRVoltageMin = 4.08
-BCRVoltageMax = 4.12
+BCRVoltageMax = 5.1
 BCRCurrentMin = .215
 BCRCurrentMax = .875
 SP_VoltageMin = 0.0
@@ -154,6 +154,7 @@ class TTNCData:
 			Cell2Temp = float4tohex(Cell2TempMax + 1)
 
 		try:
+			print("BattVoltage: ", self.EPS.getBusVoltage())
 			BattVoltage = float4tohex(self.EPS.getBusVoltage())
 			if ((BattVoltage < float4tohex(BattVoltageMin)) & (BattVoltage > str(80000000))) | ((BattVoltage > float4tohex(BattVoltageMax)) & (BattVoltage < str(80000000))):
 				raise unexpectedValue
