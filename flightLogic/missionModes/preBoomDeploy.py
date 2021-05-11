@@ -118,8 +118,8 @@ class preBoomMode:
 		while True: #Checking the battery voltage to see if it's ready for deployment, if it is too low for too long --> SAFE
 			try:
 				BusVoltage = eps.getBusVoltage()
-				print(BusVoltage)
-				print(self.thresholdVoltage)
+				print("This is the BusVoltage:" + BusVoltage)
+				print("This is the threshold" + self.thresholdVoltage)
 				if(BusVoltage < getBusVoltageMin) | (BusVoltage > getBusVoltageMax):
 					raise unexpectedValue
 			except Exception as e:
