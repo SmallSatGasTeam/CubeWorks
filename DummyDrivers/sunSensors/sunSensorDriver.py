@@ -37,10 +37,8 @@ class sunSensor(Driver):
             v[4] = v[3] = v[2] = v[1] = v[0]
         elif (getTime % interval) > switch:
             v[4] = v[3] = v[2] = v[1] = v[0] = 3.3
-        elif ((getTime % interval) < switch) & ((getTime % interval) > 20):
+        elif ((getTime % interval) < switch) & ((getTime % interval) >= 20) & ((getTime % interval) < 60):
             v[4] = v[3] = v[2] = v[1] = v[0] = 3.3
-        elif ((getTime % interval) < switch) & ((getTime % interval) > 60):
-            v[4] = v[3] = v[2] = v[1] = v[0] = 0.0
         elif (getTime % interval) < switch:
             v[4] = v[3] = v[2] = v[1] = v[0] = 0.0
 
