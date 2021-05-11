@@ -121,7 +121,6 @@ class preBoomMode:
 				if(BusVoltage < getBusVoltageMin) | (BusVoltage > getBusVoltageMax):
 					raise unexpectedValue
 			except Exception as e:
-				print("IT FAILED WE ARE IN EXCEPT NOW")
 				BusVoltage = 4.18
 				print("Failed to retrieve BusVoltage, got", BusVoltage, "instead. Received error: ", 
 				repr(e), getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
