@@ -17,3 +17,4 @@ be repoerted.
     Lines 8-9 & 92-95
     Testing is kind of the worst if we're relying on having to turn the lights
     off and on in the lab so adding this in makes testing more streamlined and repeatable.
+    THIS MUST BE REMOVED BEFORE PUSHING TO MASTER
