@@ -86,6 +86,7 @@ class TTNCData:
 		try:
 			if (self.RTC.readSeconds() < RTCMin) | (self.RTC.readSeconds() > RTCMax):
 				timestamp = int4tohex(self.RTC.readSeconds())
+				print("Time stamp:", timestamp)
 		except Exception as e:
 			print("Failure to create timestamp. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)				
@@ -290,7 +291,7 @@ class TTNCData:
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 			SP_Z_Plus_Current = float4tohex(SP_Plus_CurrentMax + 1)
 
-		#print("packet type: " + packetType + "\ntimestamp: "+ timestamp + "\nmode: " + mode + "\nreboot count: " + reboot_count + "\nboombox uv: " + boombox_uv + "\nSPXPlusTemp " + SP_X_Plus_Temp + "\nSPZPlusTemp " + SP_Z_Plus_Temp + "\npitemp " + piTemp + "\nEPSMCUTemp " + EPSMCUTemp + "\nCell1Temp " + Cell1Temp + "\nCell2Temp " + Cell2Temp + "\nBattVoltage " + BattVoltage + "\nBattCurrent: " + BattCurrent + "\nBCRVoltage " + BCRVoltage + "\nBCRCurrent " + BCRCurrent + "\nE3V3Current " + EPS3V3Current + "\nEPS5VCurrent " + EPS5VCurrent + "\nSPXV " + SP_X_Voltage + "\nSPXPlusCurr " + SP_X_Plus_Current + "\nSPXMinusCurr " + SP_X_Minus_Current + "\nSPYV " + SP_Y_Voltage + "\nSPYPlusCurr " + SP_Y_Plus_Current + "\n SPYMinCurr " + SP_Y_Minus_Current + "\nSPZV " + SP_Z_Voltage + "\nSPZPlusCurr " + SP_Z_Plus_Current)
+		print("packet type: " + packetType + "\ntimestamp: "+ timestamp + "\nmode: " + mode + "\nreboot count: " + reboot_count + "\nboombox uv: " + boombox_uv + "\nSPXPlusTemp " + SP_X_Plus_Temp + "\nSPZPlusTemp " + SP_Z_Plus_Temp + "\npitemp " + piTemp + "\nEPSMCUTemp " + EPSMCUTemp + "\nCell1Temp " + Cell1Temp + "\nCell2Temp " + Cell2Temp + "\nBattVoltage " + BattVoltage + "\nBattCurrent: " + BattCurrent + "\nBCRVoltage " + BCRVoltage + "\nBCRCurrent " + BCRCurrent + "\nE3V3Current " + EPS3V3Current + "\nEPS5VCurrent " + EPS5VCurrent + "\nSPXV " + SP_X_Voltage + "\nSPXPlusCurr " + SP_X_Plus_Current + "\nSPXMinusCurr " + SP_X_Minus_Current + "\nSPYV " + SP_Y_Voltage + "\nSPYPlusCurr " + SP_Y_Plus_Current + "\n SPYMinCurr " + SP_Y_Minus_Current + "\nSPZV " + SP_Z_Voltage + "\nSPZPlusCurr " + SP_Z_Plus_Current)
 		packet += gaspacsBytes + packetType + timestamp + mode + reboot_count + boombox_uv + SP_X_Plus_Temp + SP_Z_Plus_Temp + piTemp + EPSMCUTemp + Cell1Temp + Cell2Temp + BattVoltage + BattCurrent + BCRVoltage + BCRCurrent + EPS3V3Current + EPS5VCurrent + SP_X_Voltage + SP_X_Plus_Current + SP_X_Minus_Current + SP_Y_Voltage + SP_Y_Plus_Current + SP_Y_Minus_Current + SP_Z_Voltage + SP_Z_Plus_Current + gaspacsBytes
 #___________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________		
 		try:
@@ -467,10 +468,10 @@ class AttitudeData():
 			    raise unexpectedValue
 		except Exception as e:
 			# redundant Magnetometers try/except
+			mag1, mag2, mag3 = magnetometerMax + 1, magnetometerMax + 1, magnetometerMax + 1
 			print("Magnetometer values:", mag1, mag2, mag3, "Max and min", magnetometerMax, magnetometerMin)
 			print("Failed to pull from Magnetometer. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
-			mag1, mag2, mag3 = magnetometerMax + 1, magnetometerMax + 1, magnetometerMax + 1
 			
 		mag1 = float4tohex(mag1)
 		mag2 = float4tohex(mag2)
@@ -499,9 +500,9 @@ class AttitudeData():
 		# Data collection loop
 		while True:
 			# Get Attitude data
-			await self.getData() # filechecker?
+			await self.getData()
 			# Write data to file
-			await self.writeData() # filechecker?
+			await self.writeData()
 			print("getting attitude data")
 			# Sleep for 1 second (1 Hz)
 			await asyncio.sleep(1)
