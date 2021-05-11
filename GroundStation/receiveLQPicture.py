@@ -6,6 +6,7 @@ sys.path.append('../')
 import struct
 from binascii import hexlify
 import time
+from protectionProticol.fileProtection import FileReset
 
 """
 This file sets up the interrupt process. Every five seconds, the buffer of the serial port at /dev/serial0 is read.
@@ -13,6 +14,9 @@ Content is split up into AX.25 Packets, and Command Packets. The data is passed 
 TODO: Implement AX.25 digipeating, probably in packetProcessing.py
 To defray the possibility of half a packet being in the buffer, any half-packets are stored and evaluated the next time around
 """
+
+fileChecker = FileReset()
+
 async def interrupt():
 	serialport = serial.Serial('/dev/serial0', 115200) #Open serial port. Currently /dev/serial0, might change to the PL011 port for flight article as it is currently using Mini-UART
 	leftovers = '' #Stores any half-packets for evaluation the next loop
@@ -22,6 +26,7 @@ async def interrupt():
 	folderPath = 'Pictures/Low_Quality/' + currtime
 	os.makedirs(folderPath)
 	filePath = folderPath + '/LQpictureData_' + currtime + '.bin'
+	fileChecker.checkFile(filePath)
 	dataFile = open(os.path.join(os.path.dirname(__file__), filePath), 'wb')
 	counter = 0
 
@@ -40,6 +45,7 @@ async def interrupt():
 	#look through datafile for first occurence of 5566
 	byteSequence = '5566'
 	dataFile.close()
+	fileChecker.checkFile(filePath)
 	dataFile = open(os.path.join(os.path.dirname(__file__), filePath), 'rb')
 	dataFile.seek(0)
 	data = str(hexlify(dataFile.read()))[2:-1]
@@ -47,6 +53,7 @@ async def interrupt():
 	print('First picture packet is at index ' + str(packetStart))
 	data = data[packetStart:]
 	dataFile.close()
+	fileChecker.checkFile(filePath)
 	dataFile = open(os.path.join(os.path.dirname(__file__), filePath), 'wb')
 	dataFile.write(bytearray.fromhex(data))
 
