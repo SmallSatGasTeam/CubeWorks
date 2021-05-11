@@ -173,6 +173,7 @@ class TTNCData:
 			BattCurrent = float4tohex(BattCurrentMax + 1)
 
 		try:
+			print("getDriverData: ", self.EPS.getBCRVoltage)
 			BCRVoltage = float4tohex(self.EPS.getBCRVoltage())
 			if ((BCRVoltage < float4tohex(BCRVoltageMin)) & (BCRVoltage > str(80000000))) | ((BCRVoltage > float4tohex(BCRVoltageMax)) & (BCRVoltage < str(80000000))):
 				raise unexpectedValue
