@@ -32,7 +32,12 @@ class boomMode:
 		deployer = boomDeployer.BoomDeployer()
 		cam = Camera()
 		await deployer.deploy() #From LOGAN: Deployer.deploy is now an asyncio method, run it like the others
-		cam.takePicture()
+		
+		try:
+			cam.takePicture()
+		except Exception as e:
+			print("Failed to take a picture because we received excpetion:", repr(e))
+			
 		await asyncio.sleep(5)
 		self.cancelAllTasks(self.__tasks) # Cancel all background tasks
 		return True  # Go to post-boom deploy
