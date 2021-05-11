@@ -5,6 +5,7 @@ import os
 sys.path.append('../')
 import struct
 import time
+from protectionProticol.fileProtection import FileReset
 
 """
 This file sets up the interrupt process. Every five seconds, the buffer of the serial port at /dev/serial0 is read.
@@ -12,6 +13,9 @@ Content is split up into AX.25 Packets, and Command Packets. The data is passed 
 TODO: Implement AX.25 digipeating, probably in packetProcessing.py
 To defray the possibility of half a packet being in the buffer, any half-packets are stored and evaluated the next time around
 """
+
+fileChecker = FileReset()
+
 async def interrupt():
 	serialport = serial.Serial('/dev/serial0', 115200) #Open serial port. Currently /dev/serial0, might change to the PL011 port for flight article as it is currently using Mini-UART
 	leftovers = '' #Stores any half-packets for evaluation the next loop
