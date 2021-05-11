@@ -27,7 +27,7 @@ class sunSensor(Driver):
         self.voltageList = [0, 0, 0, 0, 0]
         getTime = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds())
         #Sun length is the amount of time the satellite will be in the sun
-        sunLength = 1.1
+        sunLength = 1.5
 
         interval = sunLength*60
         switch = 20
