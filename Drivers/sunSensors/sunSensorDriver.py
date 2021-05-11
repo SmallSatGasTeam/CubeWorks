@@ -24,7 +24,7 @@ class sunSensor(Driver):
             #self.voltageList.append(self.adc.read(self.adcChannel[i]))
             
             value = self.adc.read(self.adcChannel[i])
-            print(value)
+            #print(value)
             self.voltageList.append(value)
             #sleep(.1)
         return self.voltageList
