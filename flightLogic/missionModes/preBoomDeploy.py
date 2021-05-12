@@ -22,6 +22,7 @@ DEBUG = False
 
 class preBoomMode:
 	def __init__(self, saveObject, safeModeObject):
+		print("########################Starting preBoomMode")
 		self.thresholdVoltage = 3.5 #Threshold voltage to deploy AeroBoom.
 		self.criticalVoltage = 3.1 #Critical voltage, below this go to SAFE
 		self.darkVoltage = .1 #Average voltage from sunsors that, if below this, indicates GASPACS is in darkness
