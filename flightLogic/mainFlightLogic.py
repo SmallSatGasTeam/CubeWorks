@@ -28,8 +28,9 @@ from TXISR import pythonInterrupt
 # NOTE: Each mission mode calls safe if it is necessary
 # NOTE: DO NOTE record safe mode in the bootRecords file
 ##################################################################################################################
-
+print("BEFORE FILECHCKER")
 fileChecker = FileReset()
+print("AFTER FILECHECKER")
 
 def __main__():
 	asyncio.run(executeFlightLogic())
