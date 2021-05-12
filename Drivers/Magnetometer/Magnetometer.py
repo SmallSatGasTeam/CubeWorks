@@ -25,7 +25,7 @@ class Magnetometer(Driver):
   def read(self) :
     #Set up link to magnetometer
     #for LSM303AGR
-    #mag = adafruit_lis2mdl.LIS2MDL(self.i2c)
+    mag = adafruit_lis2mdl.LIS2MDL(self.i2c)
     #for LSM303DLH
-    mag = adafruit_lsm303dlh_mag.LSM303DLH_Mag(self.i2c)
+    #mag = adafruit_lsm303dlh_mag.LSM303DLH_Mag(self.i2c)
     return mag.magnetic
