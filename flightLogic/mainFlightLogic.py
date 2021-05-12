@@ -202,8 +202,7 @@ def readData():
 	recordData(bootCount, antennaDeployed, lastMode)
 	return bootCount, antennaDeployed, lastMode
 
-if __name__ == '__main__':
-    main()
+main()
 
 # def startTXISR(saveobject):  # Setup for TXISR
 # This sets up the interupt on the uart pin that triggers when we get commincation over uart
