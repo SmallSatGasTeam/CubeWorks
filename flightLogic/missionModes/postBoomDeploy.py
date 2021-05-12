@@ -20,7 +20,6 @@ REBOOT_WAIT_TIME = 900 #15 minutes, 900 seconds
 class postBoomMode:
 
 	def __init__(self, saveObject, safeModeObject):
-		print("##################Starting postBoomMode")
 		self.__getTTNCData = TTNCData(saveObject)
 		self.__getAttitudeData =  AttitudeData(saveObject)
 		self.__tasks = [] # List will be populated with all background tasks
