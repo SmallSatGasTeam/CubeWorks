@@ -28,9 +28,7 @@ from TXISR import pythonInterrupt
 # NOTE: Each mission mode calls safe if it is necessary
 # NOTE: DO NOTE record safe mode in the bootRecords file
 ##################################################################################################################
-print("BEFORE FILECHCKER")
 fileChecker = FileReset()
-print("AFTER FILECHECKER")
 
 def __main__():
 	asyncio.run(executeFlightLogic())
@@ -41,12 +39,9 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	delay = 1*60  # 35 minute delay
 	boot = True
 	saveObject = saveTofiles.save()
-	print("########### 1111111")
 	# startTXISR(save)
 	ttncData = getDriverData.TTNCData(saveObject)
-	print("############## 22222222222")
 	attitudeData = getDriverData.AttitudeData(saveObject)
-	print("@############### 33333333")
 	safeModeObject = safe.safe(saveObject)
 
 	print('Starting data collection') #Setting up Background tasks for BOOT mode
