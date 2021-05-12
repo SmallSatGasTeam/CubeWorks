@@ -14,7 +14,7 @@ import adafruit_lsm303_accel
 
 class Accelerometer(Driver):
   # Set up I2C link
-  i2c = busio.I2C(board.SCL, board.SDA)
+  # i2c = busio.I2C(board.SCL, board.SDA)
 
   def __init__(self):
     super().__init__("Accelerometer")
