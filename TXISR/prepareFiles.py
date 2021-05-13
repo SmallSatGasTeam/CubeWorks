@@ -17,30 +17,30 @@ Then, each line consists of a 10-letter string with the timestamp or index of th
 def prepareData(duration, dataType, startFromBeginning):
 	if (dataType == 0): #Attitude Data
 		packetLength = 37 + 14 #Packet length in bytes plus the 7 GASPACS bytes on each end
-		fileChecker.checkFile('home/pi/testingStartup/flightLogicData/Attitude_Data.txt')
-		dataFilePath = ('home/pi/testingStartup/flightLogicData/Attitude_Data.txt') #Set data file path to respective file
+		fileChecker.checkFile('/home/pi/testingStartup/flightLogicData/Attitude_Data.txt')
+		dataFilePath = ('/home/pi/testingStartup/flightLogicData/Attitude_Data.txt') #Set data file path to respective file
 		print("Attitude Data selected")
 	elif (dataType == 1): #TTNC Data
 		packetLength = 92 + 14 #Packet length in bytes plus the 7 GASPACS bytes on each end
-		fileChecker.checkFile('home/pi/testingStartup/flightLogicData/TTNC_Data.txt')
-		dataFilePath = ('home/pi/testingStartup/flightLogicData/TTNC_Data.txt') #Set data file path to respective file		
+		fileChecker.checkFile('/home/pi/testingStartup/flightLogicData/TTNC_Data.txt')
+		dataFilePath = ('/home/pi/testingStartup/flightLogicData/TTNC_Data.txt') #Set data file path to respective file		
 		print("TTNC Data selected")
 	else: #Deploy Data
 		packetLength = 25 + 14 #Packet length in bytes plus the 7 GASPACS bytes on each end
-		fileChecker.checkFile('home/pi/testingStartup/flightLogicData/Deploy_Data.txt')
-		dataFilePath = ('home/pi/testingStartup/flightLogicData/Deploy_Data.txt') #Set data file path to respective file		
+		fileChecker.checkFile('/home/pi/testingStartup/flightLogicData/Deploy_Data.txt')
+		dataFilePath = ('/home/pi/testingStartup/flightLogicData/Deploy_Data.txt') #Set data file path to respective file		
 		print("Deploy Data selected")
 	minFileSize = packetLength*2+12 #Minimum characters in file
 
 	packetTime = 120 + packetLength*8/9600 #Transmission time for 1 packet of size packetLength
 	numPackets = ceil(duration*1000/packetTime) + 15 #For safety, 15 extra packets compared to the number that will likely be transmitted
 
-	transmissionFilePath = ('home/pi/testingStartup/TXISR/data/txFile.txt') #File path to txFile. This is where data will be stored
+	transmissionFilePath = ('/home/pi/testingStartup/TXISR/data/txFile.txt') #File path to txFile. This is where data will be stored
 	fileChecker.checkFile(transmissionFilePath)	
 	txDataFile = open(transmissionFilePath, 'w') #Create and open TX File
 	txDataFile.write(str(duration*1000) + '\n') #Write first line to txData. Duration of window in milliseconds
 
-	progressFilePath = ('home/pi/testingStartup/TXISRData/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
+	progressFilePath = ('/home/pi/testingStartup/TXISRData/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
 	fileChecker.checkFile(transmissionFilePath)	
 	progressFile = open(progressFilePath, 'r+') #Opens progress file as read only
 	progressList = progressFile.read().splitlines()
@@ -105,11 +105,11 @@ def preparePicture(duration, dataType, pictureNumber, startFromBeginning):
 	if dataType == 3: #HQ Picture
 		cam = Camera()
 		cam.compressHighResToFiles(pictureNumber)
-		dataFilePath = os.path.join(os.path.dirname(__file__), 'home/pi/testingStartup/Pictures/'+str(pictureNumber)+'/HighRes/HighResOriginal'+str(pictureNumber)+'.bin')
+		dataFilePath = os.path.join(os.path.dirname(__file__), '/home/pi/testingStartup/Pictures/'+str(pictureNumber)+'/HighRes/HighResOriginal'+str(pictureNumber)+'.bin')
 	else: #LQ picture
 		cam = Camera()
 		cam.compressLowResToFiles(pictureNumber)
-		dataFilePath = os.path.join(os.path.dirname(__file__), 'home/pi/testingStartup/Pictures/'+str(pictureNumber)+'/LowRes/LowResOriginal'+str(pictureNumber)+'.bin')
+		dataFilePath = os.path.join(os.path.dirname(__file__), '/home/pi/testingStartup/Pictures/'+str(pictureNumber)+'/LowRes/LowResOriginal'+str(pictureNumber)+'.bin')
 
 	numPackets = ceil(duration*1000/(120 + 128*8/9600)) + 15 #How many picture packets can we transmit in the window? + 15 for safety
 
