@@ -107,7 +107,7 @@ void main(int argc,char* argv[])
     FILE *recordFile;
     printf(FLAG_FILE"\n");
     system("pwd");
-    if (!(recordFile = fopen(FLAG_FILE, "r+")))
+    if (!(recordFile = fopen(FLAG_FILE, "w+")))
     {
         //if we fail exit
         DEBUG_P(Failed to open the flags file)
