@@ -11,7 +11,7 @@ class FileReset():
         # List of file paths
         self.__FILE_PATHS = [ 
             "../../TXISRData/flagsFile.txt" , 
-            "../../TXISRData/txFile.txt" , 
+            "../TXISR/data/txFile.txt" , 
             "../../TXISRData/txWindows.txt" , 
             "../../TXISRData/transmissionFlag.txt" , 
             "../../TXISRData/AX25Flag.txt",
