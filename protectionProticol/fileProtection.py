@@ -96,8 +96,12 @@ class FileReset():
     def dirProtection(self):  
         count = 0
         # Find the directory path
+        # i = len(self.__filePath)
+        # while(self.__filePath[i] != "/"):
+        #     count += 1
+        #     i -= 1
         for i in range(len(self.__filePath)):
-            if self.__filePath[-i] == "/":
+            if self.__filePath[-i-1] == "/":
                 print("Filepath character, count:", self.__filePath[-i - 1], count)
                 break
             count += 1
