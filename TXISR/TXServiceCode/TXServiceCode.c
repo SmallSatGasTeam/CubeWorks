@@ -72,6 +72,7 @@ intmax_t millis()
  *******************************************************************************************/
 void main(int argc,char* argv[])
 {
+    DEBUG_P(Began main)
     /////TODO/////
     /*
     *debug the time check on transmissionWindow 
@@ -84,11 +85,16 @@ void main(int argc,char* argv[])
     intmax_t currentTime = millis();
     intmax_t startTimeTX = 0;
     intmax_t currentTimeTX = 0;
+    DEBUG_P(Made it past all of these variable instantiations)
     //gather user input
-    int dataType = changeCharToInt(*argv[1]);
+    int dataType;
+    if(argc == 2)
+        dataType = changeCharToInt(*argv[1]);
+    else dataType = changeCharToInt(-7);
+    DEBUG_P(Made it past the problem spot)
     int transmissionWindow = 0;
     char sendingData[(MAX_NUM_OF_DATA_TYPES / 2)] = {0}; 
-    
+
 
     FILE *txFile;
     if (!(txFile = fopen(FORMAT_FILE,"r")))
@@ -208,7 +214,7 @@ void main(int argc,char* argv[])
             }
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
-            if(end && ch != TIME_DEVISOR && ch != 10) 
+            if(end && (ch != TIME_DEVISOR) && (ch != 10)) 
             {
                 line[charCount++] = convertCharToHex(fgetc(txFile), ch);
                 //PRINT_DEBUG_c(ch)
@@ -241,11 +247,15 @@ void main(int argc,char* argv[])
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
-            flags[dataType] = atoi(timeStamp);
+            if(!(dataType == -7)){
+                flags[dataType] = atoi(timeStamp);
+            }
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence.
             //this stores the last sent data time
-            flags[dataType] = atoi(timeStamp);
+            if(!(dataType == -7)){
+                flags[dataType] = atoi(timeStamp);
+            }
             //PRINT_LONG(flags[dataType])
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence. 
@@ -368,7 +378,7 @@ int changeCharToInt(char a)
             {
                 DEBUG_P(invaild data type)
                 PRINT_DEBUG_c(a)
-                return '\n';
+                return -7;
             }
     }
 }
@@ -384,6 +394,9 @@ char convertCharToHex (char lowByte, char highByte)
     char low = changeCharToInt(lowByte);
     char high = changeCharToInt(highByte);
     //shift high and add it to low.
-    char new = low + (high << 4);
+    char new = -7;
+    if(!((low == -7) || (high == -7))) {
+        char new = low + (high << 4);
+    }
     return new;
 }
