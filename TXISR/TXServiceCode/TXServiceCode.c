@@ -97,7 +97,8 @@ void main(int argc,char* argv[])
 
 
     FILE *txFile;
-    if (!(txFile = fopen(FORMAT_FILE,"r")))
+    txFile = fopen(FORMAT_FILE, "R");
+    if (txFile == NULL)
     {
         //if we fail exit
         DEBUG_P(Failed to open file)
@@ -106,8 +107,8 @@ void main(int argc,char* argv[])
 
     FILE *recordFile;
     printf(FLAG_FILE"\n");
-    system("pwd");
-    if (!(recordFile = fopen(FLAG_FILE, "w+")))
+    recordFile = fopen(FLAG_FILE, "r+");
+    if (recordFile == NULL)
     {
         //if we fail exit
         DEBUG_P(Failed to open the flags file)
