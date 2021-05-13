@@ -7,12 +7,13 @@ const int MOSFET = 10;
 const int LED = 13;
 
 //Time that the watchdog will wait without input from Pi before shutting off (in milliseconds)
-const long PI_CHECK_TIME = 5000;
+const long PI_CHECK_TIME = 20000;
 
 //Custom delay times (in milliseconds)
 const long DELAY1 = 60000;
 const long DELAY2 = 120000;
 const long DELAY3 = 180000;
+const long tweetyfour_HOUR_REBOOT = /*15000;//testing value */86400000;
 
 long customBootDelay;
 
@@ -20,7 +21,10 @@ bool bootInProgress = false;
 bool customBootInProgress = false;
 
 //Standard Boot delay time
-const long BOOT_DELAY_TIME = 60000; //120000;
+const long BOOT_DELAY_TIME = 120000;
+
+//Time the watchdog keeps the pi off
+const long PI_OFF_TIME = 5000;
 
 //Event that triggers on an I2C write
 void receiveEvent(int howMany){
@@ -43,16 +47,20 @@ void receiveEvent(int howMany){
         break;
 
        //I added this in case we need to dealy for an hour, 6 hours, 12 hours, or even a day. This are last resort times in case of safe mode. 
+       
        case 10: 
        case 60: 
        case 120: 
        case 240:
-        customBootDelay = (long) selection * 6000 * 60 * 60;
+       /*
+       default:
+        customBootDelay = (long) abs(selection) * 6000 * 60 * 60;
         customBootInProgress = true;
         break;
-        
+      */
       default:
         break;
+      
     }
   }
 }
@@ -65,18 +73,23 @@ void wait(long delayTime){
     wdt_enable(WDTO_8S);
     timer = millis();
 
-    digitalWrite(LED, HIGH);
+    //digitalWrite(LED, HIGH);
     Serial.print("Timer start: ");
     Serial.print(timer_start);
     Serial.print("\t\tTimer: ");
     Serial.print(timer);
     Serial.print("\t\tdelay time: ");
     Serial.println(delayTime);
-    digitalWrite(LED, LOW);
+    //digitalWrite(LED, LOW);
     
     //check for overflow
     if(timer_start > timer + 10){
       Serial.println("Int overflow tripped, resetting timers");
+
+      //Experimental code, needs testing 
+      delayTime -= (2147483647 - timer_start); //length of a long minus the timer start. Gives the time we already waited and subtracts that from the delay variable 
+      
+      
       timer_start = millis();
       timer = millis();
     }
@@ -86,16 +99,20 @@ void wait(long delayTime){
 //Function returns true if there has been no response from the Pi in PI_CHECK_TIME milliseconds
 bool isPiDead(){
   bool exitLoop = false;
+
   int piState = digitalRead(HEARTBEAT);
   long check_timer_start = millis();
   delay(100);
   long check_timer = millis();
   while(exitLoop == false) {
+    
+    wdt_enable(WDTO_8S);
+    
     check_timer = millis();
-    Serial.print("Check timer start: ");
-    Serial.print(check_timer_start);
-    Serial.print("\t\tCheck timer: ");
-    Serial.println(check_timer);
+    //Serial.print("Check timer start: ");
+    //Serial.print(check_timer_start);
+    //Serial.print("\t\tCheck timer: ");
+    //Serial.println(check_timer);
 
     //check for overflow
     if(check_timer_start > check_timer){
@@ -105,15 +122,38 @@ bool isPiDead(){
     }
     
     if(piState != digitalRead(HEARTBEAT)){
+      //this will leave the loop so that we can check if it is a 24 hour reset
       exitLoop = true;
-      return false;
     }
     if(check_timer_start + PI_CHECK_TIME <= check_timer){
       exitLoop = false;
       return true;
     }
   }
-  return true;
+
+  //check if it is a 24 hour reset
+  return tweetyfour_Hour_Reboot(check_timer);
+}
+
+
+/**************************************************************
+ * this is what handelst he 24 hour reboot, it will 
+ * returns weather it is time to reboot or not
+ * this will always happen
+ *************************************************************/
+
+bool tweetyfour_Hour_Reboot(long currentSystemTime)
+{
+  Serial.println("Checking for 24 hr reboot");
+  if(currentSystemTime % tweetyfour_HOUR_REBOOT >= 0 && currentSystemTime % tweetyfour_HOUR_REBOOT <= 100 && currentSystemTime != 0)
+  {
+    Serial.println("Found a 24 hours reboot, executing order 66");
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 
@@ -132,17 +172,22 @@ void setup() {
   Wire.onReceive(receiveEvent); // Run receiveEvent code when an I2C message is received
 
   //This is a work around to make the dual booting functional. In case the Arduino is reset when the Pi rebots, the Arduino will wait for the Boot time before beginning watchdog operations
-  //delay(BOOT_DELAY_TIME)
-  for(int i = 0; i < 20; i++){
+  //delay(BOOT_DELAY_TIME);
+  
+  for(int i = 0; i < 120; i++){
     digitalWrite(LED, HIGH);
     delay(5000);
     digitalWrite(LED, LOW);
     delay(1000);
+    Serial.print("Booting...");
+    Serial.print(i*5);
+    Serial.print("%\n");
   }
+  
 }
 
 void loop() {
-  wdt_enable(WDTO_8S);
+//  wdt_enable(WDTO_8S);
   //If there is a custom boot from the I2C line
   if(customBootInProgress == true){
     //Turn of Pi
@@ -179,7 +224,7 @@ void loop() {
       //pi off
       digitalWrite(MOSFET, HIGH);
       Serial.println("Pi is off");
-      wait(200);
+      wait(PI_OFF_TIME);
       //pi on
       digitalWrite(MOSFET, LOW);
       Serial.println("Pi on");
