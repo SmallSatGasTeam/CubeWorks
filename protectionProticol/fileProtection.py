@@ -34,7 +34,7 @@ class FileReset():
             # If the file doesn't exist it creates a new one
             file = open(self.__filePath, 'w+')
             
-        if self.__filePath == "home/pi/testingStartup/flightLogicData/backupBootRecords.txt" or self.__filePath == "../../flightLogicData/bootRecords.txt" or self.__filePath == "../../bootRecords.txt":
+        if self.__filePath == "home/pi/testingStartup/flightLogicData/backupBootRecords.txt" or self.__filePath == "home/pi/testingStartup/flightLogicData/bootRecords.txt" or self.__filePath == "../../bootRecords.txt":
             file.write("0\n0\n0\n")
             file.close()
         if self.__filePath == "home/pi/testingStartup/TXISRData/flagsFile.txt" or self.__filePath == "../../flagsFile.txt":
