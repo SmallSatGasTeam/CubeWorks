@@ -111,11 +111,12 @@ void main(int argc,char* argv[])
     long flags[MAX_NUM_OF_DATA_TYPES];
     //pop the data types
     DEBUG_P(opening file)
-    //NOTE: WE HAVE TO MAKE THE FLAGS FILE RIGHT OR WE WILL GET SYSTEM FALUIR.
-    for (int i =0; i < MAX_NUM_OF_DATA_TYPES; i++)
+    //NOTE: WE HAVE TO MAKE THE FLAGS FILE RIGHT OR WE WILL GET SYSTEM FAILURE.
+    size_t lineSize;
+    for (int i =0; (i < MAX_NUM_OF_DATA_TYPES) & !(feof(recordFile)); i++)
     {
-      fscanf(recordFile, "%ld", &flags[i]);  
-      PRINT_TIME(flags[i]);
+        fscanf(recordFile, "%ld", &flags[i]);
+        PRINT_TIME(flags[i]);
     }
 
     //open the serial ports
@@ -136,9 +137,13 @@ void main(int argc,char* argv[])
     char line[MAX_BYTES_PER_LINE] = {0};
     char timeStamp[SIZE_OF_TIME_STAMP];
     //get tx time
-    fscanf(txFile, "%d", &transmissionWindow);
+    if(!feof(txFile)){
+        fscanf(txFile, "%d", &transmissionWindow);
+    }
     PRINT_DEBUG(transmissionWindow)
-    fgetc(txFile);
+    if(!feof(txFile)){
+        fgetc(txFile);
+    }
     currentTime = millis();
     
     DEBUG_P(Waiting for tx window>>>)
@@ -363,7 +368,7 @@ int changeCharToInt(char a)
             {
                 DEBUG_P(invaild data type)
                 PRINT_DEBUG_c(a)
-                exit(1);
+                return '\n';
             }
     }
 }
