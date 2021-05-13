@@ -101,6 +101,7 @@ class FileReset():
                 break
             count += 1
         dirPath = self.__filePath[:len(self.__filePath) - count]
+        print(dirPath)
         
         # Check directory
         # The dir doesnt exist recreate it
