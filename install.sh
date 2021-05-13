@@ -13,26 +13,26 @@ sudo apt install git
 
 #install the first code base
 mkdir CubeWorks0
-cd ~/CubeWorks0 ; git clone gitCodeBase
+cd ~/CubeWorks0 ; git clone $gitCodeBase
 
 #install all the required packages
-cd ; cd ~/CubeWorks0/CubeWorks ; $ echo starting requirements install; pip3 install -r requirements.txt ; cd ;
+cd ; cd ~/CubeWorks0/CubeWorks ; $ echo \n\n\n>>>starting requirements install<<<\n\n\n; pip3 install -r requirements.txt ; cd ;
 
 #create the start up code, and then move it to the root
 cd ; cd ~/CubeWorks0/CubeWorks ; $ echo creating multi-code base proticol ; gcc startup.c -o startup.exe ; cp startup.exe ~/
 
 #up date the crontab to run the startup.exe
-crontab -e ; echo crontabComand >> crontab
+crontab -e $crontabComand
 
 #install the code bases
 cd ; mkdir CubeWorks1
-cd ~/CubeWorks1 ; git clone gitCodeBase
+cd ~/CubeWorks1 ; git clone $gitCodeBase
 cd ; mkdir CubeWorks2
-cd ~/CubeWorks2 ; git clone gitCodeBase
+cd ~/CubeWorks2 ; git clone $gitCodeBase
 cd ; mkdir CubeWorks3
-cd ~/CubeWorks3 ; git clone gitCodeBase
+cd ~/CubeWorks3 ; git clone $gitCodeBase
 cd ; mkdir CubeWorks4
-cd ~/CubeWorks4 ; git clone gitCodeBase
+cd ~/CubeWorks4 ; git clone $gitCodeBase
 
-$ echo rebooting to finish installation 
+$ echo \n\n\n>>>rebooting to finish installation<<<\n\n\n 
 sudo reboot 
