@@ -90,7 +90,7 @@ void main(int argc,char* argv[])
     int dataType;
     if(argc == 2)
         dataType = changeCharToInt(*argv[1]);
-    else dataType = changeCharToInt(-7);
+    else dataType = changeCharToInt(127);
     DEBUG_P(Made it past the problem spot)
     int transmissionWindow = 0;
     char sendingData[(MAX_NUM_OF_DATA_TYPES / 2)] = {0}; 
@@ -105,7 +105,9 @@ void main(int argc,char* argv[])
     }
 
     FILE *recordFile;
-    if (!(recordFile = fopen(FLAG_FILE,"r+")))
+    printf(FLAG_FILE);
+    system("pwd");
+    if (!(recordFile = fopen(FLAG_FILE, "r+")))
     {
         //if we fail exit
         DEBUG_P(Failed to open the flags file)
@@ -247,13 +249,13 @@ void main(int argc,char* argv[])
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
-            if(!(dataType == -7)){
+            if(!(dataType == 127)){
                 flags[dataType] = atoi(timeStamp);
             }
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence.
             //this stores the last sent data time
-            if(!(dataType == -7)){
+            if(!(dataType == 127)){
                 flags[dataType] = atoi(timeStamp);
             }
             //PRINT_LONG(flags[dataType])
@@ -378,7 +380,7 @@ int changeCharToInt(char a)
             {
                 DEBUG_P(invaild data type)
                 PRINT_DEBUG_c(a)
-                return -7;
+                return 127;
             }
     }
 }
@@ -394,8 +396,8 @@ char convertCharToHex (char lowByte, char highByte)
     char low = changeCharToInt(lowByte);
     char high = changeCharToInt(highByte);
     //shift high and add it to low.
-    char new = -7;
-    if(!((low == -7) || (high == -7))) {
+    char new = 127;
+    if(!((low == 127) || (high == 127))) {
         char new = low + (high << 4);
     }
     return new;
