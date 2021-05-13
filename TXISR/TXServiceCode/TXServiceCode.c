@@ -97,7 +97,7 @@ void main(int argc,char* argv[])
 
 
     FILE *txFile;
-    txFile = fopen(FORMAT_FILE, "R");
+    txFile = fopen(FORMAT_FILE, "r");
     if (txFile == NULL)
     {
         //if we fail exit
