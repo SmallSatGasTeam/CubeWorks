@@ -98,7 +98,6 @@ class FileReset():
         # Find the directory path
         for i in range(len(self.__filePath)):
             if self.__filePath[-i-1] == "/":
-                print("Filepath character, count:", self.__filePath[-i - 1], count)
                 break
             count += 1
         dirPath = self.__filePath[:len(self.__filePath) - count]
