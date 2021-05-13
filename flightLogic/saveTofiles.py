@@ -29,7 +29,7 @@ class save:
         #check the file to make sure it is their
         fileChecker.checkFile("/home/pi/testingStartup/flightLogicData/Attitude_Data.txt")
         #open the file when the calls is instantiated
-        self.__Attitude_File = open("/home/pi/testingStartupflightLogic/Data/Attitude_Data.txt", "a+")
+        self.__Attitude_File = open("/home/pi/testingStartup/flightLogicData/Attitude_Data.txt", "a+")
 
     #write the data to the file,
     #NOTE: it is important that you put a : after the time stamp, this will
