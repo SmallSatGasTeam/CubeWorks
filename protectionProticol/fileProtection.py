@@ -10,16 +10,16 @@ class FileReset():
     def __init__(self):
         # List of file paths
         self.__FILE_PATHS = [ 
-            "../TXISR/data/flagsFile.txt" , 
+            "../../TXISRData/flagsFile.txt" , 
             "../TXISR/data/txFile.txt" , 
-            "../TXISR/data/txWindows.txt" , 
-            "../TXISR/data/transmissionFlag.txt" , 
-            "../TXISR/data/AX25Flag.txt",
-            "../flightLogic/backupBootRecords.txt" , 
-            "../flightLogic/bootRecords.txt" , 
-            "../flightLogic/data/Attitude_Data.txt" , 
-            "../flightLogic/data/Deploy_Data.txt" , 
-            "../flightLogic/data/TTNC_Data.txt" ]
+            "../../TXISRData/txWindows.txt" , 
+            "../../TXISRData/transmissionFlag.txt" , 
+            "../../TXISRData/AX25Flag.txt",
+            "../../flightLogicData/backupBootRecords.txt" , 
+            "../../flightLogicData/bootRecords.txt" , 
+            "../../flightLogicData/Attitude_Data.txt" , 
+            "../../flightLogicData/Deploy_Data.txt" , 
+            "../../flightLogicData/TTNC_Data.txt" ]
         self.__filePath = ""
         self.fullReset()
 
@@ -34,16 +34,16 @@ class FileReset():
             # If the file doesn't exist it creates a new one
             file = open(self.__filePath, 'w+')
             
-        if self.__filePath == "../flightLogic/backupBootRecords.txt" or self.__filePath == "../flightLogic/bootRecords.txt" or self.__filePath == "../bootRecords.txt":
+        if self.__filePath == "../../flightLogicData/backupBootRecords.txt" or self.__filePath == "../../flightLogicData/bootRecords.txt" or self.__filePath == "../../bootRecords.txt":
             file.write("0\n0\n0\n")
             file.close()
-        if self.__filePath == "../TXISR/data/flagsFile.txt" or self.__filePath == "../flagsFile.txt":
+        if self.__filePath == "../../TXISRData/flagsFile.txt" or self.__filePath == "../../flagsFile.txt":
             file.write("0\n0\n0\n0\n0\n")
             file.close()
-        if self.__filePath == "../TXISR/data/transmissionFlag.txt" or self.__filePath == "../transmissionFlag.txt":
+        if self.__filePath == "../../TXISRData/transmissionFlag.txt" or self.__filePath == "../../transmissionFlag.txt":
             file.write("Enabled")
             file.close()
-        if self.__filePath == "../TXISR/data/AX25Flag.txt" or self.__filePath == "../AX25Flag.txt":
+        if self.__filePath == "../../TXISRData/AX25Flag.txt" or self.__filePath == "../../AX25Flag.txt":
             file.write("Disabled")
             file.close()
         # This closes the file so it is no longer being edited

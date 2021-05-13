@@ -137,9 +137,9 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 
 
 def recordData(bootCount, antennaDeployed, lastMode):
-	fileCheck.checkFile("../flightLogic/bootRecords.txt")
+	fileCheck.checkFile("../../flightLogicData/bootRecords.txt")
 	# write to the boot file, "w" option in write overwrites the file
-	new = open("../flightLogic/bootRecords.txt", "w+")
+	new = open("../../flightLogicData/bootRecords.txt", "w+")
 	new.write(str(bootCount) + '\n')
 	if antennaDeployed:
 		new.write(str(1)+'\n')
@@ -149,8 +149,8 @@ def recordData(bootCount, antennaDeployed, lastMode):
 	new.close()
 
 	# write to the the back up file
-	fileCheck.checkFile("../flightLogic/backupBootRecords.txt")
-	new = open("../flightLogic/backupBootRecords.txt", "w+")
+	fileCheck.checkFile("../../flightLogicData/backupBootRecords.txt")
+	new = open("../../flightLogicData/backupBootRecords.txt", "w+")
 	new.write(str(bootCount) + '\n')
 	if antennaDeployed:
 		new.write(str(1)+'\n')
@@ -167,9 +167,9 @@ def readData():
 	# Line 2 = antenna deployed?
 	# Line 2 = last mission mode
 	bootCount,antennaDeployed,lastMode = None, None, None
-	fileCheck.checkFile("../flightLogic/bootRecords.txt")
+	fileCheck.checkFile("../../flightLogicData/bootRecords.txt")
 	try:
-		bootFile = open("../flightLogic/bootRecords.txt", "r")
+		bootFile = open("../../flightLogicData/bootRecords.txt", "r")
 		bootCount = int(bootFile.readline().rstrip())
 		antennaDeployed = bool(int(bootFile.readline().rstrip()))
 		lastMode = int(bootFile.readline().rstrip())
@@ -177,8 +177,8 @@ def readData():
 	except:
 		try:
 			print('File exception')
-			fileCheck.checkFile("../flightLogic/backupBootRecords.txt")
-			bootFile = open("../flightLogic/backupBootRecords.txt", "r")
+			fileCheck.checkFile("../../flightLogicData/backupBootRecords.txt")
+			bootFile = open("../../flightLogicData/backupBootRecords.txt", "r")
 			bootCount = int(bootFile.readline().rstrip())
 			antennaDeployed = bool(int(bootFile.readline().rstrip()))
 			lastMode = int(bootFile.readline().rstrip())
@@ -186,10 +186,10 @@ def readData():
 			# In this except statement, the files are corrupted, so we rewrite both of them
 		except:
 			print('Double File exception - are both files non-existant?')
-			fileCheck.checkFile("../flightLogic/bootRecords.txt")
-			bootFile = open("../flightLogic/bootRecords.txt", "w")
-			fileCheck.checkFile("../flightLogic/backupBootRecords.txt")
-			backupBootFile = open("../flightLogic/backupBootRecords.txt", "w")
+			fileCheck.checkFile("../../flightLogicData/bootRecords.txt")
+			bootFile = open("../../flightLogicData/bootRecords.txt", "w")
+			fileCheck.checkFile("../../flightLogicData/backupBootRecords.txt")
+			backupBootFile = open("../../flightLogicData/backupBootRecords.txt", "w")
 			bootFile.write('0\n0\n0\n')
 			backupBootFile.write('0\n0\n0\n')
 
