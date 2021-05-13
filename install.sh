@@ -4,4 +4,4 @@ sudo apt full-upgrade
 sudo apt install python3
 sudo apt install python3-pip
 sudo apt install python3-numpy
-cd ; cd ~/CubeWorks ; pip3 install -r requirements.txt ; cd ;
+cd ; cd ~/CubeWorks ; $ echo starting requirements install; pip3 install -r requirements.txt ; cd ;
