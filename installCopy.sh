@@ -47,7 +47,9 @@ git clone $GIT_CODE_BASE CubeWorks4;
 cd CubeWorks4/ ; git checkout $branch ;
 
 #create the start up code, and then move it to the root
-cd ; cd CubeWorks0/ ; printf "\n>>>creating multi-code base proticol\n"; gcc startup.c -o startup.exe ; cp startup.exe ~/
+cd ; cd CubeWorks0/ ; printf "\n>>>creating multi-code base proticol\n"; 
+cp startup.c ../startup.c ; cd ; gcc startup.c -o startup.exe
+
 
 
 #up date the crontab to run the startup.exe
