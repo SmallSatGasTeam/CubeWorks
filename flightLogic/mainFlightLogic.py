@@ -139,8 +139,8 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 
 def recordData(bootCount, antennaDeployed, lastMode):
 	# write to the boot file, "w" option in write overwrites the file
-	fileChecker.checkFile("/home/pi/testingStartup/flightLogicData/bootRecords.txt")
-	new = open("/home/pi/testingStartup/flightLogicData/bootRecords.txt", "w+")
+	fileChecker.checkFile("/home/pi/flightLogicData/bootRecords.txt")
+	new = open("/home/pi/flightLogicData/bootRecords.txt", "w+")
 	new.write(str(bootCount) + '\n')
 	if antennaDeployed:
 		new.write(str(1)+'\n')
@@ -150,8 +150,8 @@ def recordData(bootCount, antennaDeployed, lastMode):
 	new.close()
 
 	# write to the the back up file
-	fileChecker.checkFile("/home/pi/testingStartup/flightLogicData/backupBootRecords.txt")
-	new = open("/home/pi/testingStartup/flightLogicData/backupBootRecords.txt", "w+")
+	fileChecker.checkFile("/home/pi/flightLogicData/backupBootRecords.txt")
+	new = open("/home/pi/flightLogicData/backupBootRecords.txt", "w+")
 	new.write(str(bootCount) + '\n')
 	if antennaDeployed:
 		new.write(str(1)+'\n')
@@ -168,9 +168,9 @@ def readData():
 	# Line 2 = antenna deployed?
 	# Line 2 = last mission mode
 	bootCount,antennaDeployed,lastMode = None, None, None
-	fileChecker.checkFile("/home/pi/testingStartup/flightLogicData/bootRecords.txt")
+	fileChecker.checkFile("/home/pi/flightLogicData/bootRecords.txt")
 	try:
-		bootFile = open("/home/pi/testingStartup/flightLogicData/bootRecords.txt", "r")
+		bootFile = open("/home/pi/flightLogicData/bootRecords.txt", "r")
 		bootCount = int(bootFile.readline().rstrip())
 		antennaDeployed = bool(int(bootFile.readline().rstrip()))
 		lastMode = int(bootFile.readline().rstrip())
@@ -178,8 +178,8 @@ def readData():
 	except:
 		try:
 			print('File exception')
-			fileChecker.checkFile("/home/pi/testingStartup/flightLogicData/backupBootRecords.txt")
-			bootFile = open("/home/pi/testingStartup/flightLogicData/backupBootRecords.txt", "r")
+			fileChecker.checkFile("/home/pi/flightLogicData/backupBootRecords.txt")
+			bootFile = open("/home/pi/flightLogicData/backupBootRecords.txt", "r")
 			bootCount = int(bootFile.readline().rstrip())
 			antennaDeployed = bool(int(bootFile.readline().rstrip()))
 			lastMode = int(bootFile.readline().rstrip())
@@ -187,10 +187,10 @@ def readData():
 			# In this except statement, the files are corrupted, so we rewrite both of them
 		except:
 			print('Double File exception - are both files non-existant?')	
-			fileChecker.checkFile("/home/pi/testingStartup/flightLogicData/bootRecords.txt")
-			bootFile = open("/home/pi/testingStartup/flightLogicData/bootRecords.txt", "w")
-			fileChecker.checkFile("/home/pi/testingStartup/flightLogicData/backupBootRecords.txt")
-			backupBootFile = open("/home/pi/testingStartup/flightLogicData/backupBootRecords.txt", "w")
+			fileChecker.checkFile("/home/pi/flightLogicData/bootRecords.txt")
+			bootFile = open("/home/pi/flightLogicData/bootRecords.txt", "w")
+			fileChecker.checkFile("/home/pi/flightLogicData/backupBootRecords.txt")
+			backupBootFile = open("/home/pi/flightLogicData/backupBootRecords.txt", "w")
 			bootFile.write('0\n0\n0\n')
 			backupBootFile.write('0\n0\n0\n')
 

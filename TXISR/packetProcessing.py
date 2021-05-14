@@ -160,8 +160,8 @@ def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber, startFro
 	print("Current time: ", int(time.time()))
 	print("Start time: ", windowStartTime)
 	
-	fileChecker.checkFile("/home/pi/testingStartup/TXISRData/txWindows.txt")
-	TXWindow_File = open("/home/pi/testingStartup/TXISRData/txWindows.txt", "a+")
+	fileChecker.checkFile("/home/pi/TXISRData/txWindows.txt")
+	TXWindow_File = open("/home/pi/TXISRData/txWindows.txt", "a+")
        
 	#write the data to the file,
 	TXWindow_File.write(str(windowStartTime)+',')
@@ -176,8 +176,8 @@ def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber, startFro
 	
 def disableTransmissions():
 	# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
-	fileChecker.checkFile("/home/pi/testingStartup/TXISRData/transmissionFlag.txt")
-	transmissionFlag_File = open("/home/pi/testingStartup/TXISRData/transmissionFlag.txt", "w")
+	fileChecker.checkFile("/home/pi/TXISRData/transmissionFlag.txt")
+	transmissionFlag_File = open("/home/pi/TXISRData/transmissionFlag.txt", "w")
 	
 	# write the data to the file,
 	transmissionFlag_File.write("Disabled")
@@ -186,9 +186,9 @@ def disableTransmissions():
 	transmissionFlag_File.close()
 	
 def enableTransmissions():
-	fileChecker.checkFile("/home/pi/testingStartup/TXISRData/transmissionFlag.txt")
+	fileChecker.checkFile("/home/pi/TXISRData/transmissionFlag.txt")
 	# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
-	transmissionFlag_File = open("/home/pi/testingStartup/TXISRData/transmissionFlag.txt", "w")
+	transmissionFlag_File = open("/home/pi/TXISRData/transmissionFlag.txt", "w")
 	
 	# write the data to the file,
 	transmissionFlag_File.write("Enabled")
@@ -197,9 +197,9 @@ def enableTransmissions():
 	transmissionFlag_File.close()
 	
 def disableAX25():
-	fileChecker.checkFile("/home/pi/testingStartup/TXISRData/AX25Flag.txt")
+	fileChecker.checkFile("/home/pi/TXISRData/AX25Flag.txt")
 	# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
-	AX25Flag_File = open("/home/pi/testingStartup/TXISRData/AX25Flag.txt", "w")
+	AX25Flag_File = open("/home/pi/TXISRData/AX25Flag.txt", "w")
 	
 	# write the data to the file,
 	AX25Flag_File.write("Disabled")
@@ -208,9 +208,9 @@ def disableAX25():
 	AX25Flag_File.close()
 	
 def enableAX25():
-	fileChecker.checkFile("/home/pi/testingStartup/TXISRData/AX25Flag.txt")
+	fileChecker.checkFile("/home/pi/TXISRData/AX25Flag.txt")
 	# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
-	AX25Flag_File = open("/home/pi/testingStartup/TXISRData/AX25Flag.txt", "w")
+	AX25Flag_File = open("/home/pi/TXISRData/AX25Flag.txt", "w")
 	
 	# write the data to the file,
 	AX25Flag_File.write("Enabled")
@@ -219,18 +219,18 @@ def enableAX25():
 	AX25Flag_File.close()
 	
 def clearTXFile():
-	fileChecker.checkFile("/home/pi/testingStartup/TXISRData/txWindows.txt")
+	fileChecker.checkFile("/home/pi/TXISRData/txWindows.txt")
 	# This function clears the TX windows file
-	transmissionFlag_File = open("/home/pi/testingStartup/TXISRData/txWindows.txt", "w")
+	transmissionFlag_File = open("/home/pi/TXISRData/txWindows.txt", "w")
 	
 	# close file
 	transmissionFlag_File.close()
 	
 def clearTXProgress():
-	fileChecker.checkFile("/home/pi/testingStartup/TXISRData/flagsFile.txt")
+	fileChecker.checkFile("/home/pi/TXISRData/flagsFile.txt")
 	# This function will clear the file that saves which timestamp has been transmitted most recently for each data type
 	print("I don't know which file to clear!!!")
-	progressFile = open("../TXISR/data/flagsFile.txt", "w")
+	progressFile = open("/home/pi/TXISRData/flagsFile.txt", "w")
 	progressFile.write('0\n')
 	progressFile.write('0\n')
 	progressFile.write('0\n')

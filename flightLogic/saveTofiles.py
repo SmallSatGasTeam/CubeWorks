@@ -52,12 +52,12 @@ class save:
     #NOTE: it is important that you put a : after the time stamp, this will
     #effect the txisr
     async def writeDeploy(self, data):
-        fileChecker.checkFile("/home/pi/testingStartup/flightLogicData/Deploy_Data.txt")
+        fileChecker.checkFile("/home/pi/flightLogicData/Deploy_Data.txt")
         self.__Deploy_File.write(str(data)+'\n')
 
     #this func will read the data form our file and then return that data
     async def getDeploy(self):
-        fileChecker.checkFile("/home/pi/testingStartup/flightLogicData/Deploy_Data.txt")
+        fileChecker.checkFile("/home/pi/flightLogicData/Deploy_Data.txt")
         temp = []
         for i in self.__Deploy_File:
             if (int(i[0]) >= time):
@@ -68,13 +68,13 @@ class save:
     #NOTE: it is important that you put a : after the time stamp, this will
     #effect the txisr
     async def writeAttitude(self, data):
-        fileChecker.checkFile("/home/pi/testingStartup/flightLogicData/Attitude_Data.txt")
+        fileChecker.checkFile("/home/pi/flightLogicData/Attitude_Data.txt")
         self.__Attitude_File.write(str(data)+'\n')
 
 
     #this func will read the data form our file and then return that data
     async def getAttitudeData(self):
-        fileChecker.checkFile("/home/pi/testingStartup/flightLogicData/Attitude_Data.txt")
+        fileChecker.checkFile("/home/pi/flightLogicData/Attitude_Data.txt")
         temp = []
         for i in self.__Attitude_File:
             if (int(i[0]) >= time):
@@ -84,8 +84,8 @@ class save:
     #this will check if it is time to tx or not and then return a bool
     #TODO: how are we saving tx times?
     def checkTxWindow(self):
-        fileChecker.checkFile("/home/pi/testingStartup/TXISRData/txWindows.txt")
-        txWindows = open("/home/pi/testingStartup/TXISRData/txWindows.txt")
+        fileChecker.checkFile("/home/pi/TXISRData/txWindows.txt")
+        txWindows = open("/home/pi/TXISRData/txWindows.txt")
         timeToTx = txWindows.readlines()
         for i in timeToTx:
             if (i - 10000) <= round(time.time() * 1000):
