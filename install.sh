@@ -36,13 +36,13 @@ cd CubeWorks2/ ; git checkout $branch ;
 
 printf "\n>>>Creating a CubeWorks3<<<\n";
 #git clone $GIT_CODE_BASE CubeWorks3;
-cp -rf "CubeWorks0/ CubeWorks3"
+cp -rf CubeWorks0/ CubeWorks3
 #TESTING LINE
 cd CubeWorks3/ ; git checkout $branch ; 
 
 printf "\n>>>Creating a CubeWorks4<<<\n";
 #git clone $GIT_CODE_BASE CubeWorks4;
-cp -rf "CubeWorks0/ CubeWorks4"
+cp -rf CubeWorks0/ CubeWorks4
 #TESTING LINE
 cd CubeWorks4/ ; git checkout $branch ;
 
