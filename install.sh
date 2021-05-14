@@ -2,7 +2,7 @@
 # rsync using variables
 #this will handle the install of all gas software
 GIT_CODE_BASE="https://github.com/SmallSatGasTeam/CubeWorks.git"
-crontabComand="@reboot sudo runuser pi -c ./startup.exe"
+crontabComand="@reboot sudo runuser pi -c /home/pi/./startup.exe"
 #this is the branch we are using , if you want maste leave it blank exe " "
 branch="codeBase";
 #update and install python
