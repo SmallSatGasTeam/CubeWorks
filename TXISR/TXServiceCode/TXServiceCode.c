@@ -106,7 +106,6 @@ void main(int argc,char* argv[])
     }
 
     FILE *recordFile;
-    printf(FLAG_FILE"\n");
     recordFile = fopen(FLAG_FILE, "r+");
     if (recordFile == NULL)
     {
