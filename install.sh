@@ -1,38 +1,62 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # rsync using variables
 #this will handle the install of all gas software
-gitCodeBase = https://github.com/SmallSatGasTeam/CubeWorks.git
-crontabComand = @reboot sudo runuser pi -c ./startup.exe
-
+GIT_CODE_BASE="https://github.com/SmallSatGasTeam/CubeWorks.git"
+crontabComand="@reboot sudo runuser pi -c ./startup.exe"
+#this is the branch we are using , if you want maste leave it blank exe " "
+branch="codeBase";
 #update and install python
-sudo apt full-upgrade
-sudo apt install python3
-sudo apt install python3-pip
-sudo apt install python3-numpy
-sudo apt install git 
+#NO long in use cause the version are lock for FLIGHT!
+# sudo apt full-upgrade
+# sudo apt-get update
+# sudo apt install python3
+# sudo apt install python3-pip
+# sudo apt install python3-numpy
+# sudo apt install git 
 
+
+printf "\n>>>Creating a CubeWorks0<<<\n";
 #install the first code base
-mkdir CubeWorks0
-cd ~/CubeWorks0 ; git clone $gitCodeBase
+git clone $GIT_CODE_BASE CubeWorks0;
 
-#install all the required packages
-cd ; cd ~/CubeWorks0/CubeWorks ; $ echo \n\n\n>>>starting requirements install<<<\n\n\n; pip3 install -r requirements.txt ; cd ;
+printf "\n>>>Creating a CubeWorks1<<<\n";
+#install the code bases
+git clone $GIT_CODE_BASE CubeWorks1;
+#TESTING LINE
+cd CubeWorks1/ ; git checkout $branch ;
+
+#this line is testing only!
+cd ; cd CubeWorks0/ ; git checkout $branch; cd ;
+
+printf "\n>>>Creating a CubeWorks2<<<\n";
+#this line is for testing 
+git clone $GIT_CODE_BASE CubeWorks2;
+#TESTING LINE
+cd CubeWorks2/ ; git checkout $branch ;
+
+printf "\n>>>Creating a CubeWorks3<<<\n";
+#git clone $GIT_CODE_BASE CubeWorks3;
+cp -rf "CubeWorks0/ CubeWorks3"
+#TESTING LINE
+cd CubeWorks3/ ; git checkout $branch ; 
+
+printf "\n>>>Creating a CubeWorks4<<<\n";
+#git clone $GIT_CODE_BASE CubeWorks4;
+cp -rf "CubeWorks0/ CubeWorks4"
+#TESTING LINE
+cd CubeWorks4/ ; git checkout $branch ;
 
 #create the start up code, and then move it to the root
-cd ; cd ~/CubeWorks0/CubeWorks ; $ echo creating multi-code base proticol ; gcc startup.c -o startup.exe ; cp startup.exe ~/
+cd ; cd CubeWorks0/ ; printf "\n>>>creating multi-code base proticol\n"; gcc startup.c -o startup.exe ; cp startup.exe ~/
+
 
 #up date the crontab to run the startup.exe
-crontab -e $crontabComand
+#crontab -e $crontabComand
+printf "\n>>>creating start up proticol<<<\n"
+sudo crontab -l > mycron  
+echo $crontabComand >> mycron
+sudo crontab mycron
+rm mycron
 
-#install the code bases
-cd ; mkdir CubeWorks1
-cd ~/CubeWorks1 ; git clone $gitCodeBase
-cd ; mkdir CubeWorks2
-cd ~/CubeWorks2 ; git clone $gitCodeBase
-cd ; mkdir CubeWorks3
-cd ~/CubeWorks3 ; git clone $gitCodeBase
-cd ; mkdir CubeWorks4
-cd ~/CubeWorks4 ; git clone $gitCodeBase
-
-$ echo \n\n\n>>>rebooting to finish installation<<<\n\n\n 
-sudo reboot 
+echo ">>rebooting to finish installation<<<" 
+#sudo reboot
