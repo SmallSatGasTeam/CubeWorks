@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-cp installCopy.sh ../installCopy.sh
+cp install.sh ../install.sh
 cd
-sh installCopy.sh
+sh install.sh
