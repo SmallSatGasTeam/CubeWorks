@@ -10,16 +10,16 @@ class FileReset():
     def __init__(self):
         # List of file paths
         self.__FILE_PATHS = [ 
-            "/home/pi/testingStartup/TXISRData/flagsFile.txt" , 
+            "/home/pi/TXISRData/flagsFile.txt" , 
             "../TXISR/data/txFile.txt" , 
-            "/home/pi/testingStartup/TXISRData/txWindows.txt" , 
-            "/home/pi/testingStartup/TXISRData/transmissionFlag.txt" , 
-            "/home/pi/testingStartup/TXISRData/AX25Flag.txt",
-            "/home/pi/testingStartup/flightLogicData/backupBootRecords.txt" , 
-            "/home/pi/testingStartup/flightLogicData/bootRecords.txt" , 
-            "/home/pi/testingStartup/flightLogicData/Attitude_Data.txt" , 
-            "/home/pi/testingStartup/flightLogicData/Deploy_Data.txt" , 
-            "/home/pi/testingStartup/flightLogicData/TTNC_Data.txt" ]
+            "/home/pi/TXISRData/txWindows.txt" , 
+            "/home/pi/TXISRData/transmissionFlag.txt" , 
+            "/home/pi/TXISRData/AX25Flag.txt",
+            "/home/pi/flightLogicData/backupBootRecords.txt" , 
+            "/home/pi/flightLogicData/bootRecords.txt" , 
+            "/home/pi/flightLogicData/Attitude_Data.txt" , 
+            "/home/pi/flightLogicData/Deploy_Data.txt" , 
+            "/home/pi/flightLogicData/TTNC_Data.txt" ]
         self.__filePath = ""
         self.fullReset()
 
@@ -34,16 +34,16 @@ class FileReset():
             # If the file doesn't exist it creates a new one
             file = open(self.__filePath, 'w+')
             
-        if self.__filePath == "/home/pi/testingStartup/flightLogicData/backupBootRecords.txt" or self.__filePath == "/home/pi/testingStartup/flightLogicData/bootRecords.txt" or self.__filePath == "../../bootRecords.txt":
+        if self.__filePath == "/home/pi/flightLogicData/backupBootRecords.txt" or self.__filePath == "/home/pi/flightLogicData/bootRecords.txt" or self.__filePath == "../../bootRecords.txt":
             file.write("0\n0\n0\n")
             file.close()
-        if self.__filePath == "/home/pi/testingStartup/TXISRData/flagsFile.txt" or self.__filePath == "../../flagsFile.txt":
+        if self.__filePath == "/home/pi/TXISRData/flagsFile.txt" or self.__filePath == "../../flagsFile.txt":
             file.write("0\n0\n0\n0\n0\n")
             file.close()
-        if self.__filePath == "/home/pi/testingStartup/TXISRData/transmissionFlag.txt" or self.__filePath == "../../transmissionFlag.txt":
+        if self.__filePath == "/home/pi/TXISRData/transmissionFlag.txt" or self.__filePath == "../../transmissionFlag.txt":
             file.write("Enabled")
             file.close()
-        if self.__filePath == "/home/pi/testingStartup/TXISRData/AX25Flag.txt" or self.__filePath == "../../AX25Flag.txt":
+        if self.__filePath == "/home/pi/TXISRData/AX25Flag.txt" or self.__filePath == "../../AX25Flag.txt":
             file.write("Disabled")
             file.close()
         # This closes the file so it is no longer being edited
@@ -96,13 +96,8 @@ class FileReset():
     def dirProtection(self):  
         count = 0
         # Find the directory path
-        # i = len(self.__filePath)
-        # while(self.__filePath[i] != "/"):
-        #     count += 1
-        #     i -= 1
         for i in range(len(self.__filePath)):
             if self.__filePath[-i-1] == "/":
-                print("Filepath character, count:", self.__filePath[-i - 1], count)
                 break
             count += 1
         dirPath = self.__filePath[:len(self.__filePath) - count]

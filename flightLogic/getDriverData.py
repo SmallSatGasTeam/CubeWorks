@@ -59,13 +59,13 @@ magnetometerMax = 49.152
 
 def readBootCount():
 	try:
-		fileChecker.checkFile('/home/pi/testingStartup/flightLogicData/bootRecords.txt')
-		dataFile = open('/home/pi/testingStartup/flightLogicData/bootRecords.txt')
+		fileChecker.checkFile('/home/pi/flightLogicData/bootRecords.txt')
+		dataFile = open('/home/pi/flightLogicData/bootRecords.txt')
 		return int(dataFile.readline().rstrip())
 	except:
 		try:
-			fileChecker.checkFile('/home/pi/testingStartup/flightLogicData/backupBootRecords.txt')
-			dataFileBackup = open('/home/pi/testingStartup/flightLogicData/backupBootRecords.txt')
+			fileChecker.checkFile('/home/pi/flightLogicData/backupBootRecords.txt')
+			dataFileBackup = open('/home/pi/flightLogicData/backupBootRecords.txt')
 			return int(dataFileBackup.readline().rstrip())
 		except:
 			print('Double file exception - are both files non-existent?')

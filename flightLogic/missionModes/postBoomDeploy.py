@@ -30,9 +30,9 @@ class postBoomMode:
 		self.__datatype = -1
 		self.__pictureNumber = -1
 		self.__startFromBeginning = -1
-		fileChecker.checkFile("../TXISR/data/transmissionFlag.txt")
-		self.__transmissionFlagFile = open('../TXISR/data/transmissionFlag.txt')
-		self.__txWindowsPath = ('../TXISR/data/txWindows.txt')
+		fileChecker.checkFile("/home/pi/TXISRData/transmissionFlag.txt")
+		self.__transmissionFlagFile = open('/home/pi/TXISRData/transmissionFlag.txt')
+		self.__txWindowsPath = ('/home/pi/TXISRData/txWindows.txt')
 		fileChecker.checkFile(self.__txWindowsPath)
 
 	async def run(self):
@@ -50,7 +50,7 @@ class postBoomMode:
 				#wait until 5 seconds before, return True
 				if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<14): #If next window is in 2 minutes or less
 					if(self.__datatype < 3): #Attitude, TTNC, or Deployment data
-						prepareFiles.prepareData(self.__duration, self.__datatype, self.__startFromBeginning)
+						prepareFiles.prepareData(self.__duration, self.__datatype, self.__startFromBeginning, -1)
 						print("Preparing data")
 					else:
 						prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__startFromBeginning)
@@ -60,7 +60,7 @@ class postBoomMode:
 			windowTime = self.__nextWindowTime
 			while True:
 				if((windowTime-time.time()) <= 5):
-					fileChecker.checkFile('../TXISR/data/transmissionFlag.txt')
+					fileChecker.checkFile('/home/pi/TXISRData/transmissionFlag.txt')
 					self.__transmissionFlagFile.seek(0)
 					if(self.__transmissionFlagFile.readline()=='Enabled'):
 						txisrCodePath = '../TXISR/TXServiceCode/TXService.run'
