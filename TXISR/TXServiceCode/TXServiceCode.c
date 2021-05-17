@@ -222,22 +222,19 @@ void main(int argc,char* argv[])
 
         // DEBUG_P(Found a colon and leaving the first loop)
 
-        do
+        while((ch != '\n') && (!feof(txFile)) && (chl != '\n'))
         {
             //if(feof(txFile)) break;
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
             ch = fgetc(txFile);
             chl = fgetc(txFile);
-            if((ch != '\n') && (chl != '\n')) 
-            {
-                line[charCount++] = convertCharToHex(chl, ch);
-                PRINT_DEBUG_c(ch)
-                PRINT_DEBUG_c(chl)
-                PRINT_DEBUG(charCount)
-            }
+            line[charCount++] = convertCharToHex(chl, ch);
+            PRINT_DEBUG_c(ch)
+            PRINT_DEBUG_c(chl)
+            PRINT_DEBUG(charCount)
             //DEBUG_P(Im in the sub loop)
-        }while((ch != '\n') && (!feof(txFile)) && (chl != '\n'));
+        }
         
         // DEBUG_P(leaving loop)
 
