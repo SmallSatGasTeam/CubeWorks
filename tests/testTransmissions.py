@@ -20,7 +20,7 @@ class testTransmissions():
 
 	async def main(self):
 		while True:
-			txWindowsPath = os.path.join(os.path.dirname(__file__), '../TXISR/data/txWindows.txt')
+			txWindowsPath = os.path.join(os.path.dirname(__file__), '/home/pi/TXISRData/txWindows.txt')
 			asyncio.create_task(pythonInterrupt.interrupt())
 			asyncio.create_task(self.readNextTransferWindow(txWindowsPath))
 			while True:
@@ -39,7 +39,7 @@ class testTransmissions():
 			while True:
 				if((windowTime-time.time()) <= 5):
 					print("Calling TXServiceCode")
-					txisrCodePath = os.path.join(os.path.dirname(__file__), '../TXISR/TXServiceCode/TXService.run')
+					txisrCodePath = os.path.join(os.path.dirname(__file__), '/home/pi/CubeWorks0/TXISR/TXServiceCode/TXService.run')
 					os.system(txisrCodePath + ' ' + str(self.datatype)) #Call TXISR Code
 					self.timeToNextWindow = -1
 					break
