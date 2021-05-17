@@ -107,10 +107,12 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 			it be better just to filler data so we knew exactly what to look
 			for in extra data?"""
 			if line == "":
+				print("The line = \"\"")
 				lineNumber = 0
 				#Why do we need continue if we're not skipping anything?
 				continue
 			else:
+				print("Writing the line.")
 				txDataFile.write(line)
 				dataSize += 1
 				lineNumber += 1
