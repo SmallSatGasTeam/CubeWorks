@@ -97,7 +97,7 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 
 		dataSize = 0
 		while dataSize < numPackets:
-			print("We made it to where we're ")
+			print("We made it to filling the transmission data file.", numPackets, dataSize)
 			line = linecache.getline(dataFilePath, lineNumber)
 			"""What's the purpose of this if statement? I can tell that it's
 			checking to make sure that we don't hit the end of the file, but
