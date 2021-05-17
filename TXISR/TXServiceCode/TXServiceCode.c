@@ -224,8 +224,8 @@ void main(int argc,char* argv[])
             chl = fgetc(txFile);
             if(end && (ch != TIME_DEVISOR) && (ch != '\n') && (chl != '\n')) 
             {
-                PRINT_DEBUG_c(ch)
                 line[charCount++] = convertCharToHex(chl, ch);
+                PRINT_DEBUG_c(chl)
                 PRINT_DEBUG_c(ch)
                 PRINT_DEBUG(charCount)
             }
