@@ -220,7 +220,7 @@ void main(int argc,char* argv[])
             }
         } while(!end && !feof(txFile));
 
-        while((ch != '\n') && (!feof(txFile)) && (chl != '\n'))
+        do
         {
             if(feof(txFile)) break;
             //save all the data in that line
@@ -234,7 +234,7 @@ void main(int argc,char* argv[])
                 PRINT_DEBUG(charCount)
             }
             //DEBUG_P(Im in the sub loop)
-        }
+        }while((ch != '\n') && (!feof(txFile)) && (chl != '\n'))
         
         DEBUG_P(leaving loop)
 
