@@ -45,7 +45,7 @@ class testTransmissions():
 				print("Made it to the second infinite loop.")
 				if((windowTime-time.time()) <= 5):
 					print("Calling TXServiceCode")
-					txisrCodePath = 'sudo /home/pi/CubeWorks0/TXISR/TXServiceCode/./TXService.run'
+					txisrCodePath = 'cd /home/pi/CubeWorks0/TXISR/TXServiceCode ; sudo ./TXService.run'
 					os.system(txisrCodePath + ' ' + str(self.datatype)) #Call TXISR Code
 					self.timeToNextWindow = -1
 					break
