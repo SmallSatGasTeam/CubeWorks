@@ -27,7 +27,7 @@ class testTransmissions():
 			while True:
 				#if close enough, prep files
 				#wait until 5 seconds before, return True
-				print("Just inside of while loop")
+				print("Just inside of while loop", self.timeToNextWindow)
 				if(self.timeToNextWindow != -1 and self.timeToNextWindow<14): #If next window is in 2 minutes or less
 					print("Inside of first if statement")
 					if(self.datatype < 3): #Attitude, TTNC, or Deployment data
