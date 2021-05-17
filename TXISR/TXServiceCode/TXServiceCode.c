@@ -203,27 +203,29 @@ void main(int argc,char* argv[])
         
         //DEBUG_P(Im in the main loop)
 
-        do 
-        {
+        do {
             if(feof(txFile)) break;
             ch = fgetc(txFile);
             //this collects the time stamp
-            if(!end && !feof(txFile))
+
+            timeStamp[charTimeCount++] = ch;
+            printf("Finding the timestamp.\n");
+            PRINT_DEBUG_c(ch)
+
+            if (ch == TIME_DEVISOR)
             {
-                timeStamp[charTimeCount++] = ch;
-                printf("Finding the timestamp.\n");
-                PRINT_DEBUG_c(ch)
-                if(ch == TIME_DEVISOR) end = 1;
+                end = 1;
+                //if you dont wanna send the : uncommit the next line into the code
+                //continue;
             }
-            // if (ch == TIME_DEVISOR)
-            // {
-            //     end = 1;
-            //     //if you dont wanna send the : uncommit the next line into the code
-            //     //continue;
-            // }
+        } while(!end && !feof(txFile));
+
+        while((ch != '\n') && (!feof(txFile)) && (chl != '\n'))
+        {
+            if(feof(txFile)) break;
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
-            if(end && (ch != TIME_DEVISOR) && (ch != '\n') && (chl != '\n')) 
+            if((ch != '\n') && (chl != '\n')) 
             {
                 chl = fgetc(txFile);
                 line[charCount++] = convertCharToHex(chl, ch);
@@ -232,8 +234,7 @@ void main(int argc,char* argv[])
                 PRINT_DEBUG(charCount)
             }
             //DEBUG_P(Im in the sub loop)
-        }while((ch != '\n') && (!feof(txFile)) && (chl != '\n'));
-        
+        }
         
         DEBUG_P(leaving loop)
 
