@@ -195,7 +195,7 @@ void main(int argc,char* argv[])
         int charCount = 0;
         int end = 0;
         int charTimeCount = 0;
-        char chl;
+        char chl = '0';
         for (int i = 0; i < MAX_BYTES_PER_LINE; i++)
         {
             line[i] = '0';
