@@ -227,7 +227,7 @@ void main(int argc,char* argv[])
                 PRINT_DEBUG(charCount)
             }
             //DEBUG_P(Im in the sub loop)
-        }while(ch != '\n' && !feof(txFile));
+        }while((ch != '\n') && (!feof(txFile)));
         
         
         DEBUG_P(leaving loop)
