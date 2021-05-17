@@ -28,7 +28,6 @@ class testTransmissions():
 				#if close enough, prep files
 				#wait until 5 seconds before, return True
 				print("Just inside of while loop", self.timeToNextWindow)
-				self.timeToNextWindow = 0
 				if(self.timeToNextWindow != -1 and self.timeToNextWindow<14): #If next window is in 2 minutes or less
 					print("Inside of first if statement")
 					if(self.datatype < 3): #Attitude, TTNC, or Deployment data
@@ -40,6 +39,7 @@ class testTransmissions():
 						prepareFiles.preparePicture(self.duration, self.datatype, self.pictureNumber)
 						print("Preparing Picture data")
 					break
+				self.timeToNextWindow = 0
 				await asyncio.sleep(5)
 			windowTime = self.nextWindowTime
 			while True:
