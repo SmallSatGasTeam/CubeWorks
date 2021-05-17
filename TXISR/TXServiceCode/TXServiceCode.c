@@ -238,7 +238,7 @@ void main(int argc,char* argv[])
         
         // DEBUG_P(leaving loop)
 
-        if(ch == '\n' || feof(txFile))
+        if((ch == '\n') || (feof(txFile)) || (chl == '\n'))
         {
             //transmit the data
             #ifdef DEBUG
