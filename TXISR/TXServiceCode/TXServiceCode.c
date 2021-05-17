@@ -222,8 +222,6 @@ void main(int argc,char* argv[])
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
             chl = fgetc(txFile);
-            float num;
-            sprintf(chl, "%f", num);
             if(end && (ch != TIME_DEVISOR) && (ch != '\n') && (chl != '\n')) 
             {
                 PRINT_DEBUG_c(ch)
