@@ -220,13 +220,14 @@ void main(int argc,char* argv[])
             }
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
-            if(end && (ch != TIME_DEVISOR) && (ch != 10)) 
+            if(end && (ch != TIME_DEVISOR) && (ch != '\n')) 
             {
+                PRINT_DEBUG_c(ch)
                 line[charCount++] = convertCharToHex(fgetc(txFile), ch);
                 PRINT_DEBUG_c(ch)
                 PRINT_DEBUG(charCount)
             }
-            //DEBUG_P(Im in the sub loop)
+            DEBUG_P(Im in the sub loop)
         }while((ch != '\n') && (!feof(txFile)));
         
         
