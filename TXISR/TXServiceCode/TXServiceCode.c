@@ -90,7 +90,7 @@ void main(int argc,char* argv[])
     int dataType;
     if(argc == 2) {
         printf("About to convert char to int: %s %c", argv[1], *argv[1]);
-        dataType = changeCharToInt(*argv[1]);
+        dataType = (int) *argv[1];
         printf("DataType: %d", dataType);
     }
     else dataType = changeCharToInt(127);
