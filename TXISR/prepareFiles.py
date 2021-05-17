@@ -108,7 +108,7 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 			for in extra data?"""
 			if line == "":
 				print("The line = \"\"")
-				lineNumber = 0
+				lineNumber = 1
 				#Why do we need continue if we're not skipping anything?
 				continue
 			else:
