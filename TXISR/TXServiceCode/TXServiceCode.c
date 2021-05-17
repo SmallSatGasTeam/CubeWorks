@@ -90,7 +90,7 @@ void main(int argc,char* argv[])
     int dataType;
     if(argc == 2) {
         printf("About to convert char to int: %s %c", argv[1], *argv[1]);
-        dataType = (int) *argv[1];
+        dataType = *argv[1];
         printf("DataType: %d", dataType);
     }
     else dataType = changeCharToInt(127);
@@ -348,25 +348,25 @@ int changeCharToInt(char a)
     switch(a)
     {
         //use assci table to decode this part of the code
-        case 48:
+        case '0':
             return 0;
-        case 49:
+        case '1':
             return 1;
-        case 50:
+        case '2':
             return 2;
-        case 51:
+        case '3':
             return 3;
-        case 52:
+        case '4':
             return 4;
-        case 53:
+        case '5':
             return 5;
-        case 54:
+        case '6':
             return 6;
-        case 55:
+        case '7':
             return 7;
-        case 56:
+        case '8':
             return 8;
-        case 57:
+        case '9':
             return 9;
         case 'a':
             return 10;
