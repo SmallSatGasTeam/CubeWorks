@@ -89,9 +89,9 @@ void main(int argc,char* argv[])
     //gather user input
     int dataType;
     if(argc == 2) {
-        printf("About to convert char to int: %s %c", argv[1], *argv[1]);
+        printf("About to convert char to int: %s %c\n", argv[1], *argv[1]);
         dataType = changeCharToInt(*argv[1]);
-        printf("DataType: %d", dataType);
+        printf("DataType: %d\n", dataType);
     }
     else dataType = changeCharToInt(127);
     DEBUG_P(Made it past the problem spot)
@@ -223,8 +223,8 @@ void main(int argc,char* argv[])
             if(end && (ch != TIME_DEVISOR) && (ch != 10)) 
             {
                 line[charCount++] = convertCharToHex(fgetc(txFile), ch);
-                //PRINT_DEBUG_c(ch)
-                //PRINT_DEBUG(charCount)
+                PRINT_DEBUG_c(ch)
+                PRINT_DEBUG(charCount)
             }
             //DEBUG_P(Im in the sub loop)
         }while(ch != '\n' && !feof(txFile));
@@ -384,7 +384,7 @@ int changeCharToInt(char a)
             {
                 DEBUG_P(invaild data type)
                 PRINT_DEBUG_c(a)
-                printf("A in int form: %d", a);
+                printf("A in int form: %d\n", a);
                 return 127;
             }
     }
