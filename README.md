@@ -1,3 +1,4 @@
+
 # CubeWorks
 Flight software for the GASPACS mission written in Python, with some compents in c.
 
@@ -60,4 +61,4 @@ CubeWorks
 
 ### Class Structure
 
-![CubeWorks_UML](https://github.com/SmallSatGasTeam/GASPACS/blob/master/docs/CubeWorks_UML.png)
+[GAS software.pdf](https://github.com/SmallSatGasTeam/CubeWorks/files/6494865/GAS.software.pdf)
