@@ -225,8 +225,8 @@ void main(int argc,char* argv[])
             if(end && (ch != TIME_DEVISOR) && (ch != '\n') && (chl != '\n')) 
             {
                 line[charCount++] = convertCharToHex(chl, ch);
-                PRINT_DEBUG_c(chl)
                 PRINT_DEBUG_c(ch)
+                PRINT_DEBUG_c(chl)
                 PRINT_DEBUG(charCount)
             }
             DEBUG_P(Im in the sub loop)
