@@ -232,9 +232,9 @@ void main(int argc,char* argv[])
             if((ch != '\n') && (chl != '\n')) 
             {
                 line[charCount++] = convertCharToHex(chl, ch);
-                // PRINT_DEBUG_c(ch)
-                // PRINT_DEBUG_c(chl)
-                // PRINT_DEBUG(charCount)
+                PRINT_DEBUG_c(ch)
+                PRINT_DEBUG_c(chl)
+                PRINT_DEBUG(charCount)
             }
             //DEBUG_P(Im in the sub loop)
         }while((ch != '\n') && (!feof(txFile)) && (chl != '\n'));
