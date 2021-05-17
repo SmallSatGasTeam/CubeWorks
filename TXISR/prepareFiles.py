@@ -42,16 +42,20 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 	txDataFile = open(transmissionFilePath, 'w') #Create and open TX File
 	txDataFile.write(str(duration*1000) + '\n') #Write first line to txData. Duration of window in milliseconds
 
+	print("Made it through transmission file path.")
+
 	progressFilePath = ('../TXISR/data/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
 	fileChecker.checkFile(transmissionFilePath)	
 	progressFile = open(progressFilePath, 'r+') #Opens progress file as read only
 	progressList = progressFile.read().splitlines()
+	print("Made it through progress FilePath.")
 
 	# Try reading transmission progress from file, if that fails (file is blank) set progress to 0 and write 5 lines of 0's
 	try:
 		transmissionProgress = int(progressList[dataType])
 	except:
 		transmissionProgress = 0
+		print("Progress list didn't exist.")
 		progressFile.write("0\n0\n0\n0\n0\n")
 
 #NOTE: This is a new section of code to try and allow indexing in the file_____
