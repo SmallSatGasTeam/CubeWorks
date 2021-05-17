@@ -209,8 +209,8 @@ void main(int argc,char* argv[])
             //this collects the time stamp
 
             timeStamp[charTimeCount++] = ch;
-            printf("Finding the timestamp.\n");
-            PRINT_DEBUG_c(ch)
+            // printf("Finding the timestamp.\n");
+            // PRINT_DEBUG_c(ch)
 
             if (ch == TIME_DEVISOR)
             {
@@ -220,28 +220,22 @@ void main(int argc,char* argv[])
             }
         } while(!end && !feof(txFile));
 
-        DEBUG_P(Found a colon and leaving the first loop)
-
         do
         {
             //if(feof(txFile)) break;
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
-            ch = fgetc(txFile);
-            chl = fgetc(txFile);
-            printf("I have entered the second loop and ch: %c and chl: %c\n", ch, chl);
             if((ch != '\n') && (chl != '\n')) 
             {
-                printf("Inside of an if statement now and ch: %c chl: %c\n");
                 line[charCount++] = convertCharToHex(chl, ch);
-                PRINT_DEBUG_c(ch)
-                PRINT_DEBUG_c(chl)
-                PRINT_DEBUG(charCount)
+                // PRINT_DEBUG_c(ch)
+                // PRINT_DEBUG_c(chl)
+                // PRINT_DEBUG(charCount)
             }
             //DEBUG_P(Im in the sub loop)
         }while((ch != '\n') && (!feof(txFile)) && (chl != '\n'));
         
-        DEBUG_P(leaving loop)
+        // DEBUG_P(leaving loop)
 
         if(ch == '\n' || feof(txFile))
         {
