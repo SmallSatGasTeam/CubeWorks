@@ -222,7 +222,7 @@ void main(int argc,char* argv[])
 
         do
         {
-            if(feof(txFile)) break;
+            //if(feof(txFile)) break;
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
             if((ch != '\n') && (chl != '\n')) 
