@@ -63,10 +63,15 @@ void main()
     //up date the crontab to run the startup.exe
     printf("\n>>>creating start up proticol<<<\n");
     system("sudo crontab -l > mycron");  
-    system("echo $crontabComand >> mycron");
+    system("echo @reboot sudo runuser pi -c ./startup.exe >> mycron");
     system("sudo crontab mycron");
     system("rm mycron");
+    printf("\n>>>creating start up proticol<<<\n");
+    system("crontab -l > mycron");  
+    system("echo @reboot sudo runuser pi -c ./startup.exe >> mycron");
+    system("crontab mycron");
+    system("rm mycron");
 
-    printf(">>rebooting to finish installation<<<"); 
+    printf(">>rebooting to finish installation<<<\n"); 
     system("sudo reboot");
 }
