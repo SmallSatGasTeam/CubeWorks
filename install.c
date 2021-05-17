@@ -6,6 +6,8 @@
 char GIT_CODE_BASE [] ="https://github.com/SmallSatGasTeam/CubeWorks.git";
 char crontabComand [] ="@reboot sudo runuser pi -c ./startup.exe";
 
+
+//to change the branch take out the -b codeBase for master or change it to a different branch.
 char cammand0 [] = "git clone -b codeBase https://github.com/SmallSatGasTeam/CubeWorks.git CubeWorks0/";
 char cammand1 [] = "git clone -b codeBase https://github.com/SmallSatGasTeam/CubeWorks.git CubeWorks1/";
 char cammand2 [] = "git clone -b codeBase https://github.com/SmallSatGasTeam/CubeWorks.git CubeWorks2/";
