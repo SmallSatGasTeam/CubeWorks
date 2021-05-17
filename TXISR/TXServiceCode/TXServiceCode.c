@@ -179,6 +179,7 @@ void main(int argc,char* argv[])
         //break if we have passed the tx window
         if((currentTime - startTime) > transmissionWindow) 
         {
+            PRINT_TIME(currentTime - startTime)
             DEBUG_P(\nEnding>>>)
             break;
         }
