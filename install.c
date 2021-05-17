@@ -47,14 +47,18 @@ void main()
     printf("\n>>>Creating a CubeWorks4<<<\n");
     system(cammand4);
     
-    #ifdef NOT_MAIN
-        //these lines are for testing on other branches!
-        system(brnachCommand0);
-        system(brnachCommand1);
-        system(brnachCommand2);
-        system(brnachCommand3);
-        system(brnachCommand4);
-    #endif
+    // #ifdef NOT_MAIN
+    //     //these lines are for testing on other branches!
+    //     system(brnachCommand0);
+    //     system(brnachCommand1);
+    //     system(brnachCommand2);
+    //     system(brnachCommand3);
+    //     system(brnachCommand4);
+    // #endif
+
+    //create the start up code, and then move it to the root
+    printf("\n>>>creating multi-code base proticol\n");
+    system("cd CubeWorks0\ngcc startup.c -o startup.exe\ncp startup.exe ~/");
 
     //up date the crontab to run the startup.exe
     printf("\n>>>creating start up proticol<<<\n");
@@ -62,10 +66,6 @@ void main()
     system("echo $crontabComand >> mycron");
     system("sudo crontab mycron");
     system("rm mycron");
-
-    //create the start up code, and then move it to the root
-    printf("\n>>>creating multi-code base proticol\n");
-    system("cd CubeWorks0\ngcc startup.c -o startup.exe\ncp startup.exe ~/");
 
     printf(">>rebooting to finish installation<<<"); 
     system("sudo reboot");
