@@ -21,14 +21,12 @@ The CubeWorks software module is designed to run on a Raspberry Pi Zero W runnin
 	- Python3, `sudo apt install python3`
 	- python3-pip, `sudo apt install python3-pip`
 	- NumPy, `sudo apt install python3-numpy`
-5. Clone this repository onto the pi, `git clone https://github.com/SmallSatGasTeam/CubeWorks.git`
-6. Move into the root directory of the project, `$ cd CubeWorks` 
-7. Install dependencies with `$ pip3 install -r requirements.txt`
-8. To run the project, `cd` into the CubeWorks directory and run: `python3 main.py`
+5. Create the exe file to run for the installation process, run "gcc install.c -o install.exe"
+6. run "./install.exe"
 
 ### RUN ON STARTUP
 To run the testMainFlightLogic.py file (or any other program) on startup, run `sudo crontab -e` and then add the following line to the end of the file:
-`@reboot sudo runuser pi -c "cd /home/pi/Integration/CubeWorks/tests ; python3 testMainFlightLogic.py"`
+`@reboot sudo runuser pi -c ./startup.exe`. NOTE: install.exe will create this for you, only change it if it is needed. 
 
 ## Documentation
 
