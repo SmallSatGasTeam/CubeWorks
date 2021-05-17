@@ -9,8 +9,8 @@ from TXISR import prepareFiles
 #This file duplicates the functionality of POST-BOOM deploy as it relates to communications
 
 class testTransmissions():
-	timeToNextWindow = 1
-	nextWindowTime = -1
+	timeToNextWindow = 13
+	nextWindowTime = 5
 	duration = -1
 	datatype = -1
 	pictureNumber = -1
