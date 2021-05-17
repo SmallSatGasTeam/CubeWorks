@@ -11,7 +11,7 @@ from TXISR import prepareFiles
 class testTransmissions():
 	timeToNextWindow = 13
 	nextWindowTime = 5
-	duration = 6
+	duration = 10
 	datatype = 1
 	pictureNumber = -1
 
