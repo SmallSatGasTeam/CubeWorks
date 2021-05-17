@@ -9,7 +9,7 @@ from TXISR import prepareFiles
 #This file duplicates the functionality of POST-BOOM deploy as it relates to communications
 
 class testTransmissions():
-	timeToNextWindow = -1
+	timeToNextWindow = 1
 	nextWindowTime = -1
 	duration = -1
 	datatype = -1
@@ -45,7 +45,7 @@ class testTransmissions():
 				print("Made it to the second infinite loop.")
 				if((windowTime-time.time()) <= 5):
 					print("Calling TXServiceCode")
-					txisrCodePath = os.path.join(os.path.dirname(__file__), '/home/pi/CubeWorks0/TXISR/TXServiceCode/TXService.run')
+					txisrCodePath = '/home/pi/CubeWorks0/TXISR/TXServiceCode/TXService.run'
 					os.system(txisrCodePath + ' ' + str(self.datatype)) #Call TXISR Code
 					self.timeToNextWindow = -1
 					break
