@@ -16,6 +16,7 @@ Both prepare functions reset /TXISR/TXServiceCode/txFile.txt, and write to it th
 Then, each line consists of a 10-letter string with the timestamp or index of the packet, folowed by ':' and then the hex content of the packet
 """
 def prepareData(duration, dataType, startFromBeginning, startFrom):
+	print("We have arrived in prepareData")
 	if (dataType == 0): #Attitude Data
 		packetLength = 37 + 14 #Packet length in bytes plus the 7 GASPACS bytes on each end
 		fileChecker.checkFile('/home/pi/flightLogicData/Attitude_Data.txt')
@@ -66,6 +67,8 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 		return
 	#This is where the new code starts_________________________________________
 	dataFile.close()
+
+	print("We have made it to Josh's new code")
 
 	#If -1 is passed to StartFrom then search for the furthest transmitted data
 	if startFrom == -1:
@@ -170,6 +173,7 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 	# progressFile.close() #Close file
 	# dataFile.close()
 	# txDataFile.close()
+	print("Success in prepareFiles!")
 
 def preparePicture(duration, dataType, pictureNumber, startFromBeginning):
 	if dataType == 3: #HQ Picture
