@@ -12,7 +12,7 @@ class testTransmissions():
 	timeToNextWindow = 13
 	nextWindowTime = 5
 	duration = 10
-	datatype = 1
+	datatype = 0
 	pictureNumber = -1
 
 	TRANSFER_WINDOW_BUFFER_TIME = 10 #30 seconds
