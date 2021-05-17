@@ -195,6 +195,7 @@ void main(int argc,char* argv[])
         int charCount = 0;
         int end = 0;
         int charTimeCount = 0;
+        char chl;
         for (int i = 0; i < MAX_BYTES_PER_LINE; i++)
         {
             line[i] = '0';
@@ -220,15 +221,16 @@ void main(int argc,char* argv[])
             }
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
-            if(end && (ch != TIME_DEVISOR) && (ch != '\n')) 
+            chl = fgetc(txFile);
+            if(end && (ch != TIME_DEVISOR) && (ch != '\n') && (chl != "\n")) 
             {
                 PRINT_DEBUG_c(ch)
-                line[charCount++] = convertCharToHex(fgetc(txFile), ch);
+                line[charCount++] = convertCharToHex(chl, ch);
                 PRINT_DEBUG_c(ch)
                 PRINT_DEBUG(charCount)
             }
             DEBUG_P(Im in the sub loop)
-        }while((ch != '\n') && (!feof(txFile)));
+        }while((ch != '\n') && (!feof(txFile)) && (chl != '\n'));
         
         
         DEBUG_P(leaving loop)
