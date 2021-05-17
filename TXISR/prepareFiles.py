@@ -115,6 +115,7 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 				dataSize+=1
 			else:
 				txDataFile.write(line)
+				lineNumber+=1
 				dataSize+=1
 
 	progressFile.close()
