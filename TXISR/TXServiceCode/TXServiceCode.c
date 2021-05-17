@@ -220,11 +220,14 @@ void main(int argc,char* argv[])
             }
         } while(!end && !feof(txFile));
 
+        DEBUG_P(Found a semicolon and leaving the first loop)
+
         do
         {
             //if(feof(txFile)) break;
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
+            printf("I have entered the second loop and ch: %c and chl: %c\n", ch, chl);
             if((ch != '\n') && (chl != '\n')) 
             {
                 chl = fgetc(txFile);
