@@ -23,6 +23,7 @@ int main(void){
 
     lastBase = fopen("lastBase.txt", "w");
     fprintf(lastBase, "%d", codeBase);
+    fclose(lastBase);
 
     //I needed a comment in here so I can push
     switch(codeBase) {
@@ -39,8 +40,6 @@ int main(void){
         default: printf("Running code base 0.\n"); system("cd CubeWorks0/tests\nsudo python3 testMainFlightLogicNOTSub.py");
             break;
     }
-
-    fclose(lastBase);
 
     return 0;
 }
