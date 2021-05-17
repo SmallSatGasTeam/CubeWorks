@@ -26,7 +26,7 @@ The CubeWorks software module is designed to run on a Raspberry Pi Zero W runnin
 
 ### RUN ON STARTUP
 To run the testMainFlightLogic.py file (or any other program) on startup, run `sudo crontab -e` and then add the following line to the end of the file:
-`@reboot sudo runuser pi -c ./startup.exe`. NOTE: install.exe will create this for you, only change it if it is needed. 
+`@reboot sudo runuser pi -c "cd ; ./startup.exe"`. NOTE: this command is already part of the immage. 
 
 ## Documentation
 
