@@ -26,7 +26,7 @@ class testTransmissions():
 			while True:
 				#if close enough, prep files
 				#wait until 5 seconds before, return True
-				if(self.timeToNextWindow is not -1 and self.timeToNextWindow<14): #If next window is in 2 minutes or less
+				if(self.timeToNextWindow != -1 and self.timeToNextWindow<14): #If next window is in 2 minutes or less
 					if(self.datatype < 3): #Attitude, TTNC, or Deployment data
 						prepareFiles.prepareData(self.duration, self.datatype)
 						print("Preparing data")
