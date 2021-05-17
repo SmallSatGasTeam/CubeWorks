@@ -220,7 +220,7 @@ void main(int argc,char* argv[])
             }
         } while(!end && !feof(txFile));
 
-        DEBUG_P(Found a semicolon and leaving the first loop)
+        DEBUG_P(Found a colon and leaving the first loop)
 
         do
         {
@@ -230,7 +230,9 @@ void main(int argc,char* argv[])
             printf("I have entered the second loop and ch: %c and chl: %c\n", ch, chl);
             if((ch != '\n') && (chl != '\n')) 
             {
+                ch = fgetc(txFile);
                 chl = fgetc(txFile);
+                prinft("Inside of an if statement now and ch: %c chl: %c\n");
                 line[charCount++] = convertCharToHex(chl, ch);
                 PRINT_DEBUG_c(ch)
                 PRINT_DEBUG_c(chl)
