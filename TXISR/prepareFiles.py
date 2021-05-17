@@ -85,6 +85,7 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 				print("About to collect data from the file.")
 				line = linecache.getline(dataFilePath, lineNumber)
 				print("Successfully collected data to variable line")
+				print(transmissionFilePath, int(line[:10]))
 				print(line)
 				if(line == ""):
 					lineNumber = 0
