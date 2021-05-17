@@ -223,7 +223,7 @@ void main(int argc,char* argv[])
             //this if lets us not send the line number if this is a photo file
             chl = fgetc(txFile);
             sprintf(str, "%f", chl);
-            if(end && (ch != TIME_DEVISOR) && (ch != '\n') && (chl != "\n")) 
+            if(end && (ch != TIME_DEVISOR) && (ch != '\n') && (chl != '\n')) 
             {
                 PRINT_DEBUG_c(ch)
                 line[charCount++] = convertCharToHex(chl, ch);
