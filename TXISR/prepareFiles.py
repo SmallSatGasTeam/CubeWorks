@@ -76,11 +76,15 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 
 	#If -1 is passed to StartFrom then search for the furthest transmitted data
 	if startFrom == -1:
+		print("Inside of first if in prepareFiles.")
 		lineNumber = 0
 		if not startFromBeginning:
+			print("Start from beginning isn't on.")
 			while True:
 				#This line opens and pulls the specific line given so seeking isn't necessary
+				print("About to collect data from the file.")
 				line = linecache.getline(dataFilePath, lineNumber)
+				print("Successfully collected data to variable line")
 				print(line)
 				if(line == ""):
 					lineNumber = 0
