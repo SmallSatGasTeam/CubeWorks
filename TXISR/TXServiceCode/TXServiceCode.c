@@ -384,6 +384,7 @@ int changeCharToInt(char a)
             {
                 DEBUG_P(invaild data type)
                 PRINT_DEBUG_c(a)
+                printf("A in int form: %d", a);
                 return 127;
             }
     }
