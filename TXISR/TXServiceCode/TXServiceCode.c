@@ -230,7 +230,7 @@ void main(int argc,char* argv[])
         }while(ch != '\n' && !feof(txFile));
         
         
-        //DEBUG_P(leaving loop)
+        DEBUG_P(leaving loop)
 
         if(ch == '\n' || feof(txFile))
         {
@@ -262,7 +262,7 @@ void main(int argc,char* argv[])
             if(!(dataType == 127)){
                 flags[dataType] = atoi(timeStamp);
             }
-            //PRINT_LONG(flags[dataType])
+            PRINT_LONG(flags[dataType])
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence. 
             while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
