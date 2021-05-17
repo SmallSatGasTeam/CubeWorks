@@ -9,7 +9,7 @@ from TXISR import prepareFiles
 #This file duplicates the functionality of POST-BOOM deploy as it relates to communications
 
 class testTransmissions():
-	timeToNextWindow = 13
+	timeToNextWindow = 0
 	nextWindowTime = 5
 	duration = 10
 	datatype = 0
@@ -28,6 +28,7 @@ class testTransmissions():
 				#if close enough, prep files
 				#wait until 5 seconds before, return True
 				print("Just inside of while loop", self.timeToNextWindow)
+				self.timeToNextWindow = 0
 				if(self.timeToNextWindow != -1 and self.timeToNextWindow<14): #If next window is in 2 minutes or less
 					print("Inside of first if statement")
 					if(self.datatype < 3): #Attitude, TTNC, or Deployment data
@@ -47,7 +48,7 @@ class testTransmissions():
 					print("Calling TXServiceCode")
 					txisrCodePath = 'cd /home/pi/CubeWorks0/TXISR/TXServiceCode ; sudo ./TXService.run'
 					os.system(txisrCodePath + ' ' + str(self.datatype)) #Call TXISR Code
-					self.timeToNextWindow = 0
+					self.timeToNextWindow = -1
 					break
 				await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
 
