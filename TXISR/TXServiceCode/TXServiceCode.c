@@ -88,8 +88,9 @@ void main(int argc,char* argv[])
     DEBUG_P(Made it past all of these variable instantiations)
     //gather user input
     int dataType;
-    if(argc == 2)
-        dataType = changeCharToInt(*argv[1]);
+    if(argc == 2) {
+        printf("About to convert char to int: %s %c", argv[1], *argv[1]);
+        dataType = changeCharToInt(*argv[1]); }
     else dataType = changeCharToInt(127);
     DEBUG_P(Made it past the problem spot)
     int transmissionWindow = 0;

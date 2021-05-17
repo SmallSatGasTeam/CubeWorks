@@ -96,8 +96,8 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 				lineNumber += 1
 
 		dataSize = 0
+		print("Writing the lines.")
 		while dataSize < numPackets:
-			print("We made it to filling the transmission data file.", numPackets, dataSize)
 			line = linecache.getline(dataFilePath, lineNumber)
 			"""What's the purpose of this if statement? I can tell that it's
 			checking to make sure that we don't hit the end of the file, but
@@ -107,12 +107,10 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 			it be better just to filler data so we knew exactly what to look
 			for in extra data?"""
 			if line == "":
-				print("The line = \"\"")
 				lineNumber = 1
 				#Why do we need continue if we're not skipping anything?
 				continue
 			else:
-				print("Writing the line.")
 				txDataFile.write(line)
 				dataSize += 1
 				lineNumber += 1
