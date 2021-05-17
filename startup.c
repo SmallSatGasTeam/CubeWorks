@@ -22,7 +22,7 @@ int main(void){
     else codeBase++;
 
     lastBase = fopen("lastBase.txt", "w");
-    fprintf(lastBase, "%d", (int) codeBase);
+    fprintf(lastBase, "%d", codeBase);
 
     //I needed a comment in here so I can push
     switch(codeBase) {
