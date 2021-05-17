@@ -211,7 +211,8 @@ void main(int argc,char* argv[])
             if(!end && !feof(txFile))
             {
                 timeStamp[charTimeCount++] = ch;
-                //PRINT_DEBUG_c(ch)
+                printf("Finding the timestamp.");
+                PRINT_DEBUG_c(ch)
             }
             if (ch == TIME_DEVISOR)
             {
@@ -221,9 +222,9 @@ void main(int argc,char* argv[])
             }
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
-            chl = fgetc(txFile);
             if(end && (ch != TIME_DEVISOR) && (ch != '\n') && (chl != '\n')) 
             {
+                chl = fgetc(txFile);
                 line[charCount++] = convertCharToHex(chl, ch);
                 PRINT_DEBUG_c(ch)
                 PRINT_DEBUG_c(chl)
