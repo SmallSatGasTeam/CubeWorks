@@ -47,7 +47,7 @@ class testTransmissions():
 					print("Calling TXServiceCode")
 					txisrCodePath = 'cd /home/pi/CubeWorks0/TXISR/TXServiceCode ; sudo ./TXService.run'
 					os.system(txisrCodePath + ' ' + str(self.datatype)) #Call TXISR Code
-					self.timeToNextWindow = -1
+					self.timeToNextWindow = 0
 					break
 				await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
 
