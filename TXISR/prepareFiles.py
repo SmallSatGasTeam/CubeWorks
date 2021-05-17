@@ -85,12 +85,12 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 				print("About to collect data from the file.")
 				line = linecache.getline(dataFilePath, lineNumber)
 				print("Successfully collected data to variable line")
-				print(transmissionFilePath, int(line[:10]))
+				print(transmissionProgress, int(line[:10]))
 				print(line)
 				if(line == ""):
 					lineNumber = 0
 					break
-				elif int(line[:10]) > transmissionFilePath:
+				elif int(line[:10]) > transmissionProgress:
 					break
 
 				lineNumber += 1
