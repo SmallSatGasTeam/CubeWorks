@@ -50,3 +50,26 @@ be repoerted.
         they would stopp tripping over each other as much.
     357-375 Changed 0-9 from their ascii decimal values to their character
         representation to remove confusion.
+
+#8 <Changed startFromBeginning to boolean> "TXISR/prepareFiles.py flightLogic/missionModes/postBoomDeploy.py"
+    Changed startFromBeginning to boolean to decrease margin of error
+
+#9 <Started writing the index to txWindows.txt> "TXISR/packetProcessing.py"
+    Line 180
+    We needed to know what line to write to so when it gets sent up with all of
+    the transmission data it gets saved to do the windows file.
+
+#10 <Added haslib.md5 to hmac> "TXISR/packetProcessing" "GroundStation/transmissionHandling.py"
+    Packet processing lines 17, 74, 96
+    transmissionHandling lines 4, 93
+    In python 3.8 they made it a requirement for hmac to have three parameters
+    so a thid parameter was added to run the kind of encryption that was already
+    being run before
+
+#11 <Added indexing command> "TXISR/prepareFiles.py TXISR/packetProcessing.py GroundStation/transmissionHandling.py"
+    Prepare files lines 77-78
+    Packet processing lines 62-67
+    transmissionHandling lines 43-44, 77-83
+    Added 34 bytes to the tx window packet that corresponds to the line number
+        to be indexed to. In transmissionHandling a new int34tohex function was
+        also added.

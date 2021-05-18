@@ -41,7 +41,6 @@ def packetSelect():
 			packet += int2tobin(int(input('If picture is requested, number of the picture that is requested: ')))
 			packet += int1tobin(int(input('Type 0 to start transmission where last transmission ended, type 1 to start from beginning: ')))
 			packet += int34tobin(int(input("Type the line number you want to index from or type 0 to go from the last transmission: ")))
-			print("Received all of the necessary ")
 			return hex(int(packet, 2))[2:].zfill(56)
 
 		else:
@@ -64,16 +63,16 @@ def packetSelect():
 		return input('Input hex content to send')
 
 def transmitPacket(packet):
-	#serialPort = serial.Serial('/dev/serial0', 115200)
-	#serialPort.write(b'ES+W23003321\r') #Changed based on which is transmitting
-	#sleep(1)
-	#serialPort.write(b'ES+W22003321\r')
-	#sleep(1)
+	serialPort = serial.Serial('/dev/serial0', 115200)
+	serialPort.write(b'ES+W23003321\r') #Changed based on which is transmitting
+	sleep(1)
+	serialPort.write(b'ES+W22003321\r')
+	sleep(1)
 	data = bytearray.fromhex(b'GASPACS'.hex() + packet + b'GASPACS'.hex())
 	print('Sending Data')
 	print(b'GASPACS'.hex() + packet + b'GASPACS'.hex())
 	print(data)
-	#serialPort.write(data)
+	serialPort.write(data)
 
 def int34tobin(num):
 	#takes a 34 byte int, returns a binary representation of it

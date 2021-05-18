@@ -124,13 +124,12 @@ class postBoomMode:
 				self.__nextWindowTime = float(sendData[0])
 				self.__startFromBeginning = bool(sendData[4])
 				self.__index = int(sendData[5])
-				print(self.__startFromBeginning)
-				print(self.__timeToNextWindow)
-				print(self.__duration)
-				print(self.__datatype)
-				print(self.__pictureNumber)
-				print(self.__index)
-				print(sendData[5])
+				# print(self.__startFromBeginning)
+				# print(self.__timeToNextWindow)
+				# print(self.__duration)
+				# print(self.__datatype)
+				# print(self.__pictureNumber)
+				# print(self.__index)
 			await asyncio.sleep(3) #Checks transmission windows every 10 seconds
 
 	def cancellAllTasks(self, taskList): #Isn't used in this class, but here anyways
