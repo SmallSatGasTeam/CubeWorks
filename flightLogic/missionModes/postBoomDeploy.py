@@ -9,6 +9,7 @@ from flightLogic.getDriverData import *
 import Drivers.eps.EPS as EPS
 from TXISR import prepareFiles
 from TXISR import pythonInterrupt
+from TXISR import packetProcessing
 from protectionProticol.fileProtection import FileReset
 
 
@@ -29,7 +30,8 @@ class postBoomMode:
 		self.__duration = -1
 		self.__datatype = -1
 		self.__pictureNumber = -1
-		self.__startFromBeginning = -1
+		self.__startFromBeginning = False
+		self.__index = -1
 		fileChecker.checkFile("/home/pi/TXISRData/transmissionFlag.txt")
 		self.__transmissionFlagFile = open('/home/pi/TXISRData/transmissionFlag.txt')
 		self.__txWindowsPath = ('/home/pi/TXISRData/txWindows.txt')
@@ -50,7 +52,7 @@ class postBoomMode:
 				#wait until 5 seconds before, return True
 				if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<14): #If next window is in 2 minutes or less
 					if(self.__datatype < 3): #Attitude, TTNC, or Deployment data
-						prepareFiles.prepareData(self.__duration, self.__datatype, self.__startFromBeginning, -1)
+						prepareFiles.prepareData(self.__duration, self.__datatype, self.__startFromBeginning, self.__index)
 						print("Preparing data")
 					else:
 						prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__startFromBeginning)
@@ -111,12 +113,15 @@ class postBoomMode:
 				self.__datatype = int(sendData[2])
 				self.__pictureNumber = int(sendData[3])
 				self.__nextWindowTime = float(sendData[0])
-				self.__startFromBeginning = int(sendData[4])
+				self.__startFromBeginning = bool(sendData[4])
+				self.__index = int(sendData[5])
 				#print(self.__startFromBeginning)
 				#print(self.__timeToNextWindow)
 				#print(self.__duration)
 				#print(self.__datatype)
 				#print(self.__pictureNumber)
+				#print(self.__index)
+				print(sendData[5])
 			await asyncio.sleep(3) #Checks transmission windows every 10 seconds
 
 	def cancellAllTasks(self, taskList): #Isn't used in this class, but here anyways

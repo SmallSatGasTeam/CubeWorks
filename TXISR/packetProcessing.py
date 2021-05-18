@@ -18,6 +18,8 @@ from protectionProticol.fileProtection import FileReset
 
 fileChecker = FileReset()
 
+index = -1
+
 def processAX25(AX25):  #Placeholder function
 	#Check AX25 Transmission flag, if it is OK then open a pyserial connection and transmit the content of the packet
 	pass
@@ -147,6 +149,19 @@ async def processPacket(packetData):
 				#Turn on AX25
 				print("Turn on AX25")
 				enableAX25()
+
+			if binaryData[56:192] == ''.zfill(136):
+				print("Starting new transmission from the start of the last transmission")
+				index = -1
+				startFromBeginning = 0
+			elif binaryData[56:192] == (''.zfill(135) + '1'):
+				print("Starting from the beginning.")
+				index = -1
+				startFromBeginning = 1
+			else:
+				print("Starting new transmission from line:", int(binaryData[56:192]))
+				index = int(binaryData[56:192])
+				startFromBeginning = 0
 		else:
 			print("Hashes do not match, will not execute commands!")
 
@@ -168,7 +183,8 @@ def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber, startFro
 	TXWindow_File.write(str(windowDuration)+',')
 	TXWindow_File.write(str(dataType)+',')
 	TXWindow_File.write(str(pictureNumber)+',')
-	TXWindow_File.write(str(startFromBeginning))
+	TXWindow_File.write(str(startFromBeginning)+',')
+	TXWindow_File.write(str(index))
 	TXWindow_File.write('\n')
 	
 	# close file
