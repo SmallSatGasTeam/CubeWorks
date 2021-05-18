@@ -16,6 +16,7 @@ Both prepare functions reset /TXISR/TXServiceCode/txFile.txt, and write to it th
 Then, each line consists of a 10-letter string with the timestamp or index of the packet, folowed by ':' and then the hex content of the packet
 """
 def prepareData(duration, dataType, startFromBeginning, startFrom):
+	print("We have arrived in prepareData")
 	if (dataType == 0): #Attitude Data
 		packetLength = 37 + 14 #Packet length in bytes plus the 7 GASPACS bytes on each end
 		fileChecker.checkFile('/home/pi/flightLogicData/Attitude_Data.txt')
@@ -41,16 +42,20 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 	txDataFile = open(transmissionFilePath, 'w') #Create and open TX File
 	txDataFile.write(str(duration*1000) + '\n') #Write first line to txData. Duration of window in milliseconds
 
-	progressFilePath = ('../TXISR/data/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
+	print("Made it through transmission file path.")
+
+	progressFilePath = ('/home/pi/TXISRData/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
 	fileChecker.checkFile(transmissionFilePath)	
 	progressFile = open(progressFilePath, 'r+') #Opens progress file as read only
 	progressList = progressFile.read().splitlines()
+	print("Made it through progress FilePath.")
 
 	# Try reading transmission progress from file, if that fails (file is blank) set progress to 0 and write 5 lines of 0's
 	try:
 		transmissionProgress = int(progressList[dataType])
 	except:
 		transmissionProgress = 0
+		print("Progress list didn't exist.")
 		progressFile.write("0\n0\n0\n0\n0\n")
 
 #NOTE: This is a new section of code to try and allow indexing in the file_____
@@ -67,23 +72,31 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 	#This is where the new code starts_________________________________________
 	dataFile.close()
 
+	print("We have made it to Josh's new code")
+
 	#If -1 is passed to StartFrom then search for the furthest transmitted data
 	if startFrom == -1:
+		print("Inside of first if in prepareFiles.")
 		lineNumber = 0
 		if not startFromBeginning:
+			print("Start from beginning isn't on.")
 			while True:
 				#This line opens and pulls the specific line given so seeking isn't necessary
+				print("About to collect data from the file.")
 				line = linecache.getline(dataFilePath, lineNumber)
+				print("Successfully collected data to variable line")
+				print(transmissionProgress, int(line[:10]))
 				print(line)
 				if(line == ""):
 					lineNumber = 0
 					break
-				elif int(line[:10]) > transmissionFilePath:
+				elif int(line[:10]) > transmissionProgress:
 					break
 
 				lineNumber += 1
 
 		dataSize = 0
+		print("Writing the lines.")
 		while dataSize < numPackets:
 			line = linecache.getline(dataFilePath, lineNumber)
 			"""What's the purpose of this if statement? I can tell that it's
@@ -94,7 +107,7 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 			it be better just to filler data so we knew exactly what to look
 			for in extra data?"""
 			if line == "":
-				lineNumber = 0
+				lineNumber = 1
 				#Why do we need continue if we're not skipping anything?
 				continue
 			else:
@@ -110,11 +123,12 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 		while dataSize < numPackets:
 			line = linecache.getline(dataFilePath, lineNumber)
 			if (line == "") | (lineNumber == 0):
-				line = linecache.getline(dataFilePath, 0)
+				line = linecache.getline(dataFilePath, 1)
 				txDataFile.write(line)
 				dataSize+=1
 			else:
 				txDataFile.write(line)
+				lineNumber+=1
 				dataSize+=1
 
 	progressFile.close()
@@ -169,6 +183,7 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 	# progressFile.close() #Close file
 	# dataFile.close()
 	# txDataFile.close()
+	print("Success in prepareFiles!")
 
 def preparePicture(duration, dataType, pictureNumber, startFromBeginning):
 	if dataType == 3: #HQ Picture

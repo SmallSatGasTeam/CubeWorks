@@ -9,10 +9,10 @@ from TXISR import prepareFiles
 #This file duplicates the functionality of POST-BOOM deploy as it relates to communications
 
 class testTransmissions():
-	timeToNextWindow = -1
-	nextWindowTime = -1
-	duration = -1
-	datatype = -1
+	timeToNextWindow = 0
+	nextWindowTime = 5
+	duration = 10
+	datatype = 0
 	pictureNumber = -1
 
 	TRANSFER_WINDOW_BUFFER_TIME = 10 #30 seconds
@@ -20,26 +20,33 @@ class testTransmissions():
 
 	async def main(self):
 		while True:
-			txWindowsPath = os.path.join(os.path.dirname(__file__), '../TXISR/data/txWindows.txt')
+			txWindowsPath = '/home/pi/TXISRData/txWindows.txt'
 			asyncio.create_task(pythonInterrupt.interrupt())
 			asyncio.create_task(self.readNextTransferWindow(txWindowsPath))
+			print("Initialized async processes")
 			while True:
 				#if close enough, prep files
 				#wait until 5 seconds before, return True
-				if(self.timeToNextWindow is not -1 and self.timeToNextWindow<14): #If next window is in 2 minutes or less
+				print("Just inside of while loop", self.timeToNextWindow)
+				if(self.timeToNextWindow != -1 and self.timeToNextWindow<14): #If next window is in 2 minutes or less
+					print("Inside of first if statement")
 					if(self.datatype < 3): #Attitude, TTNC, or Deployment data
-						prepareFiles.prepareData(self.duration, self.datatype)
+						print("Inside of the if of the second if statement.")
+						prepareFiles.prepareData(self.duration, self.datatype, 0, 1100)
 						print("Preparing data")
 					else:
+						print("Inside of else of second if statement")
 						prepareFiles.preparePicture(self.duration, self.datatype, self.pictureNumber)
 						print("Preparing Picture data")
 					break
+				self.timeToNextWindow = 0
 				await asyncio.sleep(5)
 			windowTime = self.nextWindowTime
 			while True:
+				print("Made it to the second infinite loop.")
 				if((windowTime-time.time()) <= 5):
 					print("Calling TXServiceCode")
-					txisrCodePath = os.path.join(os.path.dirname(__file__), '../TXISR/TXServiceCode/TXService.run')
+					txisrCodePath = 'cd /home/pi/CubeWorks0/TXISR/TXServiceCode ; sudo ./TXService.run'
 					os.system(txisrCodePath + ' ' + str(self.datatype)) #Call TXISR Code
 					self.timeToNextWindow = -1
 					break

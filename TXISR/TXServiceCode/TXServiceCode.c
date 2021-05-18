@@ -16,7 +16,7 @@
 #define ENABLE "./configPinsTXISR"
 #define DISABLE "./configPinsTXISRDone"
 
-#define FLAG_FILE "/home/pi/testingStartup/TXISRData/flagsFile.txt" //change this later for the real program
+#define FLAG_FILE "/home/pi/TXISRData/flagsFile.txt" //change this later for the real program
 #define FORMAT_FILE "../data/txFile.txt" //this is the file that dallan will creat 
 #define UART_PORT "/dev/serial0" //this is serial port name, make sure this is correct for the final code
 
@@ -88,8 +88,11 @@ void main(int argc,char* argv[])
     DEBUG_P(Made it past all of these variable instantiations)
     //gather user input
     int dataType;
-    if(argc == 2)
+    if(argc == 2) {
+        printf("About to convert char to int: %s %c\n", argv[1], *argv[1]);
         dataType = changeCharToInt(*argv[1]);
+        printf("DataType: %d\n", dataType);
+    }
     else dataType = changeCharToInt(127);
     DEBUG_P(Made it past the problem spot)
     int transmissionWindow = 0;
@@ -179,6 +182,7 @@ void main(int argc,char* argv[])
         //break if we have passed the tx window
         if((currentTime - startTime) > transmissionWindow) 
         {
+            PRINT_TIME(currentTime - startTime)
             DEBUG_P(\nEnding>>>)
             break;
         }
@@ -191,6 +195,7 @@ void main(int argc,char* argv[])
         int charCount = 0;
         int end = 0;
         int charTimeCount = 0;
+        char chl = '0';
         for (int i = 0; i < MAX_BYTES_PER_LINE; i++)
         {
             line[i] = '0';
@@ -198,37 +203,42 @@ void main(int argc,char* argv[])
         
         //DEBUG_P(Im in the main loop)
 
-        do 
-        {
+        do {
             if(feof(txFile)) break;
             ch = fgetc(txFile);
             //this collects the time stamp
-            if(!end && !feof(txFile))
-            {
-                timeStamp[charTimeCount++] = ch;
-                //PRINT_DEBUG_c(ch)
-            }
+
+            timeStamp[charTimeCount++] = ch;
+            // printf("Finding the timestamp.\n");
+            // PRINT_DEBUG_c(ch)
+
             if (ch == TIME_DEVISOR)
             {
                 end = 1;
                 //if you dont wanna send the : uncommit the next line into the code
                 //continue;
             }
+        } while(!end && !feof(txFile));
+
+        // DEBUG_P(Found a colon and leaving the first loop)
+
+        while((ch != '\n') && (!feof(txFile)) && (chl != '\n'))
+        {
+            //if(feof(txFile)) break;
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
-            if(end && (ch != TIME_DEVISOR) && (ch != 10)) 
-            {
-                line[charCount++] = convertCharToHex(fgetc(txFile), ch);
-                //PRINT_DEBUG_c(ch)
-                //PRINT_DEBUG(charCount)
-            }
-            //DEBUG_P(Im in the sub loop)
-        }while(ch != '\n' && !feof(txFile));
+            ch = fgetc(txFile);
+            chl = fgetc(txFile);
+            line[charCount++] = convertCharToHex(chl, ch);
+            PRINT_DEBUG_c(ch)
+            PRINT_DEBUG_c(chl)
+            PRINT_DEBUG(charCount)
+            // DEBUG_P(Im in the sub loop)
+        }
         
-        
-        //DEBUG_P(leaving loop)
+        // DEBUG_P(leaving loop)
 
-        if(ch == '\n' || feof(txFile))
+        if((ch == '\n') || (feof(txFile)) || (chl == '\n'))
         {
             //transmit the data
             #ifdef DEBUG
@@ -258,7 +268,7 @@ void main(int argc,char* argv[])
             if(!(dataType == 127)){
                 flags[dataType] = atoi(timeStamp);
             }
-            //PRINT_LONG(flags[dataType])
+            PRINT_LONG(flags[dataType])
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence. 
             while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
@@ -344,25 +354,25 @@ int changeCharToInt(char a)
     switch(a)
     {
         //use assci table to decode this part of the code
-        case 48:
+        case '0':
             return 0;
-        case 49:
+        case '1':
             return 1;
-        case 50:
+        case '2':
             return 2;
-        case 51:
+        case '3':
             return 3;
-        case 52:
+        case '4':
             return 4;
-        case 53:
+        case '5':
             return 5;
-        case 54:
+        case '6':
             return 6;
-        case 55:
+        case '7':
             return 7;
-        case 56:
+        case '8':
             return 8;
-        case 57:
+        case '9':
             return 9;
         case 'a':
             return 10;
@@ -380,6 +390,7 @@ int changeCharToInt(char a)
             {
                 DEBUG_P(invaild data type)
                 PRINT_DEBUG_c(a)
+                printf("A in int form: %d\n", a);
                 return 127;
             }
     }
