@@ -5,6 +5,7 @@ The header and footer is the Hex representation of 'GASPACS'. The pythonInterrup
 processPacket() will convert the packet data to binary, and then go through bit by bit and perform the functionality specified in the packet.
 '''
 # NOTE: This code is not asyncronous currently.
+import hashlib
 import sys
 sys.path.append('../')
 import time
@@ -65,7 +66,7 @@ async def processPacket(packetData):
 		print("Received Hash: ", receivedHash)
 
 		# Generated hash from received data
-		generatedHash = hmac.new(secretKey, bytes(binaryData[0:88], 'utf-8'))
+		generatedHash = hmac.new(secretKey, bytes(binaryData[0:88], 'utf-8'), hashlib.md5)
 		generatedHashHex = generatedHash.hexdigest()
 		generatedHashLength = len(generatedHashHex) * 4
 		generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)
@@ -87,7 +88,7 @@ async def processPacket(packetData):
 		print("Received Hash: ", receivedHash)
 
 		# Generated hash from received data
-		generatedHash = hmac.new(secretKey, bytes(binaryData[0:56], 'utf-8'))
+		generatedHash = hmac.new(secretKey, bytes(binaryData[0:56], 'utf-8'), hashlib.md5)
 		generatedHashHex = generatedHash.hexdigest()
 		generatedHashLength = len(generatedHashHex) * 4
 		generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)

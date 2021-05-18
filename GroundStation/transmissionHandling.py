@@ -2,6 +2,7 @@ import asyncio
 import serial
 from time import sleep
 import hmac
+import hashlib
 
 def packetSelect():
 	creatingPacket = input('Type 0 for a pre-created packet, and type 1 for creating a new packet, and type 2 for sending your own data bordered by GASPACS')
@@ -61,16 +62,16 @@ def packetSelect():
 		return input('Input hex content to send')
 
 def transmitPacket(packet):
-	serialPort = serial.Serial('/dev/serial0', 115200)
-	serialPort.write(b'ES+W23003321\r') #Changed based on which is transmitting
-	sleep(1)
-	serialPort.write(b'ES+W22003321\r')
-	sleep(1)
+	#serialPort = serial.Serial('/dev/serial0', 115200)
+	#serialPort.write(b'ES+W23003321\r') #Changed based on which is transmitting
+	#sleep(1)
+	#serialPort.write(b'ES+W22003321\r')
+	#sleep(1)
 	data = bytearray.fromhex(b'GASPACS'.hex() + packet + b'GASPACS'.hex())
 	print('Sending Data')
 	print(b'GASPACS'.hex() + packet + b'GASPACS'.hex())
 	print(data)
-	serialPort.write(data)
+	#serialPort.write(data)
 
 
 def int4tobin(num):
@@ -89,8 +90,8 @@ def encrypt(packet):
 	#encrypt packet using hmac and append hash to the end of the packet
 	key = b'SECRETKEY'
 	binaryPacketLength = len(packet) * 4
-	binaryPacket = bytes(format(int(packet,16), 'b').zfill(binaryPacketLength), 'utf8')
-	hash = hmac.new(key, binaryPacket)
+	binaryPacket = bytes(format(int(packet,16), 'b').zfill(binaryPacketLength), 'utf-8')
+	hash = hmac.new(key, binaryPacket, hashlib.md5)
 	hashhex = hash.hexdigest()
 	fullpacket = packet + hashhex
 	return fullpacket

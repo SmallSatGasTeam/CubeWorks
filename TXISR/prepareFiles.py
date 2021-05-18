@@ -153,7 +153,7 @@ def preparePicture(duration, dataType, pictureNumber, startFromBeginning):
 	progressFile = open(progressFilePath) #Opens progress file as read only
 	progressList = progressFile.read().splitlines()
 	# If Start From Beginning flag is false, set transmissionProgress to the last transmitted packet. Else, set to true to start from beginning.
-	if (startFromBeginning):
+	if startFromBeginning:
 		transmissionProgress = 0
 	else:
 		transmissionProgress = int(progressList[dataType])
