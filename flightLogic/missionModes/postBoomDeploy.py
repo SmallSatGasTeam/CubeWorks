@@ -103,8 +103,8 @@ class postBoomMode:
 			sendData = 0
 			soonestWindowTime = 0
 			for line in transferWindowFile:
-				#print("reading line: ")
-				#print(line)
+				print("reading line: ")
+				print(line)
 				data = line.split(",")
 				print(data)
 				#data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number
