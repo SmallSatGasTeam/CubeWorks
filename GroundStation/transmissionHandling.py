@@ -5,7 +5,7 @@ import hmac
 import hashlib
 
 def packetSelect():
-	creatingPacket = input('Type 0 for a pre-created packet, and type 1 for creating a new packet, and type 2 for sending your own data bordered by GASPACS')
+	creatingPacket = input('Type 0 for a pre-created packet, and type 1 for creating a new packet, and type 2 for sending your own data bordered by GASPACS: ')
 	if(creatingPacket == '0'): #Pre-Created packet
 		packet = input('Select from these packet types:\n0 - deploy AeroBoom with enabled TX\n1 - Create Attitude Data transmission window in 30 seconds, with a 30 second duration\n2 - Disable TX\n3 - Take picture, enable TX\n4 - Clear TX windows and progress and enable TX\n5 - Reboot, enable TX\n6 - Create transmission window in 25 seconds, for 30 seconds, transmitting LQ picture number 0\n7 - Create transmission window in 25 seconds, for 30 seconds, transmitting TTNC data\n8 - Create a transmisison window in 25 seconds, for 30 seconds, transmitting deploy data\n9 - Create a transmission window in 25 seconds, for 30 seconds, transmitting HQ picture number 0\n')
 		if packet == '0':
@@ -40,7 +40,9 @@ def packetSelect():
 			packet += int1tobin(int(input('Number from 0-4 corresponding to requested data type. See flight logic document: ')))
 			packet += int2tobin(int(input('If picture is requested, number of the picture that is requested: ')))
 			packet += int1tobin(int(input('Type 0 to start transmission where last transmission ended, type 1 to start from beginning: ')))
-			return hex(int(packet, 2))[2:].zfill(22)
+			packet += int34tobin(int(input("Type the line number you want to index from or type 0 to go from the last transmission: ")))
+			print("Received all of the necessary ")
+			return hex(int(packet, 2))[2:].zfill(56)
 
 		else:
 			#Command Packet
@@ -73,6 +75,13 @@ def transmitPacket(packet):
 	print(data)
 	#serialPort.write(data)
 
+def int34tobin(num):
+	#takes a 34 byte int, returns a binary representation of it
+	a = num >> 17
+	b = num & 0b11111111111111111
+	outa = str(format(a, '0131072b'))[-131072:]
+	outb = str(format(b, '0131072b'))[-131072:]
+	return outa+outb
 
 def int4tobin(num):
 	#takes a 4 byte int, returns a binary representation of it
@@ -104,7 +113,3 @@ def main():
 
 if __name__ == '__main__':
 	main()
-
-
-
-

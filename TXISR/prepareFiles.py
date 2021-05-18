@@ -74,18 +74,8 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 	if startFrom == -1:
 		lineNumber = 0
 		if not startFromBeginning:
-			while True:
-				#This line opens and pulls the specific line given so seeking isn't necessary
-				line = linecache.getline(dataFilePath, lineNumber)
-				print(transmissionProgress, int(line[:10]))
-				print(line)
-				if(line == ""):
-					lineNumber = 0
-					break
-				elif int(line[:10]) > transmissionProgress:
-					break
-
-				lineNumber += 1
+			progressFile.seek(transmissionProgress)
+			lineNumber = progressFile.tell()
 
 		dataSize = 0
 		while dataSize < numPackets:
