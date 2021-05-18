@@ -29,7 +29,7 @@ class postBoomMode:
 		self.__duration = -1
 		self.__datatype = -1
 		self.__pictureNumber = -1
-		self.__startFromBeginning = -1
+		self.__startFromBeginning = False
 		fileChecker.checkFile("/home/pi/TXISRData/transmissionFlag.txt")
 		self.__transmissionFlagFile = open('/home/pi/TXISRData/transmissionFlag.txt')
 		self.__txWindowsPath = ('/home/pi/TXISRData/txWindows.txt')
