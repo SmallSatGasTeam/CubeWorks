@@ -123,7 +123,7 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 		while dataSize < numPackets:
 			line = linecache.getline(dataFilePath, lineNumber)
 			if (line == "") | (lineNumber == 0):
-				line = linecache.getline(dataFilePath, 0)
+				line = linecache.getline(dataFilePath, 1)
 				txDataFile.write(line)
 				dataSize+=1
 			else:

@@ -32,7 +32,7 @@ class testTransmissions():
 					print("Inside of first if statement")
 					if(self.datatype < 3): #Attitude, TTNC, or Deployment data
 						print("Inside of the if of the second if statement.")
-						prepareFiles.prepareData(self.duration, self.datatype, 0, 1000)
+						prepareFiles.prepareData(self.duration, self.datatype, 0, 1100)
 						print("Preparing data")
 					else:
 						print("Inside of else of second if statement")
