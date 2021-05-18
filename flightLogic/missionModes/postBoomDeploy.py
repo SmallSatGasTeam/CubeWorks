@@ -36,9 +36,11 @@ class postBoomMode:
 		self.__transmissionFlagFile = open('/home/pi/TXISRData/transmissionFlag.txt')
 		self.__txWindowsPath = ('/home/pi/TXISRData/txWindows.txt')
 		fileChecker.checkFile(self.__txWindowsPath)
+		print("Initialized postBoomDeploy")
 
 	async def run(self):
 		#Set up background processes
+		print("Inside of run in postBoomDeploy")
 		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt()))
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(4))) #Post-boom is mode 4
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
