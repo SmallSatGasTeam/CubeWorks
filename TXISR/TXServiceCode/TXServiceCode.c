@@ -233,7 +233,7 @@ void main(int argc,char* argv[])
             PRINT_DEBUG_c(ch)
             PRINT_DEBUG_c(chl)
             PRINT_DEBUG(charCount)
-            //DEBUG_P(Im in the sub loop)
+            // DEBUG_P(Im in the sub loop)
         }
         
         // DEBUG_P(leaving loop)
