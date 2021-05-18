@@ -112,6 +112,7 @@ class postBoomMode:
 					if(soonestWindowTime == 0 or float(data[0]) - time.time() < soonestWindowTime):
 						soonestWindowTime = float(data[0]) - time.time()
 						sendData = data
+						print(sendData)
 			if not(sendData == 0):
 				#print("Found next transfer window: ")
 				#print(sendData)
