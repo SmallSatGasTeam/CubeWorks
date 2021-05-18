@@ -12,7 +12,14 @@ Framework components are designed to be modular, and easy to add to and remove f
 ## Installation
 The CubeWorks software module is designed to run on a Raspberry Pi Zero W running Raspbian lite os as its operating system.  For production, Raspbian without the desktop environment will be used, but during development the DE is fine to use.  For development, using a Raspberry Pi 3 B+ is fine.  The framework has not been tested on a Pi 4, but since it's all in python, it should run just fine.  
 
-### Installation Process
+### PREFERRED Installation Process with CubeWorks Image 
+1. Download the [CubeWorks Raspbian Lite image](https://drive.google.com/file/d/1HayKQmH7LOljnG0bI8ov7oj3vNJvfH41/view?usp=sharing)
+2. Flash image onto 8GB micro SD card
+3. Run image on Raspberry Pi Zero W
+4. Log in (email coordinator@gas.usu.edu if you do not have the login password)
+5. run "./install.exe"
+
+### MANUAL Installation Process (How the CubeWorks Image was created)
 1. Image a Raspberry Pi with Raspbian lite and boot the Pi
 2. Use `sudo raspi-config` to set the proper network settings, set a user password, localisation options.
 3. Under Interfacing Options enable Camera, SSH, SPI, I2C, and Serial ("No" to login shell, "Yes" to serial interface)
@@ -23,39 +30,49 @@ The CubeWorks software module is designed to run on a Raspberry Pi Zero W runnin
 	- NumPy, `sudo apt install python3-numpy`
 5. Create the exe file to run for the installation process, run "gcc install.c -o install.exe"
 6. run "./install.exe"
-
-### RUN ON STARTUP
-To run the testMainFlightLogic.py file (or any other program) on startup, run `sudo crontab -e` and then add the following line to the end of the file:
-`@reboot sudo runuser pi -c "cd ; ./startup.exe"`. NOTE: this command is already part of the image. 
-
-## Documentation
-
-This project is documented using Doxygen.  Instructions for building the docs are located in `CubeWorks/docs/README.md`.  
+7. To run the testMainFlightLogic.py file (or any other program) on startup, run `sudo crontab -e` and then add the following line to the end of the file:
+`@reboot sudo runuser pi -c "cd ; ./startup.exe"`.  
 
 ### File Structure
 This file structure comprises the major compoments of CubeWorks.  
 
 ```
-CubeWorks
-├── Components
-│   ├── Component.py
-│   ├── ContextPrinter.py
-│   ├── Database.py
-│   └── __init__.py
+Cubeworks
 ├── Drivers
-│   ├── driver0
-│   │   ├── driver0.py
-│   │   └── __init__.py
-│   └── driver1
-│       ├── driver1.py
-│       └── __init__.py
-├── main.py
+│   ├── ExampleDriver
+│   │   ├── ExampleDriver.py
+│   │   └── __init__.py
+│   ├── __init__.py
+│   └── Driver.py
+├── flightLogic
+│   ├── mainFlightLogic.py
+│   ├── missionModes
+│   │   └── example.py
+│   ├── postBoomTime.txt
+│   └── saveTofiles.py
+├── GroundStation
+│   ├── example.sh
+│   └── example.py
+├── __init__.py
+├── log.txt
 ├── mission_modes.py
+├── protectionProticol
+│   └── fileProtection.py
 ├── README.md
+├── requirements.txt
+├── runOnBoot.py
 ├── tests
-│   └── unit_testing_example.py
-├── unit_tests.py
+│   ├── __init__.py
+│   ├── testAllDrivers.py
+│   └── unit_testing_example.py
+├── TXISR
+│   ├── example.py
+│   └── __init__.py
 └── watchdog
+    ├── arduino_watchdog_v5
+    │   └── arduino_watchdog_v5.ino
+    └── Heartbeat
+        └── Heartbeat.py
 ```
 
 ### Class Structure
