@@ -25,7 +25,6 @@ int main(void){
     fprintf(lastBase, "%d", codeBase);
     fclose(lastBase);
 
-    //I needed a comment in here so I can push
     switch(codeBase) {
         case 0: printf("Running code base 0.\n"); system("cd CubeWorks0/tests\nsudo python3 testMainFlightLogicNOTSub.py");
             break;
