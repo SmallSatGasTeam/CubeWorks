@@ -90,6 +90,7 @@ class postBoomMode:
 				upTime += 60
 
 	async def readNextTransferWindow(self, transferWindowFilename):
+		print("Inside of transfer window.")
 		while True:
 			#read the given transfer window file and extract the data for the soonest transfer window
 			fileChecker.checkFile(transferWindowFilename)
