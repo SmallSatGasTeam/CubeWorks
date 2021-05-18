@@ -47,9 +47,12 @@ class postBoomMode:
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
 		self.__tasks.append(asyncio.create_task(self.readNextTransferWindow(self.__txWindowsPath)))
 		self.__tasks.append(asyncio.create_task(self.rebootLoop()))
+		print("Initalized all tasks.")
 
 		while True:
+			print("Inside of first while loop")
 			while True:
+				print("Inside of second while loop")
 				#if close enough, prep files
 				#wait until 5 seconds before, return True
 				if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<14): #If next window is in 2 minutes or less
