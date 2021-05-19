@@ -114,6 +114,7 @@ class postBoomMode:
 				#data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number
 				print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
 				if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME):  #if the transfer window is at BUFFER_TIME milliseconds in the future
+					print("WE ARE GETTING TO THE PLACE")
 					if(soonestWindowTime == 0 or float(data[0]) - time.time() < soonestWindowTime):
 						soonestWindowTime = float(data[0]) - time.time()
 						sendData = data
