@@ -36,7 +36,35 @@ Framework components are designed to be modular, and easy to add to and remove f
 ### File Structure
 This file structure comprises the major compoments of CubeWorks.  
 
+###Up dating the code:
+1. Get the updateCode.exe (it should be in any of the cubeworks repositories.)
+2. use this command gcc upDateCode.c -o upDateCode.exe ; cp upDateCode.exe ~/ ; rm upDateCode.exe
+3. return to the root and then use ./upDateCode.exe
+
 ```
+Pi system
+├──Home
+│   ├──CubeWorks0
+│   ├──CubeWorks1
+│   ├──CubeWorks2
+│   ├──CubeWorks3
+│   ├──CubeWorks4
+│   ├──flightlogicData
+│   |	├──Attitude_Data.txt
+│   |	├──TTNC_Data.txt
+│   |	├──BootRecords.txt
+│   |	├──backupBootRecors.txt
+│   |	├──Deploy_Data.txt
+│   ├──TXISRData
+│   |	├──AX25Flag.txt
+│   |	├──flagsFile.txt
+│   |	├──transmissionFla.txt
+│   |	├──txWindows.txt
+│   ├──install.exe
+│   ├──lastBase.txt
+│   ├──upDateCode.exe
+
+
 Cubeworks
 ├── Drivers
 │   ├── ExampleDriver
