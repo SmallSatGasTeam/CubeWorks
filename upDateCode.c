@@ -15,6 +15,8 @@ void main()
     system(cammand2);
     system(cammand3);
     system(cammand4);
+
+    printf(">>>Everything is up to date\n");
 }
 
 //this code will update all the code bases 
