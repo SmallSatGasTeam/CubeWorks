@@ -31,7 +31,6 @@ char cammand4 [] = "git clone -b codeBase https://github.com/SmallSatGasTeam/Cub
 
 void main()
 {
-    char buff[100] ;
     printf("\n>>>Creating a CubeWorks0<<<\n");
     //install the first code base
     system(cammand0);
@@ -63,16 +62,12 @@ void main()
     system("cd CubeWorks0\ngcc startup.c -o startup.exe\ncp startup.exe ~/");
 
     //up date the crontab to run the startup.exe
-    printf("\n>>>creating start up proticol<<<\n");
-    system("sudo crontab -l > mycron");  
-    system("echo @reboot sudo runuser pi -c ./startup.exe >> mycron");
-    system("sudo crontab mycron");
-    system("rm mycron");
-    printf("\n>>>creating start up proticol<<<\n");
-    system("crontab -l > mycron");  
-    system("echo @reboot sudo runuser pi -c ./startup.exe >> mycron");
-    system("crontab mycron");
-    system("rm mycron");
+    // printf("\n>>>creating start up proticol<<<\n");
+    // system("sudo crontab -l > mycron");  
+    // system("echo @reboot sudo runuser pi -c cd ; ./startup.exe >> mycron");
+    // system("sudo crontab mycron");
+    // system("rm mycron");
+
 
     printf(">>rebooting to finish installation<<<\n"); 
     system("sudo reboot");
