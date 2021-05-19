@@ -125,6 +125,8 @@ a.out
 flightLogic/data/*
 flightLogic/bootRecords
 flightLogic/backupBootRecords
+~/flightLogicData/*
+~/TXISRData/*
 
 # TXISR Data Files
 TXISR/data/*
