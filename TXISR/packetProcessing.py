@@ -18,6 +18,7 @@ import hmac
 from protectionProticol.fileProtection import FileReset
 
 fileChecker = FileReset()
+skippingToPostBoom = False
 
 def processAX25(AX25):  #Placeholder function
 	#Check AX25 Transmission flag, if it is OK then open a pyserial connection and transmit the content of the packet
@@ -159,9 +160,10 @@ async def processPacket(packetData):
 			if binaryData[56:64] == '00000000':
 				#Chose whether or not to skip to post boom deploy
 				print("Running flight logic normally.")
+				skippingToPostBoom = False
 			else:
 				print("Skipping to post boom deploy.")
-
+				skip()
 		else:
 			print("Hashes do not match, will not execute commands!")
 
@@ -252,6 +254,9 @@ def clearTXProgress():
 	progressFile.write('0\n')
 	progressFile.write('0\n')
 	progressFile.write('0\n')
+
+def skip():
+	skippingToPostBoom = True
 
 # Command packet
 # processPacket('C8')
