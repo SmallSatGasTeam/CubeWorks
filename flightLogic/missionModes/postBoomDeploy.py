@@ -119,6 +119,7 @@ class postBoomMode:
 						sendData = data
 						print("Data: " + data)
 						print(sendData)
+			transferWindowFilename.close()
 			if not(sendData == 0):
 				#print("Found next transfer window: ")
 				#print(sendData)
