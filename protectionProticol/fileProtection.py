@@ -85,7 +85,7 @@ class FileReset():
             print("File being reset " + self.__filePath)
         else:
             file.close()
-            #print("File is ok " + self.__filePath)
+            print("File is ok " + self.__filePath)
 
     # This checks a single directory to see if it exists
     def checkDir(self, path):
@@ -101,7 +101,7 @@ class FileReset():
                 break
             count += 1
         dirPath = self.__filePath[:len(self.__filePath) - count]
-        #print(dirPath)
+        print(dirPath)
         
         # Check directory
         # The dir doesnt exist recreate it
