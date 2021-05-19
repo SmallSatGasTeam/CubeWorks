@@ -9,6 +9,7 @@ from flightLogic.getDriverData import *
 import Drivers.eps.EPS as EPS
 from TXISR import prepareFiles
 from TXISR import pythonInterrupt
+from TXISR import packetProcessing
 from protectionProticol.fileProtection import FileReset
 
 
@@ -29,28 +30,34 @@ class postBoomMode:
 		self.__duration = -1
 		self.__datatype = -1
 		self.__pictureNumber = -1
-		self.__startFromBeginning = -1
+		self.__startFromBeginning = False
+		self.__index = -1
 		fileChecker.checkFile("/home/pi/TXISRData/transmissionFlag.txt")
 		self.__transmissionFlagFile = open('/home/pi/TXISRData/transmissionFlag.txt')
 		self.__txWindowsPath = ('/home/pi/TXISRData/txWindows.txt')
 		fileChecker.checkFile(self.__txWindowsPath)
+		print("Initialized postBoomDeploy")
 
 	async def run(self):
 		#Set up background processes
+		print("Inside of run in postBoomDeploy")
 		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt()))
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(4))) #Post-boom is mode 4
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
 		self.__tasks.append(asyncio.create_task(self.readNextTransferWindow(self.__txWindowsPath)))
 		self.__tasks.append(asyncio.create_task(self.rebootLoop()))
+		print("Initalized all tasks.")
 
 		while True:
+			print("Inside of first while loop")
 			while True:
+				print("Inside of second while loop")
 				#if close enough, prep files
 				#wait until 5 seconds before, return True
 				if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<14): #If next window is in 2 minutes or less
 					if(self.__datatype < 3): #Attitude, TTNC, or Deployment data
-						prepareFiles.prepareData(self.__duration, self.__datatype, self.__startFromBeginning, -1)
+						prepareFiles.prepareData(self.__duration, self.__datatype, self.__startFromBeginning, self.__index)
 						print("Preparing data")
 					else:
 						prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__startFromBeginning)
@@ -65,7 +72,7 @@ class postBoomMode:
 					if(self.__transmissionFlagFile.readline()=='Enabled'):
 						txisrCodePath = '../TXISR/TXServiceCode/TXService.run'
 						print(self.__datatype)
-						subprocess.Popen([txisrCodePath, str(self.__datatype)])
+						subprocess.Popen(["sudo", txisrCodePath, str(self.__datatype)])
 						#os.system(txisrCodePath + ' ' + str(self.__datatype) + ' &') #Call TXISR Code
 						self.__timeToNextWindow = -1
 						break
@@ -89,20 +96,24 @@ class postBoomMode:
 
 	async def readNextTransferWindow(self, transferWindowFilename):
 		while True:
+			print("Inside transfer window.")
 			#read the given transfer window file and extract the data for the soonest transfer window
 			fileChecker.checkFile(transferWindowFilename)
 			transferWindowFile = open(transferWindowFilename)
 			sendData = 0
 			soonestWindowTime = 0
 			for line in transferWindowFile:
-				#print("reading line: ")
-				#print(line)
+				print("reading line: ")
+				print(line)
 				data = line.split(",")
+				print(data)
 				#data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number
+				print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
 				if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME):  #if the transfer window is at BUFFER_TIME milliseconds in the future
 					if(soonestWindowTime == 0 or float(data[0]) - time.time() < soonestWindowTime):
 						soonestWindowTime = float(data[0]) - time.time()
 						sendData = data
+						print(sendData)
 			if not(sendData == 0):
 				#print("Found next transfer window: ")
 				#print(sendData)
@@ -111,12 +122,14 @@ class postBoomMode:
 				self.__datatype = int(sendData[2])
 				self.__pictureNumber = int(sendData[3])
 				self.__nextWindowTime = float(sendData[0])
-				self.__startFromBeginning = int(sendData[4])
-				#print(self.__startFromBeginning)
-				#print(self.__timeToNextWindow)
-				#print(self.__duration)
-				#print(self.__datatype)
-				#print(self.__pictureNumber)
+				self.__startFromBeginning = bool(sendData[4])
+				self.__index = int(sendData[5])
+				# print(self.__startFromBeginning)
+				# print(self.__timeToNextWindow)
+				# print(self.__duration)
+				# print(self.__datatype)
+				# print(self.__pictureNumber)
+				# print(self.__index)
 			await asyncio.sleep(3) #Checks transmission windows every 10 seconds
 
 	def cancellAllTasks(self, taskList): #Isn't used in this class, but here anyways

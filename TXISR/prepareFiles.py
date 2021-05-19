@@ -16,7 +16,6 @@ Both prepare functions reset /TXISR/TXServiceCode/txFile.txt, and write to it th
 Then, each line consists of a 10-letter string with the timestamp or index of the packet, folowed by ':' and then the hex content of the packet
 """
 def prepareData(duration, dataType, startFromBeginning, startFrom):
-	print("We have arrived in prepareData")
 	if (dataType == 0): #Attitude Data
 		packetLength = 37 + 14 #Packet length in bytes plus the 7 GASPACS bytes on each end
 		fileChecker.checkFile('/home/pi/flightLogicData/Attitude_Data.txt')
@@ -71,32 +70,14 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 		return
 	#This is where the new code starts_________________________________________
 	dataFile.close()
-
-	print("We have made it to Josh's new code")
-
 	#If -1 is passed to StartFrom then search for the furthest transmitted data
 	if startFrom == -1:
-		print("Inside of first if in prepareFiles.")
 		lineNumber = 0
 		if not startFromBeginning:
-			print("Start from beginning isn't on.")
-			while True:
-				#This line opens and pulls the specific line given so seeking isn't necessary
-				print("About to collect data from the file.")
-				line = linecache.getline(dataFilePath, lineNumber)
-				print("Successfully collected data to variable line")
-				print(transmissionProgress, int(line[:10]))
-				print(line)
-				if(line == ""):
-					lineNumber = 0
-					break
-				elif int(line[:10]) > transmissionProgress:
-					break
-
-				lineNumber += 1
+			progressFile.seek(transmissionProgress)
+			lineNumber = progressFile.tell()
 
 		dataSize = 0
-		print("Writing the lines.")
 		while dataSize < numPackets:
 			line = linecache.getline(dataFilePath, lineNumber)
 			"""What's the purpose of this if statement? I can tell that it's
@@ -134,57 +115,6 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 	progressFile.close()
 	txDataFile.close()
 
-#______________________________________________________________________________
-	# fileChecker.checkFile(dataFilePath)
-	# dataFile = open(dataFilePath) #Open data file, this gets copied into txFile.
-	# print("data file size: ", os.stat(dataFilePath).st_size)
-	# print("min file size: ", minFileSize)
-	# if(os.stat(dataFilePath).st_size >= minFileSize): #File is of minimum length
-	# 	print("enough data")
-	# 	pass
-	# else:
-	# 	print("not enough data")
-	# 	return
-	# #NOTE: THIS COULD CAUSE ERRORS WITH THE FILE SIMULTANEOUSLY BEING WRITTEN INTO. THIS IS #1 ON LIST OF THINGS TO FIX POST-CDR!!! @SHAWN
-	# lineNumber = 0 #Line to start adding data from
-	# while True:
-	# 	line = dataFile.readline()
-	# 	print(line)
-	# 	if(line==''):
-	# 		lineNumber = 0
-	# 		break
-
-	# 	if(int(line[:10])>transmissionProgress): #This line is further ahead than the transmission progress, transmit going from this line forwards.
-	# 		break
-
-	# 	lineNumber += 1 #Advance by one line
-
-
-	# dataFile.seek(0) #Reset progress in file and go to the right line. This is an inefficient way of doing this, but it *will* work
-	# i=0
-
-	# # If start from beginning flag is not set, read the lines up until the last transmitted line. This way the next time dataFile.readline() is called, the first non-transmitted packet is saved.
-	# if (startFromBeginning == 0):
-	# 	while i<lineNumber:
-	# 		dataFile.readline()
-	# 		i+=1
-
-	# #Now, we are at the appropriate place in the file again. Start reading lines into transmission file
-	# dataSize = 0 #How many lines have we written to Data file?
-	# while dataSize<numPackets:
-	# 	line = dataFile.readline()
-	# 	if line == '': #End of file, seek to start
-	# 		dataFile.seek(0)
-	# 		continue
-	# 	else:
-	# 		txDataFile.write(line) #Write line from recorded data file into transmission file
-	# 		dataSize+=1
-	# 		continue
-	# progressFile.close() #Close file
-	# dataFile.close()
-	# txDataFile.close()
-	print("Success in prepareFiles!")
-
 def preparePicture(duration, dataType, pictureNumber, startFromBeginning):
 	if dataType == 3: #HQ Picture
 		cam = Camera()
@@ -212,11 +142,11 @@ def preparePicture(duration, dataType, pictureNumber, startFromBeginning):
 	fileChecker.checkFile(progressFilePath)
 	progressFile = open(progressFilePath) #Opens progress file as read only
 	progressList = progressFile.read().splitlines()
-	# If Start From Beginning flag is not set (0), set transmissionProgress to the last transmitted packet. Else, set to 0 to start from beginning.
-	if (startFromBeginning == 0):
-		transmissionProgress = int(progressList[dataType])
-	else:
+	# If Start From Beginning flag is false, set transmissionProgress to the last transmitted packet. Else, set to true to start from beginning.
+	if startFromBeginning:
 		transmissionProgress = 0
+	else:
+		transmissionProgress = int(progressList[dataType])
 
 	fileChecker.checkFile(dataFilePath)
 	pictureFile = open(dataFilePath, 'rb')

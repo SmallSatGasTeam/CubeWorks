@@ -13,6 +13,7 @@ from flightLogic.missionModes import safe
 from protectionProticol.fileProtection import FileReset
 import asyncio
 from TXISR import pythonInterrupt
+from TXISR import packetProcessing
 
 
 # from TXISR import interrupt
@@ -196,6 +197,11 @@ def readData():
 
 	recordData(bootCount, antennaDeployed, lastMode)
 	return bootCount, antennaDeployed, lastMode
+
+async def skipToPostBoom(currentMode):
+	if packetProcessing.skippingToPostBoom:
+		currentMode.cancelAllTasks
+		return True
 
 # def startTXISR(saveobject):  # Setup for TXISR
 # This sets up the interupt on the uart pin that triggers when we get commincation over uart
