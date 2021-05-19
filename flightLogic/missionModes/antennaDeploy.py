@@ -74,6 +74,7 @@ class antennaMode:
 			print("Caught thrown exception in cancelling background task")
 
 	async def skipToPostBoom(self):
+		print("Inside skipToPostBoom, skipping value is:", packetProcessing.skippingToPostBoom)
 		if packetProcessing.skippingToPostBoom:
 			self.cancelAllTasks(self.__tasks)
 			return True
