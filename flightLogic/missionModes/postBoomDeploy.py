@@ -122,7 +122,7 @@ class postBoomMode:
 
 			transferWindowFilename.close()
 
-			if not(sendData == NULL):
+			if not(sendData == None):
 				#print("Found next transfer window: ")
 				#print(sendData)
 				self.__timeToNextWindow = float(sendData[0]) - time.time()
@@ -132,10 +132,11 @@ class postBoomMode:
 				self.__nextWindowTime = float(sendData[0])
 				self.__startFromBeginning = bool(sendData[4])
 				self.__index = int(sendData[5])
+				print("About to print variables: ")
 				# print(self.__startFromBeginning)
-				# print(self.__timeToNextWindow)
+				print(self.__timeToNextWindow)
 				# print(self.__duration)
-				# print(self.__datatype)
+				print(self.__datatype)
 				# print(self.__pictureNumber)
 				# print(self.__index)
 			await asyncio.sleep(3) #Checks transmission windows every 10 seconds
