@@ -54,15 +54,15 @@ Pi system
 │   |	├──TTNC_Data.txt
 │   |	├──BootRecords.txt
 │   |	├──backupBootRecors.txt
-│   |	├──Deploy_Data.txt
+│   |	└── Deploy_Data.txt
 │   ├──TXISRData
 │   |	├──AX25Flag.txt
 │   |	├──flagsFile.txt
 │   |	├──transmissionFla.txt
-│   |	├──txWindows.txt
+│   |	└── txWindows.txt
 │   ├──install.exe
 │   ├──lastBase.txt
-│   ├──upDateCode.exe
+└── └── upDateCode.exe
 
 
 Cubeworks
