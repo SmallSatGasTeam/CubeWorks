@@ -122,7 +122,7 @@ class postBoomMode:
 
 			transferWindowFilename.close()
 
-			if not(sendData == NULL):
+			if not(sendData == None):
 				#print("Found next transfer window: ")
 				#print(sendData)
 				self.__timeToNextWindow = float(sendData[0]) - time.time()
