@@ -3,7 +3,7 @@ import sys
 sys.path.append('../')
 import os.path
 from flightLogic import getDriverData
-import flightLogic.saveTofiles as saveTofiles
+import flightLogic.saveTofiles as saveTofileswaiting
 from Drivers.antennaDoor.AntennaDoor import AntennaDoor as antennaDoor
 from flightLogic.missionModes.antennaDeploy import antennaMode as antennaMode
 from flightLogic.missionModes.preBoomDeploy import preBoomMode
@@ -76,6 +76,8 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 
 	# This is the implementation of the BOOT mode logic.
 	if not antennaDeployed:  # First, sleep for 35 minutes
+		if packetProcessing.skippingToPostBoom: # Check if we're skipping to Post Boom Deploy
+			lastMode = 4
 		print('Antenna is undeployed, waiting 60 seconds')
 		await asyncio.sleep(delay)  # Sleep for 35 minutes
 
