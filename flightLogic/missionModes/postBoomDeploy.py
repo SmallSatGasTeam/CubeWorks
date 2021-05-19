@@ -119,7 +119,6 @@ class postBoomMode:
 						sendData = data
 						print("Data: " + str(data))
 
-			transferWindowFilename.close()
 
 			print("PRINTING SEND DATA")
 			print(str(sendData))
