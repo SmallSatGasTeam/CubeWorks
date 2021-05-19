@@ -56,7 +56,6 @@ class postBoomMode:
 				print("WE ARE ABOUT TO PRINT THE DATA TYPE!!!!!!!")
 				print(self.__datatype)
 				print(self.__timeToNextWindow)
-				print(self.__tasks)
 				#if close enough, prep files
 				#wait until 5 seconds before, return True
 				if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<14): #If next window is in 14 seconds or less
@@ -122,8 +121,8 @@ class postBoomMode:
 
 			print(sendData.__len__())
 			if sendData.__len__() != 6:
-				#print("Found next transfer window: ")
-				#print(sendData)
+				print("Found next transfer window: ")
+				print(sendData)
 				self.__timeToNextWindow = float(sendData[0]) - time.time()
 				self.__duration = int(sendData[1])
 				self.__datatype = int(sendData[2])
