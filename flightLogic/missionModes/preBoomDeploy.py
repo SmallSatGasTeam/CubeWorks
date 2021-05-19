@@ -239,7 +239,7 @@ class preBoomMode:
 					else:
 						print('Transmission flag is not enabled')
 				await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
-		await asyncio.sleep(1)
+			await asyncio.sleep(1)
 
 class unexpectedValue(Exception):
 	print("Received unexpected value.")
