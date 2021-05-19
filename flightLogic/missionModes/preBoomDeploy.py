@@ -51,7 +51,6 @@ class preBoomMode:
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
 		self.__tasks.append(asyncio.create_task(self.sunCheck()))
 		self.__tasks.append(asyncio.create_task(self.batteryCheck()))
-		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
 		self.__tasks.append(asyncio.current_task(self.transmit()))
 
 		while True: #iterate through array, checking for set amount of dark minutes, then set amount of light minutes no greater than the maximum. When light minutes are greater than the maximum, empties array
@@ -164,11 +163,9 @@ class preBoomMode:
 	async def skipToPostBoom(self):
 		print("Inside skipToPostBoom, skipping value is:", packetProcessing.skippingToPostBoom)
 		if packetProcessing.skippingToPostBoom:
-			print("Cancelling all tasks to skip to post boom")
 			self.cancelAllTasks(self.__tasks)
 			return True
 		else:
-			print("Waiting one second in skip to post boom")
 			await asyncio.sleep(1)
 
 	async def readNextTransferWindow(self, transferWindowFilename):
@@ -190,7 +187,8 @@ class preBoomMode:
 					if(soonestWindowTime == 0 or float(data[0]) - time.time() < soonestWindowTime):
 						soonestWindowTime = float(data[0]) - time.time()
 						sendData = data
-						print(sendData)
+						print(sendData)()
+			transferWindowFilename.close
 			if not(sendData == 0):
 				#print("Found next transfer window: ")
 				#print(sendData)
