@@ -119,6 +119,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 		lastMode = 2
 		# TRY/EXCEPT preBoomDeploys
 		await asyncio.gather(preBoomDeploy.run())
+		print("Finished running preBoomDeploy")
 
 
 	while True: # This loop executes the rest of the flight logic
