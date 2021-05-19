@@ -53,6 +53,8 @@ class postBoomMode:
 			print("Inside of first while loop")
 			while True:
 				print("Inside of second while loop")
+				print("WE ARE ABOUT TO PRINT THE DATA TYPE!!!!!!!")
+				print(self.__datatype)
 				#if close enough, prep files
 				#wait until 5 seconds before, return True
 				if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<14): #If next window is in 2 minutes or less
