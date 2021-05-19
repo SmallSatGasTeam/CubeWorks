@@ -37,6 +37,13 @@ This project is documented using Doxygen.  Instructions for building the docs ar
 ### File Structure
 This file structure comprises the major compoments of CubeWorks.  
 
+
+###Up dating the code:
+1. Get the updateCode.exe (it should be in any of the cubeworks repositories.)
+2. use this command gcc upDateCode.c -o upDateCode.exe ; cp upDateCode.exe ~/ ; rm upDateCode.exe
+3. return to the root and then use ./upDateCode.exe
+
+
 ```
 CubeWorks
 ├── Components
