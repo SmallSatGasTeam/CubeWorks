@@ -9,6 +9,7 @@ from Drivers.sunSensors import sunSensorDriver
 from DummyDrivers.sunSensors import sunSensorDriver as DummySunSensorDriver
 from TXISR import pythonInterrupt
 from inspect import currentframe, getframeinfo
+from TXISR import packetProcessing
 
 
 sunSensorMin = 0.0
@@ -45,6 +46,7 @@ class preBoomMode:
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
 		self.__tasks.append(asyncio.create_task(self.sunCheck()))
 		self.__tasks.append(asyncio.create_task(self.batteryCheck()))
+		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
 		while True: #iterate through array, checking for set amount of dark minutes, then set amount of light minutes no greater than the maximum. When light minutes are greater than the maximum, empties array
 			i=0
 			darkLength = 0
@@ -149,6 +151,13 @@ class preBoomMode:
 				t.cancel()
 		except asyncio.exceptions.CancelledException:
 			print("Caught thrown exception in cancelling background task")
+	
+	async def skipToPostBoom(self):
+		if packetProcessing.skippingToPostBoom:
+			self.cancelAllTasks(self.__tasks)
+			return True
+		else:
+			await asyncio.sleep(1)
 
 class unexpectedValue(Exception):
 	print("Received unexpected value.")

@@ -198,12 +198,6 @@ def readData():
 	recordData(bootCount, antennaDeployed, lastMode)
 	return bootCount, antennaDeployed, lastMode
 
-async def skipToPostBoom(currentMode)
-	if skippingToPostBoom:
-		currentMode.cancelAllTasks
-		return True
-
 # def startTXISR(saveobject):  # Setup for TXISR
 # This sets up the interupt on the uart pin that triggers when we get commincation over uart
 # thread.start(interrupt.watchReceptions(saveobject)) <-- TODO fix that import
-

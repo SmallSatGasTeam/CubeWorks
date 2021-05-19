@@ -8,6 +8,7 @@ import asyncio
 from flightLogic.missionModes import safe
 import flightLogic.getDriverData as getDriverData
 from TXISR import pythonInterrupt
+from TXISR import packetProcessing
 
 
 class antennaMode:
@@ -30,6 +31,7 @@ class antennaMode:
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(1))) #Antenna deploy is mission mode 1
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck())) #Check battery conditions, run safe mode if battery drops below safe level
+		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
 		eps=EPS()
 		while True: #Runs antenna deploy loop
 			if (eps.getBusVoltage()>self.deployVoltage):
@@ -62,3 +64,10 @@ class antennaMode:
 				t.cancel()
 		except asyncio.exceptions.CancelledException:
 			print("Caught thrown exception in cancelling background task")
+
+	async def skipToPostBoom(self):
+		if packetProcessing.skippingToPostBoom:
+			self.cancelAllTasks(self.__tasks)
+			return True
+		else:
+			await asyncio.sleep(1)

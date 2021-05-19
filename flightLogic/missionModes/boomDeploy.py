@@ -7,6 +7,7 @@ from flightLogic.getDriverData import *
 import Drivers.boomDeployer as boomDeployer
 from Drivers.camera import Camera
 from TXISR import pythonInterrupt
+from TXISR import packetProcessing
 
 
 
@@ -26,6 +27,7 @@ class boomMode:
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__getDeployData.collectDeployData()))
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
+		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
 
 		# Deploy boom, take picture
 		await asyncio.sleep(5)
@@ -48,3 +50,10 @@ class boomMode:
 				t.cancel()
 		except asyncio.exceptions.CancelledException:
 			print("Caught thrown exception in cancelling background task")
+
+	async def skipToPostBoom(self):
+		if packetProcessing.skippingToPostBoom:
+			self.cancelAllTasks(self.__tasks)
+			return True
+		else:
+			await asyncio.sleep(1)
