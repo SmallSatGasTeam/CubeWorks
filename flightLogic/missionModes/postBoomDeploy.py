@@ -118,10 +118,10 @@ class postBoomMode:
 						soonestWindowTime = float(data[0]) - time.time()
 						sendData = data
 						print("Data: " + str(data))
-						print(str(sendData))
 
 			transferWindowFilename.close()
-
+			
+			print(str(sendData))
 			if not(sendData == None):
 				#print("Found next transfer window: ")
 				#print(sendData)
