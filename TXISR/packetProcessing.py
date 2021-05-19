@@ -18,7 +18,7 @@ import hmac
 from protectionProticol.fileProtection import FileReset
 
 fileChecker = FileReset()
-skippingToPostBoom = True
+skippingToPostBoom = False
 
 def processAX25(AX25):  #Placeholder function
 	#Check AX25 Transmission flag, if it is OK then open a pyserial connection and transmit the content of the packet
