@@ -37,9 +37,9 @@ Framework components are designed to be modular, and easy to add to and remove f
 This file structure comprises the major compoments of CubeWorks.  
 
 ###Up dating the code:
-1. Get the updateCode.exe (it should be in any of the cubeworks repositories.)
-2. use this command gcc upDateCode.c -o upDateCode.exe ; cp upDateCode.exe ~/ ; rm upDateCode.exe
-3. return to the root and then use ./upDateCode.exe
+1. Get the updateCode.c (it should be in any of the cubeworks repositories.)
+2. use this command `gcc upDateCode.c -o upDateCode.exe ; cp upDateCode.exe ~/ ; rm upDateCode.exe`
+3. return to the root and then use `./upDateCode.exe`
 
 ```
 Pi system
