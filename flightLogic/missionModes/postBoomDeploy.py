@@ -119,7 +119,7 @@ class postBoomMode:
 					if(soonestWindowTime == 0 or float(data[0]) - time.time() < soonestWindowTime):
 						soonestWindowTime = float(data[0]) - time.time()
 						sendData = data
-			
+			transferWindowFilename.close()
 			if not(sendData == 0):
 				print("Data: " + data)
 				print(sendData)
