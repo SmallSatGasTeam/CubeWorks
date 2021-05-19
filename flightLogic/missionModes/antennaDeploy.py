@@ -1,4 +1,5 @@
 import sys
+import subprocess
 sys.path.append('../../')
 import time
 from Drivers.backupAntennaDeployer import BackupAntennaDeployer
@@ -9,6 +10,7 @@ from flightLogic.missionModes import safe
 import flightLogic.getDriverData as getDriverData
 from TXISR import pythonInterrupt
 from TXISR import packetProcessing
+from TXISR import prepareFiles
 from protectionProticol.fileProtection import FileReset
 
 fileChecker = FileReset()
@@ -26,6 +28,7 @@ class antennaMode:
 		self.__safeMode = safeModeObject
 		self.__antennaDeployer = BackupAntennaDeployer()
 		self.__antennaDoor = AntennaDoor()
+		self.__timeToNextWindow = -1
 
 
 	async def run(self):
@@ -35,6 +38,7 @@ class antennaMode:
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck())) #Check battery conditions, run safe mode if battery drops below safe level
 		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
+		self.__tasks.append(asyncio.create_task(self.transmit()))
 		eps=EPS()
 		if self.skipToPostBoom():
 			return True
@@ -67,7 +71,37 @@ class antennaMode:
 					self.timeWaited = self.timeWaited+1
 					await asyncio.sleep(60)
 
-
+	async def transmit(self):
+		while True:
+			print("Inside of first while loop")
+			while True:
+				print("Inside of second while loop")
+				#if close enough, prep files
+				#wait until 5 seconds before, return True
+				if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<14): #If next window is in 2 minutes or less
+					if(self.__datatype < 3): #Attitude, TTNC, or Deployment data
+						prepareFiles.prepareData(self.__duration, self.__datatype, self.__startFromBeginning, self.__index)
+						print("Preparing data")
+					else:
+						prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__startFromBeginning)
+						print("Preparing Picture data")
+					break
+				await asyncio.sleep(5)
+			windowTime = self.__nextWindowTime
+			while True:
+				if((windowTime-time.time()) <= 5):
+					fileChecker.checkFile('/home/pi/TXISRData/transmissionFlag.txt')
+					self.__transmissionFlagFile.seek(0)
+					if(self.__transmissionFlagFile.readline()=='Enabled'):
+						txisrCodePath = '../TXISR/TXServiceCode/TXService.run'
+						print(self.__datatype)
+						subprocess.Popen(["sudo", txisrCodePath, str(self.__datatype)])
+						#os.system(txisrCodePath + ' ' + str(self.__datatype) + ' &') #Call TXISR Code
+						self.__timeToNextWindow = -1
+						break
+					else:
+						print('Transmission flag is not enabled')
+				await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
 
 	def cancelAllTasks(self, taskList):
 		try:
