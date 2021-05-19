@@ -1,4 +1,5 @@
 import sys
+import subprocess
 sys.path.append('../../')
 import time
 from Drivers.backupAntennaDeployer import BackupAntennaDeployer
@@ -37,6 +38,7 @@ class antennaMode:
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck())) #Check battery conditions, run safe mode if battery drops below safe level
 		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
+		self.__tasks.append(asyncio.create_task(self.transmit()))
 		eps=EPS()
 		if self.skipToPostBoom():
 			return True
@@ -69,6 +71,7 @@ class antennaMode:
 					self.timeWaited = self.timeWaited+1
 					await asyncio.sleep(60)
 
+	async def transmit(self):
 		while True:
 			print("Inside of first while loop")
 			while True:
