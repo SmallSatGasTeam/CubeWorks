@@ -120,26 +120,27 @@ class postBoomMode:
 						sendData = data
 						print("Data: " + str(data))
 
-
-			print("PRINTING SEND DATA")
-			print(str(sendData))
-			#if not(sendData == None):
-			#print("Found next transfer window: ")
-			#print(sendData)
-			self.__timeToNextWindow = float(sendData[0]) - time.time()
-			self.__duration = int(sendData[1])
-			self.__datatype = int(sendData[2])
-			self.__pictureNumber = int(sendData[3])
-			self.__nextWindowTime = float(sendData[0])
-			self.__startFromBeginning = bool(sendData[4])
-			self.__index = int(sendData[5])
-			print("About to print variables: ")
-			# print(self.__startFromBeginning)
-			print(self.__timeToNextWindow)
-			# print(self.__duration)
-			print(self.__datatype)
-			# print(self.__pictureNumber)
-			# print(self.__index)
+			print(sendData.__len__)
+			if sendData.__len__() != 6:
+				#print("Found next transfer window: ")
+				#print(sendData)
+				self.__timeToNextWindow = float(sendData[0]) - time.time()
+				self.__duration = int(sendData[1])
+				self.__datatype = int(sendData[2])
+				self.__pictureNumber = int(sendData[3])
+				self.__nextWindowTime = float(sendData[0])
+				self.__startFromBeginning = bool(sendData[4])
+				self.__index = int(sendData[5])
+				# print(self.__startFromBeginning)
+				# print(self.__timeToNextWindow)
+				# print(self.__duration)
+				# print(self.__datatype)
+				# print(self.__pictureNumber)
+				# print(self.__index)
+			elif sendData.__len__() >= 1:
+				self.__timeToNextWindow = float(sendData[0]) - time.time()
+			else:
+				print("sendData is empty.")
 			await asyncio.sleep(3) #Checks transmission windows every 10 seconds
 
 	def cancellAllTasks(self, taskList): #Isn't used in this class, but here anyways
