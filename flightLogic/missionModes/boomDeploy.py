@@ -30,16 +30,20 @@ class boomMode:
 		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
 
 		# Deploy boom, take picture
+		if self.skipToPostBoom():
+			return True
 		await asyncio.sleep(5)
 		deployer = boomDeployer.BoomDeployer()
 		cam = Camera()
 		await deployer.deploy() #From LOGAN: Deployer.deploy is now an asyncio method, run it like the others
 		
+		if self.skipToPostBoom():
+			return True
+
 		try:
 			cam.takePicture()
 		except Exception as e:
 			print("Failed to take a picture because we received excpetion:", repr(e))
-			
 		await asyncio.sleep(5)
 		self.cancelAllTasks(self.__tasks) # Cancel all background tasks
 		return True  # Go to post-boom deploy
