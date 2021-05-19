@@ -115,7 +115,7 @@ class postBoomMode:
 				print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
 				if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME):  #if the transfer window is at BUFFER_TIME milliseconds in the future
 					print("WE ARE GETTING TO THE PLACE")
-					print("soonestWindowTime: " + soonestWindowTime)
+					print("soonestWindowTime: " + str(soonestWindowTime))
 					if(soonestWindowTime == 0 or float(data[0]) - time.time() < soonestWindowTime):
 						soonestWindowTime = float(data[0]) - time.time()
 						sendData = data
