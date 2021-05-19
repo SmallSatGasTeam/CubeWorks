@@ -30,7 +30,7 @@ class boomMode:
 		self.__tasks.append(asyncio.create_task(self.__getDeployData.collectDeployData()))
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
 		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
-		self.__tasks.append(asyncio.current_task(self.transmit()))
+		self.__tasks.append(asyncio.create_task(self.transmit()))
 
 		# Deploy boom, take picture
 		if await self.skipToPostBoom():

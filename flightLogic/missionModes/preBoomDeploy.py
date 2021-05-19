@@ -51,7 +51,7 @@ class preBoomMode:
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
 		self.__tasks.append(asyncio.create_task(self.sunCheck()))
 		self.__tasks.append(asyncio.create_task(self.batteryCheck()))
-		self.__tasks.append(asyncio.current_task(self.transmit()))
+		self.__tasks.append(asyncio.create_task(self.transmit()))
 
 		while True: #iterate through array, checking for set amount of dark minutes, then set amount of light minutes no greater than the maximum. When light minutes are greater than the maximum, empties array
 			if await self.skipToPostBoom():
