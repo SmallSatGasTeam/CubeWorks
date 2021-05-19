@@ -28,13 +28,9 @@ class boomMode:
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(3)))  # Boom deploy is mode 3
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__getDeployData.collectDeployData()))
-		print("Initiated deplay, attitude, and ttnc data.")
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
-		print("Instantiated threshold check.")
 		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
-		print("Instantiated skip to post boom")
 		self.__tasks.append(asyncio.create_task(self.transmit()))
-		print("Instantiated transmit.")
 
 		# Deploy boom, take picture
 		if await self.skipToPostBoom():
