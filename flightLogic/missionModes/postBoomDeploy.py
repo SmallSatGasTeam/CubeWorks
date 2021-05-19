@@ -58,7 +58,7 @@ class postBoomMode:
 				print(self.__timeToNextWindow)
 				#if close enough, prep files
 				#wait until 5 seconds before, return True
-				if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<14): #If next window is in 2 minutes or less
+				if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<14): #If next window is in 14 seconds or less
 					if(self.__datatype < 3): #Attitude, TTNC, or Deployment data
 						prepareFiles.prepareData(self.__duration, self.__datatype, self.__startFromBeginning, self.__index)
 						print("Preparing data")
@@ -117,6 +117,7 @@ class postBoomMode:
 					if(soonestWindowTime == 0 or float(data[0]) - time.time() < soonestWindowTime):
 						soonestWindowTime = float(data[0]) - time.time()
 						sendData = data
+						print("Data: " + data)
 						print(sendData)
 			transferWindowFilename.close()
 			if not(sendData == 0):
