@@ -198,8 +198,8 @@ def readData():
 	recordData(bootCount, antennaDeployed, lastMode)
 	return bootCount, antennaDeployed, lastMode
 
-async def skipToPostBoom(currentMode)
-	if skippingToPostBoom:
+async def skipToPostBoom(currentMode):
+	if packetProcessing.skippingToPostBoom:
 		currentMode.cancelAllTasks
 		return True
 
