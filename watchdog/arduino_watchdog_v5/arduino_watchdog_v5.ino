@@ -174,7 +174,11 @@ void setup() {
   //This is a work around to make the dual booting functional. In case the Arduino is reset when the Pi rebots, the Arduino will wait for the Boot time before beginning watchdog operations
   //delay(BOOT_DELAY_TIME);
   
+<<<<<<< HEAD
   for(int i = 0; i < 120; i++){
+=======
+  for(int i = 0; i < 20; i++){
+>>>>>>> 5b002827dfe2863e37deb5e5aa8d6a1edcf325d9
     digitalWrite(LED, HIGH);
     delay(5000);
     digitalWrite(LED, LOW);
