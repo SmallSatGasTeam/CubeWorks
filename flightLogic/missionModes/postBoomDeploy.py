@@ -56,6 +56,7 @@ class postBoomMode:
 				print("WE ARE ABOUT TO PRINT THE DATA TYPE!!!!!!!")
 				print(self.__datatype)
 				print(self.__timeToNextWindow)
+				print(self.__tasks)
 				#if close enough, prep files
 				#wait until 5 seconds before, return True
 				if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<14): #If next window is in 14 seconds or less
