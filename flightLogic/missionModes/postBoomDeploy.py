@@ -73,11 +73,11 @@ class postBoomMode:
 					fileChecker.checkFile('/home/pi/TXISRData/transmissionFlag.txt')
 					self.__transmissionFlagFile.seek(0)
 					if(self.__transmissionFlagFile.readline()=='Enabled'):
-						txisrCodePath = '../TXISR/TXServiceCode/TXService.run'
+						txisrCodePath = './TXService.run'
 						print(self.__datatype)
 						print("WE ARE ABOUT TO CALL THE C CODE. jajajajajajajajajajajajajajajajajajajajA<><?><?<>><?<?<>?><?<?<?<>?><?<>?<?><?<?<>?<?<?><?><?<>?")
-						subprocess.Popen(["sudo", txisrCodePath, str(self.__datatype)])
-						#os.system(txisrCodePath + ' ' + str(self.__datatype) + ' &') #Call TXISR Code
+						#subprocess.Popen(["sudo", txisrCodePath, str(self.__datatype)])
+						os.system("cd ../../TXISR/TXServiceCode ; sudo", txisrCodePath, str(self.__datatype)) #Call TXISR Code
 						self.__timeToNextWindow = -1
 						break
 					else:
@@ -119,7 +119,6 @@ class postBoomMode:
 						sendData = data
 						print("Data: " + str(data))
 
-			print(sendData.__len__())
 			if sendData.__len__() == 6:
 				print("Found next transfer window: ")
 				print(sendData)
