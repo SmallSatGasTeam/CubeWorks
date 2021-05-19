@@ -120,7 +120,7 @@ class postBoomMode:
 						print("Data: " + str(data))
 
 			print(sendData.__len__())
-			if sendData.__len__() != 6:
+			if sendData.__len__() == 6:
 				print("Found next transfer window: ")
 				print(sendData)
 				self.__timeToNextWindow = float(sendData[0]) - time.time()
