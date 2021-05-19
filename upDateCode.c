@@ -7,7 +7,7 @@ char cammand2 [] = "cd CubeWorks2/ ; git fetch ; git pull";
 char cammand3 [] = "cd CubeWorks3/ ; git fetch ; git pull";
 char cammand4 [] = "cd CubeWorks4/ ; git fetch ; git pull";
 char upDateStartUpCode [] = "cd CubeWorks0/ ; gcc startup.c -o startup.exe ; ";
-char upDateStartUpCode2 [] = "cp startup.exe ~/ ; rm startup.exe";
+char upDateStartUpCode2 [] = "cd CubeWorks0/ ; cp startup.exe ~/ ; rm startup.exe";
 
 
 void main()
