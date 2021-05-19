@@ -72,6 +72,7 @@ class postBoomMode:
 					if(self.__transmissionFlagFile.readline()=='Enabled'):
 						txisrCodePath = '../TXISR/TXServiceCode/TXService.run'
 						print(self.__datatype)
+						print("WE ARE ABOUT TO CALL THE C CODE. jajajajajajajajajajajajajajajajajajajajA<><?><?<>><?<?<>?><?<?<?<>?><?<>?<?><?<?<>?<?<?><?><?<>?")
 						subprocess.Popen(["sudo", txisrCodePath, str(self.__datatype)])
 						#os.system(txisrCodePath + ' ' + str(self.__datatype) + ' &') #Call TXISR Code
 						self.__timeToNextWindow = -1
