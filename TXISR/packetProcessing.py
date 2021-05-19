@@ -71,7 +71,7 @@ async def processPacket(packetData):
 		print("Received Hash: ", receivedHash)
 
 		# Generated hash from received data
-		generatedHash = hmac.new(secretKey, bytes(binaryData[0:88], 'utf-8'), hashlib.md5)
+		generatedHash = hmac.new(secretKey, bytes(binaryData[0:224], 'utf-8'), hashlib.md5)
 		generatedHashHex = generatedHash.hexdigest()
 		generatedHashLength = len(generatedHashHex) * 4
 		generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)
@@ -89,7 +89,7 @@ async def processPacket(packetData):
 
 		# Validate HMAC Hash
 		# Note, hash is 16 bytes (128 bits). Command packet is 1 byte (8 bits)
-		receivedHash = binaryData[56:185]
+		receivedHash = binaryData[64:193]
 		print("Received Hash: ", receivedHash)
 
 		# Generated hash from received data
@@ -155,6 +155,13 @@ async def processPacket(packetData):
 				#Turn on AX25
 				print("Turn on AX25")
 				enableAX25()
+
+			if binaryData[56:64] == '00000000':
+				#Chose whether or not to skip to post boom deploy
+				print("Running flight logic normally.")
+			else:
+				print("Skipping to post boom deploy.")
+
 		else:
 			print("Hashes do not match, will not execute commands!")
 

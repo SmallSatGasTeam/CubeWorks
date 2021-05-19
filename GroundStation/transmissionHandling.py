@@ -53,26 +53,27 @@ def packetSelect():
 			commandsList.append(input('Input 0 for do nothing, 1 for deploy boom: '))
 			commandsList.append(input('Input 0 for do nothing, 1 for reboot: '))
 			commandsList.append(input('Input 0 for disable AX25, 1 for enable AX25: '))
+			commandsList.append(input('Input 0 to run flight logic normally, 1 to skip to postBoomDeploy'))
 			for command in commandsList:
 				if command == '0':
 					content += '00000000'
 				else:
 					content += '00000001'
-			return hex(int(content, 2))[2:].zfill(14)
+			return hex(int(content, 2))[2:].zfill(16)
 	else:
 		return input('Input hex content to send')
 
 def transmitPacket(packet):
-	serialPort = serial.Serial('/dev/serial0', 115200)
-	serialPort.write(b'ES+W23003321\r') #Changed based on which is transmitting
-	sleep(1)
-	serialPort.write(b'ES+W22003321\r')
-	sleep(1)
+	# serialPort = serial.Serial('/dev/serial0', 115200)
+	# serialPort.write(b'ES+W23003321\r') #Changed based on which is transmitting
+	# sleep(1)
+	# serialPort.write(b'ES+W22003321\r')
+	# sleep(1)
 	data = bytearray.fromhex(b'GASPACS'.hex() + packet + b'GASPACS'.hex())
 	print('Sending Data')
 	print(b'GASPACS'.hex() + packet + b'GASPACS'.hex())
 	print(data)
-	serialPort.write(data)
+	# serialPort.write(data)
 
 def int34tobin(num):
 	#takes a 34 byte int, returns a binary representation of it
