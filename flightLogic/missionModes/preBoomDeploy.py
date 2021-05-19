@@ -54,7 +54,8 @@ class preBoomMode:
 		self.__tasks.append(asyncio.current_task(self.transmit()))
 
 		while True: #iterate through array, checking for set amount of dark minutes, then set amount of light minutes no greater than the maximum. When light minutes are greater than the maximum, empties array
-			if self.skipToPostBoom():
+			if await self.skipToPostBoom():
+				print("Exiting postBoomDeploy through skipToPostBoom")
 				return True
 			i=0
 			darkLength = 0
@@ -237,7 +238,8 @@ class preBoomMode:
 						break
 					else:
 						print('Transmission flag is not enabled')
-				await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds	
+				await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
+		await asyncio.sleep(1)
 
 class unexpectedValue(Exception):
 	print("Received unexpected value.")
