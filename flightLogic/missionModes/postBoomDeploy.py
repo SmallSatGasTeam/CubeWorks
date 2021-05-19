@@ -56,6 +56,8 @@ class postBoomMode:
 				#if close enough, prep files
 				#wait until 5 seconds before, return True
 				if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<14): #If next window is in 2 minutes or less
+					print("WE ARE ABOUT TO PRINT THE DATA TYPE!!!!!!!")
+					print(self.__datatype)
 					if(self.__datatype < 3): #Attitude, TTNC, or Deployment data
 						prepareFiles.prepareData(self.__duration, self.__datatype, self.__startFromBeginning, self.__index)
 						print("Preparing data")
