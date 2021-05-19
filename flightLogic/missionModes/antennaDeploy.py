@@ -33,20 +33,28 @@ class antennaMode:
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck())) #Check battery conditions, run safe mode if battery drops below safe level
 		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
 		eps=EPS()
+		if self.skipToPostBoom():
+			return True
 		while True: #Runs antenna deploy loop
 			if (eps.getBusVoltage()>self.deployVoltage):
 				await asyncio.gather(self.__antennaDeployer.deployPrimary()) #Fire Primary Backup Resistor
 				doorStatus = self.__antennaDoor.readDoorStatus() #Check Door status
 				if doorStatus == (1,1,1,1): #probably need to change this to actually work
+					if self.skipToPostBoom():
+						return True
 					self.cancelAllTasks(self.__tasks)
 					print('Doors are open, returning true')
 					return True
 				else:
+					if self.skipToPostBoom():
+						return True
 					print('Firing secondary, primary did not work. Returning True')
 					await asyncio.gather(self.__antennaDeployer.deploySecondary())
 					self.cancelAllTasks(self.__tasks)
 					return True
 			else:
+				if self.skipToPostBoom():
+					return True
 				if(self.timeWaited > self.maximumWaitTime):
 					self.__safeMode.run(10) #1 hour
 					await asyncio.sleep(5) #This is an artifact of testing, and will not matter for the actual flight software
