@@ -73,11 +73,10 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 		antennaDeployed = False
 	if packetProcessing.skippingToPostBoom: # Check if we're skipping to Post Boom Deploy
 		lastMode = 4
+		antennaDeployed = True
 
 	# This is the implementation of the BOOT mode logic.
 	if not antennaDeployed:  # First, sleep for 35 minutes
-		if packetProcessing.skippingToPostBoom: # Check if we're skipping to Post Boom Deploy
-			lastMode = 4
 		print('Antenna is undeployed, waiting 60 seconds')
 		await asyncio.sleep(delay)  # Sleep for 35 minutes
 
