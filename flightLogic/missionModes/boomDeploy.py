@@ -8,6 +8,8 @@ import Drivers.boomDeployer as boomDeployer
 from Drivers.camera import Camera
 from TXISR import pythonInterrupt
 from TXISR import packetProcessing
+from TXISR import prepareFiles
+import subprocess
 
 TRANSFER_WINDOW_BUFFER_TIME = 10 #30 seconds
 
@@ -28,6 +30,7 @@ class boomMode:
 		self.__tasks.append(asyncio.create_task(self.__getDeployData.collectDeployData()))
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
 		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
+		self.__tasks.append(asyncio.current_task(self.transmit()))
 
 		# Deploy boom, take picture
 		if self.skipToPostBoom():
@@ -100,3 +103,35 @@ class boomMode:
 				# print(self.__pictureNumber)
 				# print(self.__index)
 			await asyncio.sleep(3) #Checks transmission windows every 10 seconds
+
+	async def transmit(self):
+		while True:
+			print("Inside of first while loop")
+			while True:
+				print("Inside of second while loop")
+				#if close enough, prep files
+				#wait until 5 seconds before, return True
+				if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<14): #If next window is in 2 minutes or less
+					if(self.__datatype < 3): #Attitude, TTNC, or Deployment data
+						prepareFiles.prepareData(self.__duration, self.__datatype, self.__startFromBeginning, self.__index)
+						print("Preparing data")
+					else:
+						prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__startFromBeginning)
+						print("Preparing Picture data")
+					break
+				await asyncio.sleep(5)
+			windowTime = self.__nextWindowTime
+			while True:
+				if((windowTime-time.time()) <= 5):
+					fileChecker.checkFile('/home/pi/TXISRData/transmissionFlag.txt')
+					self.__transmissionFlagFile.seek(0)
+					if(self.__transmissionFlagFile.readline()=='Enabled'):
+						txisrCodePath = '../TXISR/TXServiceCode/TXService.run'
+						print(self.__datatype)
+						subprocess.Popen(["sudo", txisrCodePath, str(self.__datatype)])
+						#os.system(txisrCodePath + ' ' + str(self.__datatype) + ' &') #Call TXISR Code
+						self.__timeToNextWindow = -1
+						break
+					else:
+						print('Transmission flag is not enabled')
+				await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds	
