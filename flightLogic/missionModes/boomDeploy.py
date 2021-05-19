@@ -33,14 +33,14 @@ class boomMode:
 		self.__tasks.append(asyncio.current_task(self.transmit()))
 
 		# Deploy boom, take picture
-		if self.skipToPostBoom():
+		if await self.skipToPostBoom():
 			return True
 		await asyncio.sleep(5)
 		deployer = boomDeployer.BoomDeployer()
 		cam = Camera()
 		await deployer.deploy() #From LOGAN: Deployer.deploy is now an asyncio method, run it like the others
 		
-		if self.skipToPostBoom():
+		if await self.skipToPostBoom():
 			return True
 
 		try:
