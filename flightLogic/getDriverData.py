@@ -369,8 +369,8 @@ class DeployData():
 		except Exception as e:
 			# add redundant UVDriver try/except
 			# if no UVDrivers work, continue with exception
-			# print("Failed to pull UVdriver data. Exception: ", repr(e), 
-			# getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
+			print("Failed to pull UVdriver data. Exception: ", repr(e), 
+			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 			boombox_uv = float4tohex(boombox_uvMax + 1)
 
 		try:
@@ -381,8 +381,8 @@ class DeployData():
 		except Exception as e:
 			# add redundant UVDriver try/except
 			# if no UVDrivers work, continue with exception
-			# print("Failed to pull Accelerometer. Exception: ", repr(e), 
-			# getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
+			print("Failed to pull Accelerometer. Exception: ", repr(e), 
+			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 			accelX, accelY, accelZ = accelMax + 1, accelMax + 1, accelMax + 1
 
 		accelX = float4tohex(accelX)
