@@ -164,9 +164,11 @@ class preBoomMode:
 	async def skipToPostBoom(self):
 		print("Inside skipToPostBoom, skipping value is:", packetProcessing.skippingToPostBoom)
 		if packetProcessing.skippingToPostBoom:
+			print("Cancelling all tasks to skip to post boom")
 			self.cancelAllTasks(self.__tasks)
 			return True
 		else:
+			print("Waiting one second in skip to post boom")
 			await asyncio.sleep(1)
 
 	async def readNextTransferWindow(self, transferWindowFilename):
