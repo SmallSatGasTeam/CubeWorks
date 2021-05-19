@@ -3,7 +3,7 @@ import sys
 sys.path.append('../')
 import os.path
 from flightLogic import getDriverData
-import flightLogic.saveTofiles as saveTofileswaiting
+import flightLogic.saveTofiles as saveTofiles
 from Drivers.antennaDoor.AntennaDoor import AntennaDoor as antennaDoor
 from flightLogic.missionModes.antennaDeploy import antennaMode as antennaMode
 from flightLogic.missionModes.preBoomDeploy import preBoomMode
