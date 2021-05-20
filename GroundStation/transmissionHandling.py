@@ -64,16 +64,16 @@ def packetSelect():
 		return input('Input hex content to send')
 
 def transmitPacket(packet):
-	# serialPort = serial.Serial('/dev/serial0', 115200)
-	# serialPort.write(b'ES+W23003321\r') #Changed based on which is transmitting
-	# sleep(1)
-	# serialPort.write(b'ES+W22003321\r')
-	# sleep(1)
+	serialPort = serial.Serial('/dev/serial0', 115200)
+	serialPort.write(b'ES+W23003321\r') #Changed based on which is transmitting
+	sleep(1)
+	serialPort.write(b'ES+W22003321\r')
+	sleep(1)
 	data = bytearray.fromhex(b'GASPACS'.hex() + packet + b'GASPACS'.hex())
 	print('Sending Data')
 	print(b'GASPACS'.hex() + packet + b'GASPACS'.hex())
 	print(data)
-	# serialPort.write(data)
+	serialPort.write(data)
 
 def int34tobin(num):
 	#takes a 34 byte int, returns a binary representation of it
