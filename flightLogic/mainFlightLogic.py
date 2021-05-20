@@ -36,8 +36,8 @@ def __main__():
 
 
 async def executeFlightLogic():  # Open the file save object, start TXISR, and start Boot Mode data collection
-	baseFile = open("")
-	codeBase = (int) baseFile.read()
+	baseFile = open("/home/pi/lastBase.txt")
+	codeBase = int(baseFile.read())
 	# Variable setup
 	delay = 1*60  # 35 minute delay
 	boot = True

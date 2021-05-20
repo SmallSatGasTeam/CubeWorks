@@ -31,7 +31,6 @@ class postBoomMode:
 		self.__duration = -1
 		self.__datatype = -1
 		self.__pictureNumber = -1
-		self.__startFromBeginning = False
 		self.__index = -1
 		fileChecker.checkFile("/home/pi/TXISRData/transmissionFlag.txt")
 		self.__transmissionFlagFile = open('/home/pi/TXISRData/transmissionFlag.txt')
@@ -61,10 +60,10 @@ class postBoomMode:
 				#wait until 5 seconds before, return True
 				if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<14): #If next window is in 14 seconds or less
 					if(self.__datatype < 3): #Attitude, TTNC, or Deployment data
-						prepareFiles.prepareData(self.__duration, self.__datatype, self.__startFromBeginning, self.__index)
+						prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
 						print("Preparing data")
 					else:
-						prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__startFromBeginning)
+						prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber)
 						print("Preparing Picture data")
 					break
 				await asyncio.sleep(5)
@@ -115,12 +114,15 @@ class postBoomMode:
 				#data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number
 				print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
 				if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME):  #if the transfer window is at BUFFER_TIME milliseconds in the future
+					print("WE'RE IN THE FIRST IF STATEMENT (readNextTransferWindow)")
 					if(soonestWindowTime == 0 or float(data[0]) - time.time() < soonestWindowTime):
+						print("WE'RE IN THE SECOND IF STATEMENT (readNextTransferWindow)")
 						soonestWindowTime = float(data[0]) - time.time()
 						sendData = data
 						print("Data: " + str(data))
 
-			if sendData.__len__() == 6:
+			if sendData.__len__() == 5:
+				print("WE'RE IN THE THIRD IF STATEMENT (readNextTransferWindow)")
 				print("Found next transfer window: ")
 				print(sendData)
 				self.__timeToNextWindow = float(sendData[0]) - time.time()
@@ -128,9 +130,7 @@ class postBoomMode:
 				self.__datatype = int(sendData[2])
 				self.__pictureNumber = int(sendData[3])
 				self.__nextWindowTime = float(sendData[0])
-				self.__startFromBeginning = bool(sendData[4])
-				self.__index = int(sendData[5])
-				# print(self.__startFromBeginning)
+				self.__index = int(sendData[4])
 				# print(self.__timeToNextWindow)
 				# print(self.__duration)
 				# print(self.__datatype)

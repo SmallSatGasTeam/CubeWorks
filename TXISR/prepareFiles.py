@@ -15,7 +15,7 @@ This file sets up 2 methods, prepareData and preparePicture. prepareData is used
 Both prepare functions reset /TXISR/TXServiceCode/txFile.txt, and write to it the duration of the transmission window.
 Then, each line consists of a 10-letter string with the timestamp or index of the packet, folowed by ':' and then the hex content of the packet
 """
-def prepareData(duration, dataType, startFromBeginning, startFrom):
+def prepareData(duration, dataType, startFrom):
 	if (dataType == 0): #Attitude Data
 		packetLength = 37 + 14 #Packet length in bytes plus the 7 GASPACS bytes on each end
 		fileChecker.checkFile('/home/pi/flightLogicData/Attitude_Data.txt')
@@ -73,9 +73,8 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 	#If -1 is passed to StartFrom then search for the furthest transmitted data
 	if startFrom == -1:
 		lineNumber = 0
-		if not startFromBeginning:
-			progressFile.seek(transmissionProgress)
-			lineNumber = progressFile.tell()
+		progressFile.seek(transmissionProgress)
+		lineNumber = progressFile.tell()
 
 		dataSize = 0
 		while dataSize < numPackets:
@@ -115,7 +114,7 @@ def prepareData(duration, dataType, startFromBeginning, startFrom):
 	progressFile.close()
 	txDataFile.close()
 
-def preparePicture(duration, dataType, pictureNumber, startFromBeginning):
+def preparePicture(duration, dataType, pictureNumber):
 	if dataType == 3: #HQ Picture
 		cam = Camera()
 		cam.compressHighResToFiles(pictureNumber)
@@ -143,10 +142,7 @@ def preparePicture(duration, dataType, pictureNumber, startFromBeginning):
 	progressFile = open(progressFilePath) #Opens progress file as read only
 	progressList = progressFile.read().splitlines()
 	# If Start From Beginning flag is false, set transmissionProgress to the last transmitted packet. Else, set to true to start from beginning.
-	if startFromBeginning:
-		transmissionProgress = 0
-	else:
-		transmissionProgress = int(progressList[dataType])
+	transmissionProgress = int(progressList[dataType])
 
 	fileChecker.checkFile(dataFilePath)
 	pictureFile = open(dataFilePath, 'rb')
