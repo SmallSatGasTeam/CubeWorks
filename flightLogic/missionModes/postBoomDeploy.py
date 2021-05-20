@@ -102,6 +102,7 @@ class postBoomMode:
 		while True:
 			i = 1
 			print("WHILE INDEX = ", i)
+			i += 1
 			print("Inside transfer window.")
 			#read the given transfer window file and extract the data for the soonest transfer window
 			fileChecker.checkFile(transferWindowFilename)
