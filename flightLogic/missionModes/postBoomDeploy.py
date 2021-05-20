@@ -106,21 +106,21 @@ class postBoomMode:
 			transferWindowFile = open(transferWindowFilename)
 			sendData = 0
 			soonestWindowTime = 0
-			for line in transferWindowFile:
-				print("reading line: ")
-				print(line)
-				data = line.split(",")
-				print(data)
-				#data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number
-				print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME, float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME)
-				if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME):  #if the transfer window is at BUFFER_TIME milliseconds in the future
-					print("WE'RE IN THE FIRST IF STATEMENT (readNextTransferWindow)")
-					if(soonestWindowTime == 0 or float(data[0]) - time.time() < soonestWindowTime):
-						print("WE'RE IN THE SECOND IF STATEMENT (readNextTransferWindow)")
-						soonestWindowTime = float(data[0]) - time.time()
-						sendData = data
-						print("Data: " + str(data))
-				break
+
+			line = transferWindowFile.readline()
+			print("reading line: ")
+			print(line)
+			data = line.split(",")
+			print(data)
+			#data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number
+			print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME, float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME)
+			if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME):  #if the transfer window is at BUFFER_TIME milliseconds in the future
+				print("WE'RE IN THE FIRST IF STATEMENT (readNextTransferWindow)")
+				if(soonestWindowTime == 0 or float(data[0]) - time.time() < soonestWindowTime):
+					print("WE'RE IN THE SECOND IF STATEMENT (readNextTransferWindow)")
+					soonestWindowTime = float(data[0]) - time.time()
+					sendData = data
+					print("Data: " + str(data))
 
 			if sendData.__len__() == 5:
 				print("WE'RE IN THE THIRD IF STATEMENT (readNextTransferWindow)")
