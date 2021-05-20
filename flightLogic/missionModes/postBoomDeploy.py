@@ -77,12 +77,18 @@ class postBoomMode:
 						#txisrCodePath = '../TXISR/TXServiceCode/'
 						#print(self.__datatype)
 						#print(txisrCodePath)
+<<<<<<< HEAD
 						txisrCodePath = os.path.join(os.path.dirname(__file__), txisrCodePath1)
 						print(self.__datatype)
 						subprocess.Popen([txisrCodePath, str(self.__datatype)])
 						#print("WE ARE ABOUT TO CALL THE C CODE. jajajajajajajajajajajajajajajajajajajajA<><?><?<>><?<?<>?><?<?<?<>?><?<>?<?><?<?<>?<?<?><?><?<>?")
 						#subprocess.Popen(['cd', ';', 'cd', str(txisrCodePath), ';', 'sudo', './TXService.run', str(self.__datatype)])
 						#os.system("cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype)) #Call TXISR Code
+=======
+						print("WE ARE ABOUT TO CALL THE C CODE. jajajajajajajajajajajajajajajajajajajajA<><?><?<>><?<?<>?><?<?<?<>?><?<>?<?><?<?<>?<?<?><?><?<>?")
+						#subprocess.Popen(['cd', ';', 'cd', str(txisrCodePath), ';', 'sudo', './TXService.run', str(self.__datatype)])
+						os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype)) #Call TXISR Code
+>>>>>>> 3b4635ef5c3434c8740eed25269dd34a51caa17e
 						self.__timeToNextWindow = -1
 						break
 					else:
