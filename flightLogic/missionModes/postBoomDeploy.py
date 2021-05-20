@@ -17,7 +17,7 @@ fileChecker = FileReset()
 
 TRANSFER_WINDOW_BUFFER_TIME = 10 #30 seconds
 REBOOT_WAIT_TIME = 900 #15 minutes, 900 seconds
-filePaths = ["/home/pi/CubeWorks0/TXSIR/TXServiceCode/", "/home/pi/CubeWorks1/TXSIR/TXServiceCode/", "/home/pi/CubeWorks2/TXSIR/TXServiceCode/", "/home/pi/CubeWorks3/TXSIR/TXServiceCode/", "/home/pi/CubeWorks4/TXSIR/TXServiceCode/"]
+filePaths = ["~/home/pi/CubeWorks0/TXSIR/TXServiceCode/", "~/home/pi/CubeWorks1/TXSIR/TXServiceCode/", "~/home/pi/CubeWorks2/TXSIR/TXServiceCode/", "~/home/pi/CubeWorks3/TXSIR/TXServiceCode/", "~/home/pi/CubeWorks4/TXSIR/TXServiceCode/"]
 class postBoomMode:
 
 	def __init__(self, saveObject, safeModeObject, codeBase):
