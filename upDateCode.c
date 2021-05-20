@@ -26,15 +26,15 @@ void main()
     system(upDateStartUpCode);
     system(upDateStartUpCode2);
 
-    printf("\n>>>Creating tx runtine for CubeWorks0<<<\n");
+    printf("\n>>>Creating tx routine for CubeWorks0<<<\n");
     system(brnachCommand0);
-    printf("\n>>>Creating tx runtine for CubeWorks1<<<\n");
+    printf("\n>>>Creating tx routine for CubeWorks1<<<\n");
     system(brnachCommand1);
-    printf("\n>>>Creating tx runtine for CubeWorks2<<<\n");
+    printf("\n>>>Creating tx routine for CubeWorks2<<<\n");
     system(brnachCommand2);
-    printf("\n>>>Creating tx runtine for CubeWorks3<<<\n");
+    printf("\n>>>Creating tx routine for CubeWorks3<<<\n");
     system(brnachCommand3);
-    printf("\n>>>Creating tx runtine for CubeWorks4<<<\n");
+    printf("\n>>>Creating tx routine for CubeWorks4<<<\n");
     system(brnachCommand4);
 
     printf(">>>Everything is up to date\n");
