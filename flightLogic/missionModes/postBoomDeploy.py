@@ -95,6 +95,7 @@ class postBoomMode:
 
 	async def readNextTransferWindow(self, transferWindowFilename):
 		while True:
+			print("INSIDE TRANSFER WINDOW")
 			#read the given transfer window file and extract the data for the soonest transfer window
 			fileChecker.checkFile(transferWindowFilename)
 			transferWindowFile = open(transferWindowFilename)
