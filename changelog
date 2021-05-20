@@ -30,3 +30,6 @@ be repoerted.
 #4 <Added try catch statement to python.interrupt> "TXISR/pythonInterrupt.py"
     Lines 20-24, 30-54
     The try catch was added to make the system continue past preBoomDeploy
+
+#5 <Added logic for the running transmission c code> "flightLogic/missionModes/postBoomDeploy", "flightLogic/mainFlightlogic.py"
+    mainFlightlogic: Lines 39-40, postBoomDeploy: Line 20, 24, 76, 79
