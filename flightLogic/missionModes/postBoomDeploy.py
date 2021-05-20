@@ -73,7 +73,7 @@ class postBoomMode:
 					fileChecker.checkFile('/home/pi/TXISRData/transmissionFlag.txt')
 					self.__transmissionFlagFile.seek(0)
 					if(self.__transmissionFlagFile.readline()=='Enabled'):
-						txisrCodePath = filePaths[self.__codeBase]
+						txisrCodePath = filePaths[0]
 						#txisrCodePath = '../TXISR/TXServiceCode/'
 						#print(self.__datatype)
 						#print(txisrCodePath)
@@ -81,7 +81,7 @@ class postBoomMode:
 						#subprocess.Popen([txisrCodePath, str(self.__datatype)])
 						#print("WE ARE ABOUT TO CALL THE C CODE. jajajajajajajajajajajajajajajajajajajajA<><?><?<>><?<?<>?><?<?<?<>?><?<>?<?><?<?<>?<?<?><?><?<>?")
 						#subprocess.Popen(['cd', ';', 'cd', str(txisrCodePath), ';', 'sudo', './TXService.run', str(self.__datatype)])
-						os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run 0") #Call TXISR Code
+						os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype)) #Call TXISR Code
 						self.__timeToNextWindow = -1
 						break
 					else:
