@@ -76,7 +76,7 @@ class postBoomMode:
 						txisrCodePath = './TXService.run'
 						print(self.__datatype)
 						print("WE ARE ABOUT TO CALL THE C CODE. jajajajajajajajajajajajajajajajajajajajA<><?><?<>><?<?<>?><?<?<?<>?><?<>?<?><?<?<>?<?<?><?><?<>?")
-						subprocess.Popen(["sudo", txisrCodePath, str(self.__datatype)])
+						subprocess.Popen(["cd", "../TXISR/TXServiceCode/", ";" "sudo", txisrCodePath, str(self.__datatype)])
 						#os.system("cd ../../TXISR/TXServiceCode ; sudo", txisrCodePath, str(self.__datatype)) #Call TXISR Code
 						self.__timeToNextWindow = -1
 						break
