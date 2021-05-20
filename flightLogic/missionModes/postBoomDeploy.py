@@ -120,6 +120,8 @@ class postBoomMode:
 						soonestWindowTime = float(data[0]) - time.time()
 						sendData = data
 						print("Data: " + str(data))
+				else:
+					break
 
 			if sendData.__len__() == 5:
 				print("WE'RE IN THE THIRD IF STATEMENT (readNextTransferWindow)")
