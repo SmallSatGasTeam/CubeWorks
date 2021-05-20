@@ -108,7 +108,7 @@ class postBoomMode:
 			#read the given transfer window file and extract the data for the soonest transfer window
 			fileChecker.checkFile(transferWindowFilename)
 			transferWindowFile = open(transferWindowFilename)
-			sendData = 0
+			sendData = []
 			soonestWindowTime = 0
 
 			line = transferWindowFile.readline()
