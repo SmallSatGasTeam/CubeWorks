@@ -112,7 +112,7 @@ class postBoomMode:
 				data = line.split(",")
 				print(data)
 				#data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number
-				print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
+				print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME, float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME)
 				if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME):  #if the transfer window is at BUFFER_TIME milliseconds in the future
 					print("WE'RE IN THE FIRST IF STATEMENT (readNextTransferWindow)")
 					if(soonestWindowTime == 0 or float(data[0]) - time.time() < soonestWindowTime):
@@ -121,6 +121,7 @@ class postBoomMode:
 						sendData = data
 						print("Data: " + str(data))
 				else:
+					print("Breaking from the for loop")
 					break
 
 			if sendData.__len__() == 5:
@@ -142,7 +143,8 @@ class postBoomMode:
 				self.__timeToNextWindow = float(sendData[0]) - time.time()
 			else:
 				print("sendData is empty.")
-				
+			
+			print("Made it to the await statement.")
 			await asyncio.sleep(3) #Checks transmission windows every 10 seconds
 
 	def cancellAllTasks(self, taskList): #Isn't used in this class, but here anyways
