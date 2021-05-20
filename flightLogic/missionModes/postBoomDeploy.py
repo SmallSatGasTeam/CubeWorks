@@ -17,10 +17,11 @@ fileChecker = FileReset()
 
 TRANSFER_WINDOW_BUFFER_TIME = 10 #30 seconds
 REBOOT_WAIT_TIME = 900 #15 minutes, 900 seconds
-
+filePaths = ["/home/pi/CubeWorks0/TXSIR/TXServiceCode/", "/home/pi/CubeWorks1/TXSIR/TXServiceCode/", "/home/pi/CubeWorks2/TXSIR/TXServiceCode/", "/home/pi/CubeWorks3/TXSIR/TXServiceCode/", "/home/pi/CubeWorks4/TXSIR/TXServiceCode/"]
 class postBoomMode:
 
-	def __init__(self, saveObject, safeModeObject):
+	def __init__(self, saveObject, safeModeObject, codeBase):
+		self.__codeBase = codeBase
 		self.__getTTNCData = TTNCData(saveObject)
 		self.__getAttitudeData =  AttitudeData(saveObject)
 		self.__tasks = [] # List will be populated with all background tasks
@@ -72,10 +73,10 @@ class postBoomMode:
 					fileChecker.checkFile('/home/pi/TXISRData/transmissionFlag.txt')
 					self.__transmissionFlagFile.seek(0)
 					if(self.__transmissionFlagFile.readline()=='Enabled'):
-						txisrCodePath = './TXService.run'
+						txisrCodePath = filePaths[self.__codeBase]
 						print(self.__datatype)
 						print("WE ARE ABOUT TO CALL THE C CODE. jajajajajajajajajajajajajajajajajajajajA<><?><?<>><?<?<>?><?<?<?<>?><?<>?<?><?<?<>?<?<?><?><?<>?")
-						subprocess.Popen(["cd", "../TXISR/TXServiceCode/", ";" "sudo", txisrCodePath, str(self.__datatype)])
+						subprocess.Popen(["cd " + str(txisrCodePath), "sudo ./TXService.run" , str(self.__datatype)])
 						#os.system("cd ../../TXISR/TXServiceCode ; sudo", txisrCodePath, str(self.__datatype)) #Call TXISR Code
 						self.__timeToNextWindow = -1
 						break
