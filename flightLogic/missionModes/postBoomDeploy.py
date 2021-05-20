@@ -17,7 +17,7 @@ fileChecker = FileReset()
 
 TRANSFER_WINDOW_BUFFER_TIME = 10 #30 seconds
 REBOOT_WAIT_TIME = 900 #15 minutes, 900 seconds
-filePaths = ["/home/pi/CubeWorks0/TXISR/TXServiceCode/", "/home/pi/CubeWorks1/TXISR/TXServiceCode/", "/home/pi/CubeWorks2/TXISR/TXServiceCode/", "/home/pi/CubeWorks3/TXISR/TXServiceCode/", "/home/pi/CubeWorks4/TXISR/TXServiceCode/"]
+filePaths = ["~/home/pi/CubeWorks0/TXSIR/TXServiceCode/TXService.run", "~/home/pi/CubeWorks1/TXSIR/TXServiceCode/TXService.run", "~/home/pi/CubeWorks2/TXSIR/TXServiceCode/TXService.run", "~/home/pi/CubeWorks3/TXSIR/TXServiceCode/TXService.run", "~/home/pi/CubeWorks4/TXSIR/TXServiceCode/TXService.run"]
 class postBoomMode:
 
 	def __init__(self, saveObject, safeModeObject, codeBase):
@@ -73,13 +73,16 @@ class postBoomMode:
 					fileChecker.checkFile('/home/pi/TXISRData/transmissionFlag.txt')
 					self.__transmissionFlagFile.seek(0)
 					if(self.__transmissionFlagFile.readline()=='Enabled'):
-						txisrCodePath = filePaths[self.__codeBase]
+						txisrCodePath1 = filePaths[self.__codeBase]
 						#txisrCodePath = '../TXISR/TXServiceCode/'
 						#print(self.__datatype)
 						#print(txisrCodePath)
-						print("WE ARE ABOUT TO CALL THE C CODE. jajajajajajajajajajajajajajajajajajajajA<><?><?<>><?<?<>?><?<?<?<>?><?<>?<?><?<?<>?<?<?><?><?<>?")
+						txisrCodePath = os.path.join(os.path.dirname(__file__), txisrCodePath1)
+						print(self.__datatype)
+						subprocess.Popen([txisrCodePath, str(self.__datatype)])
+						#print("WE ARE ABOUT TO CALL THE C CODE. jajajajajajajajajajajajajajajajajajajajA<><?><?<>><?<?<>?><?<?<?<>?><?<>?<?><?<?<>?<?<?><?><?<>?")
 						#subprocess.Popen(['cd', ';', 'cd', str(txisrCodePath), ';', 'sudo', './TXService.run', str(self.__datatype)])
-						os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype)) #Call TXISR Code
+						#os.system("cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype)) #Call TXISR Code
 						self.__timeToNextWindow = -1
 						break
 					else:
