@@ -73,7 +73,7 @@ class postBoomMode:
 					fileChecker.checkFile('/home/pi/TXISRData/transmissionFlag.txt')
 					self.__transmissionFlagFile.seek(0)
 					if(self.__transmissionFlagFile.readline()=='Enabled'):
-						txisrCodePath = filePaths[0]
+						txisrCodePath = filePaths[self.__codeBase]
 						#txisrCodePath = '../TXISR/TXServiceCode/'
 						#print(self.__datatype)
 						#print(txisrCodePath)
