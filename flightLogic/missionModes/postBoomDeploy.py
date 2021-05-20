@@ -100,32 +100,29 @@ class postBoomMode:
 
 	async def readNextTransferWindow(self, transferWindowFilename):
 		while True:
-			j = 1
-			print("WHILE INDEX = ", j)
+			i = 1
+			print("WHILE INDEX = ", i)
 			print("Inside transfer window.")
 			#read the given transfer window file and extract the data for the soonest transfer window
 			fileChecker.checkFile(transferWindowFilename)
 			transferWindowFile = open(transferWindowFilename)
 			sendData = 0
 			soonestWindowTime = 0
-			for line in transferWindowFile:
-				i = 1
-				print("INDEX = ", i)
-				i += 1
-				print("reading line: ")
-				print(line)
-				data = line.split(",")
-				print(data)
-				#data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number
-				print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME, float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME)
-				if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME):  #if the transfer window is at BUFFER_TIME milliseconds in the future
-					print("WE'RE IN THE FIRST IF STATEMENT (readNextTransferWindow)")
-					if(soonestWindowTime == 0 or float(data[0]) - time.time() < soonestWindowTime):
-						print("WE'RE IN THE SECOND IF STATEMENT (readNextTransferWindow)")
-						soonestWindowTime = float(data[0]) - time.time()
-						sendData = data
-						print("Data: " + str(data))
-				break
+
+			line = transferWindowFile.readline()
+			print("reading line: ")
+			print(line)
+			data = line.split(",")
+			print(data)
+			#data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number
+			print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME, float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME)
+			if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME):  #if the transfer window is at BUFFER_TIME milliseconds in the future
+				print("WE'RE IN THE FIRST IF STATEMENT (readNextTransferWindow)")
+				if(soonestWindowTime == 0 or float(data[0]) - time.time() < soonestWindowTime):
+					print("WE'RE IN THE SECOND IF STATEMENT (readNextTransferWindow)")
+					soonestWindowTime = float(data[0]) - time.time()
+					sendData = data
+					print("Data: " + str(data))
 
 			if sendData.__len__() == 5:
 				print("WE'RE IN THE THIRD IF STATEMENT (readNextTransferWindow)")
