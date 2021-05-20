@@ -75,6 +75,7 @@ class postBoomMode:
 					if(self.__transmissionFlagFile.readline()=='Enabled'):
 						txisrCodePath = filePaths[self.__codeBase]
 						print(self.__datatype)
+						print(txisrCodePath)
 						print("WE ARE ABOUT TO CALL THE C CODE. jajajajajajajajajajajajajajajajajajajajA<><?><?<>><?<?<>?><?<?<?<>?><?<>?<?><?<?<>?<?<?><?><?<>?")
 						subprocess.Popen(["cd " + str(txisrCodePath), "sudo ./TXService.run" , str(self.__datatype)])
 						#os.system("cd ../../TXISR/TXServiceCode ; sudo", txisrCodePath, str(self.__datatype)) #Call TXISR Code
