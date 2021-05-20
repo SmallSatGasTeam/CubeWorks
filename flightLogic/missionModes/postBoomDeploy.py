@@ -125,6 +125,8 @@ class postBoomMode:
 					sendData = data
 					print("Data: " + str(data))
 
+			print("After the problem child.")
+
 			if sendData.__len__() == 5:
 				print("WE'RE IN THE THIRD IF STATEMENT (readNextTransferWindow)")
 				print("Found next transfer window: ")
