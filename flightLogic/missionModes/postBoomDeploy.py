@@ -17,7 +17,7 @@ fileChecker = FileReset()
 
 TRANSFER_WINDOW_BUFFER_TIME = 10 #30 seconds
 REBOOT_WAIT_TIME = 900 #15 minutes, 900 seconds
-filePaths = ["~/home/pi/CubeWorks0/TXSIR/TXServiceCode/", "~/home/pi/CubeWorks1/TXSIR/TXServiceCode/", "~/home/pi/CubeWorks2/TXSIR/TXServiceCode/", "~/home/pi/CubeWorks3/TXSIR/TXServiceCode/", "~/home/pi/CubeWorks4/TXSIR/TXServiceCode/"]
+#filePaths = ["~/home/pi/CubeWorks0/TXSIR/TXServiceCode/", "~/home/pi/CubeWorks1/TXSIR/TXServiceCode/", "~/home/pi/CubeWorks2/TXSIR/TXServiceCode/", "~/home/pi/CubeWorks3/TXSIR/TXServiceCode/", "~/home/pi/CubeWorks4/TXSIR/TXServiceCode/"]
 class postBoomMode:
 
 	def __init__(self, saveObject, safeModeObject, codeBase):
@@ -73,7 +73,8 @@ class postBoomMode:
 					fileChecker.checkFile('/home/pi/TXISRData/transmissionFlag.txt')
 					self.__transmissionFlagFile.seek(0)
 					if(self.__transmissionFlagFile.readline()=='Enabled'):
-						txisrCodePath = filePaths[self.__codeBase]
+						#txisrCodePath = filePaths[self.__codeBase]
+						txisrCodePath = '../../TXISR/TXServiceCode/TXService.run'
 						print(self.__datatype)
 						print(txisrCodePath)
 						print("WE ARE ABOUT TO CALL THE C CODE. jajajajajajajajajajajajajajajajajajajajA<><?><?<>><?<?<>?><?<?<?<>?><?<>?<?><?<?<>?<?<?><?><?<>?")
@@ -100,38 +101,28 @@ class postBoomMode:
 				upTime += 60
 
 	async def readNextTransferWindow(self, transferWindowFilename):
-		i = 1
 		while True:
-			print("WHILE INDEX = ", i)
-			i += 1
 			print("Inside transfer window.")
 			#read the given transfer window file and extract the data for the soonest transfer window
 			fileChecker.checkFile(transferWindowFilename)
 			transferWindowFile = open(transferWindowFilename)
-			sendData = 0
+			sendData = []
 			soonestWindowTime = 0
 
 			line = transferWindowFile.readline()
-			print("reading line: ")
-			print(line)
+			# print("reading line: ")
+			# print(line)
 			data = line.split(",")
-			print(data)
+			# print(data)
 			#data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number
 			print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME, float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME)
 			if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME):  #if the transfer window is at BUFFER_TIME milliseconds in the future
-				print("WE'RE IN THE FIRST IF STATEMENT (readNextTransferWindow)")
 				if(soonestWindowTime == 0 or float(data[0]) - time.time() < soonestWindowTime):
-					print("WE'RE IN THE SECOND IF STATEMENT (readNextTransferWindow)")
 					soonestWindowTime = float(data[0]) - time.time()
 					sendData = data
 					print("Data: " + str(data))
 
-			print("After the first two if statements.")
-			print(sendData.__len__())
-
 			if sendData.__len__() == 5:
-				print("WE'RE IN THE THIRD IF STATEMENT (readNextTransferWindow)")
-				print("Found next transfer window: ")
 				print(sendData)
 				self.__timeToNextWindow = float(sendData[0]) - time.time()
 				self.__duration = int(sendData[1])
@@ -139,19 +130,14 @@ class postBoomMode:
 				self.__pictureNumber = int(sendData[3])
 				self.__nextWindowTime = float(sendData[0])
 				self.__index = int(sendData[4])
-			else:
-				print("sendData is empty.")
 				# print(self.__timeToNextWindow)
 				# print(self.__duration)
 				# print(self.__datatype)
 				# print(self.__pictureNumber)
 				# print(self.__index)
-			# elif sendData.__len__() >= 1:
-			# 	print("Inside elif")
-			# 	self.__timeToNextWindow = float(sendData[0]) - time.time()
+			else:
+				print("sendData is empty.")
 			
-			
-			print("Made it to the await statement.")
 			await asyncio.sleep(3) #Checks transmission windows every 10 seconds
 
 	def cancellAllTasks(self, taskList): #Isn't used in this class, but here anyways
