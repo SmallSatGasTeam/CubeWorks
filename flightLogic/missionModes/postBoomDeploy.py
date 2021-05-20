@@ -99,8 +99,8 @@ class postBoomMode:
 				upTime += 60
 
 	async def readNextTransferWindow(self, transferWindowFilename):
+		i = 1
 		while True:
-			i = 1
 			print("WHILE INDEX = ", i)
 			i += 1
 			print("Inside transfer window.")
