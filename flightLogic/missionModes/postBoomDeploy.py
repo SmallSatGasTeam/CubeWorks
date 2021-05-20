@@ -117,8 +117,11 @@ class postBoomMode:
 						soonestWindowTime = float(data[0]) - time.time()
 						sendData = data
 						print("Data: " + str(data))
+				else:
+					print("Timestamp has passed.")
+					await asyncio.sleep(3)
 
-			if sendData.__len__() == 6:
+			if sendData.__len__() == 5:
 				print("Found next transfer window: ")
 				print(sendData)
 				self.__timeToNextWindow = float(sendData[0]) - time.time()
