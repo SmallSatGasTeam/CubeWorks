@@ -100,10 +100,7 @@ class postBoomMode:
 				upTime += 60
 
 	async def readNextTransferWindow(self, transferWindowFilename):
-		i = 1
 		while True:
-			print("WHILE INDEX = ", i)
-			i += 1
 			print("Inside transfer window.")
 			#read the given transfer window file and extract the data for the soonest transfer window
 			fileChecker.checkFile(transferWindowFilename)
@@ -112,26 +109,19 @@ class postBoomMode:
 			soonestWindowTime = 0
 
 			line = transferWindowFile.readline()
-			print("reading line: ")
-			print(line)
+			# print("reading line: ")
+			# print(line)
 			data = line.split(",")
-			print(data)
+			# print(data)
 			#data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number
 			print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME, float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME)
 			if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME):  #if the transfer window is at BUFFER_TIME milliseconds in the future
-				print("WE'RE IN THE FIRST IF STATEMENT (readNextTransferWindow)")
 				if(soonestWindowTime == 0 or float(data[0]) - time.time() < soonestWindowTime):
-					print("WE'RE IN THE SECOND IF STATEMENT (readNextTransferWindow)")
 					soonestWindowTime = float(data[0]) - time.time()
 					sendData = data
 					print("Data: " + str(data))
 
-			print("After the first two if statements.")
-			print(sendData.__len__())
-
 			if sendData.__len__() == 5:
-				print("WE'RE IN THE THIRD IF STATEMENT (readNextTransferWindow)")
-				print("Found next transfer window: ")
 				print(sendData)
 				self.__timeToNextWindow = float(sendData[0]) - time.time()
 				self.__duration = int(sendData[1])
@@ -147,8 +137,6 @@ class postBoomMode:
 			else:
 				print("sendData is empty.")
 			
-			
-			print("Made it to the await statement.")
 			await asyncio.sleep(3) #Checks transmission windows every 10 seconds
 
 	def cancellAllTasks(self, taskList): #Isn't used in this class, but here anyways
