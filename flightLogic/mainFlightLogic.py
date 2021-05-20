@@ -36,6 +36,8 @@ def __main__():
 
 
 async def executeFlightLogic():  # Open the file save object, start TXISR, and start Boot Mode data collection
+	baseFile = open("")
+	codeBase = (int) baseFile.read()
 	# Variable setup
 	delay = 1*60  # 35 minute delay
 	boot = True
@@ -57,7 +59,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	# NOTE: Boot Mode is defined and executed in this document, instead of a separate mission mode
 	antennaDeploy = antennaMode(saveObject, safeModeObject)
 	preBoomDeploy = preBoomMode(saveObject, safeModeObject)
-	postBoomDeploy = postBoomMode(saveObject, safeModeObject)
+	postBoomDeploy = postBoomMode(saveObject, safeModeObject, codeBase)
 	boomDeploy = boomMode(saveObject, safeModeObject)
 
 	if(readData() == (None, None, None)):
