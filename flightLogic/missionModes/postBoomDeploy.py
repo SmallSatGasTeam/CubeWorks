@@ -126,7 +126,7 @@ class postBoomMode:
 					sendData = data
 					print("Data: " + str(data))
 
-			print("After the problem child.")
+			print("After the first two if statements.")
 
 			if sendData.__len__() == 5:
 				print("WE'RE IN THE THIRD IF STATEMENT (readNextTransferWindow)")
@@ -144,6 +144,7 @@ class postBoomMode:
 				# print(self.__pictureNumber)
 				# print(self.__index)
 			elif sendData.__len__() >= 1:
+				print("Inside elif")
 				self.__timeToNextWindow = float(sendData[0]) - time.time()
 			else:
 				print("sendData is empty.")
