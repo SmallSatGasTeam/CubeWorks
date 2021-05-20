@@ -1,4 +1,5 @@
 import sys
+import time
 sys.path.append('../../')
 import asyncio
 from flightLogic.missionModes import safe
@@ -9,12 +10,17 @@ from Drivers.sunSensors import sunSensorDriver
 from DummyDrivers.sunSensors import sunSensorDriver as DummySunSensorDriver
 from TXISR import pythonInterrupt
 from inspect import currentframe, getframeinfo
+from TXISR import packetProcessing
+from TXISR import prepareFiles
+import subprocess
 
 
 sunSensorMin = 0.0
 sunSensorMax = 3.3
 getBusVoltageMin = 3.5
 getBusVoltageMax = 5.1
+
+TRANSFER_WINDOW_BUFFER_TIME = 10 #30 seconds
 
 DummySunSensor = True
 DEBUG = False
@@ -45,7 +51,12 @@ class preBoomMode:
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
 		self.__tasks.append(asyncio.create_task(self.sunCheck()))
 		self.__tasks.append(asyncio.create_task(self.batteryCheck()))
+		self.__tasks.append(asyncio.create_task(self.transmit()))
+
 		while True: #iterate through array, checking for set amount of dark minutes, then set amount of light minutes no greater than the maximum. When light minutes are greater than the maximum, empties array
+			if await self.skipToPostBoom():
+				print("Exiting postBoomDeploy through skipToPostBoom")
+				return True
 			i=0
 			darkLength = 0
 			lastDark = 0
@@ -149,6 +160,84 @@ class preBoomMode:
 				t.cancel()
 		except asyncio.exceptions.CancelledException:
 			print("Caught thrown exception in cancelling background task")
+	
+	async def skipToPostBoom(self):
+		print("Inside skipToPostBoom, skipping value is:", packetProcessing.skippingToPostBoom)
+		if packetProcessing.skippingToPostBoom:
+			self.cancelAllTasks(self.__tasks)
+			return True
+		else:
+			await asyncio.sleep(1)
+
+	async def readNextTransferWindow(self, transferWindowFilename):
+		while True:
+			print("Inside transfer window.")
+			#read the given transfer window file and extract the data for the soonest transfer window
+			fileChecker.checkFile(transferWindowFilename)
+			transferWindowFile = open(transferWindowFilename)
+			sendData = 0
+			soonestWindowTime = 0
+			for line in transferWindowFile:
+				print("reading line: ")
+				print(line)
+				data = line.split(",")
+				print(data)
+				#data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number
+				print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
+				if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME):  #if the transfer window is at BUFFER_TIME milliseconds in the future
+					if(soonestWindowTime == 0 or float(data[0]) - time.time() < soonestWindowTime):
+						soonestWindowTime = float(data[0]) - time.time()
+						sendData = data
+						print(sendData)
+			transferWindowFilename.close()
+			if not(sendData == 0):
+				#print("Found next transfer window: ")
+				#print(sendData)
+				self.__timeToNextWindow = float(sendData[0]) - time.time()
+				self.__duration = int(sendData[1])
+				self.__datatype = int(sendData[2])
+				self.__pictureNumber = int(sendData[3])
+				self.__nextWindowTime = float(sendData[0])
+				self.__index = int(sendData[4])
+				# print(self.__timeToNextWindow)
+				# print(self.__duration)
+				# print(self.__datatype)
+				# print(self.__pictureNumber)
+				# print(self.__index)
+			await asyncio.sleep(3) #Checks transmission windows every 10 seconds
+
+	async def transmit(self):
+		while True:
+			print("Inside of first while loop")
+			while True:
+				print("Inside of second while loop")
+				#if close enough, prep files
+				#wait until 5 seconds before, return True
+				if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<14): #If next window is in 2 minutes or less
+					if(self.__datatype < 3): #Attitude, TTNC, or Deployment data
+						prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
+						print("Preparing data")
+					else:
+						prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber)
+						print("Preparing Picture data")
+					break
+				await asyncio.sleep(5)
+			windowTime = self.__nextWindowTime
+			while True:
+				if((windowTime-time.time()) <= 5):
+					fileChecker.checkFile('/home/pi/TXISRData/transmissionFlag.txt')
+					self.__transmissionFlagFile.seek(0)
+					if(self.__transmissionFlagFile.readline()=='Enabled'):
+						txisrCodePath = '../TXISR/TXServiceCode/TXService.run'
+						print(self.__datatype)
+						subprocess.Popen(["sudo", txisrCodePath, str(self.__datatype)])
+						#os.system(txisrCodePath + ' ' + str(self.__datatype) + ' &') #Call TXISR Code
+						self.__timeToNextWindow = -1
+						break
+					else:
+						print('Transmission flag is not enabled')
+				await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
+			await asyncio.sleep(1)
 
 class unexpectedValue(Exception):
 	print("Received unexpected value.")

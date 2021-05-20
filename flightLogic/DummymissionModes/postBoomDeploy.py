@@ -33,7 +33,7 @@ class postBoomMode:
 		fileChecker.checkFile("../TXISR/data/transmissionFlag.txt")
 		fileChecker.checkFile("../TXSIR/data/txWindows.txt")
 		self.__transmissionFlagFile = open("../TXISR/data/transmissionFlag.txt")
-		self.__txWindowsPath = ("../TXISE/data/txWindows.txt")
+		self.__txWindowsPath = ("../TXISR/data/txWindows.txt")
 
 	async def run(self):
 		#Set up background processes

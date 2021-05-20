@@ -13,6 +13,7 @@ from flightLogic.missionModes import safe
 from protectionProticol.fileProtection import FileReset
 import asyncio
 from TXISR import pythonInterrupt
+from TXISR import packetProcessing
 
 
 # from TXISR import interrupt
@@ -35,6 +36,8 @@ def __main__():
 
 
 async def executeFlightLogic():  # Open the file save object, start TXISR, and start Boot Mode data collection
+	baseFile = open("/home/pi/lastBase.txt")
+	codeBase = int(baseFile.read())
 	# Variable setup
 	delay = 1*60  # 35 minute delay
 	boot = True
@@ -56,7 +59,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	# NOTE: Boot Mode is defined and executed in this document, instead of a separate mission mode
 	antennaDeploy = antennaMode(saveObject, safeModeObject)
 	preBoomDeploy = preBoomMode(saveObject, safeModeObject)
-	postBoomDeploy = postBoomMode(saveObject, safeModeObject)
+	postBoomDeploy = postBoomMode(saveObject, safeModeObject, codeBase)
 	boomDeploy = boomMode(saveObject, safeModeObject)
 
 	if(readData() == (None, None, None)):
@@ -70,6 +73,9 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	if lastMode not in range(0,7): #Mission Mode invalid
 		lastMode = 0
 		antennaDeployed = False
+	if packetProcessing.skippingToPostBoom: # Check if we're skipping to Post Boom Deploy
+		lastMode = 4
+		antennaDeployed = True
 
 	# This is the implementation of the BOOT mode logic.
 	if not antennaDeployed:  # First, sleep for 35 minutes
@@ -97,6 +103,8 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 
 	recordData(bootCount, antennaDeployed, lastMode)
 
+	if packetProcessing.skippingToPostBoom: # Check if we're skipping to Post Boom Deploy
+		lastMode = 4
 	if not antennaDeployed:
 		await asyncio.gather(antennaDeploy.run())
 		print('Running Antenna Deployment Mode')
@@ -113,16 +121,21 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 		lastMode = 2
 		# TRY/EXCEPT preBoomDeploys
 		await asyncio.gather(preBoomDeploy.run())
+		print("Finished running preBoomDeploy")
 
 
 	while True: # This loop executes the rest of the flight logic
 	# pre boom deploy
+		print("Entered the loop that chooses the next mission mode.")
+		if packetProcessing.skippingToPostBoom: # Check if we're skipping to Post Boom Deploy
+			lastMode = 4
 		if antennaDeployed == True and lastMode not in (3,4):
 			print('Running pre-Boom deploy')
 			lastMode = 2
 			recordData(bootCount, antennaDeployed, lastMode)
 			# TRY/EXCEPT
 			await asyncio.gather(preBoomDeploy.run())  # Execute pre-boom deploy, then move to post-boom deploy
+			print("Finished preBoomDeploy")
 			lastMode = 3
 			recordData(bootCount, antennaDeployed, lastMode)
 		elif antennaDeployed == True and lastMode == 3:
@@ -200,4 +213,3 @@ def readData():
 # def startTXISR(saveobject):  # Setup for TXISR
 # This sets up the interupt on the uart pin that triggers when we get commincation over uart
 # thread.start(interrupt.watchReceptions(saveobject)) <-- TODO fix that import
-

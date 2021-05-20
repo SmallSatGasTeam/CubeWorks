@@ -195,7 +195,7 @@ void main(int argc,char* argv[])
         int charCount = 0;
         int end = 0;
         int charTimeCount = 0;
-        char chl;
+        char chl = '0';
         for (int i = 0; i < MAX_BYTES_PER_LINE; i++)
         {
             line[i] = '0';
@@ -203,40 +203,42 @@ void main(int argc,char* argv[])
         
         //DEBUG_P(Im in the main loop)
 
-        do 
-        {
+        do {
             if(feof(txFile)) break;
             ch = fgetc(txFile);
             //this collects the time stamp
-            if(!end && !feof(txFile))
-            {
-                timeStamp[charTimeCount++] = ch;
-                printf("Finding the timestamp.");
-                PRINT_DEBUG_c(ch)
-            }
+
+            timeStamp[charTimeCount++] = ch;
+            // printf("Finding the timestamp.\n");
+            // PRINT_DEBUG_c(ch)
+
             if (ch == TIME_DEVISOR)
             {
                 end = 1;
                 //if you dont wanna send the : uncommit the next line into the code
                 //continue;
             }
+        } while(!end && !feof(txFile));
+
+        // DEBUG_P(Found a colon and leaving the first loop)
+
+        while((ch != '\n') && (!feof(txFile)) && (chl != '\n'))
+        {
+            //if(feof(txFile)) break;
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
-            if(end && (ch != TIME_DEVISOR) && (ch != '\n') && (chl != '\n')) 
-            {
-                chl = fgetc(txFile);
-                line[charCount++] = convertCharToHex(chl, ch);
-                PRINT_DEBUG_c(ch)
-                PRINT_DEBUG_c(chl)
-                PRINT_DEBUG(charCount)
-            }
-            DEBUG_P(Im in the sub loop)
-        }while((ch != '\n') && (!feof(txFile)) && (chl != '\n'));
+            ch = fgetc(txFile);
+            chl = fgetc(txFile);
+            line[charCount++] = convertCharToHex(chl, ch);
+            PRINT_DEBUG_c(ch)
+            PRINT_DEBUG_c(chl)
+            PRINT_DEBUG(charCount)
+            // DEBUG_P(Im in the sub loop)
+        }
         
-        
-        DEBUG_P(leaving loop)
+        // DEBUG_P(leaving loop)
 
-        if(ch == '\n' || feof(txFile))
+        if((ch == '\n') || (feof(txFile)) || (chl == '\n'))
         {
             //transmit the data
             #ifdef DEBUG

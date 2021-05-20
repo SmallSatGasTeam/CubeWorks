@@ -23,7 +23,7 @@ Workings of the TXSeriveCode.c:  As a forestated the object of this code is to s
 •	Note: The code uses delta t this means that the code does not need to know what the system time is. It also is not important that the system time is correct so long as delta t is still correct. 
 	Step three: the radio is put into pip mode
 	Step four the transmission
-•	The code takes in one line of thtxFile.txt at a times. It reads the time stamp and then transmit the data.
+•	The code takes in one line of the txFile.txt at a times. It reads the time stamp and then transmit the data.
 •	The code then saves the time stamp to the flagsFile.txt.
 •	The code waits 120 milliseconds. 
 •	This process is repeated until all the data is sent or the transmission window expires. 
@@ -37,7 +37,7 @@ ii)	Enter gcc TXServiceCode.c (This code is for the testUART.py)
 iii)	Enter gcc TXServiceCode.c -o TXService.run
 iv)	Enter cd ..
 v)	Enter cp piTXISR/TXService.run TXServiceCode
-Camara files: Camara transmission files have only one difference from normal transmission files, this is that the time stamp is replaced with a line number. EX 1: (camara data). The line number is important because should a transmission fail we will know where to resume transmissions on the next window. 
+Camera files: Camera transmission files have only one difference from normal transmission files, this is that the time stamp is replaced with a line number. EX 1: (camera data). The line number is important because should a transmission fail we will know where to resume transmissions on the next window. 
 
 Shawn Jones
 GASPACS Software Team Lead

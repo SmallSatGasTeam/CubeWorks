@@ -31,5 +31,48 @@ be repoerted.
     Lines 20-24, 30-54
     The try catch was added to make the system continue past preBoomDeploy
 
-#5 <Added logic for the running transmission c code> "flightLogic/missionModes/postBoomDeploy", "flightLogic/mainFlightlogic.py"
+
+#5 <Added code to index the data file> "TXISR/prepareFiles.py"
+    Lines 18, 72-137
+    Added a new argument to the function prepare data that corresponds to the
+    line to start at, -1 starts the function from the last transmission.
+    Used the function linechache.getline() to allow the data from the data file
+    to be indexed.
+
+#6 <Updated filepaths to work for new install process> Throughtout
+    Hard coded all file paths to go to /home/pi/TXISRData or /home/pi/flightLogicData
+
+#7 <Debugging TXServiceCode> "TXISR/TXServiceCode/TXServiceCode.c"
+    Lines 19-20, 206-241, 357-375
+    19-20 Fixed file paths
+    206-241 Added variable char chl to temporarily store the value of the lower
+        byte for the hex data so it can be used to find the end of a line.
+        Split the loops pulling the timestamp and data into different loops so
+        they would stopp tripping over each other as much.
+    357-375 Changed 0-9 from their ascii decimal values to their character
+        representation to remove confusion.
+
+#8 <Changed startFromBeginning to boolean> "TXISR/prepareFiles.py flightLogic/missionModes/postBoomDeploy.py"
+    Changed startFromBeginning to boolean to decrease margin of error
+
+#9 <Started writing the index to txWindows.txt> "TXISR/packetProcessing.py"
+    Line 180
+    We needed to know what line to write to so when it gets sent up with all of
+    the transmission data it gets saved to do the windows file.
+
+#10 <Added haslib.md5 to hmac> "TXISR/packetProcessing" "GroundStation/transmissionHandling.py"
+    Packet processing lines 17, 74, 96
+    transmissionHandling lines 4, 93
+    In python 3.8 they made it a requirement for hmac to have three parameters
+    so a thid parameter was added to run the kind of encryption that was already
+    being run before
+
+#11 <Added indexing command> "TXISR/prepareFiles.py TXISR/packetProcessing.py GroundStation/transmissionHandling.py"
+    Prepare files lines 77-78
+    Packet processing lines 62-67
+    transmissionHandling lines 43-44, 77-83
+    Added 34 bytes to the tx window packet that corresponds to the line number
+        to be indexed to. In transmissionHandling a new int34tohex function was
+        also added.
+#12 <Added logic for the running transmission c code> "flightLogic/missionModes/postBoomDeploy", "flightLogic/mainFlightlogic.py"
     mainFlightlogic: Lines 39-40, postBoomDeploy: Line 20, 24, 76, 79

@@ -5,6 +5,7 @@ The header and footer is the Hex representation of 'GASPACS'. The pythonInterrup
 processPacket() will convert the packet data to binary, and then go through bit by bit and perform the functionality specified in the packet.
 '''
 # NOTE: This code is not asyncronous currently.
+import hashlib
 import sys
 sys.path.append('../')
 import time
@@ -17,6 +18,7 @@ import hmac
 from protectionProticol.fileProtection import FileReset
 
 fileChecker = FileReset()
+skippingToPostBoom = False
 
 def processAX25(AX25):  #Placeholder function
 	#Check AX25 Transmission flag, if it is OK then open a pyserial connection and transmit the content of the packet
@@ -54,23 +56,26 @@ async def processPacket(packetData):
 		pictureNumberDecimal = int(pictureNumberBinary,2)
 		print("Picture number: ", pictureNumberDecimal)
 
-		# Get "Start From Beginning"
-		startFromBeginning = binaryData[80:88]
-		print("Start from beginning: ", startFromBeginning)
+		#Get index
+		if binaryData[80:216] == 0:
+			index = -1
+		else:
+			index = binaryData[80:216]
+		print("Indexing to:", index)
 
 		# Get the appended hash - it is a 16 byte (128 bit) value
-		receivedHash = binaryData[88:]
+		receivedHash = binaryData[216:]
 		print("Received Hash: ", receivedHash)
 
 		# Generated hash from received data
-		generatedHash = hmac.new(secretKey, bytes(binaryData[0:88], 'utf-8'))
+		generatedHash = hmac.new(secretKey, bytes(binaryData[0:216], 'utf-8'), hashlib.md5)
 		generatedHashHex = generatedHash.hexdigest()
 		generatedHashLength = len(generatedHashHex) * 4
 		generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)
 		print("Generated hash: ", generatedHashBinary)
 		if receivedHash == generatedHashBinary:
 			print("Hashes match! Writing window")
-			writeTXWindow(windowStartDecimal, windowDurationDecimal, dataTypeDecimal, pictureNumberDecimal, startFromBeginning)
+			writeTXWindow(windowStartDecimal, windowDurationDecimal, dataTypeDecimal, pictureNumberDecimal, index)
 
 		else:
 			print("Hashes do not match, will not save window!")
@@ -81,11 +86,11 @@ async def processPacket(packetData):
 
 		# Validate HMAC Hash
 		# Note, hash is 16 bytes (128 bits). Command packet is 1 byte (8 bits)
-		receivedHash = binaryData[56:185]
+		receivedHash = binaryData[64:193]
 		print("Received Hash: ", receivedHash)
 
 		# Generated hash from received data
-		generatedHash = hmac.new(secretKey, bytes(binaryData[0:56], 'utf-8'))
+		generatedHash = hmac.new(secretKey, bytes(binaryData[0:56], 'utf-8'), hashlib.md5)
 		generatedHashHex = generatedHash.hexdigest()
 		generatedHashLength = len(generatedHashHex) * 4
 		generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)
@@ -147,11 +152,19 @@ async def processPacket(packetData):
 				#Turn on AX25
 				print("Turn on AX25")
 				enableAX25()
+
+			if binaryData[56:64] == '00000000':
+				#Chose whether or not to skip to post boom deploy
+				print("Running flight logic normally.")
+				skippingToPostBoom = False
+			else:
+				print("Skipping to post boom deploy.")
+				skip()
 		else:
 			print("Hashes do not match, will not execute commands!")
 
 
-def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber, startFromBeginning):
+def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber, index):
 	# This function will write the TX window packet information to a file. Pass in the window start (delta T), window duration, data type, picture number, and Start From Beginning (1/0).
 	# Note that this function saves the window start as an actual time, not a delta T - this is critical.
 
@@ -168,7 +181,7 @@ def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber, startFro
 	TXWindow_File.write(str(windowDuration)+',')
 	TXWindow_File.write(str(dataType)+',')
 	TXWindow_File.write(str(pictureNumber)+',')
-	TXWindow_File.write(str(startFromBeginning))
+	TXWindow_File.write(str(index))
 	TXWindow_File.write('\n')
 	
 	# close file
@@ -236,6 +249,9 @@ def clearTXProgress():
 	progressFile.write('0\n')
 	progressFile.write('0\n')
 	progressFile.write('0\n')
+
+def skip():
+	skippingToPostBoom = True
 
 # Command packet
 # processPacket('C8')

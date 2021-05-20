@@ -415,7 +415,7 @@ class DeployData():
 			await self.getData()
 			# Write data to file
 			await self.writeData() # filechecker?
-			print("getting deployment data")
+			#print("getting deployment data")
 			# Sleep for 50 ms (20Hz)
 			await asyncio.sleep(0.05)
 
