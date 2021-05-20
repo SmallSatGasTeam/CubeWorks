@@ -121,8 +121,8 @@ class postBoomMode:
 						sendData = data
 						print("Data: " + str(data))
 				else:
-					print("Breaking from the for loop")
-					continue
+					print("Hit the else, awaiting asyncio")
+					await asyncio.sleep(3)
 
 			if sendData.__len__() == 5:
 				print("WE'RE IN THE THIRD IF STATEMENT (readNextTransferWindow)")
