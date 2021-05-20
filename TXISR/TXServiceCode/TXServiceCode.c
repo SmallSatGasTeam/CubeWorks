@@ -229,10 +229,10 @@ void main(int argc,char* argv[])
             //this if lets us not send the line number if this is a photo file
             ch = fgetc(txFile);
             chl = fgetc(txFile);
-            // line[charCount++] = convertCharToHex(chl, ch);
-            // PRINT_DEBUG_c(ch)
-            // PRINT_DEBUG_c(chl)
-            // PRINT_DEBUG(charCount)
+            line[charCount++] = convertCharToHex(chl, ch);
+            PRINT_DEBUG_c(ch)
+            PRINT_DEBUG_c(chl)
+            PRINT_DEBUG(charCount)
             // DEBUG_P(Im in the sub loop)
         }
         
