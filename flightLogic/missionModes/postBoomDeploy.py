@@ -100,6 +100,8 @@ class postBoomMode:
 
 	async def readNextTransferWindow(self, transferWindowFilename):
 		while True:
+			j = 1
+			print("WHILE INDEX = ", j)
 			print("Inside transfer window.")
 			#read the given transfer window file and extract the data for the soonest transfer window
 			fileChecker.checkFile(transferWindowFilename)
@@ -107,6 +109,9 @@ class postBoomMode:
 			sendData = 0
 			soonestWindowTime = 0
 			for line in transferWindowFile:
+				i = 1
+				print("INDEX = ", i)
+				i += 1
 				print("reading line: ")
 				print(line)
 				data = line.split(",")
