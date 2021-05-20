@@ -50,11 +50,7 @@ class postBoomMode:
 		print("Initalized all tasks.")
 
 		while True:
-			print("Inside of first while loop")
 			while True:
-				print("Inside of second while loop")
-				print("WE ARE ABOUT TO PRINT THE DATA TYPE!!!!!!!")
-				print(self.__datatype)
 				print(self.__timeToNextWindow)
 				#if close enough, prep files
 				#wait until 5 seconds before, return True
@@ -75,12 +71,9 @@ class postBoomMode:
 					if(self.__transmissionFlagFile.readline()=='Enabled'):
 						txisrCodePath1 = filePaths[self.__codeBase]
 						#txisrCodePath = '../TXISR/TXServiceCode/'
-						#print(self.__datatype)
-						#print(txisrCodePath)
 						txisrCodePath = os.path.join(os.path.dirname(__file__), txisrCodePath1)
 						print(self.__datatype)
 						subprocess.Popen([txisrCodePath, str(self.__datatype)])
-						#print("WE ARE ABOUT TO CALL THE C CODE. jajajajajajajajajajajajajajajajajajajajA<><?><?<>><?<?<>?><?<?<?<>?><?<>?<?><?<?<>?<?<?><?><?<>?")
 						#subprocess.Popen(['cd', ';', 'cd', str(txisrCodePath), ';', 'sudo', './TXService.run', str(self.__datatype)])
 						#os.system("cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype)) #Call TXISR Code
 						self.__timeToNextWindow = -1
@@ -105,7 +98,6 @@ class postBoomMode:
 
 	async def readNextTransferWindow(self, transferWindowFilename):
 		while True:
-			print("Inside transfer window.")
 			#read the given transfer window file and extract the data for the soonest transfer window
 			fileChecker.checkFile(transferWindowFilename)
 			transferWindowFile = open(transferWindowFilename)
@@ -113,17 +105,13 @@ class postBoomMode:
 			soonestWindowTime = 0
 
 			line = transferWindowFile.readline()
-			# print("reading line: ")
-			# print(line)
 			data = line.split(",")
-			# print(data)
 			#data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number
 			print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME, float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME)
 			if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME):  #if the transfer window is at BUFFER_TIME milliseconds in the future
 				if(soonestWindowTime == 0 or float(data[0]) - time.time() < soonestWindowTime):
 					soonestWindowTime = float(data[0]) - time.time()
 					sendData = data
-					print("Data: " + str(data))
 
 			if sendData.__len__() == 5:
 				print(sendData)
@@ -133,11 +121,6 @@ class postBoomMode:
 				self.__pictureNumber = int(sendData[3])
 				self.__nextWindowTime = float(sendData[0])
 				self.__index = int(sendData[4])
-				# print(self.__timeToNextWindow)
-				# print(self.__duration)
-				# print(self.__datatype)
-				# print(self.__pictureNumber)
-				# print(self.__index)
 			else:
 				print("sendData is empty.")
 			
