@@ -120,6 +120,7 @@ class postBoomMode:
 						sendData = data
 						print("Data: " + str(data))
 				else:
+
 					break
 
 			if sendData.__len__() == 5:
@@ -141,7 +142,8 @@ class postBoomMode:
 				self.__timeToNextWindow = float(sendData[0]) - time.time()
 			else:
 				print("sendData is empty.")
-				
+			
+			print("Made it to the await statement.")
 			await asyncio.sleep(3) #Checks transmission windows every 10 seconds
 
 	def cancellAllTasks(self, taskList): #Isn't used in this class, but here anyways
