@@ -127,6 +127,7 @@ class postBoomMode:
 					print("Data: " + str(data))
 
 			print("After the first two if statements.")
+			print(sendData.__len__())
 
 			if sendData.__len__() == 5:
 				print("WE'RE IN THE THIRD IF STATEMENT (readNextTransferWindow)")
@@ -138,16 +139,17 @@ class postBoomMode:
 				self.__pictureNumber = int(sendData[3])
 				self.__nextWindowTime = float(sendData[0])
 				self.__index = int(sendData[4])
+			else:
+				print("sendData is empty.")
 				# print(self.__timeToNextWindow)
 				# print(self.__duration)
 				# print(self.__datatype)
 				# print(self.__pictureNumber)
 				# print(self.__index)
-			elif sendData.__len__() >= 1:
-				print("Inside elif")
-				self.__timeToNextWindow = float(sendData[0]) - time.time()
-			else:
-				print("sendData is empty.")
+			# elif sendData.__len__() >= 1:
+			# 	print("Inside elif")
+			# 	self.__timeToNextWindow = float(sendData[0]) - time.time()
+			
 			
 			print("Made it to the await statement.")
 			await asyncio.sleep(3) #Checks transmission windows every 10 seconds
