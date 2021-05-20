@@ -51,11 +51,11 @@ class preBoomMode:
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
 		self.__tasks.append(asyncio.create_task(self.sunCheck()))
 		self.__tasks.append(asyncio.create_task(self.batteryCheck()))
-		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
-		self.__tasks.append(asyncio.current_task(self.transmit()))
+		self.__tasks.append(asyncio.create_task(self.transmit()))
 
 		while True: #iterate through array, checking for set amount of dark minutes, then set amount of light minutes no greater than the maximum. When light minutes are greater than the maximum, empties array
-			if self.skipToPostBoom():
+			if await self.skipToPostBoom():
+				print("Exiting postBoomDeploy through skipToPostBoom")
 				return True
 			i=0
 			darkLength = 0
@@ -164,11 +164,9 @@ class preBoomMode:
 	async def skipToPostBoom(self):
 		print("Inside skipToPostBoom, skipping value is:", packetProcessing.skippingToPostBoom)
 		if packetProcessing.skippingToPostBoom:
-			print("Cancelling all tasks to skip to post boom")
 			self.cancelAllTasks(self.__tasks)
 			return True
 		else:
-			print("Waiting one second in skip to post boom")
 			await asyncio.sleep(1)
 
 	async def readNextTransferWindow(self, transferWindowFilename):
@@ -191,6 +189,7 @@ class preBoomMode:
 						soonestWindowTime = float(data[0]) - time.time()
 						sendData = data
 						print(sendData)
+			transferWindowFilename.close()
 			if not(sendData == 0):
 				#print("Found next transfer window: ")
 				#print(sendData)
@@ -199,9 +198,7 @@ class preBoomMode:
 				self.__datatype = int(sendData[2])
 				self.__pictureNumber = int(sendData[3])
 				self.__nextWindowTime = float(sendData[0])
-				self.__startFromBeginning = bool(sendData[4])
-				self.__index = int(sendData[5])
-				# print(self.__startFromBeginning)
+				self.__index = int(sendData[4])
 				# print(self.__timeToNextWindow)
 				# print(self.__duration)
 				# print(self.__datatype)
@@ -218,10 +215,10 @@ class preBoomMode:
 				#wait until 5 seconds before, return True
 				if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<14): #If next window is in 2 minutes or less
 					if(self.__datatype < 3): #Attitude, TTNC, or Deployment data
-						prepareFiles.prepareData(self.__duration, self.__datatype, self.__startFromBeginning, self.__index)
+						prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
 						print("Preparing data")
 					else:
-						prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__startFromBeginning)
+						prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber)
 						print("Preparing Picture data")
 					break
 				await asyncio.sleep(5)
@@ -239,7 +236,8 @@ class preBoomMode:
 						break
 					else:
 						print('Transmission flag is not enabled')
-				await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds	
+				await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
+			await asyncio.sleep(1)
 
 class unexpectedValue(Exception):
 	print("Received unexpected value.")

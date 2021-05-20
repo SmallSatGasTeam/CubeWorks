@@ -40,27 +40,27 @@ class antennaMode:
 		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
 		self.__tasks.append(asyncio.create_task(self.transmit()))
 		eps=EPS()
-		if self.skipToPostBoom():
+		if await self.skipToPostBoom():
 			return True
 		while True: #Runs antenna deploy loop
 			if (eps.getBusVoltage()>self.deployVoltage):
 				await asyncio.gather(self.__antennaDeployer.deployPrimary()) #Fire Primary Backup Resistor
 				doorStatus = self.__antennaDoor.readDoorStatus() #Check Door status
 				if doorStatus == (1,1,1,1): #probably need to change this to actually work
-					if self.skipToPostBoom():
+					if await self.skipToPostBoom():
 						return True
 					self.cancelAllTasks(self.__tasks)
 					print('Doors are open, returning true')
 					return True
 				else:
-					if self.skipToPostBoom():
+					if await self.skipToPostBoom():
 						return True
 					print('Firing secondary, primary did not work. Returning True')
 					await asyncio.gather(self.__antennaDeployer.deploySecondary())
 					self.cancelAllTasks(self.__tasks)
 					return True
 			else:
-				if self.skipToPostBoom():
+				if await self.skipToPostBoom():
 					return True
 				if(self.timeWaited > self.maximumWaitTime):
 					self.__safeMode.run(10) #1 hour
@@ -80,10 +80,10 @@ class antennaMode:
 				#wait until 5 seconds before, return True
 				if(self.__timeToNextWindow is not -1 and self.__timeToNextWindow<14): #If next window is in 2 minutes or less
 					if(self.__datatype < 3): #Attitude, TTNC, or Deployment data
-						prepareFiles.prepareData(self.__duration, self.__datatype, self.__startFromBeginning, self.__index)
+						prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
 						print("Preparing data")
 					else:
-						prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__startFromBeginning)
+						prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber)
 						print("Preparing Picture data")
 					break
 				await asyncio.sleep(5)
@@ -138,6 +138,7 @@ class antennaMode:
 						soonestWindowTime = float(data[0]) - time.time()
 						sendData = data
 						print(sendData)
+			transferWindowFilename.close()
 			if not(sendData == 0):
 				#print("Found next transfer window: ")
 				#print(sendData)
@@ -146,9 +147,7 @@ class antennaMode:
 				self.__datatype = int(sendData[2])
 				self.__pictureNumber = int(sendData[3])
 				self.__nextWindowTime = float(sendData[0])
-				self.__startFromBeginning = bool(sendData[4])
-				self.__index = int(sendData[5])
-				# print(self.__startFromBeginning)
+				self.__index = int(sendData[4])
 				# print(self.__timeToNextWindow)
 				# print(self.__duration)
 				# print(self.__datatype)
