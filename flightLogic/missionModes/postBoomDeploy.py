@@ -146,8 +146,8 @@ class postBoomMode:
 			# elif sendData.__len__() >= 1:
 			# 	print("Inside elif")
 			# 	self.__timeToNextWindow = float(sendData[0]) - time.time()
-			# else:
-			# 	print("sendData is empty.")
+			else:
+				print("sendData is empty.")
 			
 			print("Made it to the await statement.")
 			await asyncio.sleep(3) #Checks transmission windows every 10 seconds
