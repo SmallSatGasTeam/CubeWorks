@@ -139,16 +139,13 @@ class postBoomMode:
 				self.__pictureNumber = int(sendData[3])
 				self.__nextWindowTime = float(sendData[0])
 				self.__index = int(sendData[4])
-			else:
-				print("sendData is empty.")
 				# print(self.__timeToNextWindow)
 				# print(self.__duration)
 				# print(self.__datatype)
 				# print(self.__pictureNumber)
 				# print(self.__index)
-			# elif sendData.__len__() >= 1:
-			# 	print("Inside elif")
-			# 	self.__timeToNextWindow = float(sendData[0]) - time.time()
+			else:
+				print("sendData is empty.")
 			
 			
 			print("Made it to the await statement.")
