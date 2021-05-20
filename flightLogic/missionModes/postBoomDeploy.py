@@ -127,6 +127,7 @@ class postBoomMode:
 					print("Data: " + str(data))
 
 			print("After the first two if statements.")
+			print(sendData.__len__())
 
 			if sendData.__len__() == 5:
 				print("WE'RE IN THE THIRD IF STATEMENT (readNextTransferWindow)")
