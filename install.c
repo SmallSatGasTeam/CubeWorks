@@ -21,6 +21,8 @@ char brnachCommand2 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXService
 char brnachCommand3 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
 char brnachCommand4 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
 
+char upDateCommand [] = "cd ; cd CubeWorks0/ ; gcc upDateCode.c -o upDateCode.exe ; cp upDateCode.exe ~/ ; rm upDateCode.exe";
+
 // #update and install python
 // #NO long in use cause the version are lock for FLIGHT!
 // # sudo apt full-upgrade
@@ -51,19 +53,23 @@ void main()
     
 
     //complie the code
-    printf("\n>>>Creating tx runtine for CubeWorks0<<<\n");
+    printf("\n>>>Creating tx routine for CubeWorks0<<<\n");
     system(brnachCommand0);
-    printf("\n>>>Creating tx runtine for CubeWorks1<<<\n");
+    printf("\n>>>Creating tx routine for CubeWorks1<<<\n");
     system(brnachCommand1);
-    printf("\n>>>Creating tx runtine for CubeWorks2<<<\n");
+    printf("\n>>>Creating tx routine for CubeWorks2<<<\n");
     system(brnachCommand2);
-    printf("\n>>>Creating tx runtine for CubeWorks3<<<\n");
+    printf("\n>>>Creating tx routine for CubeWorks3<<<\n");
     system(brnachCommand3);
-    printf("\n>>>Creating tx runtine for CubeWorks4<<<\n");
+    printf("\n>>>Creating tx routine for CubeWorks4<<<\n");
     system(brnachCommand4);
 
+    //create the upDate code 
+    printf("\n>>>Creating update code<<<\n");
+    system(upDateCommand);
+
     //create the start up code, and then move it to the root
-    printf("\n>>>creating multi-code base proticol\n");
+    printf("\n>>>creating multi-code base protocol\n");
     system("cd CubeWorks0\ngcc startup.c -o startup.exe\ncp startup.exe ~/");
 
     //up date the crontab to run the startup.exe
