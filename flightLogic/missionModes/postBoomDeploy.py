@@ -122,7 +122,6 @@ class postBoomMode:
 						print("Data: " + str(data))
 				else:
 					print("Hit the else, awaiting asyncio")
-					await asyncio.sleep(3)
 
 			if sendData.__len__() == 5:
 				print("WE'RE IN THE THIRD IF STATEMENT (readNextTransferWindow)")
@@ -145,7 +144,7 @@ class postBoomMode:
 				print("sendData is empty.")
 			
 			print("Made it to the await statement.")
-			await asyncio.sleep(3) #Checks transmission windows every 10 seconds
+			#await asyncio.sleep(3) #Checks transmission windows every 10 seconds
 
 	def cancellAllTasks(self, taskList): #Isn't used in this class, but here anyways
 		try:
