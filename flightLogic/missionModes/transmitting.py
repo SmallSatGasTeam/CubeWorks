@@ -26,12 +26,12 @@ class Transmitting:
         fileChecker.checkFile(self.__txWindowsPath)
         self.__codeBase = codeBase
 
-    async def readNextTransferWindow(self, transferWindowFilename):
+    async def readNextTransferWindow(self):
         while True:
             print("INSIDE TRANSFER WINDOW")
             #read the given transfer window file and extract the data for the soonest transfer window
-            fileChecker.checkFile(transferWindowFilename)
-            transferWindowFile = open(transferWindowFilename)
+            fileChecker.checkFile(self.__txWindowsPath)
+            transferWindowFile = open(self.__txWindowsPath)
             sendData = []
             soonestWindowTime = 0
 
