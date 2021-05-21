@@ -54,11 +54,17 @@ class Transmitting:
             if sendData.__len__() == 5:
                 print(sendData)
                 self.__timeToNextWindow = float(sendData[0] - time.time())
+                print(self.__timeToNextWindow)
                 self.__duration = int(sendData[1])
+                print(self.__duration)
                 self.__datatype = int(sendData[2])
+                print(self.__datatype)
                 self.__pictureNumber = int(sendData[3])
+                print(self.__pictureNumber)
                 self.__nextWindowTime = float(sendData[0])
+                print(self.__nextWindowTime)
                 self.__index = int(sendData[4])
+                print(self.__index)
             else:
                 print("sendData is empty.")
 
