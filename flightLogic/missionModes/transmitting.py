@@ -54,7 +54,7 @@ class Transmitting:
             if sendData.__len__() == 5:
                 print(sendData)
                 try:
-                    print(sendData[0]-time.time())
+                    print(float(sendData[0])-time.time())
                     self.__timeToNextWindow = float(sendData[0]) - time.time()
                 except Exception as e:
                     print("Error:", e)
