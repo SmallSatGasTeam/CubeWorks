@@ -27,7 +27,7 @@ class postBoomMode:
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
 		self.__tasks.append(asyncio.create_task(self.rebootLoop()))
-		self.__tasks.append(asyncio.create_task(self.__transmit.trasnmit()))
+		self.__tasks.append(asyncio.create_task(self.__transmit.transmit()))
 		print("Initalized all tasks.")			
 
 	async def rebootLoop(self):
