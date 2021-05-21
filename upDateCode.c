@@ -9,11 +9,11 @@ char cammand4 [] = "cd CubeWorks4/ ; git fetch ; git pull";
 char upDateStartUpCode [] = "cd CubeWorks0/ ; gcc startup.c -o startup.exe ; ";
 char upDateStartUpCode2 [] = "cd CubeWorks0/ ; cp startup.exe ~/ ; rm startup.exe";
 
-char brnachCommand0 [] = "cd ; cd CubeWorks0/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
-char brnachCommand1 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
-char brnachCommand2 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
-char brnachCommand3 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
-char brnachCommand4 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
+char branchCommand0 [] = "cd ; cd CubeWorks0/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
+char branchCommand1 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
+char branchCommand2 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
+char branchCommand3 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
+char branchCommand4 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
 
 
 void main()
@@ -27,15 +27,15 @@ void main()
     system(upDateStartUpCode2);
 
     printf("\n>>>Creating tx routine for CubeWorks0<<<\n");
-    system(brnachCommand0);
+    system(branchCommand0);
     printf("\n>>>Creating tx routine for CubeWorks1<<<\n");
-    system(brnachCommand1);
+    system(branchCommand1);
     printf("\n>>>Creating tx routine for CubeWorks2<<<\n");
-    system(brnachCommand2);
+    system(branchCommand2);
     printf("\n>>>Creating tx routine for CubeWorks3<<<\n");
-    system(brnachCommand3);
+    system(branchCommand3);
     printf("\n>>>Creating tx routine for CubeWorks4<<<\n");
-    system(brnachCommand4);
+    system(branchCommand4);
 
     printf(">>>Everything is up to date\n");
 }
