@@ -15,7 +15,7 @@ class postBoomMode:
 		self.__getAttitudeData =  AttitudeData(saveObject)
 		self.__tasks = [] # List will be populated with all background tasks
 		self.__safeMode = safeModeObject
-		self.__timeToNextWindow = self.__transmit.__timeToNextWindow
+		self.__timeToNextWindow = self.__transmit.timeToNextWindow()
 		print("Initialized postBoomDeploy")
 
 	async def run(self):
@@ -32,7 +32,7 @@ class postBoomMode:
 
 	async def rebootLoop(self):
 		upTime = 0
-		self.__timeToNextWindow = self.__transmit.__timeToNextWindow
+		self.__timeToNextWindow = self.__transmit.timeToNextWindow()
 		while True:
 			if upTime>86400: #Live for more than 24 hours
 				if (self.__timeToNextWindow == -1) or (self.__timeToNextWindow > REBOOT_WAIT_TIME):

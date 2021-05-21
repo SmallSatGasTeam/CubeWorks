@@ -88,3 +88,6 @@ class Transmitting:
                         print("Transmission flag is not enabled")
 
                 await asyncio.sleep(.01)
+
+    def timeToNextWindow(self):
+        return self.__timeToNextWindow
