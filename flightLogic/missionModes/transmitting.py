@@ -40,7 +40,9 @@ class Transmitting:
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
             print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
             if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME): #If the transfer window is at BUFFER_TIME milliseconds in the future
+                print("I'm in here!")
                 if(soonestWindowTime == 0 or float(data[0]) - time.time()):
+                    print("Now I'm in here!")
                     soonestWindowTime = float(data[0] - time.time())
                     sendData = data
                     print("sendData has just been changed to:", sendData)
