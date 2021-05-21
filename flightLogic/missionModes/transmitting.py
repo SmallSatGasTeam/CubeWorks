@@ -58,36 +58,39 @@ class Transmitting:
             await asyncio.sleep(3)
     
     async def transmit(self):
-        while True:
+        try:
             while True:
-                print(self.__timeToNextWindow)
-                #if close enough, prep files
-                #wait until 5 seconds before, return True
-                if (self.__timeToNextWindow != -1) and (self.__timeToNextWindow < 14):
-                    if self.__datatype < 3: #Attitude, TTNC, or Deployment data respectively
-                        prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
-                        print("Preparing data")
-                    else:
-                        prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber)
-                    break
-                await asyncio.sleep(5)
-            windowTime = self.__nextWindowTime
-            while True:
-                if (windowTime-time.time()) <= 5:
-                    fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
-                    self.__transmissionFlagFile.seek(0)
-                    if self.__transmissionFlagFile.readline() == 'Enabled':
-                        txisrCodePath = filePaths[self.__codeBase]
-                        #These two are old code that we may potentially have to come back to
-                        #subprocess.Popen([txisrCodePath, str(self.__datatype)])
-                        #subprocess.Popen(['cd', ';, 'cd', str(txisrCodePath), ';', 'sudo', './TXService.run', str(self.__dataType)])
-                        os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype))
-                        self.__timeToNextWindow = -1
+                while True:
+                    print(self.__timeToNextWindow)
+                    #if close enough, prep files
+                    #wait until 5 seconds before, return True
+                    if (self.__timeToNextWindow != -1) and (self.__timeToNextWindow < 14):
+                        if self.__datatype < 3: #Attitude, TTNC, or Deployment data respectively
+                            prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
+                            print("Preparing data")
+                        else:
+                            prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber)
                         break
-                    else:
-                        print("Transmission flag is not enabled")
+                    await asyncio.sleep(5)
+                windowTime = self.__nextWindowTime
+                while True:
+                    if (windowTime-time.time()) <= 5:
+                        fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
+                        self.__transmissionFlagFile.seek(0)
+                        if self.__transmissionFlagFile.readline() == 'Enabled':
+                            txisrCodePath = filePaths[self.__codeBase]
+                            #These two are old code that we may potentially have to come back to
+                            #subprocess.Popen([txisrCodePath, str(self.__datatype)])
+                            #subprocess.Popen(['cd', ';, 'cd', str(txisrCodePath), ';', 'sudo', './TXService.run', str(self.__dataType)])
+                            os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype))
+                            self.__timeToNextWindow = -1
+                            break
+                        else:
+                            print("Transmission flag is not enabled")
 
-                await asyncio.sleep(.01)
+                    await asyncio.sleep(.01)
+        except Exception as e:
+            print("Error in transmission:", e)
 
     def timeToNextWindow(self):
         return self.__timeToNextWindow
