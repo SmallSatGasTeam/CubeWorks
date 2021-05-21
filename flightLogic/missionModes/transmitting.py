@@ -44,6 +44,7 @@ class Transmitting:
                 if(soonestWindowTime == 0 or float(data[0]) - time.time()):
                     print("Now I'm in here!")
                     soonestWindowTime = float(data[0] - time.time())
+                    print("Assigned soonestWindowtime")
                     sendData = data
                     print("sendData has just been changed to:", sendData)
             transferWindowFile.close()
