@@ -15,7 +15,7 @@ class postBoomMode:
 		self.__getAttitudeData =  AttitudeData(saveObject)
 		self.__tasks = [] # List will be populated with all background tasks
 		self.__safeMode = safeModeObject
-		self.__timeToNextWindow = self.__transmit.timeToNextWindow
+		self.__timeToNextWindow = self.__transmit.__timeToNextWindow
 		print("Initialized postBoomDeploy")
 
 	async def run(self):
