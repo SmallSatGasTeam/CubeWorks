@@ -28,7 +28,10 @@ class postBoomMode:
 		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
 		self.__tasks.append(asyncio.create_task(self.rebootLoop()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.transmit()))
-		print("Initalized all tasks.")			
+		print("Initalized all tasks.")
+		while True:
+			print('This is post Boom Deploy')
+			await asyncio.sleep(10)	
 
 	async def rebootLoop(self):
 		upTime = 0
