@@ -1,6 +1,6 @@
 import os
 import sys
-sys.append("../../")
+sys.path.append("../../")
 from protectionProticol.fileProtection import FileReset
 import asyncio
 import time
