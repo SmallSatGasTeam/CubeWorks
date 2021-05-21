@@ -43,7 +43,9 @@ class Transmitting:
                 if(soonestWindowTime == 0 or float(data[0]) - time.time()):
                     soonestWindowTime = float(data[0] - time.time())
                     sendData = data
+                    print("sendData has just been changed to:", sendData)
             transferWindowFile.close()
+            print("Outside of assigning sendData and closing the file.")
 
             print(sendData.__len__())
             if sendData.__len__() == 5:
