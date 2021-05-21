@@ -53,6 +53,7 @@ class Transmitting:
             print(sendData.__len__())
             if sendData.__len__() == 5:
                 print(sendData)
+                print(sendData[0]-time.time())
                 self.__timeToNextWindow = float(sendData[0] - time.time())
                 print(self.__timeToNextWindow)
                 self.__duration = int(sendData[1])
