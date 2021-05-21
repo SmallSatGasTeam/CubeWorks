@@ -9,7 +9,7 @@ from flightLogic.missionModes.antennaDeploy import antennaMode as antennaMode
 from flightLogic.missionModes.preBoomDeploy import preBoomMode
 from flightLogic.missionModes.boomDeploy import boomMode
 from flightLogic.missionModes.postBoomDeploy import postBoomMode
-from flightLogic.missionModes.safe import safe
+from flightLogic.missionModes import safe
 from flightLogic.missionModes.transmitting import Transmitting
 from flightLogic.missionModes import *
 from protectionProticol.fileProtection import FileReset
@@ -47,7 +47,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	# startTXISR(save)
 	ttncData = getDriverData.TTNCData(saveObject)
 	attitudeData = getDriverData.AttitudeData(saveObject)
-	safeModeObject = safe(saveObject)
+	safeModeObject = safe.safe(saveObject)
 	transmitObject = Transmitting(codeBase)
 
 	print('Starting data collection') #Setting up Background tasks for BOOT mode
