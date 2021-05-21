@@ -41,9 +41,9 @@ class Transmitting:
             print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
             if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME): #If the transfer window is at BUFFER_TIME milliseconds in the future
                 print("I'm in here!")
-                if(soonestWindowTime == 0 or float(data[0]) - time.time()):
+                if(soonestWindowTime == 0) or (float(data[0]) - time.time()):
                     print("Now I'm in here!")
-                    #soonestWindowTime = float(data[0] - time.time())
+                    soonestWindowTime = float(data[0]) - time.time()
                     print("Assigned soonestWindowtime")
                     sendData = data
                     print("sendData has just been changed to:", sendData)
@@ -55,7 +55,7 @@ class Transmitting:
                 print(sendData)
                 try:
                     print(sendData[0]-time.time())
-                    self.__timeToNextWindow = float(sendData[0] - time.time())
+                    self.__timeToNextWindow = float(sendData[0]) - time.time()
                 except Exception as e:
                     print("Error:", e)
                 print(self.__timeToNextWindow)
