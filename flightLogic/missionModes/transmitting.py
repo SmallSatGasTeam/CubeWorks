@@ -45,6 +45,7 @@ class Transmitting:
                     sendData = data
             transferWindowFile.close()
 
+            print(sendData.__len__())
             if sendData.__len__() == 5:
                 print(sendData)
                 self.__timeToNextWindow = float(sendData[0] - time.time())
