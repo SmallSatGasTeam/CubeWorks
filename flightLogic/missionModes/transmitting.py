@@ -43,7 +43,7 @@ class Transmitting:
                 print("I'm in here!")
                 if(soonestWindowTime == 0 or float(data[0]) - time.time()):
                     print("Now I'm in here!")
-                    #ssoonestWindowTime = float(data[0] - time.time())
+                    #soonestWindowTime = float(data[0] - time.time())
                     print("Assigned soonestWindowtime")
                     sendData = data
                     print("sendData has just been changed to:", sendData)
@@ -62,12 +62,13 @@ class Transmitting:
             else:
                 print("sendData is empty.")
 
+            print("Time to next window:", self.__timeToNextWindow)
             await asyncio.sleep(3)
     
     async def transmit(self):
         while True:
             while True:
-                print(self.__timeToNextWindow)
+                print("transmit time to next window:", self.__timeToNextWindow)
                 #if close enough, prep files
                 #wait until 5 seconds before, return True
                 if (self.__timeToNextWindow != -1) and (self.__timeToNextWindow < 14):
