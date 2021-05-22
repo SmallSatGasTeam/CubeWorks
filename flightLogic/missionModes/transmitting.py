@@ -1,6 +1,6 @@
 import os
 import sys
-sys.append("../../")
+sys.path.append("../../")
 from protectionProticol.fileProtection import FileReset
 import asyncio
 import time
@@ -40,13 +40,14 @@ class Transmitting:
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
             print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
             if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME): #If the transfer window is at BUFFER_TIME milliseconds in the future
-                if(soonestWindowTime == 0 or float(data[0]) - time.time()):
-                    soonestWindowTime = float(data[0] - time.time())
+                if(soonestWindowTime == 0) or (float(data[0]) - time.time()):
+                    soonestWindowTime = float(data[0]) - time.time()
                     sendData = data
+            transferWindowFile.close()
 
             if sendData.__len__() == 5:
                 print(sendData)
-                self.__timeToNextWindow = float(sendData[0] - time.time())
+                self.__timeToNextWindow = float(sendData[0]) - time.time()
                 self.__duration = int(sendData[1])
                 self.__datatype = int(sendData[2])
                 self.__pictureNumber = int(sendData[3])
@@ -55,12 +56,13 @@ class Transmitting:
             else:
                 print("sendData is empty.")
 
+            print("Time to next window:", self.__timeToNextWindow)
             await asyncio.sleep(3)
     
     async def transmit(self):
         while True:
             while True:
-                print(self.__timeToNextWindow)
+                print("Transmit time to next window:", self.__timeToNextWindow)
                 #if close enough, prep files
                 #wait until 5 seconds before, return True
                 if (self.__timeToNextWindow != -1) and (self.__timeToNextWindow < 14):
@@ -88,3 +90,6 @@ class Transmitting:
                         print("Transmission flag is not enabled")
 
                 await asyncio.sleep(.01)
+
+    def timeToNextWindow(self):
+        return self.__timeToNextWindow

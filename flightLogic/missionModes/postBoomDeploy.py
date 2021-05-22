@@ -15,7 +15,7 @@ class postBoomMode:
 		self.__getAttitudeData =  AttitudeData(saveObject)
 		self.__tasks = [] # List will be populated with all background tasks
 		self.__safeMode = safeModeObject
-		self.__timeToNextWindow = self.__transmit.timeToNextWindow
+		self.__timeToNextWindow = self.__transmit.timeToNextWindow()
 		print("Initialized postBoomDeploy")
 
 	async def run(self):
@@ -27,12 +27,15 @@ class postBoomMode:
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
 		self.__tasks.append(asyncio.create_task(self.rebootLoop()))
-		self.__tasks.append(asyncio.create_task(self.__transmit.trasnmit()))
-		print("Initalized all tasks.")			
+		self.__tasks.append(asyncio.create_task(self.__transmit.transmit()))
+		print("Initalized all tasks.")
+		while True:
+			print('This is post Boom Deploy')
+			await asyncio.sleep(10)	
 
 	async def rebootLoop(self):
 		upTime = 0
-		self.__timeToNextWindow = self.__transmit.__timeToNextWindow
+		self.__timeToNextWindow = self.__transmit.timeToNextWindow()
 		while True:
 			if upTime>86400: #Live for more than 24 hours
 				if (self.__timeToNextWindow == -1) or (self.__timeToNextWindow > REBOOT_WAIT_TIME):
