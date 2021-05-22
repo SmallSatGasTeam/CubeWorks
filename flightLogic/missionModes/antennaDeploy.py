@@ -10,7 +10,6 @@ import asyncio
 import flightLogic.getDriverData as getDriverData
 from TXISR import pythonInterrupt
 from TXISR import packetProcessing
-from flightLogic.missionModes.transmitting import Transmitting
 
 
 class antennaMode:
