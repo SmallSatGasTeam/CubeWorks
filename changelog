@@ -120,3 +120,22 @@ be repoerted.
     "flightLogic/missionModes/all"
         Changed it from opening using popen to opening with os.system as well
         as adding a list with file paths so that the c code can be opened from root.
+
+#18 <Created new class Transmitting> "flightLogic/transmitting.py"
+    Lines: 0-90
+    To avoid redundant code the Transmitting class was created in the file
+        transmitting.py. The run function from postBoomDeploy was copied as
+        transmit and the readNextTransferWindow was copied in with a small
+        change to how it received the txWindows filepath.
+
+#19 <Called the functions from Transmitting in each mission mode>
+    "flightLogic/mainFlightlogic.py" Lines: 51, 63-66
+        To minimize the number of times that a Transmitting object is created,
+        a transmitObject is created in mainFlightlogic and then passed to
+        each mission mode.
+    "flightLogic/missionModes/antennaDeploy.py" Lines: 17, 27, 37-38
+    "flightLogic/missionModes/preBoomDeploy.py" Lines: 25, 41, 50-51
+    "flightLogic/missionModes/boomDeploy.py" Lines: 12, 19, 29-30
+    "flightLogic/missionModes/postBoomDeploy.py" Lines: 12-13, 18, 28, 30, 35
+        All traces of the redundant transmission code were removed and two async
+        tasks were created to call the transmit and readNextTransferWindow functions
