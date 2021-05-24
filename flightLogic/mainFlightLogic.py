@@ -69,7 +69,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 		print('Files are empty')
 		bootCount, antennaDeployed, lastMode = 0,False,0
 	else:
-		bootCount, antennaDeployed, lastMode = readData()  # Read in data from files -------- filechecker needed?
+		bootCount, antennaDeployed, lastMode = readData()  
 	bootCount += 1  # Increment boot count
 	recordData(bootCount, antennaDeployed, lastMode)
 
@@ -79,6 +79,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	if packetProcessing.skippingToPostBoom: # Check if we're skipping to Post Boom Deploy
 		lastMode = 4
 		antennaDeployed = True
+	recordData(bootCount, antennaDeployed, lastMode)
 
 	# This is the implementation of the BOOT mode logic.
 	if not antennaDeployed:  # First, sleep for 35 minutes
@@ -123,9 +124,9 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	else:
 		print('Running preBoom Deploy')
 		lastMode = 2
+		recordData(bootCount, antennaDeployed, lastMode)  # Save into files
 		# TRY/EXCEPT preBoomDeploys
 		await asyncio.gather(preBoomDeploy.run())
-		recordData(bootCount, antennaDeployed, lastMode)  # Save into files
 		print("Finished running preBoomDeploy")
 
 
@@ -216,7 +217,3 @@ def readData():
 
 	recordData(bootCount, antennaDeployed, lastMode)
 	return bootCount, antennaDeployed, lastMode
-
-# def startTXISR(saveobject):  # Setup for TXISR
-# This sets up the interupt on the uart pin that triggers when we get commincation over uart
-# thread.start(interrupt.watchReceptions(saveobject)) <-- TODO fix that import
