@@ -36,7 +36,7 @@ class Transmitting:
             sendData = []
             soonestWindowTime = 0
             print("About to hit the if:", self.__timeToNextWindow, time.time())
-            if self.__timeToNextWindow < time.time():
+            while self.__nextWindowTime < time.time():
                 print("Inside the if.")
                 line = self.__transferWindowFile.readline()
                 data = line.split(",")
