@@ -15,11 +15,11 @@ char cammand3 [] = "git clone -b codeBase https://github.com/SmallSatGasTeam/Cub
 char cammand4 [] = "git clone -b codeBase https://github.com/SmallSatGasTeam/CubeWorks.git CubeWorks4/";
 
 //this code compiles the c code that is need to run transmission. 
-char brnachCommand0 [] = "cd ; cd CubeWorks0/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
-char brnachCommand1 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
-char brnachCommand2 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
-char brnachCommand3 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
-char brnachCommand4 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
+char branchCommand0 [] = "cd ; cd CubeWorks0/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
+char branchCommand1 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
+char branchCommand2 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
+char branchCommand3 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
+char branchCommand4 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
 
 char upDateCommand [] = "cd ; cd CubeWorks0/ ; gcc upDateCode.c -o upDateCode.exe ; cp upDateCode.exe ~/ ; rm upDateCode.exe";
 
@@ -54,15 +54,15 @@ void main()
 
     //complie the code
     printf("\n>>>Creating tx routine for CubeWorks0<<<\n");
-    system(brnachCommand0);
+    system(branchCommand0);
     printf("\n>>>Creating tx routine for CubeWorks1<<<\n");
-    system(brnachCommand1);
+    system(branchCommand1);
     printf("\n>>>Creating tx routine for CubeWorks2<<<\n");
-    system(brnachCommand2);
+    system(branchCommand2);
     printf("\n>>>Creating tx routine for CubeWorks3<<<\n");
-    system(brnachCommand3);
+    system(branchCommand3);
     printf("\n>>>Creating tx routine for CubeWorks4<<<\n");
-    system(brnachCommand4);
+    system(branchCommand4);
 
     //create the upDate code 
     printf("\n>>>Creating update code<<<\n");

@@ -507,6 +507,7 @@ class AttitudeData():
 		
 		packet = packetTimestamp + packet
 		self.__attitudeData = packet
+		print("Got attitude data.")
 
 	async def writeData(self):
 		#writes Attitude Data array to file

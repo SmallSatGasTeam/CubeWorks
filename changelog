@@ -76,3 +76,66 @@ be repoerted.
         also added.
 #12 <Added logic for the running transmission c code> "flightLogic/missionModes/postBoomDeploy", "flightLogic/mainFlightlogic.py"
     mainFlightlogic: Lines 39-40, postBoomDeploy: Line 20, 24, 76, 79
+
+#13 <Added the ability to skip staright to postBoomDeploy>
+    "TXISR/packetProcessing.py" Lines: 21, 156-162, 253-254
+        Added two bytes to the command packet so that there's an option to skip
+        to post boom deploy.
+    "GroundStation/transmissionHandling.py" Lines: 56, 62
+        Creates the extra two bytes to skip to postBoomDeploy.
+    "flightLogic/missionModes/preBoomDeploy.py" Lines: 57-59, 164-170
+        Added a function to cancel all tasks and end the function so that the
+        program can skip to postBoomDeploy.
+    "flightLogic/missionModes/antennaDeploy.py" Lines: 40, 43-44, 56-57, 63-64, 113-119
+        Added a function to cancel all tasks and end the function so that the
+        program can skip to postBoomDeploy.
+    "flightLogic/missionModes/boomDeploy.py" Lines: 32, 36-37, 43-44, 61-67
+        Added a function to cancel all tasks and end the function so that the
+        program can skip to postBoomDeploy.
+    "flightLogic/mainFlightlogic.py" Lines: 16, 76-78, 106-108
+        Added if statements that set lastMode to 4 to skip to post boom deploy
+
+#14 <Allowed all mission modes to transmit>
+    "flightLogic/missionModes/antennaDeploy.py" Lines: 14, 16, 31, 41, 74-104, 121-156
+        Copied the code from postBoomDeploy into a function called transmit and
+        also copied the function readNextTransferWindow in to make sure it would work.
+    "flightLogic/missionModes/preBoomDeploy.py" Lines: 54, 172-240
+        Copied the code from postBoomDeploy into a function called transmit and
+        also copied the function readNextTransferWindow in to make sure it would work.
+    "flightLogic/missionModes/boomDeploy.py" Lines: 33, 69-136
+        Copied the code from postBoomDeploy into a function called transmit and
+        also copied the function readNextTransferWindow in to make sure it would work.
+
+#15 <Removing startFromBeginning from the code>
+    "TXISR/packetProcessing.py" Through out
+        Removed the startFromBeginning variable from the txWindows packet because 
+        the index already can do that.
+
+#16 <Fixing the readNextTransferWindow loop>
+    "flightLogic/missionModes/all
+        There was a dumb list that was being initialized as a 0 and after 2
+        hours of looking we finally found it and changed it, ugh
+
+#17 <Changing how the c code gets called>
+    "flightLogic/missionModes/all"
+        Changed it from opening using popen to opening with os.system as well
+        as adding a list with file paths so that the c code can be opened from root.
+
+#18 <Created new class Transmitting> "flightLogic/transmitting.py"
+    Lines: 0-90
+    To avoid redundant code the Transmitting class was created in the file
+        transmitting.py. The run function from postBoomDeploy was copied as
+        transmit and the readNextTransferWindow was copied in with a small
+        change to how it received the txWindows filepath.
+
+#19 <Called the functions from Transmitting in each mission mode>
+    "flightLogic/mainFlightlogic.py" Lines: 51, 63-66
+        To minimize the number of times that a Transmitting object is created,
+        a transmitObject is created in mainFlightlogic and then passed to
+        each mission mode.
+    "flightLogic/missionModes/antennaDeploy.py" Lines: 17, 27, 37-38
+    "flightLogic/missionModes/preBoomDeploy.py" Lines: 25, 41, 50-51
+    "flightLogic/missionModes/boomDeploy.py" Lines: 12, 19, 29-30
+    "flightLogic/missionModes/postBoomDeploy.py" Lines: 12-13, 18, 28, 30, 35
+        All traces of the redundant transmission code were removed and two async
+        tasks were created to call the transmit and readNextTransferWindow functions
