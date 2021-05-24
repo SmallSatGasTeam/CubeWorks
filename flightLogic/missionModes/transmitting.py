@@ -38,11 +38,15 @@ class Transmitting:
             soonestWindowTime = 0
 
             print("About to hit the while loop.")
-            while self.__nextWindowTime < time.time():
-                print("Inside the while loop")
+            if self.__data.__len__() > 0:
+                while float(self.__data[0]) < time.time():
+                    print("Inside the while loop")
+                    line = self.__transferWindowFile.readline()
+                    self.__data = line.split(",")
+                    print(self.__data)
+            else:
                 line = self.__transferWindowFile.readline()
                 self.__data = line.split(",")
-                print(self.__data)
 
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
             print("About to hit try.")
