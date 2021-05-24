@@ -38,14 +38,14 @@ class Transmitting:
             print("Initialized variables.")
             line = transferWindowFile.readline()
             data = line.split(",")
-            print("Inside try of try except.")
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
-            print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
-            if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME): #If the transfer window is at BUFFER_TIME milliseconds in the future
-                if(soonestWindowTime == 0) or (float(data[0]) - time.time()):
-                    soonestWindowTime = float(data[0]) - time.time()
-                    sendData = data
-            transferWindowFile.close()
+            if data != []:
+                print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
+                if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME): #If the transfer window is at BUFFER_TIME milliseconds in the future
+                    if(soonestWindowTime == 0) or (float(data[0]) - time.time()):
+                        soonestWindowTime = float(data[0]) - time.time()
+                        sendData = data
+                transferWindowFile.close()
 
             if sendData.__len__() == 5:
                 print(sendData)
