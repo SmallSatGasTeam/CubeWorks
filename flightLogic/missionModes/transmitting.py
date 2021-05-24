@@ -26,27 +26,28 @@ class Transmitting:
         self.__txWindowsPath = ('/home/pi/TXISRData/txWindows.txt')
         fileChecker.checkFile(self.__txWindowsPath)
         self.__codeBase = codeBase
+        fileChecker.checkFile(self.__txWindowsPath)
+        self.__transferWindowFile = open(self.__txWindowsPath)
 
     async def readNextTransferWindow(self):
         while True:
             print("INSIDE TRANSFER WINDOW")
             #read the given transfer window file and extract the data for the soonest transfer window
-            fileChecker.checkFile(self.__txWindowsPath)
-            transferWindowFile = open(self.__txWindowsPath)
             sendData = []
             soonestWindowTime = 0
-            line = transferWindowFile.readline()
-            data = line.split(",")
-            #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
-            try:
-                if data != ['']:
-                    print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
-                    if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME): #If the transfer window is at BUFFER_TIME milliseconds in the future
-                        if(soonestWindowTime == 0) or (float(data[0]) - time.time()):
-                            soonestWindowTime = float(data[0]) - time.time()
-                            sendData = data
-            except Exception as e:
-                print("Error measuring transfer window:", e)
+            if self.__timeToNextWindow > time.time():
+                line = self.__transferWindowFile.readline()
+                data = line.split(",")
+                #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
+                try:
+                    if data != ['']:
+                        print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
+                        if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME): #If the transfer window is at BUFFER_TIME milliseconds in the future
+                            if(soonestWindowTime == 0) or (float(data[0]) - time.time()):
+                                soonestWindowTime = float(data[0]) - time.time()
+                                sendData = data
+                except Exception as e:
+                    print("Error measuring transfer window:", e)
 
             if sendData.__len__() == 5:
                 print(sendData)
