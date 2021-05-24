@@ -45,7 +45,6 @@ class Transmitting:
                         if(soonestWindowTime == 0) or (float(data[0]) - time.time()):
                             soonestWindowTime = float(data[0]) - time.time()
                             sendData = data
-                    transferWindowFile.close()
             except Exception as e:
                 print("Error measuring transfer window:", e)
 
