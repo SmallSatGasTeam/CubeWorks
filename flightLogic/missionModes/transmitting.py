@@ -35,7 +35,6 @@ class Transmitting:
             transferWindowFile = open(self.__txWindowsPath)
             sendData = []
             soonestWindowTime = 0
-            print("Initialized variables.")
             line = transferWindowFile.readline()
             data = line.split(",")
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
