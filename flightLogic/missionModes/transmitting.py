@@ -40,7 +40,7 @@ class Transmitting:
             data = line.split(",")
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
             print(data)
-            if data != []:
+            if data != ['']:
                 print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
                 if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME): #If the transfer window is at BUFFER_TIME milliseconds in the future
                     if(soonestWindowTime == 0) or (float(data[0]) - time.time()):
