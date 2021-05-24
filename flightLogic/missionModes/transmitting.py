@@ -51,16 +51,16 @@ class Transmitting:
                 except Exception as e:
                     print("Error measuring transfer window:", e)
 
-            if sendData.__len__() == 5:
-                print(sendData)
-                self.__timeToNextWindow = float(sendData[0]) - time.time()
-                self.__duration = int(sendData[1])
-                self.__datatype = int(sendData[2])
-                self.__pictureNumber = int(sendData[3])
-                self.__nextWindowTime = float(sendData[0])
-                self.__index = int(sendData[4])
-            else:
-                print("sendData is empty.")
+                if sendData.__len__() == 5:
+                    print(sendData)
+                    self.__timeToNextWindow = float(sendData[0]) - time.time()
+                    self.__duration = int(sendData[1])
+                    self.__datatype = int(sendData[2])
+                    self.__pictureNumber = int(sendData[3])
+                    self.__nextWindowTime = float(sendData[0])
+                    self.__index = int(sendData[4])
+                else:
+                    print("sendData is empty.")
 
             print("Time to next window:", self.__timeToNextWindow)
             await asyncio.sleep(3)
