@@ -42,6 +42,7 @@ class Transmitting:
                 print("Inside the if.")
                 line = self.__transferWindowFile.readline()
                 data = line.split(",")
+                print("Inside of while:", data)
                 if data != ['']:
                     searchTime = data[0]
                     print(searchTime)
