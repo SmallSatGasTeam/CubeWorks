@@ -35,7 +35,9 @@ class Transmitting:
             #read the given transfer window file and extract the data for the soonest transfer window
             sendData = []
             soonestWindowTime = 0
+            print("About to hit the if:", self.__timeToNextWindow, time.time())
             if self.__timeToNextWindow > time.time():
+                print("Inside the if.")
                 line = self.__transferWindowFile.readline()
                 data = line.split(",")
                 #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
