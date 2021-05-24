@@ -50,7 +50,7 @@ class Transmitting:
                     data = []
                     break
 
-            print("Outside of the whlie statement.")
+            print("Outside of the while statement.")
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
             try:
                 if (data != ['']) or (data != []):
