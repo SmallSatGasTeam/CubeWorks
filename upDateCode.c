@@ -15,6 +15,9 @@ char branchCommand2 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXService
 char branchCommand3 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
 char branchCommand4 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
 
+//compile testing code
+char testingCommand [] = "cd ; cd CubeWorks0/ ; gcc setNewTXWindow.c -o setNewTXWindow.exe ; sudo cp setNewTXWindow.exe ~/TXISRData ; rm setNewTXWindow.exe";
+
 
 void main()
 {
@@ -36,6 +39,8 @@ void main()
     system(branchCommand3);
     printf("\n>>>Creating tx routine for CubeWorks4<<<\n");
     system(branchCommand4);
+    printf("\n>>>Compiling testing code<<<\n");
+    system(testingCommand);
 
     printf(">>>Everything is up to date\n");
 }

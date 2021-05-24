@@ -23,6 +23,8 @@ char branchCommand4 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXService
 
 char upDateCommand [] = "cd ; cd CubeWorks0/ ; gcc upDateCode.c -o upDateCode.exe ; cp upDateCode.exe ~/ ; rm upDateCode.exe";
 
+
+
 // #update and install python
 // #NO long in use cause the version are lock for FLIGHT!
 // # sudo apt full-upgrade
@@ -71,6 +73,7 @@ void main()
     //create the start up code, and then move it to the root
     printf("\n>>>creating multi-code base protocol\n");
     system("cd CubeWorks0\ngcc startup.c -o startup.exe\ncp startup.exe ~/");
+    
 
     //up date the crontab to run the startup.exe
     // printf("\n>>>creating start up proticol<<<\n");

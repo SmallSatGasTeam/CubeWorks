@@ -117,6 +117,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	elif lastMode == 4:
 		print('Running Post Boom Deploy')
 		lastMode = 4
+		recordData(bootCount, antennaDeployed, lastMode)  # Save into files
 		# TRY/EXCEPT postBoomDeploys
 		await asyncio.gather(postBoomDeploy.run())
 	else:
@@ -124,6 +125,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 		lastMode = 2
 		# TRY/EXCEPT preBoomDeploys
 		await asyncio.gather(preBoomDeploy.run())
+		recordData(bootCount, antennaDeployed, lastMode)  # Save into files
 		print("Finished running preBoomDeploy")
 
 
@@ -132,6 +134,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 		print("Entered the loop that chooses the next mission mode.")
 		if packetProcessing.skippingToPostBoom: # Check if we're skipping to Post Boom Deploy
 			lastMode = 4
+			recordData(bootCount, antennaDeployed, lastMode)  # Save into files
 		if antennaDeployed == True and lastMode not in (3,4):
 			print('Running pre-Boom deploy')
 			lastMode = 2
@@ -150,6 +153,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 		else:  # Post-Boom Deploy
 			print('Running post-Boom Deploy')
 			# TRY/EXCEPT
+			recordData(bootCount, antennaDeployed, lastMode)  # Save into files
 			await asyncio.gather(postBoomDeploy.run())
 
 
