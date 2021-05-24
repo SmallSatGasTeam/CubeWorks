@@ -28,7 +28,6 @@ class Transmitting:
         self.__codeBase = codeBase
         fileChecker.checkFile(self.__txWindowsPath)
         self.__transferWindowFile = open(self.__txWindowsPath)
-        self.__searchTime = 0
         self.__data = []
 
     async def readNextTransferWindow(self):
@@ -37,21 +36,16 @@ class Transmitting:
             #read the given transfer window file and extract the data for the soonest transfer window
             sendData = []
             soonestWindowTime = 0
-            print("About to hit the if:", self.__timeToNextWindow, time.time())
-            while float(self.__searchTime) < time.time():
-                print("Inside the while part 1.")
-                line = self.__transferWindowFile.readline()
-                data = line.split(",")
-                print("Inside of while part 2:", data)
-                if self.__data != ['']:
-                    self.__searchTime = self.__data[0]
-                    print(self.__searchTime, float(self.__searchTime) < time.time())
-                else:
-                    break
 
-            print("Outside of the while statement.")
-            print(self.__data)
+            print("About to hit the while loop.")
+            while self.__nextWindowTime < time.time():
+                print("Inside the while loop")
+                line = self.__transferWindowFile.readline()
+                self.__data = line.split(",")
+                print(self.__data)
+
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
+            print("About to hit try.")
             try:
                 if (self.__data != ['']) or (self.__data != []):
                     print(float(self.__data[0]), float(self.__data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
