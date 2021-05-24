@@ -47,10 +47,10 @@ class Transmitting:
                     self.__searchTime = data[0]
                     print(self.__searchTime, float(self.__searchTime) < time.time())
                 else:
-                    data = []
                     break
 
             print("Outside of the while statement.")
+            print(data)
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
             try:
                 if (data != ['']) or (data != []):
