@@ -5,6 +5,7 @@ from protectionProticol.fileProtection import FileReset
 import asyncio
 import time
 from TXISR import prepareFiles
+import subprocess
 
 
 TRANSFER_WINDOW_BUFFER_TIME = 10
@@ -82,8 +83,8 @@ class Transmitting:
                         txisrCodePath = filePaths[self.__codeBase]
                         #These two are old code that we may potentially have to come back to
                         #subprocess.Popen([txisrCodePath, str(self.__datatype)])
-                        #subprocess.Popen(['cd', ';, 'cd', str(txisrCodePath), ';', 'sudo', './TXService.run', str(self.__dataType)])
-                        os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype))
+                        subprocess.Popen(['sudo', './TXService.run', str(self.__datatype)], cwd = str(txisrCodePath))
+                        #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype))
                         self.__timeToNextWindow = -1
                         break
                     else:
