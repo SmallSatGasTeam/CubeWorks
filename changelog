@@ -74,5 +74,7 @@ be repoerted.
     Added 34 bytes to the tx window packet that corresponds to the line number
         to be indexed to. In transmissionHandling a new int34tohex function was
         also added.
+
 #12 <Added logic for the running transmission c code> "flightLogic/missionModes/postBoomDeploy", "flightLogic/mainFlightlogic.py"
     mainFlightlogic: Lines 39-40, postBoomDeploy: Line 20, 24, 76, 79
+    
