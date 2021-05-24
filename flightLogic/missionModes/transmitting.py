@@ -35,32 +35,33 @@ class Transmitting:
             #read the given transfer window file and extract the data for the soonest transfer window
             sendData = []
             soonestWindowTime = 0
+            data = []
             print("About to hit the if:", self.__timeToNextWindow, time.time())
             while self.__nextWindowTime < time.time():
                 print("Inside the if.")
                 line = self.__transferWindowFile.readline()
                 data = line.split(",")
-                #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
-                try:
-                    if data != ['']:
-                        print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
-                        if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME): #If the transfer window is at BUFFER_TIME milliseconds in the future
-                            if(soonestWindowTime == 0) or (float(data[0]) - time.time()):
-                                soonestWindowTime = float(data[0]) - time.time()
-                                sendData = data
-                except Exception as e:
-                    print("Error measuring transfer window:", e)
+            #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
+            try:
+                if (data != ['']) or (data != []):
+                    print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
+                    if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME): #If the transfer window is at BUFFER_TIME milliseconds in the future
+                        if(soonestWindowTime == 0) or (float(data[0]) - time.time()):
+                            soonestWindowTime = float(data[0]) - time.time()
+                            sendData = data
+            except Exception as e:
+                print("Error measuring transfer window:", e)
 
-                if sendData.__len__() == 5:
-                    print(sendData)
-                    self.__timeToNextWindow = float(sendData[0]) - time.time()
-                    self.__duration = int(sendData[1])
-                    self.__datatype = int(sendData[2])
-                    self.__pictureNumber = int(sendData[3])
-                    self.__nextWindowTime = float(sendData[0])
-                    self.__index = int(sendData[4])
-                else:
-                    print("sendData is empty.")
+            if sendData.__len__() == 5:
+                print(sendData)
+                self.__timeToNextWindow = float(sendData[0]) - time.time()
+                self.__duration = int(sendData[1])
+                self.__datatype = int(sendData[2])
+                self.__pictureNumber = int(sendData[3])
+                self.__nextWindowTime = float(sendData[0])
+                self.__index = int(sendData[4])
+            else:
+                print("sendData is empty.")
 
             print("Time to next window:", self.__timeToNextWindow)
             await asyncio.sleep(3)
