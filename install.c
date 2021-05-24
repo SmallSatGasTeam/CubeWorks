@@ -14,11 +14,14 @@ char cammand2 [] = "git clone -b codeBase https://github.com/SmallSatGasTeam/Cub
 char cammand3 [] = "git clone -b codeBase https://github.com/SmallSatGasTeam/CubeWorks.git CubeWorks3/";
 char cammand4 [] = "git clone -b codeBase https://github.com/SmallSatGasTeam/CubeWorks.git CubeWorks4/";
 
-// char brnachCommand0 [] = "cd ; cd CubeWorks0; git checkout codebase; cd ;";
-// char brnachCommand1 [] = "cd ; cd CubeWorks1; git checkout codebase; cd ;";
-// char brnachCommand2 [] = "cd ; cd CubeWorks2; git checkout codebase; cd ;";
-// char brnachCommand3 [] = "cd ; cd CubeWorks3; git checkout codebase; cd ;";
-// char brnachCommand4 [] = "cd ; cd CubeWorks4; git checkout codebase; cd ;";
+//this code compiles the c code that is need to run transmission. 
+char branchCommand0 [] = "cd ; cd CubeWorks0/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
+char branchCommand1 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
+char branchCommand2 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
+char branchCommand3 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
+char branchCommand4 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
+
+char upDateCommand [] = "cd ; cd CubeWorks0/ ; gcc upDateCode.c -o upDateCode.exe ; cp upDateCode.exe ~/ ; rm upDateCode.exe";
 
 // #update and install python
 // #NO long in use cause the version are lock for FLIGHT!
@@ -48,17 +51,25 @@ void main()
     printf("\n>>>Creating a CubeWorks4<<<\n");
     system(cammand4);
     
-    // #ifdef NOT_MAIN
-    //     //these lines are for testing on other branches!
-    //     system(brnachCommand0);
-    //     system(brnachCommand1);
-    //     system(brnachCommand2);
-    //     system(brnachCommand3);
-    //     system(brnachCommand4);
-    // #endif
+
+    //complie the code
+    printf("\n>>>Creating tx routine for CubeWorks0<<<\n");
+    system(branchCommand0);
+    printf("\n>>>Creating tx routine for CubeWorks1<<<\n");
+    system(branchCommand1);
+    printf("\n>>>Creating tx routine for CubeWorks2<<<\n");
+    system(branchCommand2);
+    printf("\n>>>Creating tx routine for CubeWorks3<<<\n");
+    system(branchCommand3);
+    printf("\n>>>Creating tx routine for CubeWorks4<<<\n");
+    system(branchCommand4);
+
+    //create the upDate code 
+    printf("\n>>>Creating update code<<<\n");
+    system(upDateCommand);
 
     //create the start up code, and then move it to the root
-    printf("\n>>>creating multi-code base proticol\n");
+    printf("\n>>>creating multi-code base protocol\n");
     system("cd CubeWorks0\ngcc startup.c -o startup.exe\ncp startup.exe ~/");
 
     //up date the crontab to run the startup.exe

@@ -10,6 +10,8 @@ from flightLogic.missionModes.preBoomDeploy import preBoomMode
 from flightLogic.missionModes.boomDeploy import boomMode
 from flightLogic.missionModes.postBoomDeploy import postBoomMode
 from flightLogic.missionModes import safe
+from flightLogic.missionModes.transmitting import Transmitting
+from flightLogic.missionModes import *
 from protectionProticol.fileProtection import FileReset
 import asyncio
 from TXISR import pythonInterrupt
@@ -46,6 +48,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	ttncData = getDriverData.TTNCData(saveObject)
 	attitudeData = getDriverData.AttitudeData(saveObject)
 	safeModeObject = safe.safe(saveObject)
+	transmitObject = Transmitting(codeBase)
 
 	print('Starting data collection') #Setting up Background tasks for BOOT mode
 	tasks=[]
@@ -57,10 +60,10 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	# Initialize all mission mode objects
 	# NOTE: the comms-tx is the only exception to this rule as it is to be handled differently than other mission modes
 	# NOTE: Boot Mode is defined and executed in this document, instead of a separate mission mode
-	antennaDeploy = antennaMode(saveObject, safeModeObject)
-	preBoomDeploy = preBoomMode(saveObject, safeModeObject)
-	postBoomDeploy = postBoomMode(saveObject, safeModeObject, codeBase)
-	boomDeploy = boomMode(saveObject, safeModeObject)
+	antennaDeploy = antennaMode(saveObject, safeModeObject, transmitObject)
+	preBoomDeploy = preBoomMode(saveObject, safeModeObject, transmitObject)
+	postBoomDeploy = postBoomMode(saveObject, safeModeObject, transmitObject)
+	boomDeploy = boomMode(saveObject, safeModeObject, transmitObject)
 
 	if(readData() == (None, None, None)):
 		print('Files are empty')
