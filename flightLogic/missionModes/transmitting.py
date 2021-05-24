@@ -38,17 +38,18 @@ class Transmitting:
             data = []
             searchTime = 0
             print("About to hit the if:", self.__timeToNextWindow, time.time())
-            while float(searchTime) < time.time():
-                print("Inside the while part 1.")
-                line = self.__transferWindowFile.readline()
-                data = line.split(",")
-                print("Inside of while part 2:", data)
-                if data != ['']:
-                    searchTime = data[0]
-                    print(searchTime, float(searchTime) < time.time())
-                else:
-                    data = []
-                    break
+            if float(searchTime) < time.time():
+                while float(searchTime) < time.time():
+                    print("Inside the while part 1.")
+                    line = self.__transferWindowFile.readline()
+                    data = line.split(",")
+                    print("Inside of while part 2:", data)
+                    if data != ['']:
+                        searchTime = data[0]
+                        print(searchTime, float(searchTime) < time.time())
+                    else:
+                        data = []
+                        break
 
             print("Outside of the while statement.")
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
