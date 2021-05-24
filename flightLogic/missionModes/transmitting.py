@@ -43,6 +43,7 @@ class Transmitting:
                 line = self.__transferWindowFile.readline()
                 data = line.split(",")
                 searchTime = data[0]
+                print(searchTime)
 
             print("Outside of the whlie statement.")
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
