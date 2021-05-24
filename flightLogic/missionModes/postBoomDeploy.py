@@ -30,6 +30,9 @@ class postBoomMode:
 		self.__tasks.append(asyncio.create_task(self.__transmit.transmit()))
 		print("Initalized all tasks.")
 		while True:
+			#Don't remove this print statement, the while loop is an integral part
+			# of making sure that postBoomDeploy doesn't crash and it needs to
+			# have something in there so it doesn't crash and suffer
 			print('This is post Boom Deploy')
 			await asyncio.sleep(10)	
 
