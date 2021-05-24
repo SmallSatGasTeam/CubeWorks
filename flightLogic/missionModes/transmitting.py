@@ -39,13 +39,13 @@ class Transmitting:
             searchTime = 0
             print("About to hit the if:", self.__timeToNextWindow, time.time())
             while (searchTime < time.time()):
-                print("Inside the if.")
+                print("Inside the while part 1.")
                 line = self.__transferWindowFile.readline()
                 data = line.split(",")
-                print("Inside of while:", data)
+                print("Inside of while part 2:", data)
                 if data != ['']:
                     searchTime = data[0]
-                    print(searchTime)
+                    print(searchTime, searchTime < time.time())
                 else:
                     data = []
                     break
