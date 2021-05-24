@@ -16,7 +16,7 @@ char branchCommand3 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXService
 char branchCommand4 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
 
 //compile testing code
-char testingCommand [] = "cd ; cd CubeWorks0/ ; gcc setNewTXWindow.c -o setNewTXWindow.exe ; cp upDateCode.exe ~/TXISRData ; rm setNewTXWindow.exe";
+char testingCommand [] = "cd ; cd CubeWorks0/ ; gcc setNewTXWindow.c -o setNewTXWindow.exe ; cp setNewTXWindow.exe ~/TXISRData ; rm setNewTXWindow.exe";
 
 
 void main()
