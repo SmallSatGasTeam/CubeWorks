@@ -35,10 +35,11 @@ class Transmitting:
             transferWindowFile = open(self.__txWindowsPath)
             sendData = []
             soonestWindowTime = 0
-
+            print("Initialized variables.")
             try:
                 line = transferWindowFile.readline()
                 data = line.split(",")
+                print("Inside try of try except.")
             except Exception as e:
                 print("Error:", e)
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
