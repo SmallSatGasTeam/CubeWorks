@@ -16,8 +16,10 @@ import Drivers.boomDeployer as boomDeployer
 import smbus
 import hmac
 from protectionProticol.fileProtection import FileReset
+from TXISR.transmitionQueue import Queue
 
 fileChecker = FileReset()
+windows = Queue('/home/pi/TXISRData/txWindows.txt')
 skippingToPostBoom = False
 
 def processAX25(AX25):  #Placeholder function
@@ -176,13 +178,17 @@ def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber, index):
 	fileChecker.checkFile("/home/pi/TXISRData/txWindows.txt")
 	TXWindow_File = open("/home/pi/TXISRData/txWindows.txt", "a+")
        
-	#write the data to the file,
-	TXWindow_File.write(str(windowStartTime)+',')
-	TXWindow_File.write(str(windowDuration)+',')
-	TXWindow_File.write(str(dataType)+',')
-	TXWindow_File.write(str(pictureNumber)+',')
-	TXWindow_File.write(str(index))
-	TXWindow_File.write('\n')
+	#write the data to the file, using the new queue
+	txWindow = ( str(windowStartTime) + ',' + str(windowDuration) + ','
+					+ str(dataType) + ',' + str(pictureNumber) + ','
+					+ str(index) + '\n')
+	windows.enqueue(txWindow)
+	# TXWindow_File.write(str(windowStartTime)+',')
+	# TXWindow_File.write(str(windowDuration)+',')
+	# TXWindow_File.write(str(dataType)+',')
+	# TXWindow_File.write(str(pictureNumber)+',')
+	# TXWindow_File.write(str(index))
+	# TXWindow_File.write('\n')
 	
 	# close file
 	TXWindow_File.close()

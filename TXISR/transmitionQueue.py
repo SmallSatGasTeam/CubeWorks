@@ -22,14 +22,14 @@ class Queue ():
     def __short(self):
         contents = []
         #self.__fileChecher.checkFile(self.__filepath)
-        file = open(self.__filepath, "r") 
+        file = open(self.__filepath, "r")
         contents = file.read().splitlines()
         file.close()
         print(contents)
-        if(contents[0] != -1 ):
+        if(int(contents[0]) != -1 ):
             min = int (contents[0])
             for i in contents:
-                if(int(i) < min and int(i) != -1): 
+                if(int(i) < min) and (int(i) != -1): 
                     min = int(i)
             contents.remove(str (min))
             file = open(self.__filepath, "w") 
