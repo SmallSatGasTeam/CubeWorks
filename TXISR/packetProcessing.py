@@ -16,13 +16,35 @@ import Drivers.boomDeployer as boomDeployer
 import smbus
 import hmac
 from protectionProticol.fileProtection import FileReset
+from flightLogic.missionModes.transmitting import Transmitting
+import subprocess
 
 fileChecker = FileReset()
 skippingToPostBoom = False
+filePaths = ["/home/pi/CubeWorks0/TXISR/", "/home/pi/CubeWorks1/TXISR/", "/home/pi/CubeWorks2/TXISR/", "/home/pi/CubeWorks3/TXISR/", "/home/pi/CubeWorks4/TXISR/"]
+transmitting = Transmitting()
 
 def processAX25(AX25):  #Placeholder function
 	#Check AX25 Transmission flag, if it is OK then open a pyserial connection and transmit the content of the packet
-	pass
+	fileChecker.checkFile("/home/pi/TXISRData/AX25Flag.txt")
+	AX25Flag_File = open("/home/pi/TXISRData/AX25Flag.txt", "r")
+	if AX25Flag_File.readlines() == "Enabled":
+		print("Processing AX25 Packet")
+		txisrCodePath = filePaths[transmitting.__codeBase]
+		transmissionFilePath = txisrCodePath + 'data/txFile.txt' #File path to txFile. This is where data will be stored
+		fileChecker.checkFile(transmissionFilePath)	
+		txDataFile = open(transmissionFilePath, 'w') #Create and open TX File
+		txDataFile.write(AX25) #Write first line to txData. Duration of window in milliseconds
+		subprocess.Popen(['sudo', './TXService.run'], cwd = str(txisrCodePath + "TXServiceCode/"))
+
+	elif AX25Flag_File.readlines() == "Disabled":
+		print("AX25 Packets are disabled")
+		pass
+	else:
+		print("AX25Flag.txt contains unrecognized data")
+		pass
+	AX25Flag_File.close()
+	txDataFile.close()
 
 async def processPacket(packetData):
 	print('Processing packet')
@@ -79,6 +101,12 @@ async def processPacket(packetData):
 
 		else:
 			print("Hashes do not match, will not save window!")
+	
+	elif binaryData[0:8] == "01111110":
+		# This is an AX25 packet
+		print("AX25 Packet")
+		processAX25(binaryData)
+
 
 	else:
 		# This is a command packet

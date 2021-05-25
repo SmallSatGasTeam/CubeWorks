@@ -67,9 +67,9 @@ class Transmitting:
                     for items in self.__queue:
                         print("CHECKING WITH QUEUE")
                         try:
-                            if float(data[0]) == float(self.__queue[items][0]):
+                            if float(data[0]) == float(items[0]):
                                 print("TIMESTAMP ALREADY EXISTS")
-                                self.__queue[items] = data
+                                items = data
                                 flag = False
                                 break
                         except Exception as e:
@@ -81,8 +81,9 @@ class Transmitting:
                     print("DATA IS:", data, "THIS WAS VIEWED AS EITHER EMPTY OR SMALLER THAN THE CURRENT TIMESTAMP")
 
             transferWindowFile.close()
+            print(self.__queue)
 
-            if (self.__nextWindowTime < time.time()) and (self.__queue.__len__() > 0):
+            if ((self.__nextWindowTime < time.time()) and (self.__queue.__len__() > 0)) or (self.__nextWindowTime != float(self.__queue[0][0])):
                 print("GETTING NEW TRANSFER WINDOW FROM THE HEAP")
                 self.__data = heapq.heappop(self.__queue)
 
