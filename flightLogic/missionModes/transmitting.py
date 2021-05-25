@@ -66,11 +66,14 @@ class Transmitting:
                     print("DATA IS NOT EMPTY")
                     for items in self.__queue:
                         print("CHECKING WITH QUEUE")
-                        if float(data[0]) == float(self.__queue[items][0]):
-                            print("TIMESTAMP ALREADY EXISTS")
-                            self.__queue[items] = data
-                            flag = False
-                            break
+                        try:
+                            if float(data[0]) == float(self.__queue[items][0]):
+                                print("TIMESTAMP ALREADY EXISTS")
+                                self.__queue[items] = data
+                                flag = False
+                                break
+                        except Exception as e:
+                            print("ERROR:", e)
                     if flag:
                         print("PUSHING TO THE HEAP")
                         heapq.heappush(self.__queue, data)
