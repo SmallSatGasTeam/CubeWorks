@@ -62,13 +62,13 @@ class Transmitting:
                 print("INSIDE OF THE NEW CODE:", lines)
                 flag = True
                 data = lines.split(",")
-                if (data != ['']) and (data[0] > time.time()):
+                if (data != ['']) and (float(data[0]) > time.time()):
                     print("DATA IS NOT EMPTY")
                     for items in self.__queue:
                         print("CHECKING WITH QUEUE")
-                        if data[0] == self.__queue[items][0]:
+                        if float(data[0]) == float(self.__queue[items][0]):
                             print("TIMESTAMP ALREADY EXISTS")
-                            self.__queue[items] = data
+                            float(self.__queue[items]) = float(data)
                             flag = False
                             break
                     if flag:
