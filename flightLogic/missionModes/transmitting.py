@@ -49,7 +49,7 @@ class Transmitting:
                 #pull the packet
                 line = self.__queue.dequeue(1)
                 self.__data = line.split(',')
-            elif self.__queue.dequeue(0) - time.time() > 20:
+            elif self.__timeToNextWindow - time.time() < 0:
                 self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
                 self.__data = []
 
