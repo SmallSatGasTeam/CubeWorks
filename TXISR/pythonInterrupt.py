@@ -36,7 +36,7 @@ async def interrupt():
 					leftoverEmpty = False
 				commands, ax25Packets = [], []
 				commands, ax25Packets, leftovers = parseData(data, gaspacsHex)
-				ax25Packets = '01111110ShawnsBurrito'
+				ax25Packets = '7EFF00FF'
 				if leftovers is not '' and leftoversEmpty is False:
 					#Something is sticking around in leftovers, let's clear it
 					#Operates on the assumption that 2 consecutive partial packets is practically impossible
