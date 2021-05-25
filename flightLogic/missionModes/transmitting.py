@@ -40,39 +40,6 @@ class Transmitting:
             sendData = []
             soonestWindowTime = 0
 
-            #This is old code
-            # line = self.__transferWindowFile.readline()
-            # self.__data = line.split('c')
-
-            # for lines in transferWindowFile:
-            #     print("INSIDE OF THE NEW CODE:", lines)
-            #     flag = True
-            #     data = lines.split(",")
-            #     if (data != ['']) and (float(data[0]) > time.time()):
-            #         print("DATA IS NOT EMPTY")
-            #         for items in self.__queue:
-            #             print("CHECKING WITH QUEUE")
-            #             try:
-            #                 if float(data[0]) == float(items[0]):
-            #                     print("TIMESTAMP ALREADY EXISTS")
-            #                     items = data
-            #                     flag = False
-            #                     break
-            #             except Exception as e:
-            #                 print("ERROR:", e)
-            #         if flag:
-            #             print("PUSHING TO THE HEAP")
-            #             heapq.heappush(self.__queue, data)
-            #     else:
-            #         print("DATA IS:", data, "THIS WAS VIEWED AS EITHER EMPTY OR SMALLER THAN THE CURRENT TIMESTAMP")
-
-            # transferWindowFile.close()
-            # print(self.__queue)
-
-            # if ((self.__nextWindowTime < time.time()) and (self.__queue.__len__() > 0)) or (self.__nextWindowTime != float(self.__queue[0][0])):
-            #     print("GETTING NEW TRANSFER WINDOW FROM THE HEAP")
-            #     self.__data = heapq.heappop(self.__queue)
-
             while (self.__queue.dequeue(1) < time.time()) and (self.__data != ['']):
                 line = self.__queue.dequeue()
                 self.__data = line.split(',')
