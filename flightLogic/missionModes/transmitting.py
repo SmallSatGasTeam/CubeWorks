@@ -74,7 +74,8 @@ class Transmitting:
             #     self.__data = heapq.heappop(self.__queue)
 
             while (self.__nextWindowTime < time.time()) and (self.__data != ['']):
-                self.__data = self.__queue.dequeue()
+                line = self.__queue.dequeue()
+                self.__data = line.split(',')
                 if(self.__data != ['']):
                     self.__nextWindowTime = float(self.__data[0])
 
