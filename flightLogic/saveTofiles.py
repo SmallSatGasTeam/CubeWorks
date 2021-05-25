@@ -37,7 +37,7 @@ class save:
     async def writeTTNC(self, data):
         fileChecker.checkFile("/home/pi/flightLogicData/TTNC_Data.txt")
         print("####CHECKING TTNC DATA")
-        self.__TTNC_File = open('/home/pi/flightLogicData/TTNC_Data.txt')
+        self.__TTNC_File = open('/home/pi/flightLogicData/TTNC_Data.txt', "a+")
         print(data)
         print("####CHECKING TTNC DATA")
         try:
