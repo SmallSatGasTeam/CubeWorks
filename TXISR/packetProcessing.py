@@ -33,11 +33,15 @@ async def processAX25(AX25):  #Placeholder function
 	fileChecker.checkFile("/home/pi/TXISRData/AX25Flag.txt")
 	AX25Flag_File = open("/home/pi/TXISRData/AX25Flag.txt", "r")
 	txisrCodePath = filePaths[transmitting.__codeBase]
+	window = windows.dequeue()
+	nextWindow = window.split(",")
+	timeToNextWindow = nextWindow[0]
+
 	transmissionFilePath = txisrCodePath + 'data/txFile.txt' #File path to txFile. This is where data will be stored
 	fileChecker.checkFile(transmissionFilePath)	
 	txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
 	while True:
-		if txDataFile.readlines() == "" and transmitting.__timeToNextWindow >= 25:	
+		if txDataFile.readlines() == "" and timeToNextWindow - time.time() >= 25:	
 			if AX25Flag_File.readlines() == "Enabled":
 				print("Processing AX25 Packet")
 
