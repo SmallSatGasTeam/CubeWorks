@@ -43,6 +43,7 @@ async def processAX25(AX25):  #Placeholder function
 		if txDataFile.readlines() == "" and timeToNextWindow - time.time() >= 25:	
 			if AX25Flag_File.readlines() == "Enabled":
 				print("Processing AX25 Packet")
+				txDataFile.write("10000")
 				txDataFile.write(AX25) #Write to txData.
 				subprocess.Popen(['sudo', './TXService.run'], cwd = str(txisrCodePath + "TXServiceCode/")) #This might not work
 				break
