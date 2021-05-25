@@ -25,7 +25,7 @@ class Queue ():
         file = open(self.__filepath, "r") 
         contents = file.read().splitlines()
         file.close()
-        print(contents)
+        print("Printing contents", contents)
         if(len(contents) == 0):
             return None
         line = contents[0].split(',')
