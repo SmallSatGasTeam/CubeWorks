@@ -81,6 +81,7 @@ class Transmitting:
                     print("DATA IS:", data, "THIS WAS VIEWED AS EITHER EMPTY OR SMALLER THAN THE CURRENT TIMESTAMP")
 
             transferWindowFile.close()
+            print(self.__queue)
 
             if ((self.__nextWindowTime < time.time()) and (self.__queue.__len__() > 0)) or (self.__nextWindowTime != float(self.__queue[0][0])):
                 print("GETTING NEW TRANSFER WINDOW FROM THE HEAP")
