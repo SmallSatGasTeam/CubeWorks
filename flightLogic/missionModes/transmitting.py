@@ -1,5 +1,6 @@
 import os
 import sys
+from typing import Deque
 sys.path.append("../../")
 from protectionProticol.fileProtection import FileReset
 import asyncio
@@ -40,7 +41,12 @@ class Transmitting:
             sendData = []
             soonestWindowTime = 0
 
-            while (self.__queue.dequeue(0) < time.time()) and (self.__data != ['']):
+            #while timestamp < currenttimestamp
+            while self.__queue.dequeue(0) < time.time():
+                self.__queue.dequeue(1)
+            #20 seconds before
+            if self.__queue.dequeue(0) - time.time() <= 20:
+                #pull the packet
                 line = self.__queue.dequeue(1)
                 self.__data = line.split(',')
 
