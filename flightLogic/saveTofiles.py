@@ -44,11 +44,12 @@ class save:
     #this func will read the data from our file and then return that data
     async def getTTNC(self, time):
         fileChecker.checkFile("/home/pi/flightLogicData/TTNC_Data.txt")
-        print("####CHECKING TTNC DATA")
+        TTNC_File = open("/home/pi/flightLogicData/TTNC_Data.txt")
         temp = []
-        for i in self.__TTNC_File:
+        for i in TTNC_File:
             if (int(i[0]) >= time):
                 temp += i
+        TTNC_File.close()
         return temp
 
     #this is data collection for Deploy
@@ -65,12 +66,12 @@ class save:
     #this func will read the data form our file and then return that data
     async def getDeploy(self):
         fileChecker.checkFile("/home/pi/flightLogicData/Deploy_Data.txt")
-        deployFile = open("/home/pi/flightLogicData/Deploy_Data.txt", "r")
+        Deploy_File = open("/home/pi/flightLogicData/Deploy_Data.txt", "r")
         temp = []
-        for i in self.__Deploy_File:
+        for i in Deploy_File:
             if (int(i[0]) >= time):
                 temp += i
-        deployFile.close()
+        Deploy_File.close()
         return temp
     #this part of the code is for data collection of attitude data
     #write the data to the file,
@@ -86,8 +87,9 @@ class save:
     #this func will read the data form our file and then return that data
     async def getAttitudeData(self):
         fileChecker.checkFile("/home/pi/flightLogicData/Attitude_Data.txt")
+        Attitude_File = open("/home/pi/flightLogicData/Attitude_Data.txt")
         temp = []
-        for i in self.__Attitude_File:
+        for i in Attitude_File:
             if (int(i[0]) >= time):
                 temp += i
         return temp
