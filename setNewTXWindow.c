@@ -20,7 +20,7 @@ void main()
 	scanf("%d",&txTime);
 	txTime += 40;
 
-	fprintf(fptr, "%d,30,0,0,00000001", txTime);
+	fprintf(fptr, "%d,30,0,0,00000001\n", txTime);
 	fclose(fptr);
 }
 	
