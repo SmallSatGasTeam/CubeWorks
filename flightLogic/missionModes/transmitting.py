@@ -7,6 +7,7 @@ import time
 from TXISR import prepareFiles
 import subprocess
 import linecache
+import heapq
 
 
 TRANSFER_WINDOW_BUFFER_TIME = 10
@@ -40,8 +41,8 @@ class Transmitting:
             soonestWindowTime = 0
 
             #This is old code
-            line = self.__transferWindowFile.readline()
-            self.__data = line.split('c')
+            # line = self.__transferWindowFile.readline()
+            # self.__data = line.split('c')
 
             #This section isn't quite working yet
             #__________________________________________________________________
@@ -56,6 +57,31 @@ class Transmitting:
             #     line = transferWindowFile.readline()
             #     self.__data = line.split(",")
             #__________________________________________________________________
+
+            for lines in transferWindowFile:
+                print("INSIDE OF THE NEW CODE ITERATION:", lines)
+                flag = True
+                line = transferWindowFile.readline()
+                data = line.split(",")
+                if data != ['']:
+                    print("DATA IS NOT EMPTY")
+                    for items in self.__queue:
+                        print("CHECKING WITH QUEUE")
+                        if data[0] == self.__queue[items][0]:
+                            print("TIMESTAMP ALREADY EXISTS")
+                            self.__queue[items] = data
+                            flag = False
+                            break
+                    if flag:
+                        print("PUSHING TO THE HEAP")
+                        heapq.heappush(self.__queue, data)
+
+            transferWindowFile.close()
+
+            if self.__nextWindowTime < time.time():
+                print("GETTING NEW TRANSFER WINDOW FROM THE HEAP")
+                self.__data = heapq.heappop(self.__queue)
+
 
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
             print("About to hit try.")
