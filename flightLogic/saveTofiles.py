@@ -19,9 +19,9 @@ fileChecker = FileReset()
 class save:
     def __init__(self):
         #check the file to make sure it is their        
-        fileChecker.checkFile("/home/pi/flightLogicData/TTNC_Data.txt")
+        #fileChecker.checkFile("/home/pi/flightLogicData/TTNC_Data.txt")
         #open the file when the calls is instantiated
-        self.__TTNC_File = open("/home/pi/flightLogicData/TTNC_Data.txt", "a+")
+       # self.__TTNC_File = open("/home/pi/flightLogicData/TTNC_Data.txt", "a+")
         #check the file to make sure it is their
         fileChecker.checkFile("/home/pi/flightLogicData/Deploy_Data.txt")
         #open the file when the calls is instantiated
@@ -36,7 +36,10 @@ class save:
     #effect the txisr
     async def writeTTNC(self, data):
         fileChecker.checkFile("/home/pi/flightLogicData/TTNC_Data.txt")
+        TTNC_File = open("/home/pi/flightLogicData/TTNC_Data.txt", "a+")
+        fileChecker.checkFile("/home/pi/flightLogicData/TTNC_Data.txt")
         self.__TTNC_File.write(str(data)+'\n')
+        TTNC_File.close()
 
     #this func will read the data from our file and then return that data
     async def getTTNC(self, time):
