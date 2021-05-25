@@ -45,6 +45,7 @@ class Transmitting:
             while self.__queue.dequeue(0) < time.time():
                 self.__queue.dequeue(1)
             #20 seconds before
+            print(self.__queue.dequeue(0) - time.time() <= 20, self.__data == [])
             if (self.__queue.dequeue(0) - time.time() <= 20) and (self.__data == []):
                 #pull the packet
                 line = self.__queue.dequeue(1)
