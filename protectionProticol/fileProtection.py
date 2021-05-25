@@ -70,7 +70,7 @@ class FileReset():
         """Allows the manual reset of a single file."""
         # Runs reset once for a single file
         self.__reset()
-        print("File being reset " + self.__filePath)
+        #print("File being reset " + self.__filePath)
 
     # This check a single file to see if it will open or not if not it resets it 
     def checkFile(self, newFile):
