@@ -42,7 +42,9 @@ class save:
         fileChecker.checkFile("/home/pi/flightLogicData/TTNC_Data.txt")
         print("####CHECKING TTNC DATA")
         self.__TTNC_File.write(str(data)+'\n')
+        print("WROTE DATA")
         TTNC_File.close()
+        print("CLOSED FILE")
 
     #this func will read the data from our file and then return that data
     async def getTTNC(self, time):
