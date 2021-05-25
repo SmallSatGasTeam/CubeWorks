@@ -58,11 +58,11 @@ class Transmitting:
             #__________________________________________________________________
 
             for line in transferWindowFile:
-                line = transferWindowFile.readLine()
+                line = transferWindowFile.readline()
                 data = line.split(",")
                 if (line != ''):
                     for windows in self.__queue:
-                        if(data[0] == self.__queue[windows][0]):
+                        if(data[0] == self.__queue[windows][0]) or (data[0] < self.__nextWindowTime):
                             break
                         else:
                             self.__queue.append(data)
