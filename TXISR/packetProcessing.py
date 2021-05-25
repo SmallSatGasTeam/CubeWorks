@@ -49,6 +49,7 @@ async def processAX25(AX25):  #Placeholder function
 			else:
 				print("AX25Flag.txt contains unrecognized data")
 				break
+		print("txFile.txt is full or next txWindow is too close to transmit")
 		await asyncio.sleep(3)
 
 	AX25Flag_File.close()
