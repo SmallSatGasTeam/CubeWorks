@@ -6,7 +6,7 @@ char command0[] = "date +%s";
 void main()
 {
         FILE *fptr;
-        fptr = fopen("/home/pi/TXISRData/txWindows.txt","w");
+        fptr = fopen("/home/pi/TXISRData/txWindows.txt","a+");
 	int txTime;
 
         if(fptr == NULL)

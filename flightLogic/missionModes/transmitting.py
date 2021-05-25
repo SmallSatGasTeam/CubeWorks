@@ -7,7 +7,7 @@ import time
 from TXISR import prepareFiles
 import subprocess
 import linecache
-import heapq
+from TXISR.transmitionQueue import Queue
 
 
 TRANSFER_WINDOW_BUFFER_TIME = 10
@@ -29,7 +29,7 @@ class Transmitting:
         fileChecker.checkFile(self.__txWindowsPath)
         self.__codeBase = codeBase
         self.__data = []
-        self.__queue = []
+        self.__queue = Queue(self.__txWindowsPath)
 
     async def readNextTransferWindow(self):
         while True:
@@ -44,49 +44,40 @@ class Transmitting:
             # line = self.__transferWindowFile.readline()
             # self.__data = line.split('c')
 
-            #This section isn't quite working yet
-            #__________________________________________________________________
-            # print("About to hit the while loop.")
-            # if self.__data.__len__() > 0:
-            #     while float(self.__data[0]) < time.time():
-            #         print("Inside the while loop")
-            #         line = transferWindowFile.readline()
-            #         self.__data = line.split(",")
-            #         print(self.__data)
-            # else:
-            #     line = transferWindowFile.readline()
-            #     self.__data = line.split(",")
-            #__________________________________________________________________
+            # for lines in transferWindowFile:
+            #     print("INSIDE OF THE NEW CODE:", lines)
+            #     flag = True
+            #     data = lines.split(",")
+            #     if (data != ['']) and (float(data[0]) > time.time()):
+            #         print("DATA IS NOT EMPTY")
+            #         for items in self.__queue:
+            #             print("CHECKING WITH QUEUE")
+            #             try:
+            #                 if float(data[0]) == float(items[0]):
+            #                     print("TIMESTAMP ALREADY EXISTS")
+            #                     items = data
+            #                     flag = False
+            #                     break
+            #             except Exception as e:
+            #                 print("ERROR:", e)
+            #         if flag:
+            #             print("PUSHING TO THE HEAP")
+            #             heapq.heappush(self.__queue, data)
+            #     else:
+            #         print("DATA IS:", data, "THIS WAS VIEWED AS EITHER EMPTY OR SMALLER THAN THE CURRENT TIMESTAMP")
 
-            for lines in transferWindowFile:
-                print("INSIDE OF THE NEW CODE:", lines)
-                flag = True
-                data = lines.split(",")
-                if (data != ['']) and (float(data[0]) > time.time()):
-                    print("DATA IS NOT EMPTY")
-                    for items in self.__queue:
-                        print("CHECKING WITH QUEUE")
-                        try:
-                            if float(data[0]) == float(items[0]):
-                                print("TIMESTAMP ALREADY EXISTS")
-                                items = data
-                                flag = False
-                                break
-                        except Exception as e:
-                            print("ERROR:", e)
-                    if flag:
-                        print("PUSHING TO THE HEAP")
-                        heapq.heappush(self.__queue, data)
-                else:
-                    print("DATA IS:", data, "THIS WAS VIEWED AS EITHER EMPTY OR SMALLER THAN THE CURRENT TIMESTAMP")
+            # transferWindowFile.close()
+            # print(self.__queue)
 
-            transferWindowFile.close()
-            print(self.__queue)
+            # if ((self.__nextWindowTime < time.time()) and (self.__queue.__len__() > 0)) or (self.__nextWindowTime != float(self.__queue[0][0])):
+            #     print("GETTING NEW TRANSFER WINDOW FROM THE HEAP")
+            #     self.__data = heapq.heappop(self.__queue)
 
-            if ((self.__nextWindowTime < time.time()) and (self.__queue.__len__() > 0)) or (self.__nextWindowTime != float(self.__queue[0][0])):
-                print("GETTING NEW TRANSFER WINDOW FROM THE HEAP")
-                self.__data = heapq.heappop(self.__queue)
-
+            while (self.__nextWindowTime < time.time()) and (self.__data != ['']):
+                line = self.__queue.dequeue()
+                self.__data = line.split(',')
+                if(self.__data != ['']):
+                    self.__nextWindowTime = float(self.__data[0])
 
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
             print("About to hit try.")

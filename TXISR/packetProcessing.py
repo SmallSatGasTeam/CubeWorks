@@ -16,33 +16,48 @@ import Drivers.boomDeployer as boomDeployer
 import smbus
 import hmac
 from protectionProticol.fileProtection import FileReset
+from TXISR.transmitionQueue import Queue
 from flightLogic.missionModes.transmitting import Transmitting
 import subprocess
+import asyncio
 
 fileChecker = FileReset()
+windows = Queue('/home/pi/TXISRData/txWindows.txt')
 skippingToPostBoom = False
-filePaths = ["/home/pi/CubeWorks0/TXISR/", "/home/pi/CubeWorks1/TXISR/", "/home/pi/CubeWorks2/TXISR/", "/home/pi/CubeWorks3/TXISR/", "/home/pi/CubeWorks4/TXISR/"]
+filePaths = ["/home/pi/CubeWorks0/TXISR/", "/home/pi/CubeWorks1/TXISR/", "/home/pi/CubeWorks2/TXISR/", "/home/pi/CubeWorks3/TXISR/", "/home/pi/CubeWorks4/TXISR/"] 
+#These file paths are slightly different from the ones in transmitting.py
 transmitting = Transmitting()
 
-def processAX25(AX25):  #Placeholder function
+async def processAX25(AX25):  #Placeholder function
 	#Check AX25 Transmission flag, if it is OK then open a pyserial connection and transmit the content of the packet
 	fileChecker.checkFile("/home/pi/TXISRData/AX25Flag.txt")
 	AX25Flag_File = open("/home/pi/TXISRData/AX25Flag.txt", "r")
-	if AX25Flag_File.readlines() == "Enabled":
-		print("Processing AX25 Packet")
-		txisrCodePath = filePaths[transmitting.__codeBase]
-		transmissionFilePath = txisrCodePath + 'data/txFile.txt' #File path to txFile. This is where data will be stored
-		fileChecker.checkFile(transmissionFilePath)	
-		txDataFile = open(transmissionFilePath, 'w') #Create and open TX File
-		txDataFile.write(AX25) #Write first line to txData. Duration of window in milliseconds
-		subprocess.Popen(['sudo', './TXService.run'], cwd = str(txisrCodePath + "TXServiceCode/"))
+	txisrCodePath = filePaths[transmitting.__codeBase]
+	window = windows.dequeue()
+	nextWindow = window.split(",")
+	timeToNextWindow = nextWindow[0]
 
-	elif AX25Flag_File.readlines() == "Disabled":
-		print("AX25 Packets are disabled")
-		pass
-	else:
-		print("AX25Flag.txt contains unrecognized data")
-		pass
+	transmissionFilePath = txisrCodePath + 'data/txFile.txt' #File path to txFile. This is where data will be stored
+	fileChecker.checkFile(transmissionFilePath)	
+	txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
+	while True:
+		if txDataFile.readlines() == "" and timeToNextWindow - time.time() >= 25:	
+			if AX25Flag_File.readlines() == "Enabled":
+				print("Processing AX25 Packet")
+
+				txDataFile.write(AX25) #Write to txData.
+				subprocess.Popen(['sudo', './TXService.run'], cwd = str(txisrCodePath + "TXServiceCode/")) #This might not work
+				break
+
+			elif AX25Flag_File.readlines() == "Disabled":
+				print("AX25 Packets are disabled")
+				break
+			else:
+				print("AX25Flag.txt contains unrecognized data")
+				break
+		print("txFile.txt is full or next txWindow is too close to transmit")
+		await asyncio.sleep(3)
+
 	AX25Flag_File.close()
 	txDataFile.close()
 
@@ -204,13 +219,17 @@ def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber, index):
 	fileChecker.checkFile("/home/pi/TXISRData/txWindows.txt")
 	TXWindow_File = open("/home/pi/TXISRData/txWindows.txt", "a+")
        
-	#write the data to the file,
-	TXWindow_File.write(str(windowStartTime)+',')
-	TXWindow_File.write(str(windowDuration)+',')
-	TXWindow_File.write(str(dataType)+',')
-	TXWindow_File.write(str(pictureNumber)+',')
-	TXWindow_File.write(str(index))
-	TXWindow_File.write('\n')
+	#write the data to the file, using the new queue
+	txWindow = ( str(windowStartTime) + ',' + str(windowDuration) + ','
+					+ str(dataType) + ',' + str(pictureNumber) + ','
+					+ str(index) + '\n')
+	windows.enqueue(txWindow)
+	# TXWindow_File.write(str(windowStartTime)+',')
+	# TXWindow_File.write(str(windowDuration)+',')
+	# TXWindow_File.write(str(dataType)+',')
+	# TXWindow_File.write(str(pictureNumber)+',')
+	# TXWindow_File.write(str(index))
+	# TXWindow_File.write('\n')
 	
 	# close file
 	TXWindow_File.close()
