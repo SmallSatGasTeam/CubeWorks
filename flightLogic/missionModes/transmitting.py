@@ -6,6 +6,7 @@ import asyncio
 import time
 from TXISR import prepareFiles
 import subprocess
+import linecache
 
 
 TRANSFER_WINDOW_BUFFER_TIME = 10
@@ -26,27 +27,45 @@ class Transmitting:
         self.__txWindowsPath = ('/home/pi/TXISRData/txWindows.txt')
         fileChecker.checkFile(self.__txWindowsPath)
         self.__codeBase = codeBase
-        fileChecker.checkFile(self.__txWindowsPath)
-        self.__transferWindowFile = open(self.__txWindowsPath)
         self.__data = []
+        self.__queue = []
 
     async def readNextTransferWindow(self):
         while True:
             print("INSIDE TRANSFER WINDOW")
             #read the given transfer window file and extract the data for the soonest transfer window
+            fileChecker.checkFile(self.__txWindowsPath)
+            transferWindowFile = open(self.__txWindowsPath)
             sendData = []
             soonestWindowTime = 0
 
-            print("About to hit the while loop.")
-            if self.__data.__len__() > 0:
-                while float(self.__data[0]) < time.time():
-                    print("Inside the while loop")
-                    line = self.__transferWindowFile.readline()
-                    self.__data = line.split(",")
-                    print(self.__data)
-            else:
-                line = self.__transferWindowFile.readline()
-                self.__data = line.split(",")
+            #This is old code
+            # line = self.__transferWindowFile.readline()
+            # self.__data = line.split('c')
+
+            #This section isn't quite working yet
+            #__________________________________________________________________
+            # print("About to hit the while loop.")
+            # if self.__data.__len__() > 0:
+            #     while float(self.__data[0]) < time.time():
+            #         print("Inside the while loop")
+            #         line = transferWindowFile.readline()
+            #         self.__data = line.split(",")
+            #         print(self.__data)
+            # else:
+            #     line = transferWindowFile.readline()
+            #     self.__data = line.split(",")
+            #__________________________________________________________________
+
+            for line in transferWindowFile:
+                line = transferWindowFile.readLine()
+                data = line.split(",")
+                if (line != ''):
+                    for windows in self.__queue:
+                        if(data[0] == self.__queue[windows][0]):
+                            break
+                        else:
+                            self.__queue.append(data)
 
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
             print("About to hit try.")
