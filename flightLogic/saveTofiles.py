@@ -75,7 +75,7 @@ class save:
     #effect the txisr
     async def writeAttitude(self, data):
         fileChecker.checkFile("/home/pi/flightLogicData/Attitude_Data.txt")
-        Attitude_File = open("/home/pi/flightLogicData/Attitude_Data.txt")
+        Attitude_File = open("/home/pi/flightLogicData/Attitude_Data.txt", "a+")
         Attitude_File.write(str(data)+'\n')
         Attitude_File.close()
 
