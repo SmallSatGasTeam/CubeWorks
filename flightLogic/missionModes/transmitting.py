@@ -6,6 +6,8 @@ import asyncio
 import time
 from TXISR import prepareFiles
 import subprocess
+import linecache
+import heapq
 
 
 TRANSFER_WINDOW_BUFFER_TIME = 10
@@ -26,6 +28,8 @@ class Transmitting:
         self.__txWindowsPath = ('/home/pi/TXISRData/txWindows.txt')
         fileChecker.checkFile(self.__txWindowsPath)
         self.__codeBase = codeBase
+        self.__data = []
+        self.__queue = []
 
     async def readNextTransferWindow(self):
         while True:
@@ -35,16 +39,63 @@ class Transmitting:
             transferWindowFile = open(self.__txWindowsPath)
             sendData = []
             soonestWindowTime = 0
-            line = transferWindowFile.readline()
-            data = line.split(",")
+
+            #This is old code
+            # line = self.__transferWindowFile.readline()
+            # self.__data = line.split('c')
+
+            #This section isn't quite working yet
+            #__________________________________________________________________
+            # print("About to hit the while loop.")
+            # if self.__data.__len__() > 0:
+            #     while float(self.__data[0]) < time.time():
+            #         print("Inside the while loop")
+            #         line = transferWindowFile.readline()
+            #         self.__data = line.split(",")
+            #         print(self.__data)
+            # else:
+            #     line = transferWindowFile.readline()
+            #     self.__data = line.split(",")
+            #__________________________________________________________________
+
+            for lines in transferWindowFile:
+                print("INSIDE OF THE NEW CODE:", lines)
+                flag = True
+                data = lines.split(",")
+                if (data != ['']) and (float(data[0]) > time.time()):
+                    print("DATA IS NOT EMPTY")
+                    for items in self.__queue:
+                        print("CHECKING WITH QUEUE")
+                        try:
+                            if float(data[0]) == float(self.__queue[items][0]):
+                                print("TIMESTAMP ALREADY EXISTS")
+                                self.__queue[items] = data
+                                flag = False
+                                break
+                        except Exception as e:
+                            print("ERROR:", e)
+                    if flag:
+                        print("PUSHING TO THE HEAP")
+                        heapq.heappush(self.__queue, data)
+                else:
+                    print("DATA IS:", data, "THIS WAS VIEWED AS EITHER EMPTY OR SMALLER THAN THE CURRENT TIMESTAMP")
+
+            transferWindowFile.close()
+
+            if (self.__nextWindowTime < time.time()) and (self.__queue.__len__() > 0):
+                print("GETTING NEW TRANSFER WINDOW FROM THE HEAP")
+                self.__data = heapq.heappop(self.__queue)
+
+
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
+            print("About to hit try.")
             try:
-                if data != ['']:
-                    print(float(data[0]), float(data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
-                    if(float(data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME): #If the transfer window is at BUFFER_TIME milliseconds in the future
-                        if(soonestWindowTime == 0) or (float(data[0]) - time.time()):
-                            soonestWindowTime = float(data[0]) - time.time()
-                            sendData = data
+                if (self.__data != ['']) or (self.__data != []):
+                    print(float(self.__data[0]), float(self.__data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
+                    if(float(self.__data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME): #If the transfer window is at BUFFER_TIME milliseconds in the future
+                        if(soonestWindowTime == 0) or (float(self.__data[0]) - time.time()):
+                            soonestWindowTime = float(self.__data[0]) - time.time()
+                            sendData = self.__data
             except Exception as e:
                 print("Error measuring transfer window:", e)
 
