@@ -40,7 +40,7 @@ async def processAX25(AX25):  #Placeholder function
 	fileChecker.checkFile(transmissionFilePath)	
 	txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
 	while True:
-		if txDataFile.readlines() == "" and timeToNextWindow - time.time() >= 25:	
+		if timeToNextWindow - time.time() >= 25:	
 			if AX25Flag_File.readlines() == "Enabled":
 				print("Processing AX25 Packet")
 				txDataFile.write("10000")
