@@ -34,7 +34,7 @@ async def processAX25(AX25):  #Placeholder function
 	baseFile = open("/home/pi/lastBase.txt")
 	codeBase = int(baseFile.read())
 	txisrCodePath = filePaths[codeBase]
-	window = windows.dequeue()
+	window = windows.dequeue(1)
 	nextWindow = window.split(",")
 	timeToNextWindow = nextWindow[0]
 
@@ -45,7 +45,6 @@ async def processAX25(AX25):  #Placeholder function
 		if txDataFile.readlines() == "" and timeToNextWindow - time.time() >= 25:	
 			if AX25Flag_File.readlines() == "Enabled":
 				print("Processing AX25 Packet")
-
 				txDataFile.write(AX25) #Write to txData.
 				subprocess.Popen(['sudo', './TXService.run'], cwd = str(txisrCodePath + "TXServiceCode/")) #This might not work
 				break
