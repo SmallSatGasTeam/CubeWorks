@@ -8,6 +8,7 @@
 #more this will not cause a  problem it will only slow the code
 #down.
 #####################################################################
+from flightLogic.getDriverData import AttitudeData
 import os.path
 import asyncio
 import time
@@ -23,30 +24,23 @@ class save:
         #open the file when the calls is instantiated
         #self.__TTNC_File = open("/home/pi/flightLogicData/TTNC_Data.txt", "a+")
         #check the file to make sure it is their
-        fileChecker.checkFile("/home/pi/flightLogicData/Deploy_Data.txt")
-        #open the file when the calls is instantiated
-        self.__Deploy_File = open("/home/pi/flightLogicData/Deploy_Data.txt", "a+")
-        #check the file to make sure it is their
-        fileChecker.checkFile("/home/pi/flightLogicData/Attitude_Data.txt")
-        #open the file when the calls is instantiated
-        self.__Attitude_File = open("/home/pi/flightLogicData/Attitude_Data.txt", "a+")
+        # fileChecker.checkFile("/home/pi/flightLogicData/Deploy_Data.txt")
+        # #open the file when the calls is instantiated
+        # self.__Deploy_File = open("/home/pi/flightLogicData/Deploy_Data.txt", "a+")
+        # #check the file to make sure it is their
+        # fileChecker.checkFile("/home/pi/flightLogicData/Attitude_Data.txt")
+        # #open the file when the calls is instantiated
+        # self.__Attitude_File = open("/home/pi/flightLogicData/Attitude_Data.txt", "a+")
+        pass
 
     #write the data to the file,
     #NOTE: it is important that you put a : after the time stamp, this will
     #effect the txisr
     async def writeTTNC(self, data):
         fileChecker.checkFile("/home/pi/flightLogicData/TTNC_Data.txt")
-        print("####CHECKING TTNC DATA")
-        self.__TTNC_File = open('/home/pi/flightLogicData/TTNC_Data.txt', "a+")
-        print(data)
-        print("####CHECKING TTNC DATA")
-        try:
-            self.__TTNC_File.write(str(data)+'\n')
-            print("###WROTE DATA")
-            self.__TTNC_File.close()
-        except Exception as e:
-            print("Error:", e)
-        print("####WROTE DATA")
+        TTNC_File = open('/home/pi/flightLogicData/TTNC_Data.txt', "a+")
+        TTNC_File.write(str(data)+'\n')
+        TTNC_File.close()
 
     #this func will read the data from our file and then return that data
     async def getTTNC(self, time):
@@ -80,7 +74,9 @@ class save:
     #effect the txisr
     async def writeAttitude(self, data):
         fileChecker.checkFile("/home/pi/flightLogicData/Attitude_Data.txt")
-        self.__Attitude_File.write(str(data)+'\n')
+        Attitude_File = open("/home/pi/flightLogicData/Attitude_Data.txt")
+        Attitude_File.write(str(data)+'\n')
+        Attitude_File.close()
 
 
     #this func will read the data form our file and then return that data
