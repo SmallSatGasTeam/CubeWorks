@@ -52,6 +52,7 @@ class Transmitting:
 
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
             print("About to hit try.")
+            print(self.__data)
             try:
                 if (self.__data != ['']) or (self.__data != []):
                     print(float(self.__data[0]), float(self.__data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
