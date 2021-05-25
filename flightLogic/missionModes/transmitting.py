@@ -40,8 +40,8 @@ class Transmitting:
             sendData = []
             soonestWindowTime = 0
 
-            while (self.__queue.dequeue(1) < time.time()) and (self.__data != ['']):
-                line = self.__queue.dequeue()
+            while (self.__queue.dequeue(0) < time.time()) and (self.__data != ['']):
+                line = self.__queue.dequeue(1)
                 self.__data = line.split(',')
 
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
