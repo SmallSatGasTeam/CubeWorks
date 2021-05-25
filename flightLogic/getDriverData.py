@@ -341,6 +341,7 @@ class TTNCData:
 			print("getting TTNC data")
 			await self.writeData() # filechecker?
 			# Sleep for 120 seconds (0.0083 Hz)
+			print("SLEEPING IT OFF")
 			await asyncio.sleep(120)
 
 class DeployData():
