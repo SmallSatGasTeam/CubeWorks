@@ -59,10 +59,9 @@ class Transmitting:
             #__________________________________________________________________
 
             for lines in transferWindowFile:
-                print("INSIDE OF THE NEW CODE ITERATION:", lines)
+                print("INSIDE OF THE NEW CODE:", lines)
                 flag = True
-                line = transferWindowFile.readline()
-                data = line.split(",")
+                data = lines.split(",")
                 if (data != ['']) and (data[0] > time.time()):
                     print("DATA IS NOT EMPTY")
                     for items in self.__queue:
