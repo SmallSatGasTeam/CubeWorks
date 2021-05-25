@@ -36,14 +36,18 @@ class save:
     #effect the txisr
     async def writeTTNC(self, data):
         fileChecker.checkFile("/home/pi/flightLogicData/TTNC_Data.txt")
+        print("####CHECKING FILES")
         TTNC_File = open("/home/pi/flightLogicData/TTNC_Data.txt", "a+")
+        print("####OPENING TTNC DATA")
         fileChecker.checkFile("/home/pi/flightLogicData/TTNC_Data.txt")
+        print("####CHECKING TTNC DATA")
         self.__TTNC_File.write(str(data)+'\n')
         TTNC_File.close()
 
     #this func will read the data from our file and then return that data
     async def getTTNC(self, time):
         fileChecker.checkFile("/home/pi/flightLogicData/TTNC_Data.txt")
+        print("####CHECKING TTNC DATA")
         temp = []
         for i in self.__TTNC_File:
             if (int(i[0]) >= time):
