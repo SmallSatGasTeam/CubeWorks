@@ -40,8 +40,8 @@ class Transmitting:
             soonestWindowTime = 0
 
             #This is old code
-            # line = self.__transferWindowFile.readline()
-            # self.__data = line.split('c')
+            line = self.__transferWindowFile.readline()
+            self.__data = line.split('c')
 
             #This section isn't quite working yet
             #__________________________________________________________________
