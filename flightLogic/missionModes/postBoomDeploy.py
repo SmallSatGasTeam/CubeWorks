@@ -34,7 +34,8 @@ class postBoomMode:
 			# of making sure that postBoomDeploy doesn't crash and it needs to
 			# have something in there so it doesn't crash and suffer
 			print('This is post Boom Deploy')
-			await asyncio.sleep(10)	
+			print(self.__tasks)
+			await asyncio.sleep(1)	
 
 	async def rebootLoop(self):
 		upTime = 0
