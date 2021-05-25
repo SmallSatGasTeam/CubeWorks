@@ -40,6 +40,7 @@ class Transmitting:
             transferWindowFile = open(self.__txWindowsPath)
             sendData = []
             soonestWindowTime = 0
+            print((self.__queue.dequeue(0) - time.time() <= 20), (self.__data == []))
 
             #while timestamp < currenttimestamp
             while self.__queue.dequeue(0) < time.time():
