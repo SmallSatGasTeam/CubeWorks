@@ -13,26 +13,14 @@ class Queue ():
         file.write(str(data) + "\n")
         file.close()
 
-    def dequeue(self):
-        return self.__short()
+    def dequeue(self, delet):
+        return self.__short(delet)
 
 
-    def incramentTime(self):
+    def __short(self, delete):
         contents = []
-        self.__fileChecher.checkFile(self.__filepath)
-        file = open(self.__filepath, "r") 
-        contents = file.read().splitlines()
-        file.close()
-        for i in range (len(contents)):
-            contents[i] = str(int (contents[i]) - 1)
-        file = open(self.__filepath, "w")
-        for i in contents:
-            file.write(i + "\n")
-        file.close()
-
-
-    def __short(self):
-        contents = []
+        line = []
+        minLine = ""
         self.__fileChecher.checkFile(self.__filepath)
         file = open(self.__filepath, "r") 
         contents = file.read().splitlines()
@@ -40,43 +28,49 @@ class Queue ():
         print(contents)
         if(len(contents) == 0):
             return None
-        if(contents[0] != -1 ):
-            min = int (contents[0])
+        line = contents[0].split(',')
+        if(line[0] != -1 ):
+            min = line
+            minLine = contents[0]
             for i in contents:
-                if(int(i) < min and int(i) >= 0): 
-                    min = int(i)
-            contents.remove(str (min))
-            file = open(self.__filepath, "w") 
+                line = i.split(',')
+                if(int(line[0]) < int(min[0]) and int(line[0]) >= 0): 
+                    min = line
+                    minLine = i
+            contents.remove(minLine)
+            self.__fileChecher.checkFile(self.__filepath)
+            file = open(self.__filepath, "w")
+            if(not delete):
+                file.write(minLine + "\n")
             for j in contents:
-                if(int(j) >= 0):
+                line = j.split(',')
+                if(int(line[0]) >= 0):
                     file.write(j + "\n")
             file.close()
-        return min
+        if(not delete):
+            return int (min[0])
+        else :
+            return minLine
 
     def clearQueue(self):
+        self.__fileChecher.checkFile(self.__filepath)
         file = open(self.__filepath, "w")
         file.close()
+
 
 #this is for testing
 # def main():
 #     test = Queue("temp.txt")
-#     test.enqueue(5)
-#     test.enqueue(4)
-#     test.enqueue(2)
-#     test.enqueue(3)
-#     test.enqueue(0)
-#     test.enqueue(-1)
+#     test.enqueue("5,0,0,00000000")
+#     test.enqueue("4,0,0,00000000")
+#     test.enqueue("3,0,0,00000000")
+#     test.enqueue("2,0,0,00000000")
+#     test.enqueue("-1,0,0,00000000")
 
 #     #test.clearQueue()
-
-#     test.incramentTime()
-#     print(test.dequeue())
-#     test.incramentTime()
-#     print(test.dequeue())
-#     test.incramentTime()
-#     print(test.dequeue())
-#     test.incramentTime()
-#     print(test.dequeue())
-#     test.incramentTime()
+#     print(test.dequeue(True))
+#     print(test.dequeue(True))
+#     print(test.dequeue(False))
+#     print(test.dequeue(False))
 
 # main()
