@@ -60,7 +60,7 @@ class save:
         fileChecker.checkFile("/home/pi/flightLogicData/Deploy_Data.txt")
         Deploy_File = open("/home/pi/flightLogicData/Deploy_Data.txt", "a+")
         Deploy_File.write(str(data)+'\n')
-        Deploy_File.close
+        Deploy_File.close()
 
 
     #this func will read the data form our file and then return that data
