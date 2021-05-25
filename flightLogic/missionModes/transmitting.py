@@ -45,10 +45,13 @@ class Transmitting:
             while self.__queue.dequeue(0) < time.time():
                 self.__queue.dequeue(1)
             #20 seconds before
-            if self.__queue.dequeue(0) - time.time() <= 20:
+            if (self.__queue.dequeue(0) - time.time() <= 20) and (self.__data == []):
                 #pull the packet
                 line = self.__queue.dequeue(1)
                 self.__data = line.split(',')
+            elif self.__queue.dequeue(0) - time.time() > 20:
+                self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
+                self.__data = []
 
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
             print("About to hit try.")
@@ -74,7 +77,6 @@ class Transmitting:
             else:
                 print("sendData is empty.")
 
-            self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
             print("Time to next window:", self.__timeToNextWindow)
             await asyncio.sleep(3)
     
