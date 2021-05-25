@@ -68,7 +68,7 @@ class Transmitting:
                         print("CHECKING WITH QUEUE")
                         if float(data[0]) == float(self.__queue[items][0]):
                             print("TIMESTAMP ALREADY EXISTS")
-                            float(self.__queue[items]) = float(data)
+                            self.__queue[items] = data
                             flag = False
                             break
                     if flag:
