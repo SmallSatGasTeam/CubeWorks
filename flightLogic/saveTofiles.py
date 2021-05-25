@@ -63,10 +63,12 @@ class save:
     #this func will read the data form our file and then return that data
     async def getDeploy(self):
         fileChecker.checkFile("/home/pi/flightLogicData/Deploy_Data.txt")
+        deployFile = open("/home/pi/flightLogicData/Deploy_Data.txt", "a+")
         temp = []
         for i in self.__Deploy_File:
             if (int(i[0]) >= time):
                 temp += i
+        deployFile.close()
         return temp
     #this part of the code is for data collection of attitude data
     #write the data to the file,
