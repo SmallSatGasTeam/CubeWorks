@@ -8,7 +8,6 @@
 #more this will not cause a  problem it will only slow the code
 #down.
 #####################################################################
-from flightLogic.getDriverData import AttitudeData
 import os.path
 import asyncio
 import time
