@@ -57,16 +57,6 @@ class Transmitting:
             #     self.__data = line.split(",")
             #__________________________________________________________________
 
-            for line in transferWindowFile:
-                line = transferWindowFile.readline()
-                data = line.split(",")
-                if (line != ''):
-                    for windows in self.__queue:
-                        if(data[0] == self.__queue[windows][0]) or (data[0] < self.__nextWindowTime):
-                            break
-                        else:
-                            self.__queue.append(data)
-
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
             print("About to hit try.")
             try:
