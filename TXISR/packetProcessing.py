@@ -26,13 +26,14 @@ windows = Queue('/home/pi/TXISRData/txWindows.txt')
 skippingToPostBoom = False
 filePaths = ["/home/pi/CubeWorks0/TXISR/", "/home/pi/CubeWorks1/TXISR/", "/home/pi/CubeWorks2/TXISR/", "/home/pi/CubeWorks3/TXISR/", "/home/pi/CubeWorks4/TXISR/"] 
 #These file paths are slightly different from the ones in transmitting.py
-transmitting = Transmitting()
 
 async def processAX25(AX25):  #Placeholder function
 	#Check AX25 Transmission flag, if it is OK then open a pyserial connection and transmit the content of the packet
 	fileChecker.checkFile("/home/pi/TXISRData/AX25Flag.txt")
 	AX25Flag_File = open("/home/pi/TXISRData/AX25Flag.txt", "r")
-	txisrCodePath = filePaths[transmitting.__codeBase]
+	baseFile = open("/home/pi/lastBase.txt")
+	codeBase = int(baseFile.read())
+	txisrCodePath = filePaths[codeBase]
 	window = windows.dequeue()
 	nextWindow = window.split(",")
 	timeToNextWindow = nextWindow[0]
