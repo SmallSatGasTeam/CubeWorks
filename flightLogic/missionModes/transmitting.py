@@ -36,8 +36,6 @@ class Transmitting:
         while True:
             print("INSIDE TRANSFER WINDOW")
             #read the given transfer window file and extract the data for the soonest transfer window
-            fileChecker.checkFile(self.__txWindowsPath)
-            transferWindowFile = open(self.__txWindowsPath)
             sendData = []
             soonestWindowTime = 0
             print((self.__queue.dequeue(0) - time.time() <= 20), (self.__data == []))
