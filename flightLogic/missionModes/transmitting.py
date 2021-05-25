@@ -51,7 +51,6 @@ class Transmitting:
                 self.__data = line.split(',')
             elif self.__timeToNextWindow - time.time() < 0:
                 self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
-                self.__data = []
 
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
             print("About to hit try.")
