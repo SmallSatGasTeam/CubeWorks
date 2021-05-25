@@ -74,6 +74,7 @@ class Transmitting:
             else:
                 print("sendData is empty.")
 
+            self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
             print("Time to next window:", self.__timeToNextWindow)
             await asyncio.sleep(3)
     
