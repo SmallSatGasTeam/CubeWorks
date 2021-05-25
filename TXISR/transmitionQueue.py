@@ -1,5 +1,5 @@
 # importing "heapq" to implement heap queue
-#from protectionProticol.fileProtection import FileReset
+from protectionProticol.fileProtection import FileReset
 
 class Queue ():
     def __init__(self, filepath):
