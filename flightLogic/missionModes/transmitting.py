@@ -63,7 +63,7 @@ class Transmitting:
                 flag = True
                 line = transferWindowFile.readline()
                 data = line.split(",")
-                if data != ['']:
+                if (data != ['']) and (data[0] > time.time()):
                     print("DATA IS NOT EMPTY")
                     for items in self.__queue:
                         print("CHECKING WITH QUEUE")
@@ -75,6 +75,8 @@ class Transmitting:
                     if flag:
                         print("PUSHING TO THE HEAP")
                         heapq.heappush(self.__queue, data)
+                else:
+                    print("DATA IS:", data, "THIS WAS VIEWED AS EITHER EMPTY OR SMALLER THAN THE CURRENT TIMESTAMP")
 
             transferWindowFile.close()
 
