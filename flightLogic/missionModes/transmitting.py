@@ -73,11 +73,9 @@ class Transmitting:
             #     print("GETTING NEW TRANSFER WINDOW FROM THE HEAP")
             #     self.__data = heapq.heappop(self.__queue)
 
-            while (self.__nextWindowTime < time.time()) and (self.__data != ['']):
+            while (self.__queue.dequeue(1) < time.time()) and (self.__data != ['']):
                 line = self.__queue.dequeue()
                 self.__data = line.split(',')
-                if(self.__data != ['']):
-                    self.__nextWindowTime = float(self.__data[0])
 
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
             print("About to hit try.")
