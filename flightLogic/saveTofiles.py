@@ -57,12 +57,15 @@ class save:
     #effect the txisr
     async def writeDeploy(self, data):
         fileChecker.checkFile("/home/pi/flightLogicData/Deploy_Data.txt")
-        self.__Deploy_File.write(str(data)+'\n')
+        Deploy_File = open("/home/pi/flightLogicData/Deploy_Data.txt")
+        Deploy_File.write(str(data)+'\n')
+        Deploy_File.close
+
 
     #this func will read the data form our file and then return that data
     async def getDeploy(self):
         fileChecker.checkFile("/home/pi/flightLogicData/Deploy_Data.txt")
-        deployFile = open("/home/pi/flightLogicData/Deploy_Data.txt", "a+")
+        deployFile = open("/home/pi/flightLogicData/Deploy_Data.txt", "r")
         temp = []
         for i in self.__Deploy_File:
             if (int(i[0]) >= time):
