@@ -82,7 +82,7 @@ class Transmitting:
 
             transferWindowFile.close()
 
-            if (self.__nextWindowTime < time.time()) and (self.__queue.__len__() > 0):
+            if ((self.__nextWindowTime < time.time()) and (self.__queue.__len__() > 0)) or (self.__nextWindowTime != float(self.__queue[0][0])):
                 print("GETTING NEW TRANSFER WINDOW FROM THE HEAP")
                 self.__data = heapq.heappop(self.__queue)
 
