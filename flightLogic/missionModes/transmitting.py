@@ -40,7 +40,7 @@ class Transmitting:
             print("INSIDE TRANSFER WINDOW")
             #read the given transfer window file and extract the data for the soonest transfer window
             soonestWindowTime = 0
-            print("First one", (self.__queue.dequeue(0) - time.time() <= 20), (self.__data == []))
+            print("First one", (self.__queue.dequeue(0) - time.time() <= 20), (self.__data == []), (self.__queue.dequeue(0) > 0))
             print("timeToNextWindow at the beginning of the next TransferWindow", self.__timeToNextWindow)
 
             #while timestamp < currenttimestamp
@@ -48,7 +48,7 @@ class Transmitting:
                 print("Deleting old time stamps.")
                 self.__queue.dequeue(1)
             #20 seconds before
-            if (self.__queue.dequeue(0) - time.time() <= 20) and (self.__queue.dequeue(0) != -1) and (self.__data == []):
+            if (self.__queue.dequeue(0) - time.time() <= 20) and (self.__queue.dequeue(0) != -1) and (self.__data == []) and (self.__queue.dequeue(0) > 0):
                 #pull the packet
                 print("Pulling a packet.")
                 line = self.__queue.dequeue(1)
