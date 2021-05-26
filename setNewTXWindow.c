@@ -37,7 +37,7 @@ int main(int argc, char * argv[])
 					scanf("%d", &windowLength);
 					printf("Input the data type: ");
 					scanf("%d", &dataType);
-					txTime = (long int) time(NULL);
+					txTime = (long int)time(NULL);
 					txTime += length;
 					fprintf(fptr, "%ld,%d,%d,0,1\n", 
 					txTime, windowLength, dataType);
@@ -73,8 +73,9 @@ int main(int argc, char * argv[])
 		txTime = (long int)time(NULL);
 
 		for(i = 0; i < n; i++){
+			txTime = txTime + length;
 			printf("Creating window %d: %ld,%d,%d,0,1\n", i+1, txTime, windowLength, dataType);
-			fprintf(fptr, "%ld,%d,%d,0,1\n", txTime, windowLength, dataType);
+			fprintf(fptr, "%ld,%d,%d,0,1\n", txTime + length, windowLength, dataType);
 		}
 	}
 	else {
