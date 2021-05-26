@@ -39,16 +39,16 @@ class Transmitting:
             print("First one", (self.__queue.dequeue(0) - time.time() <= 20), (self.__data == []))
 
             #while timestamp < currenttimestamp
-            while (self.__queue.dequeue(0) < time.time()) and (self.__queue.dequeue(0) != 0):
+            while (self.__queue.dequeue(0) < time.time()) and (self.__queue.dequeue(0) != -1):
                 print("Deleting old time stamps.")
                 self.__queue.dequeue(1)
             #20 seconds before
-            if (self.__queue.dequeue(0) - time.time() <= 20) and (self.__data == []) and (self.__queue.dequeue(0) != 0):
+            if (self.__queue.dequeue(0) - time.time() <= 20) and (self.__data == []) and (self.__queue.dequeue(0) != -1):
                 #pull the packet
                 print("Pulling a packet.")
                 line = self.__queue.dequeue(1)
                 self.__data = line.split(',')
-            elif ((self.__timeToNextWindow - time.time()) < 0) or ((self.__timeToNextWindow - time.time()) > 20):
+            elif (((self.__timeToNextWindow - time.time()) < 0) or ((self.__timeToNextWindow - time.time()) > 20)) and (self.__queue.dequeue(0) != -1):
                 print("Time to next window is less than 20 but greater than 0")
                 self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
 

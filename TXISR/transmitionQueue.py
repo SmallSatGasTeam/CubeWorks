@@ -27,7 +27,7 @@ class Queue ():
         file.close()
         #print("Printing contents", contents)
         if(len(contents) == 0):
-            return 0
+            return -1
         line = contents[0].split(',')
         if(line[0] != -1 ):
             min = line
