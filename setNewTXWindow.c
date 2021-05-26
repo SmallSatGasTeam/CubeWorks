@@ -75,9 +75,10 @@ int main(int argc, char * argv[])
 		length = atoi(argv[2]);
 		windowLength = atoi(argv[3]);
 		dataType = atoi(argv[4]);
+		txTime = (long int)time(NULL);
 
 		for(i = 0; n < i; i++){
-
+			fprintf(fptr, "%ld,%d,%d,0,1\n", txTime, windowLength, dataType);
 		}
 	}
 
