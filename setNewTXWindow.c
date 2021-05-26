@@ -78,6 +78,7 @@ int main(int argc, char * argv[])
 		txTime = (long int)time(NULL);
 
 		for(i = 0; n < i; i++){
+			printf("Creating window %d: %ld,%d,%d,0,1\n", i+1, txTime, windowLength, dataType);
 			fprintf(fptr, "%ld,%d,%d,0,1\n", txTime, windowLength, dataType);
 		}
 	}
