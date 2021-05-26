@@ -22,7 +22,7 @@ class Transmitting:
         fileChecker.checkFile(self.__txWindowsPath)
         self.__queue = Queue(self.__txWindowsPath)
         if self.__queue.dequeue(0) != -1:
-            self.__data = self.__queue.dequeue(1).split("'")
+            self.__data = self.__queue.dequeue(1).split(",")
         else:
             self.__data = []
         self.__timeToNextWindow = -1
