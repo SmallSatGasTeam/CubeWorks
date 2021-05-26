@@ -13,7 +13,7 @@ int main(int argc, char * argv[])
 
         if(fptr == NULL)
         {
-                printf("ERROR WITH FILEPATH");
+                printf("ERROR WITH FILEPATH\n");
                 exit(1);
         } 
 
@@ -39,7 +39,7 @@ int main(int argc, char * argv[])
 					scanf("%d", &dataType);
 					txTime = (long int) time(NULL);
 					txTime += length;
-					fprintf(fptr, "%d,%d,%d,0,1\n", 
+					fprintf(fptr, "%ld,%d,%d,0,1\n", 
 					txTime, windowLength, dataType);
 					break;
 				case 2:
@@ -55,7 +55,7 @@ int main(int argc, char * argv[])
 						scanf("%d", &dataType);
 						txTime = (long int) time(NULL);
 						txTime += length;
-						fprintf(fptr, "%d,%d,%d,0,1\n", 
+						fprintf(fptr, "%ld,%d,%d,0,1\n", 
 						txTime, windowLength, dataType);
 					}
 					break;
