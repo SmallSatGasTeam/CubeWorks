@@ -87,6 +87,7 @@ class Transmitting:
                 #if close enough, prep files
                 #wait until 5 seconds before, return True
                 if (self.__timeToNextWindow != -1) and (self.__timeToNextWindow < 14):
+                    print("Self.__timeToNextWindow is less than 14.")
                     if self.__datatype < 3: #Attitude, TTNC, or Deployment data respectively
                         prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
                         print("Preparing data")
