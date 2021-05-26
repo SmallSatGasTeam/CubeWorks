@@ -103,7 +103,7 @@ class Transmitting:
                     else:
                         prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber)
                     break
-                await asyncio.sleep(5)
+                await asyncio.sleep(10)
             while True:
                 if (self.__timeToNextWindow <= 5) and (self.__timeToNextWindow > 0):
                     fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
