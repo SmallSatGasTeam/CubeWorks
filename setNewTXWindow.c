@@ -65,22 +65,22 @@ int main(int argc, char * argv[])
 			}
 		}
 	}
-	else if(argc != 5) {
-		printf("ERROR. Improper usage.\n"
-		"Usage: sudo ./setNewTXWindow.c <number of intervals> "
-		"<time between windows> <length of each window> <data type>\n");
-	}
-	else {
+	else if(argc == 5) {
 		n = atoi(argv[1]);
 		length = atoi(argv[2]);
 		windowLength = atoi(argv[3]);
 		dataType = atoi(argv[4]);
 		txTime = (long int)time(NULL);
 
-		for(i = 0; n < i; i++){
+		for(i = 0; i < n; i++){
 			printf("Creating window %d: %ld,%d,%d,0,1\n", i+1, txTime, windowLength, dataType);
 			fprintf(fptr, "%ld,%d,%d,0,1\n", txTime, windowLength, dataType);
 		}
+	}
+	else {
+		printf("ERROR. Improper usage.\n"
+		"Usage: sudo ./setNewTXWindow.c <number of intervals> "
+		"<time between windows> <length of each window> <data type>\n");
 	}
 
 	// system(command0);
