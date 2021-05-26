@@ -22,9 +22,9 @@ class Transmitting:
         fileChecker.checkFile(self.__txWindowsPath)
         self.__queue = Queue(self.__txWindowsPath)
         if self.__queue.dequeue(0) != -1:
-            self.__data = self.__queue.dequeue(1).split(",")
+            self.__timeToNextWindow = self.__queue.dequeue(0)
         else:
-            self.__data = []
+            self.__timeToNextWindow = -1
         self.__timeToNextWindow = -1
         self.__nextWindowTime = -1
         self.__duration = -1
@@ -32,6 +32,7 @@ class Transmitting:
         self.__pictureNumber = -1
         self.__index = -1
         self.__codeBase = codeBase
+        self.__data = []
 
 
     async def readNextTransferWindow(self):
