@@ -97,14 +97,15 @@ class Transmitting:
                 await asyncio.sleep(5)
             windowTime = self.__nextWindowTime
             while True:
-                if (windowTime-time.time()) <= 5:
+                if (windowTime-time.time()) <= 5 and windowTime-time.time() >= 0:
                     fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
                     self.__transmissionFlagFile.seek(0)
                     if self.__transmissionFlagFile.readline() == 'Enabled':
                         txisrCodePath = filePaths[self.__codeBase]
                         #These two are old code that we may potentially have to come back to
                         #subprocess.Popen([txisrCodePath, str(self.__datatype)])
-                        subprocess.Popen(['sudo', './TXService.run', str(self.__datatype)], cwd = str(txisrCodePath))
+                        print("Trying to run TXService.run")
+                        #subprocess.Popen(['sudo', './TXService.run', str(self.__datatype)], cwd = str(txisrCodePath))
                         #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype))
                         self.__timeToNextWindow = -1
                         break
