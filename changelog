@@ -141,3 +141,23 @@ be repoerted.
     "flightLogic/missionModes/postBoomDeploy.py" Lines: 12-13, 18, 28, 30, 35
         All traces of the redundant transmission code were removed and two async
         tasks were created to call the transmit and readNextTransferWindow functions
+
+#20 <Created setNewTXWindow.c> "setNewTXWindow.c"
+    Created a program that quickly and easily sets up a new window
+
+#21 <Created transmition Queue> "TXISR/transmitionQueue.py"
+    Created a new program that turns txWindows.txt into a min queue.
+
+#22 <Implementing transmition Queue> 
+    "TXISR/packetProcessing.py" Lines: 222-225
+        Replaced the writing code with a line that prepares a window packet and
+        then uses transmition queue to add it to the queue.
+    "flightLogic/missionModes/transmitting.py" Lines: 42-50
+        Implemented the transmition queue. First it pops off all old timestamps.
+        Then it tracks time till next window by reading the timestamp of the
+        next available element. 20 seconds before the window is open the entire
+        line is pulled and processed as normal.
+
+#23 <Added AX25 packet> "TXISR/packetProcessing.py" Lines: 30-61, 119-122
+    Gave packet processing the ability to process an AX25 packet and
+    immediately spit it back out.

@@ -1,13 +1,11 @@
 import os
 import sys
-from typing import Deque
 sys.path.append("../../")
 from protectionProticol.fileProtection import FileReset
 import asyncio
 import time
 from TXISR import prepareFiles
 import subprocess
-import linecache
 from TXISR.transmitionQueue import Queue
 
 
