@@ -10,7 +10,6 @@ int main(int argc, char * argv[])
 	int flag = 0;
 	int input, length, dataType, windowsNumber, windowLength, n, i;
 	long int txTime;
-	int txTime;
 
         if(fptr == NULL)
         {
@@ -65,14 +64,15 @@ int main(int argc, char * argv[])
 			}
 		}
 	}
-	// else if(argc != 5) {
-	// 	printf("ERROR. Improper usage.\n"
-	// 	"Usage: sudo ./setNewTXWindow.c <number of intervals> "
-	// 	"<time between windows> <data type>");
-	// }
-	// else {
-	// 	n = atoi(argv[1])
-	// }
+	else if(argc != 5) {
+		printf("ERROR. Improper usage.\n"
+		"Usage: sudo ./setNewTXWindow.c <number of intervals> "
+		"<time between windows> <length of each window> <data type>");
+	}
+	else {
+		n = atoi(argv[1]);
+
+	}
 
 	// system(command0);
 	// printf("Please enter the number above: ");
