@@ -16,6 +16,9 @@ filePaths = ["/home/pi/CubeWorks0/TXISR/TXServiceCode/", "/home/pi/CubeWorks1/TX
 
 class Transmitting:
     def __init__(self, codeBase):
+        self.__queue = Queue(self.__txWindowsPath)
+        if self.__queue.dequeue(0) != -1:
+            self.__data = self.__queue.dequeue(1)
         self.__timeToNextWindow = -1
         self.__nextWindowTime = -1
         self.__duration = -1
@@ -28,7 +31,7 @@ class Transmitting:
         fileChecker.checkFile(self.__txWindowsPath)
         self.__codeBase = codeBase
         self.__data = []
-        self.__queue = Queue(self.__txWindowsPath)
+
 
     async def readNextTransferWindow(self):
         while True:
