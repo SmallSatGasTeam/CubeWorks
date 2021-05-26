@@ -47,7 +47,7 @@ class Transmitting:
                 print("Deleting old time stamps.")
                 self.__queue.dequeue(1)
             #20 seconds before
-            if (self.__queue.dequeue(0) - time.time() <= 20) and (self.__data == []) and (self.__queue.dequeue(0) != -1):
+            if (self.__queue.dequeue(0) - time.time() <= 20) and (self.__queue.dequeue(0) != -1):
                 #pull the packet
                 print("Pulling a packet.")
                 line = self.__queue.dequeue(1)
