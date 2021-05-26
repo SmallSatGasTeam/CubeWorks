@@ -25,7 +25,6 @@ class Transmitting:
             self.__timeToNextWindow = self.__queue.dequeue(0)
         else:
             self.__timeToNextWindow = -1
-        self.__timeToNextWindow = -1
         self.__nextWindowTime = -1
         self.__duration = -1
         self.__datatype = -1
