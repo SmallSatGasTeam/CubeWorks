@@ -41,6 +41,7 @@ class Transmitting:
             #read the given transfer window file and extract the data for the soonest transfer window
             soonestWindowTime = 0
             print("First one", (self.__queue.dequeue(0) - time.time() <= 20), (self.__data == []))
+            print("timeToNextWindow at the beginning of the next TransferWindow", self.__timeToNextWindow)
 
             #while timestamp < currenttimestamp
             while (self.__queue.dequeue(0) < time.time()) and (self.__queue.dequeue(0) != -1):
