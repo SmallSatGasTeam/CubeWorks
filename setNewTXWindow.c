@@ -23,7 +23,7 @@ int main(int argc, char * argv[])
 		" intervals> <time between each window> <length of each window>" 
 		"<data type>\n");
 
-		while(!flag){
+		while(1){
 			printf("1:\tCreate single new txWindow.\n"
 			"2:\tCreate multiple txWindows with varying time inbetween.\n"
 			"0:\tClose\nInput: ");
@@ -53,10 +53,11 @@ int main(int argc, char * argv[])
 						scanf("%d", &windowLength);
 						printf("Input the data type: ");
 						scanf("%d", &dataType);
-						txTime = (long int) time(NULL);
+						if(!flag) txTime = (long int) time(NULL);
 						txTime += length;
 						fprintf(fptr, "%ld,%d,%d,0,1\n", 
 						txTime, windowLength, dataType);
+						flag = 1;
 					}
 					break;
 				default:
@@ -71,7 +72,13 @@ int main(int argc, char * argv[])
 	}
 	else {
 		n = atoi(argv[1]);
+		length = atoi(argv[2]);
+		windowLength = atoi(argv[3]);
+		dataType = atoi(argv[4]);
 
+		for(i = 0; n < i; i++){
+
+		}
 	}
 
 	// system(command0);
