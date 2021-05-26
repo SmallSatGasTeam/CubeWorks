@@ -39,7 +39,7 @@ class Transmitting:
             print("First one", (self.__queue.dequeue(0) - time.time() <= 20), (self.__data == []))
 
             #while timestamp < currenttimestamp
-            while (self.__queue.dequeue(0) < time.time()) and (self.__queue != 0):
+            while (self.__queue.dequeue(0) < time.time()) and (self.__queue.dequeue(0) != 0):
                 print("Deleting old time stamps.")
                 self.__queue.dequeue(1)
             #20 seconds before
