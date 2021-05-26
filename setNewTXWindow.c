@@ -68,7 +68,7 @@ int main(int argc, char * argv[])
 	else if(argc != 5) {
 		printf("ERROR. Improper usage.\n"
 		"Usage: sudo ./setNewTXWindow.c <number of intervals> "
-		"<time between windows> <length of each window> <data type>");
+		"<time between windows> <length of each window> <data type>\n");
 	}
 	else {
 		n = atoi(argv[1]);
