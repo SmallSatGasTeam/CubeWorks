@@ -42,7 +42,7 @@ class Transmitting:
             soonestWindowTime = 0
             print("First one", (self.__queue.dequeue(0) - time.time() <= 20), (self.__data == []), (self.__queue.dequeue(0) > 0))
             print("Next one", (((self.__timeToNextWindow - time.time()) < 0) or ((self.__timeToNextWindow - time.time()) > 20)) and (self.__queue.dequeue(0) != -1)
-            , (((self.__timeToNextWindow - time.time()) < 0) or ((self.__timeToNextWindow - time.time()) > 20)), (self.__queue.dequeue(0) != -1))
+            , ((self.__timeToNextWindow < 0) or (self.__timeToNextWindow > 20)), (self.__queue.dequeue(0) != -1))
             print("timeToNextWindow at the beginning of the next TransferWindow", self.__timeToNextWindow)
 
             #while timestamp < currenttimestamp
@@ -55,7 +55,7 @@ class Transmitting:
                 print("Pulling a packet.")
                 line = self.__queue.dequeue(1)
                 self.__data = line.split(',')
-            elif (((self.__timeToNextWindow - time.time()) < 0) or ((self.__timeToNextWindow - time.time()) > 20)) and (self.__queue.dequeue(0) != -1):
+            elif ((self.__timeToNextWindow < 0) or (self.__timeToNextWindow > 20)) and (self.__queue.dequeue(0) != -1):
                 print("Time to next window is less than 20 but greater than 0")
                 self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
                 self.__data = []
