@@ -32,13 +32,13 @@ class Transmitting:
         self.__index = -1
         self.__codeBase = codeBase
         self.__data = []
+        self.__sendData = []
 
 
     async def readNextTransferWindow(self):
         while True:
             print("INSIDE TRANSFER WINDOW")
             #read the given transfer window file and extract the data for the soonest transfer window
-            sendData = []
             soonestWindowTime = 0
             print("First one", (self.__queue.dequeue(0) - time.time() <= 20), (self.__data == []))
 
@@ -66,18 +66,18 @@ class Transmitting:
                     if(float(self.__data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME): #If the transfer window is at BUFFER_TIME milliseconds in the future
                         if(soonestWindowTime == 0) or (float(self.__data[0]) - time.time()):
                             soonestWindowTime = float(self.__data[0]) - time.time()
-                            sendData = self.__data
+                            self.__sendData = self.__data
             except Exception as e:
                 print("Error measuring transfer window:", e)
 
-            if sendData.__len__() == 5:
-                print(sendData)
-                self.__timeToNextWindow = float(sendData[0]) - time.time()
-                self.__duration = int(sendData[1])
-                self.__datatype = int(sendData[2])
-                self.__pictureNumber = int(sendData[3])
-                self.__nextWindowTime = float(sendData[0])
-                self.__index = int(sendData[4])
+            if self.__sendData.__len__() == 5:
+                print(self.__sendData)
+                self.__timeToNextWindow = float(self.__sendData[0]) - time.time()
+                self.__duration = int(self.__sendData[1])
+                self.__datatype = int(self.__sendData[2])
+                self.__pictureNumber = int(self.__sendData[3])
+                self.__nextWindowTime = float(self.__sendData[0])
+                self.__index = int(self.__sendData[4])
             else:
                 print("sendData is empty.")
 
