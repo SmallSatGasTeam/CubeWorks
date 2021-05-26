@@ -108,7 +108,6 @@ class Transmitting:
                         txisrCodePath = filePaths[self.__codeBase]
                         #These two are old code that we may potentially have to come back to
                         #subprocess.Popen([txisrCodePath, str(self.__datatype)])
-                        #print("Trying to run TXService.run")
                         subprocess.Popen(['sudo', './TXService.run', str(self.__datatype)], cwd = str(txisrCodePath))
                         #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype))
                         self.__timeToNextWindow = -1
