@@ -57,6 +57,7 @@ class Transmitting:
                 print("Time to next window is less than 20 but greater than 0")
                 self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
                 self.__data = []
+                self.__sendData = []
 
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
             print("About to hit try.")
