@@ -41,6 +41,8 @@ class Transmitting:
             #read the given transfer window file and extract the data for the soonest transfer window
             soonestWindowTime = 0
             print("First one", (self.__queue.dequeue(0) - time.time() <= 20), (self.__data == []), (self.__queue.dequeue(0) > 0))
+            print("Next one", (((self.__timeToNextWindow - time.time()) < 0) or ((self.__timeToNextWindow - time.time()) > 20)) and (self.__queue.dequeue(0) != -1)
+            , (((self.__timeToNextWindow - time.time()) < 0) or ((self.__timeToNextWindow - time.time()) > 20)), (self.__queue.dequeue(0) != -1))
             print("timeToNextWindow at the beginning of the next TransferWindow", self.__timeToNextWindow)
 
             #while timestamp < currenttimestamp
@@ -64,7 +66,7 @@ class Transmitting:
             print(self.__data)
             print("Second one", (self.__queue.dequeue(0) - time.time() <= 20), (self.__data == []))
             try:
-                if (self.__data != ['']) or (self.__data != []):
+                if (self.__data != []) or (self.__data != ['']):
                     print(float(self.__data[0]), float(self.__data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
                     if(float(self.__data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME): #If the transfer window is at BUFFER_TIME milliseconds in the future
                         if(soonestWindowTime == 0) or (float(self.__data[0]) - time.time()):
