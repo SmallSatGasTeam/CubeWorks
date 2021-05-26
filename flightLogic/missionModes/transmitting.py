@@ -16,6 +16,10 @@ filePaths = ["/home/pi/CubeWorks0/TXISR/TXServiceCode/", "/home/pi/CubeWorks1/TX
 
 class Transmitting:
     def __init__(self, codeBase):
+        fileChecker.checkFile("/home/pi/TXISRData/transmissionFlag.txt")
+        self.__transmissionFlagFile = open('/home/pi/TXISRData/transmissionFlag.txt')
+        self.__txWindowsPath = ('/home/pi/TXISRData/txWindows.txt')
+        fileChecker.checkFile(self.__txWindowsPath)
         self.__queue = Queue(self.__txWindowsPath)
         if self.__queue.dequeue(0) != -1:
             self.__data = self.__queue.dequeue(1)
@@ -25,10 +29,6 @@ class Transmitting:
         self.__datatype = -1
         self.__pictureNumber = -1
         self.__index = -1
-        fileChecker.checkFile("/home/pi/TXISRData/transmissionFlag.txt")
-        self.__transmissionFlagFile = open('/home/pi/TXISRData/transmissionFlag.txt')
-        self.__txWindowsPath = ('/home/pi/TXISRData/txWindows.txt')
-        fileChecker.checkFile(self.__txWindowsPath)
         self.__codeBase = codeBase
         self.__data = []
 
