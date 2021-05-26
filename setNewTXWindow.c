@@ -3,7 +3,7 @@
 
 char command0[] = "date +%s";
 
-void main(int argc, char * argv[])
+int main(int argc, char * argv[])
 {
 	FILE *fptr;
 	time_t txTime;
@@ -21,7 +21,8 @@ void main(int argc, char * argv[])
 	if(argc == 1){
 		printf("You are creating custom txWindows. To create multiple at equal"
 		" intervals, the usage is: sudo ./setNewTXWindow.c <number of"
-		" intervals> <time between each window> <datatype>");
+		" intervals> <time between each window> <length of each window>" 
+		"<data type>\n");
 
 		while(!flag){
 			printf("1:\tCreate single new txWindow.\n"
@@ -64,6 +65,14 @@ void main(int argc, char * argv[])
 			}
 		}
 	}
+	// else if(argc != 5) {
+	// 	printf("ERROR. Improper usage.\n"
+	// 	"Usage: sudo ./setNewTXWindow.c <number of intervals> "
+	// 	"<time between windows> <data type>");
+	// }
+	// else {
+	// 	n = atoi(argv[1])
+	// }
 
 	// system(command0);
 	// printf("Please enter the number above: ");
