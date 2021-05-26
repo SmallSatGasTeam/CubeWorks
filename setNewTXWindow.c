@@ -19,8 +19,13 @@ void main()
 	printf("Please enter the number above: ");
 	scanf("%d",&txTime);
 	txTime += 40;
-
 	fprintf(fptr, "%d,30,0,0,00000001\n", txTime);
+	txTime += 45;
+	fprintf(fptr, "%d,30,0,0,00000001\n", txTime);
+
+	txTime += 45;
+	fprintf(fptr, "%d,30,0,0,00000001\n", txTime);
+
 	fclose(fptr);
 }
 	
