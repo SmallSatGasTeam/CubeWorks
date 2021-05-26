@@ -6,10 +6,10 @@ char command0[] = "date +%s";
 int main(int argc, char * argv[])
 {
 	FILE *fptr;
-	time_t txTime;
 	fptr = fopen("/home/pi/TXISRData/txWindows.txt","a+");
 	int flag = 0;
 	int input, length, dataType, windowsNumber, windowLength, n, i;
+	long int txTime;
 	int txTime;
 
         if(fptr == NULL)
@@ -38,7 +38,7 @@ int main(int argc, char * argv[])
 					scanf("%d", &windowLength);
 					printf("Input the data type: ");
 					scanf("%d", &dataType);
-					txTime = time(NULL);
+					txTime = (long int) time(NULL);
 					txTime += length;
 					fprintf(fptr, "%d,%d,%d,0,1\n", 
 					txTime, windowLength, dataType);
@@ -54,7 +54,7 @@ int main(int argc, char * argv[])
 						scanf("%d", &windowLength);
 						printf("Input the data type: ");
 						scanf("%d", &dataType);
-						txTime = time(NULL);
+						txTime = (long int) time(NULL);
 						txTime += length;
 						fprintf(fptr, "%d,%d,%d,0,1\n", 
 						txTime, windowLength, dataType);
