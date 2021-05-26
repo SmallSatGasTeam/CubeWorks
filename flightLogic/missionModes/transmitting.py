@@ -36,23 +36,26 @@ class Transmitting:
             #read the given transfer window file and extract the data for the soonest transfer window
             sendData = []
             soonestWindowTime = 0
-            print((self.__queue.dequeue(0) - time.time() <= 20), (self.__data == []))
+            print("First one", (self.__queue.dequeue(0) - time.time() <= 20), (self.__data == []))
 
             #while timestamp < currenttimestamp
             while self.__queue.dequeue(0) < time.time():
+                print("Deleting old time stamps.")
                 self.__queue.dequeue(1)
             #20 seconds before
             if (self.__queue.dequeue(0) - time.time() <= 20) and (self.__data == []):
                 #pull the packet
+                print("Pulling a packet.")
                 line = self.__queue.dequeue(1)
                 self.__data = line.split(',')
             elif self.__timeToNextWindow - time.time() < 0:
+                print("Time to next window is less than 20 but greater than 0")
                 self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
 
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
             print("About to hit try.")
             print(self.__data)
-            print((self.__queue.dequeue(0) - time.time() <= 20), (self.__data == []))
+            print("Second one", (self.__queue.dequeue(0) - time.time() <= 20), (self.__data == []))
             try:
                 if (self.__data != ['']) or (self.__data != []):
                     print(float(self.__data[0]), float(self.__data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)

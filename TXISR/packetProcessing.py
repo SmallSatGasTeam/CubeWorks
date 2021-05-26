@@ -34,7 +34,7 @@ async def processAX25(AX25):  #Placeholder function
 	baseFile = open("/home/pi/lastBase.txt")
 	codeBase = int(baseFile.read())
 	txisrCodePath = filePaths[codeBase]
-	timeToNextWindow = int(windows.dequeue(1))
+	timeToNextWindow = int(windows.dequeue(0))
 
 	transmissionFilePath = txisrCodePath + 'data/txFile.txt' #File path to txFile. This is where data will be stored
 	fileChecker.checkFile(transmissionFilePath)	
