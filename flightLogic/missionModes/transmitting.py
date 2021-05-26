@@ -97,7 +97,7 @@ class Transmitting:
                 await asyncio.sleep(5)
             windowTime = self.__nextWindowTime
             while True:
-                if (windowTime-time.time()) <= 5 and windowTime-time.time() >= 0:
+                if (windowTime-time.time()) <= 5 and (windowTime-time.time() >= 0):
                     fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
                     self.__transmissionFlagFile.seek(0)
                     if self.__transmissionFlagFile.readline() == 'Enabled':
