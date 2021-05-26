@@ -23,6 +23,9 @@ char branchCommand4 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXService
 
 char upDateCommand [] = "cd ; cd CubeWorks0/ ; gcc upDateCode.c -o upDateCode.exe ; cp upDateCode.exe ~/ ; rm upDateCode.exe";
 
+char testingCommand [] = "cd ; cd CubeWorks0/ ; gcc setNewTXWindow.c -o setNewTXWindow.exe ; sudo cp setNewTXWindow.exe ~/TXISRData ; rm setNewTXWindow.exe";
+
+
 
 
 // #update and install python
@@ -69,6 +72,10 @@ void main()
     //create the upDate code 
     printf("\n>>>Creating update code<<<\n");
     system(upDateCommand);
+
+    //Create the set new txWindows code
+    printf("\n>>>Creating setTXWindows routine<<<\n");
+    system(testingCommand);
 
     //create the start up code, and then move it to the root
     printf("\n>>>creating multi-code base protocol\n");
