@@ -399,8 +399,8 @@ class DeployData():
 			print("Failed to pull clock data from RTC. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 
-		packet = packetTimestamp + packet
-		self.__deployData = packet
+		packet = packetTimestamp + packet + '\n'
+		self.__deployData += packet
 		print("Collected deploy data.")
 
 	async def writeData(self):
@@ -413,7 +413,10 @@ class DeployData():
 			# Get Deploy data
 			await self.getData()
 			# Write data to file
-			await self.writeData() # filechecker?
+			while True:
+				await self.writeData() # filechecker?
+				self.__deployData = ''
+				await asyncio.sleep(5)
 			#print("getting deployment data")
 			# Sleep for 50 ms (20Hz)
 			await asyncio.sleep(0.05)
