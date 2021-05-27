@@ -9,7 +9,7 @@
 #include <errno.h>
 #include <stdint.h>
 //Take just the DEBUG line out when your are done debugging and leave debug.h
-#define DEBUG
+//#define DEBUG
 #include "debug.h"
 
 //enable and disable are set up in the make file,
@@ -184,6 +184,7 @@ int main(int argc,char* argv[])
         {
             PRINT_TIME(currentTime - startTime)
             DEBUG_P(\nEnding>>>)
+            printf("\nEnding>>>");
             break;
         }
 
@@ -191,6 +192,7 @@ int main(int argc,char* argv[])
         DEBUG_P(current Time - Start Time:)
         PRINT_TIME(currentTime - startTime)
         DEBUG_P(\nSending>>>)
+        printf("\nSending>>>");
         //get the size of each line in the file
         int charCount = 0;
         int end = 0;
