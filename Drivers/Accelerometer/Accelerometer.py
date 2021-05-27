@@ -12,6 +12,10 @@ import board
 import busio
 import adafruit_lsm303_accel
 
+"""
+Pulls data from the Accelerometer
+"""
+
 class Accelerometer(Driver):
   #Set up I2C link
   i2c = busio.I2C(board.SCL, board.SDA)

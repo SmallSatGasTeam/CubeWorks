@@ -2,6 +2,9 @@
 from Drivers.Driver import Driver
 import smbus
 import RPi.GPIO as GPIO
+"""
+Pulls battery data and solar panel data from the EPS
+"""
 
 class EPS(Driver):
     #this sets up i2c commincation.
