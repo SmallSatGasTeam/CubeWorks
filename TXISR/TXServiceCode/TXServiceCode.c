@@ -316,6 +316,7 @@ void main(int argc,char* argv[])
             PRINT_TIME(startTimeTX)
             DEBUG_P(Delta T: )
             PRINT_TIME(currentTimeTX - startTimeTX)
+            return 0;
         }
     } 
 
