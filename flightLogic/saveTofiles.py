@@ -38,7 +38,7 @@ class save:
     async def writeTTNC(self, data):
         fileChecker.checkFile("/home/pi/flightLogicData/TTNC_Data.txt")
         TTNC_File = open('/home/pi/flightLogicData/TTNC_Data.txt', "a+")
-        TTNC_File.write(str(data))
+        TTNC_File.write(str(data)+'\n')
         TTNC_File.close()
 
     #this func will read the data from our file and then return that data
@@ -59,7 +59,8 @@ class save:
     async def writeDeploy(self, data):
         fileChecker.checkFile("/home/pi/flightLogicData/Deploy_Data.txt")
         Deploy_File = open("/home/pi/flightLogicData/Deploy_Data.txt", "a+")
-        Deploy_File.write(str(data)+'\n')
+        print("About to write:", data)
+        Deploy_File.write(str(data))
         Deploy_File.close()
 
 

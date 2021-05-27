@@ -413,13 +413,14 @@ class DeployData():
 			# Get Deploy data
 			await self.getData()
 			# Write data to file
+			await asyncio.sleep(0.05)
 			while True:
+				print("About to write data:", self.__deployData)
 				await self.writeData() # filechecker?
 				self.__deployData = ''
 				await asyncio.sleep(5)
 			#print("getting deployment data")
 			# Sleep for 50 ms (20Hz)
-			await asyncio.sleep(0.05)
 
 class AttitudeData():
 	def __init__(self, saveobject):
