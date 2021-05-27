@@ -6,6 +6,9 @@
 #     sudo pip3 install adafruit-circuitpython-lis2mdl
 #   For LSM303DLH:
 #     sudo pip3 install adafruit-circuitpython-lsm303dlh-mag
+"""
+Pulls data from the magnetometer
+"""
 
 from Drivers.Driver import Driver
 import board

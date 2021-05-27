@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/* This code provides a simple way to feed a transmission window into txWindows.txt while running the main flight logic. */
+
 char command0[] = "date +%s";
 
 int main(int argc, char * argv[])

@@ -19,16 +19,15 @@ from TXISR import pythonInterrupt
 # NOTE: The TXISR needs to run as a separate thread, and is not asyncio
 # import thread @@Shawn This import isn't working
 
-##################################################################################################################
 # executeFlightLogic()
-##################################################################################################################
-# First, this function sets up the TXISR and then checks the boot conditions
-# Then, it runs a mission mode, and then loops forever, constantly checking to run the next mission mode.
-# NOTE: Each mission mode evaluates their exit conditions to leave the mission mode.
-# NOTE: Each mission mode calls safe if it is necessary
-# NOTE: DO NOTE record safe mode in the bootRecords file
-##################################################################################################################
+"""
+ First, this function sets up the TXISR and then checks the boot conditions
+ Then, it runs a mission mode, and then loops forever, constantly checking to run the next mission mode.
+ NOTE: Each mission mode evaluates their exit conditions to leave the mission mode.
+ NOTE: Each mission mode calls safe if it is necessary
+ NOTE: DO NOTE record safe mode in the bootRecords file
 
+"""
 
 def __main__():
 	asyncio.run(executeFlightLogic())
