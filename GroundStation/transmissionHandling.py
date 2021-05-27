@@ -3,6 +3,7 @@ import serial
 from time import sleep
 import hmac
 import hashlib
+""" Creates packets in proper formats for transmission and requests that format from satellite """
 
 def packetSelect():
 	creatingPacket = input('Type 0 for a pre-created packet, and type 1 for creating a new packet, and type 2 for sending your own data bordered by GASPACS: ')
@@ -76,7 +77,7 @@ def transmitPacket(packet):
 	serialPort.write(data)
 
 def int34tobin(num):
-	#takes a 34 byte int, returns a binary representation of it
+	"""takes a 34 byte int, returns a binary representation of it"""
 	a = num >> 17
 	b = num & 0b11111111111111111
 	outa = str(format(a, '0131072b'))[-131072:]
@@ -84,19 +85,19 @@ def int34tobin(num):
 	return outa+outb
 
 def int4tobin(num):
-	#takes a 4 byte int, returns a binary representation of it
+	"""takes a 4 byte int, returns a binary representation of it"""
 	return str(format(num, '032b'))[-32:]
 
 def int1tobin(num):
-	#takes a 1 byte integer, returns a binary representation of it
+	"""takes a 1 byte integer, returns a binary representation of it"""
 	return str(format(num, '08b'))[-8:]
 
 def int2tobin(num):
-	#takes a 2 byte integer, returns a binary representation of it
+	"""takes a 2 byte integer, returns a binary representation of it"""
 	return str(format(num, '016b'))[-16:]
 
 def encrypt(packet):
-	#encrypt packet using hmac and append hash to the end of the packet
+	"""encrypt packet using hmac and append hash to the end of the packet"""
 	key = b'SECRETKEY'
 	binaryPacketLength = len(packet) * 4
 	binaryPacket = bytes(format(int(packet,16), 'b').zfill(binaryPacketLength), 'utf-8')

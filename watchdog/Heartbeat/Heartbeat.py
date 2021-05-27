@@ -1,9 +1,8 @@
 import RPi.GPIO as GPIO
 import asyncio
 
-# this is the heart beat code. objectives are:
-# 1) A function that sends one pulse
-#   A)
+""" this is the heart beat code. objectives are:
+  1) A function that sends one pulse """
 
 
 def setUp():
