@@ -307,7 +307,7 @@ class TTNCData:
 		Cell2Temp + BattVoltage + BattCurrent + BCRVoltage + BCRCurrent + EPS3V3Current + 
 		EPS5VCurrent + SP_X_Voltage + SP_X_Plus_Current + SP_X_Minus_Current + SP_Y_Voltage + 
 		SP_Y_Plus_Current + SP_Y_Minus_Current + SP_Z_Voltage + SP_Z_Plus_Current + gaspacsBytes)
-#___________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________		
+#______________________________________________________________________________
 		try:
 			if (self.RTC.readSeconds() < RTCMin) | (self.RTC.readSeconds() > RTCMax):
 				raise unexpectedValue
@@ -492,9 +492,16 @@ class AttitudeData():
 		mag2 = float4tohex(mag2)
 		mag3 = float4tohex(mag3)
 
-		packet += gaspacsBytes + packetType + timestamp + sunSensor1 + sunSensor2 + sunSensor3 + sunSensor4 + sunSensor5 + mag1 + mag2 + mag3 + gaspacsBytes
+		packet += (gaspacsBytes + packetType + timestamp + sunSensor1 + 
+		sunSensor2 + sunSensor3 + sunSensor4 + sunSensor5 + mag1 + mag2 + mag3 
+		+ gaspacsBytes)
+		
 		#Print statement for debugging
-		#print("timestamp: ", timestamp, "\npacketType: ", packetType, "\nsunSensor1: ", sunSensor1, "\nsunSensor2: ", sunSensor2, "\nsunSensor3: ", sunSensor3, "\nsunSensor4: ", sunSensor4, "\nsunSensor5 :", sunSensor5, "\nmag1: ", mag1, "\nmag2: ", mag2, "\nmag3: ", mag3)
+		#print("timestamp: ", timestamp, "\npacketType: ", packetType, 
+		# "\nsunSensor1: ", sunSensor1, "\nsunSensor2: ", sunSensor2, 
+		# "\nsunSensor3: ", sunSensor3, "\nsunSensor4: ", sunSensor4, 
+		# "\nsunSensor5 :", sunSensor5, "\nmag1: ", mag1, "\nmag2: ", mag2, 
+		# "\nmag3: ", mag3)
 		try:
 			if (self.RTC.readSeconds() < RTCMin) | (self.RTC.readSeconds() > RTCMax):
 				raise unexpectedValue
