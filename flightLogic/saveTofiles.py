@@ -60,7 +60,7 @@ class save:
         fileChecker.checkFile("/home/pi/flightLogicData/Deploy_Data.txt")
         Deploy_File = open("/home/pi/flightLogicData/Deploy_Data.txt", "a+")
         print("About to write:", data)
-        Deploy_File.write(str(data))
+        Deploy_File.write(str(data) + '\n')
         Deploy_File.close()
 
 
