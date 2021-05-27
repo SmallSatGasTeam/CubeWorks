@@ -406,6 +406,8 @@ class DeployData():
 	async def writeData(self):
 		#writes Boom Deployment data array to file
 		await self.__save.writeDeploy(self.__deployData) # filechecker?
+		self.__deployData = ''
+		await asyncio.sleep(5)
 
 	async def collectDeployData(self):
 		# Data collection loop
@@ -413,15 +415,10 @@ class DeployData():
 			# Get Deploy data
 			await self.getData()
 			# Write data to file
-			#await self.writeData() # filechecker?
+			await self.writeData() # filechecker?
 			#print("getting deployment data")
 			# Sleep for 50 ms (20Hz)
 			await asyncio.sleep(.05)
-		while True:
-			print("Writing data.")
-			await self.writeData()
-			self.__deployData = ''
-			await asyncio.sleep(5)
 
 class AttitudeData():
 	def __init__(self, saveobject):
