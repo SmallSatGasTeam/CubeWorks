@@ -399,15 +399,13 @@ class DeployData():
 			print("Failed to pull clock data from RTC. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 
-		packet = packetTimestamp + packet + "\n"
-		self.__deployData += packet
+		packet = packetTimestamp + packet
+		self.__deployData = packet
 		print("Collected deploy data.")
 
 	async def writeData(self):
 		#writes Boom Deployment data array to file
 		await self.__save.writeDeploy(self.__deployData) # filechecker?
-		self.__deployData = ''
-		await asyncio.sleep(5)
 
 	async def collectDeployData(self):
 		# Data collection loop
@@ -418,7 +416,7 @@ class DeployData():
 			await self.writeData() # filechecker?
 			#print("getting deployment data")
 			# Sleep for 50 ms (20Hz)
-			await asyncio.sleep(.05)
+			await asyncio.sleep(.1)
 
 class AttitudeData():
 	def __init__(self, saveobject):
