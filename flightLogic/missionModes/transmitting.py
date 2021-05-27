@@ -1,3 +1,11 @@
+"""
+This file holds the Transmitting class which houses the readNextTransferWindow 
+and transmit functions that are called in each mission mode. These are the two 
+functions that are needed to transmit datafrom a mission mode so to reduce 
+redundancy the code was pulled out of postBoomDeploy and moved into here so it 
+could be shared by all four mission modes.
+"""
+
 import os
 import sys
 sys.path.append("../../")
@@ -13,8 +21,12 @@ TRANSFER_WINDOW_BUFFER_TIME = 10
 fileChecker = FileReset()
 filePaths = ["/home/pi/CubeWorks0/TXISR/TXServiceCode/", "/home/pi/CubeWorks1/TXISR/TXServiceCode/", "/home/pi/CubeWorks2/TXISR/TXServiceCode/", "/home/pi/CubeWorks3/TXISR/TXServiceCode/", "/home/pi/CubeWorks4/TXISR/TXServiceCode/"]
 
-
 class Transmitting:
+    """
+    Houses the the transmit and readNextTransfer window functions to allow each
+    mission mode to transmit. Instantiated in mainFlightLogic and passed to
+    each mission mode.
+    """
     def __init__(self, codeBase):
         fileChecker.checkFile("/home/pi/TXISRData/transmissionFlag.txt")
         self.__transmissionFlagFile = open('/home/pi/TXISRData/transmissionFlag.txt')
@@ -36,6 +48,10 @@ class Transmitting:
 
 
     async def readNextTransferWindow(self):
+        """
+        Pulls timeToNextWindow from the next available element in the queue
+        then dequeues a transfer window once within 20 seconds of that timestamp
+        """
         while True:
             print("INSIDE TRANSFER WINDOW")
             #read the given transfer window file and extract the data for the soonest transfer window
@@ -81,6 +97,10 @@ class Transmitting:
             await asyncio.sleep(5)
     
     async def transmit(self):
+        """
+        Prepares data to be sent once under 14 seconds and then runs 
+        TXService.run once under 5 seconds to transmit the prepared data.
+        """
         while True:
             while True:
                 print("Transmit time to next window:", self.__timeToNextWindow)

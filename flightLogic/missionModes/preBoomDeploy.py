@@ -4,7 +4,7 @@ import asyncio
 from flightLogic.getDriverData import *
 from Drivers.eps import EPS as EPS
 from Drivers.sunSensors import sunSensorDriver
-"""DO NOT PUSH LINE 9 TO MASTER! THIS IS FOR TESTING PURPOSES ONLY."""
+"""DO NOT PUSH "from DummyDrivers.sunSensors import sunSensorDriver as DummySunSensorDriver" TO MASTER! THIS IS FOR TESTING PURPOSES ONLY."""
 from DummyDrivers.sunSensors import sunSensorDriver as DummySunSensorDriver
 from TXISR import pythonInterrupt
 from inspect import currentframe, getframeinfo
