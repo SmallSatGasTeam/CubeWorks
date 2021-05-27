@@ -28,7 +28,8 @@ async def interrupt():
 	gaspacsHex = str(b'GASPACS'.hex())
 	while True:
 		try:
-			if serialport.in_waiting: #If there is content in the serial buffer, read it and act on it
+			#if serialport.in_waiting: #If there is content in the serial buffer, read it and act on it
+			if True: #This is a testing line
 				print('Data in waiting')
 				data = str(serialport.read(serialport.in_waiting).hex()) #This produces a list of nibbles (half bytes)
 				data = leftovers+data #Append any leftover data for evaluation
@@ -36,7 +37,7 @@ async def interrupt():
 					leftoverEmpty = False
 				commands, ax25Packets = [], []
 				commands, ax25Packets, leftovers = parseData(data, gaspacsHex)
-				ax25Packets = '7EFF00FF7E'
+				ax25Packets = ['7EFF00FF7E']
 				if leftovers is not '' and leftoversEmpty is False:
 					#Something is sticking around in leftovers, let's clear it
 					#Operates on the assumption that 2 consecutive partial packets is practically impossible
