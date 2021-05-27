@@ -26,13 +26,13 @@ int main(void){
     fclose(lastBase);
 
     switch(codeBase) {
-        case 0: printf("Running code base 0.\n"); system("cd CubeWorks0/tests\nsudo python3 testMainFlightLogicNOTSub.py");
+        case 0: printf("Running code base 0.\n"); system("cd CubeWorks0/tests\nsudo pypy3 testMainFlightLogicNOTSub.py");
             break;
-        case 1: printf("Running code base 1.\n"); system("cd CubeWorks1/tests\nsudo python3 testMainFlightLogicNOTSub.py");
+        case 1: printf("Running code base 1.\n"); system("cd CubeWorks1/tests\nsudo pypy3 testMainFlightLogicNOTSub.py");
             break;
-        case 2: printf("Running code base 2.\n"); system("cd CubeWorks2/tests\nsudo python3 testMainFlightLogicNOTSub.py");
+        case 2: printf("Running code base 2.\n"); system("cd CubeWorks2/tests\nsudo pypy3 testMainFlightLogicNOTSub.py");
             break;
-        case 3: printf("Running code base 3.\n"); system("cd CubeWorks3/tests\nsudo python3 testMainFlightLogicNOTSub.py");
+        case 3: printf("Running code base 3.\n"); system("cd CubeWorks3/tests\nsudo pypy3 testMainFlightLogicNOTSub.py");
             break;
         case 4: printf("Running code base 4.\n"); system("cd CubeWorks4/tests\nsudo python3 testMainFlightLogicNOTSub.py");
             break;
