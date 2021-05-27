@@ -307,14 +307,11 @@ class TTNCData:
 		Cell2Temp + BattVoltage + BattCurrent + BCRVoltage + BCRCurrent + EPS3V3Current + 
 		EPS5VCurrent + SP_X_Voltage + SP_X_Plus_Current + SP_X_Minus_Current + SP_Y_Voltage + 
 		SP_Y_Plus_Current + SP_Y_Minus_Current + SP_Z_Voltage + SP_Z_Plus_Current + gaspacsBytes)
-#______________________________________________________________________________
 		try:
 			if (self.RTC.readSeconds() < RTCMin) | (self.RTC.readSeconds() > RTCMax):
 				raise unexpectedValue
 			packetTimestamp = str(int(self.RTC.readSeconds())).zfill(10)+':'
 		except Exception as e:
-			# add redundant RTC's TRY/EXCEPT
-			# if no drivers can be called, continue with exception
 			print("Failed to pull from RTC. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 
@@ -323,7 +320,7 @@ class TTNCData:
 
 	async def writeData(self):
 		#writes TTNC data array to file
-		await self.__save.writeTTNC(self.__ttncData) # filechecker?
+		await self.__save.writeTTNC(self.__ttncData) 
 
 	async def collectTTNCData(self, mMode):
 		# Data collection loop
@@ -353,8 +350,6 @@ class DeployData():
 			if (timestamp < int8tohex(RTCMinMil)) | (timestamp > int8tohex(RTCMaxMil)):
 				raise unexpectedValue
 		except Exception as e:
-			# Add reduntant RTC try/except
-			# if no RTC iterations can be called, continue with exception
 			print("Failed to pull clock data from RTC. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 

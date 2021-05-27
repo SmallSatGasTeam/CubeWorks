@@ -1,5 +1,6 @@
 from enum import Enum
 
+""" Defines mission modes """
 
 class MissionMode(Enum):
     BOOT = 0

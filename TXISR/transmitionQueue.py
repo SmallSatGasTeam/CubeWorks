@@ -1,6 +1,8 @@
 # importing "heapq" to implement heap queue
 from protectionProticol.fileProtection import FileReset
 
+""" This checks the contents of the txWindows.txt and grabs the shortest time stamp to transmit first. """
+
 class Queue ():
     def __init__(self, filepath):
         print("Making the queue")

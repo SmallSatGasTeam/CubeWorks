@@ -1,13 +1,15 @@
-#####################################################################
-#This are the classes that handle saving the data to the files
-#####################################################################
-#Each class has one func that will write all the data in a list that
-#is passed to it.
-#They are written as different classes so that each code my be quicker
-#NOTE: try to only instantiate the classes once. if you have to do
-#more this will not cause a  problem it will only slow the code
-#down.
-#####################################################################
+"""
+These are the classes that handle saving the data to the files
+
+Each class has one func that will write all the data in a list that
+is passed to it.
+
+They are written as different classes so that each code my be quicker
+
+NOTE: try to only instantiate the classes once. if you have to do
+more this will not cause a  problem it will only slow the code
+down.
+"""
 import os.path
 import asyncio
 import time
@@ -18,18 +20,18 @@ fileChecker = FileReset()
 
 class save:
     def __init__(self):
-        #check the file to make sure it is their        
-        #fileChecker.checkFile("/home/pi/flightLogicData/TTNC_Data.txt")
-        #open the file when the calls is instantiated
-        #self.__TTNC_File = open("/home/pi/flightLogicData/TTNC_Data.txt", "a+")
-        #check the file to make sure it is their
-        # fileChecker.checkFile("/home/pi/flightLogicData/Deploy_Data.txt")
-        # #open the file when the calls is instantiated
-        # self.__Deploy_File = open("/home/pi/flightLogicData/Deploy_Data.txt", "a+")
-        # #check the file to make sure it is their
-        # fileChecker.checkFile("/home/pi/flightLogicData/Attitude_Data.txt")
-        # #open the file when the calls is instantiated
-        # self.__Attitude_File = open("/home/pi/flightLogicData/Attitude_Data.txt", "a+")
+        """ check the file to make sure it is their        
+         fileChecker.checkFile("/home/pi/flightLogicData/TTNC_Data.txt")
+         open the file when the calls is instantiated
+         self.__TTNC_File = open("/home/pi/flightLogicData/TTNC_Data.txt", "a+")
+         check the file to make sure it is their
+         fileChecker.checkFile("/home/pi/flightLogicData/Deploy_Data.txt")
+         open the file when the calls is instantiated
+         self.__Deploy_File = open("/home/pi/flightLogicData/Deploy_Data.txt", "a+")
+         check the file to make sure it is their
+         fileChecker.checkFile("/home/pi/flightLogicData/Attitude_Data.txt")
+         open the file when the calls is instantiated
+         self.__Attitude_File = open("/home/pi/flightLogicData/Attitude_Data.txt", "a+")"""
         pass
 
     #write the data to the file,
