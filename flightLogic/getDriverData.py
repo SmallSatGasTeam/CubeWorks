@@ -416,7 +416,7 @@ class DeployData():
 			await self.writeData() # filechecker?
 			#print("getting deployment data")
 			# Sleep for 50 ms (20Hz)
-			await asyncio.sleep(.015)
+			await asyncio.sleep(.015) #changing this will change the collection speed
 
 class AttitudeData():
 	def __init__(self, saveobject):
