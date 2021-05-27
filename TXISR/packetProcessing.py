@@ -28,6 +28,13 @@ filePaths = ["/home/pi/CubeWorks0/TXISR/", "/home/pi/CubeWorks1/TXISR/", "/home/
 #These file paths are slightly different from the ones in transmitting.py
 
 async def processAX25(AX25):  #Placeholder function
+	"""
+	processAX25 is called once the packet is identified as an AX25 packet. 
+	It references what codeBase is being used. It then creates or opens for writing the txFile within the correct base.
+	The AX25Flag is checked to see if it is enabled or disabled.
+	The AX25packet is written to the txFile and then we run the TXServiceCode to transmit it back
+	(This function requires further testing on the stack as of 5/27/21. We need to try running some AX25 packets over the serial port.)
+	"""
 	print(">>>Starting AX25 packet processing.")
 	#Check AX25 Transmission flag, if it is OK then open a pyserial connection and transmit the content of the packet
 	try:	
