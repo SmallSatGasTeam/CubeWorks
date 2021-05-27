@@ -70,7 +70,7 @@ intmax_t millis()
  * it then returns control back to linuxs
  * Program then exits
  *******************************************************************************************/
-void main(int argc,char* argv[])
+int main(int argc,char* argv[])
 {
     DEBUG_P(Began main)
     /////TODO/////
@@ -316,9 +316,11 @@ void main(int argc,char* argv[])
             PRINT_TIME(startTimeTX)
             DEBUG_P(Delta T: )
             PRINT_TIME(currentTimeTX - startTimeTX)
+        
         }
+        
     } 
-
+exit(0);
      //give control of the port back to linuxs
     //  int disable = system(DISABLE);
     //  //if we fail reboot
