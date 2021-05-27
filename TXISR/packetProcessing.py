@@ -28,6 +28,7 @@ filePaths = ["/home/pi/CubeWorks0/TXISR/", "/home/pi/CubeWorks1/TXISR/", "/home/
 #These file paths are slightly different from the ones in transmitting.py
 
 async def processAX25(AX25):  #Placeholder function
+	print(">>>Starting AX25 packet processing.")
 	#Check AX25 Transmission flag, if it is OK then open a pyserial connection and transmit the content of the packet
 	fileChecker.checkFile("/home/pi/TXISRData/AX25Flag.txt")
 	AX25Flag_File = open("/home/pi/TXISRData/AX25Flag.txt", "r")
@@ -35,14 +36,16 @@ async def processAX25(AX25):  #Placeholder function
 	codeBase = int(baseFile.read())
 	txisrCodePath = filePaths[codeBase]
 	timeToNextWindow = int(windows.dequeue(0))
+	print(">>>Initialized all variables.")
 
 	transmissionFilePath = txisrCodePath + 'data/txFile.txt' #File path to txFile. This is where data will be stored
 	fileChecker.checkFile(transmissionFilePath)	
 	txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
+	print(">>>About to enter infinite loop.")
 	while True:
 		if timeToNextWindow - time.time() >= 25:	
 			if AX25Flag_File.readlines() == "Enabled":
-				print("Processing AX25 Packet")
+				print(">>>Processing AX25 Packet")
 				txDataFile.write("10000")
 				txDataFile.write(AX25) #Write to txData.
 				subprocess.Popen(['sudo', './TXService.run'], cwd = str(txisrCodePath + "TXServiceCode/")) #This might not work

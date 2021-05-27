@@ -75,7 +75,7 @@ int main(int argc, char * argv[])
 		for(i = 0; i < n; i++){
 			txTime = txTime + length;
 			printf("Creating window %d: %ld,%d,%d,0,1\n", i+1, txTime, windowLength, dataType);
-			fprintf(fptr, "%ld,%d,%d,0,1\n", txTime + length, windowLength, dataType);
+			fprintf(fptr, "%ld,%d,%d,0,1\n", txTime, windowLength, dataType);
 		}
 	}
 	else {
