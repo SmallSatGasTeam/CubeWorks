@@ -40,31 +40,22 @@ class Transmitting:
             print("INSIDE TRANSFER WINDOW")
             #read the given transfer window file and extract the data for the soonest transfer window
             soonestWindowTime = 0
-            print("First one", (self.__queue.dequeue(0) - time.time() <= 20), (self.__data == []), (self.__queue.dequeue(0) > 0))
-            print("Next one", (((self.__timeToNextWindow - time.time()) < 0) or ((self.__timeToNextWindow - time.time()) > 20)) and (self.__queue.dequeue(0) != -1)
-            , (((self.__timeToNextWindow - time.time()) < 0) or ((self.__timeToNextWindow - time.time()) > 20)), (self.__queue.dequeue(0) != -1))
-            print("timeToNextWindow at the beginning of the next TransferWindow", self.__timeToNextWindow)
 
             #while timestamp < currenttimestamp
             while (self.__queue.dequeue(0) < time.time()) and (self.__queue.dequeue(0) != -1):
-                print("Deleting old time stamps.")
                 self.__queue.dequeue(1)
             #20 seconds before
             if (self.__queue.dequeue(0) - time.time() <= 20) and (self.__queue.dequeue(0) != -1) and (self.__data == []) and (self.__queue.dequeue(0) > 0):
                 #pull the packet
-                print("Pulling a packet.")
                 line = self.__queue.dequeue(1)
                 self.__data = line.split(',')
-            elif (((self.__timeToNextWindow - time.time()) < 0) or ((self.__timeToNextWindow - time.time()) > 20)) and (self.__queue.dequeue(0) != -1):
-                print("Time to next window is less than 20 but greater than 0")
+            elif ((self.__timeToNextWindow < 0) or (self.__timeToNextWindow > 20)) and (self.__queue.dequeue(0) != -1):
                 self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
                 self.__data = []
                 self.__sendData = []
 
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
-            print("About to hit try.")
             print(self.__data)
-            print("Second one", (self.__queue.dequeue(0) - time.time() <= 20), (self.__data == []))
             try:
                 if (self.__data != []) or (self.__data != ['']):
                     print(float(self.__data[0]), float(self.__data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
