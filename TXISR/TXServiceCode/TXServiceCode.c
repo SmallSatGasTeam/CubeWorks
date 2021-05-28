@@ -9,7 +9,7 @@
 #include <errno.h>
 #include <stdint.h>
 //Take just the DEBUG line out when your are done debugging and leave debug.h
-//#define DEBUG
+#define DEBUG
 #include "debug.h"
 
 //enable and disable are set up in the make file,
@@ -235,7 +235,7 @@ int main(int argc,char* argv[])
             printf("\n%X\n", line[charCount]);
             // PRINT_DEBUG_c(ch)
             // PRINT_DEBUG_c(chl)
-            // PRINT_DEBUG(charCount)
+            PRINT_DEBUG(charCount)
             // DEBUG_P(Im in the sub loop)
         }
         
