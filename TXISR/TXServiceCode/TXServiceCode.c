@@ -243,7 +243,7 @@ int main(int argc,char* argv[])
             // DEBUG_P(Im in the sub loop)
         }
         
-        // DEBUG_P(leaving loop)
+        DEBUG_P(leaving loop)
 
         if((ch == '\n') || (feof(txFile)) || (chl == '\n'))
         {
