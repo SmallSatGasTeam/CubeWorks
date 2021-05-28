@@ -9,7 +9,7 @@
 #include <errno.h>
 #include <stdint.h>
 //Take just the DEBUG line out when your are done debugging and leave debug.h
-#define DEBUG
+//#define DEBUG
 #include "debug.h"
 
 //enable and disable are set up in the make file,
@@ -89,9 +89,7 @@ int main(int argc,char* argv[])
     //gather user input
     int dataType;
     if(argc == 2) {
-        printf("About to convert char to int: %s %c\n", argv[1], *argv[1]);
         dataType = changeCharToInt(*argv[1]);
-        printf("DataType: %d\n", dataType);
     }
     else dataType = changeCharToInt(127);
     DEBUG_P(Made it past the problem spot)
@@ -184,7 +182,7 @@ int main(int argc,char* argv[])
         {
             PRINT_TIME(currentTime - startTime)
             DEBUG_P(\nEnding>>>)
-            printf("\nEnding>>>");
+            printf("\nEnding>>>\n");
             break;
         }
 
@@ -232,11 +230,6 @@ int main(int argc,char* argv[])
             ch = fgetc(txFile);
             chl = fgetc(txFile);
             line[charCount++] = convertCharToHex(chl, ch);
-            printf("Current line and value: %d ", charCount);
-            for(int i = 0; i < charCount; i++){
-                printf("%X", line[i]);
-            }
-            printf("\n");
             // PRINT_DEBUG_c(ch)
             // PRINT_DEBUG_c(chl)
             //PRINT_DEBUG(charCount)
@@ -423,6 +416,6 @@ char convertCharToHex (char lowByte, char highByte)
         new = low + (high << 4);
         //printf("Is this still working? %X", new);
     }
-    printf("\nConverted hex to: %X\n", new);
+    //printf("\nConverted hex to: %X\n", new);
     return new;
 }
