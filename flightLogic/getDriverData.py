@@ -487,9 +487,12 @@ class AttitudeData():
 		mag2 = float4tohex(mag2)
 		mag3 = float4tohex(mag3)
 
+		print("The parts of the packet:", packetType, timestamp, sunSensor1,
+		sunSensor2, sunSensor3, sunSensor4, sunSensor5, mag1, mag2, mag3)
 		packet += (gaspacsBytes + packetType + timestamp + sunSensor1 + 
 		sunSensor2 + sunSensor3 + sunSensor4 + sunSensor5 + mag1 + mag2 + mag3 
 		+ gaspacsBytes)
+		print("The actual packet:", packet)
 		
 		#Print statement for debugging
 		#print("timestamp: ", timestamp, "\npacketType: ", packetType, 
