@@ -466,8 +466,7 @@ class AttitudeData():
 			sunSensor5 = sunSensorMax + 1
 
 		sunSensor1 = float4tohex(sunSensor1)
-		# sunSensor2 = float4tohex(sunSensor2)
-		sunSensor2 = float4tohex(1)
+		sunSensor2 = float4tohex(sunSensor2)
 		sunSensor3 = float4tohex(sunSensor3)
 		sunSensor4 = float4tohex(sunSensor4)
 		sunSensor5 = float4tohex(sunSensor5)
@@ -532,8 +531,10 @@ class AttitudeData():
 def float4tohex(num):
 	#takes a 4 byte float, returns a hex representation of it
 	try:
-		print("Inside float4tohex:", str(hex(struct.unpack('<I', struct.pack('<f', num))[0]))[2:])
-		return str(hex(struct.unpack('<I', struct.pack('<f', num))[0]))[2:]
+		if(str(hex(struct.unpack('<I', struct.pack('<f', num))[0]))[2:] != '0'):
+			return str(hex(struct.unpack('<I', struct.pack('<f', num))[0]))[2:]
+		else:
+			return str('00000000')[2:]
 	except Exception as e:
 		print("Failure to convert num in float4tohex. Exception: ", e, getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 		return str('00000000')[2:]
