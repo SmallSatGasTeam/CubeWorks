@@ -466,7 +466,8 @@ class AttitudeData():
 			sunSensor5 = sunSensorMax + 1
 
 		sunSensor1 = float4tohex(sunSensor1)
-		sunSensor2 = float4tohex(sunSensor2)
+		# sunSensor2 = float4tohex(sunSensor2)
+		sunSensor2 = float4tohex(1)
 		sunSensor3 = float4tohex(sunSensor3)
 		sunSensor4 = float4tohex(sunSensor4)
 		sunSensor5 = float4tohex(sunSensor5)
@@ -483,8 +484,7 @@ class AttitudeData():
 			print("Failed to pull from Magnetometer. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 			
-		# mag1 = float4tohex(mag1)
-		mag1 = float4tohex(1)
+		mag1 = float4tohex(mag1)
 		mag2 = float4tohex(mag2)
 		mag3 = float4tohex(mag3)
 
