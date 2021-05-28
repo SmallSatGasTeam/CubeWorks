@@ -232,7 +232,11 @@ int main(int argc,char* argv[])
             ch = fgetc(txFile);
             chl = fgetc(txFile);
             line[charCount++] = convertCharToHex(chl, ch);
-            printf("\nCurrent line and value %d %X\n", charCount, line[charCount]);
+            printf("Current line and value: %d ", charCount);
+            for(int i = 0; i < charCount; i++){
+                printf("%X", line[i]);
+            }
+            printf("\n");
             // PRINT_DEBUG_c(ch)
             // PRINT_DEBUG_c(chl)
             //PRINT_DEBUG(charCount)
