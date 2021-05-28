@@ -483,7 +483,8 @@ class AttitudeData():
 			print("Failed to pull from Magnetometer. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 			
-		mag1 = float4tohex(mag1)
+		# mag1 = float4tohex(mag1)
+		mag1 = float4tohex(1)
 		mag2 = float4tohex(mag2)
 		mag3 = float4tohex(mag3)
 
