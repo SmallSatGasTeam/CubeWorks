@@ -531,10 +531,10 @@ def float4tohex(num):
 		if(str(hex(struct.unpack('<I', struct.pack('<f', num))[0]))[2:] != '0'):
 			return str(hex(struct.unpack('<I', struct.pack('<f', num))[0]))[2:]
 		else:
-			return str('00000000')[2:]
+			return str('00000000')
 	except Exception as e:
 		print("Failure to convert num in float4tohex. Exception: ", e, getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
-		return str('00000000')[2:]
+		return str('00000000')
 
 def int4tohex(num):
 	#takes a 4 byte int, returns a hex representation of it
