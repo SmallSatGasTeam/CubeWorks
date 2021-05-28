@@ -10,7 +10,7 @@ int main(int argc, char * argv[])
 	FILE *fptr;
 	fptr = fopen("/home/pi/TXISRData/txWindows.txt","a+");
 	int flag = 0;
-	int input, length, dataType, windowsNumber, windowLength, n, i;
+	int input, length, dataType, windowsNumber, windowLength, n, i, line;
 	long int txTime;
 
         if(fptr == NULL)
@@ -39,10 +39,12 @@ int main(int argc, char * argv[])
 					scanf("%d", &windowLength);
 					printf("Input the data type: ");
 					scanf("%d", &dataType);
+					printf("Input line to start from:");
+					scanf("%d", &line);
 					txTime = (long int)time(NULL);
 					txTime += length;
-					fprintf(fptr, "%ld,%d,%d,0,1\n", 
-					txTime, windowLength, dataType);
+					fprintf(fptr, "%ld,%d,%d,0,%d\n", 
+					txTime, windowLength, dataType, line);
 					break;
 				case 2:
 					printf("Input the number of windows to create: ");
@@ -55,10 +57,12 @@ int main(int argc, char * argv[])
 						scanf("%d", &windowLength);
 						printf("Input the data type: ");
 						scanf("%d", &dataType);
+						printf("Input the line number: ");
+						scanf("%d", &line);
 						if(!flag) txTime = (long int) time(NULL);
 						txTime += length;
-						fprintf(fptr, "%ld,%d,%d,0,1\n", 
-						txTime, windowLength, dataType);
+						fprintf(fptr, "%ld,%d,%d,0,%d\n", 
+						txTime, windowLength, dataType, line);
 						flag = 1;
 					}
 					break;
@@ -73,6 +77,8 @@ int main(int argc, char * argv[])
 		windowLength = atoi(argv[3]);
 		dataType = atoi(argv[4]);
 		txTime = (long int)time(NULL);
+		if(dataType == 0) line = 11859;
+		else line = 1;
 
 		for(i = 0; i < n; i++){
 			txTime = txTime + length;
