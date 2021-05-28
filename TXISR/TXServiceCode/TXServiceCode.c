@@ -421,7 +421,7 @@ char convertCharToHex (char lowByte, char highByte)
     if(!((low == 127) || (high == 127))) {
         //printf("We are actually creating a new hex.");
         char new = low + (high << 4);
-        printf("%X", new);
     }
+    printf("\nConverted hex to: %X\n", new);
     return new;
 }
