@@ -531,10 +531,11 @@ class AttitudeData():
 def float4tohex(num):
 	#takes a 4 byte float, returns a hex representation of it
 	try:
+		print("Inside float4tohex:", str(hex(struct.unpack('<I', struct.pack('<f', num))[0]))[2:])
 		return str(hex(struct.unpack('<I', struct.pack('<f', num))[0]))[2:]
 	except Exception as e:
 		print("Failure to convert num in float4tohex. Exception: ", e, getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
-		return str(hex(0))[2:]
+		return str('00000000')[2:]
 
 def int4tohex(num):
 	#takes a 4 byte int, returns a hex representation of it
