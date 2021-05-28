@@ -243,6 +243,7 @@ int main(int argc,char* argv[])
 
         if((ch == '\n') || (feof(txFile)) || (chl == '\n'))
         {
+            printf("Started the transmission.");
             //transmit the data
             #ifdef DEBUG
                 for(int i = 0; i < charCount; i++)
