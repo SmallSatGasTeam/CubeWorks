@@ -106,18 +106,18 @@ async def processPacket(packetData):
 		print("Picture number: ", pictureNumberDecimal)
 
 		#Get index
-		if binaryData[80:216] == 0:
+		if binaryData[80:112] == 0:
 			index = -1
 		else:
-			index = binaryData[80:216]
+			index = binaryData[80:112]
 		print("Indexing to:", index)
 
 		# Get the appended hash - it is a 16 byte (128 bit) value
-		receivedHash = binaryData[216:]
+		receivedHash = binaryData[112:]
 		print("Received Hash: ", receivedHash)
 
 		# Generated hash from received data
-		generatedHash = hmac.new(secretKey, bytes(binaryData[0:216], 'utf-8'), hashlib.md5)
+		generatedHash = hmac.new(secretKey, bytes(binaryData[0:112], 'utf-8'), hashlib.md5)
 		generatedHashHex = generatedHash.hexdigest()
 		generatedHashLength = len(generatedHashHex) * 4
 		generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)
