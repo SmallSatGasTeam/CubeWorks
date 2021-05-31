@@ -9,7 +9,7 @@
 #include <errno.h>
 #include <stdint.h>
 //Take just the DEBUG line out when your are done debugging and leave debug.h
-//#define DEBUG
+#define DEBUG
 #include "debug.h"
 
 //enable and disable are set up in the make file,
@@ -89,10 +89,12 @@ int main(int argc,char* argv[])
     //gather user input
     int dataType;
     if(argc == 2) {
+        printf("About to convert char to int: %s %c\n", argv[1], *argv[1]);
         dataType = changeCharToInt(*argv[1]);
+        printf("DataType: %d\n", dataType);
     }
     else dataType = changeCharToInt(127);
-    DEBUG_P(Made it past the problem spot)
+    //DEBUG_P(Made it past the problem spot)
     int transmissionWindow = 0;
     char sendingData[(MAX_NUM_OF_DATA_TYPES / 2)] = {0}; 
 
@@ -182,7 +184,6 @@ int main(int argc,char* argv[])
         {
             PRINT_TIME(currentTime - startTime)
             DEBUG_P(\nEnding>>>)
-            printf("\nEnding>>>\n");
             break;
         }
 
@@ -190,7 +191,6 @@ int main(int argc,char* argv[])
         DEBUG_P(current Time - Start Time:)
         PRINT_TIME(currentTime - startTime)
         DEBUG_P(\nSending>>>)
-        printf("\nSending>>>");
         //get the size of each line in the file
         int charCount = 0;
         int end = 0;
@@ -232,15 +232,14 @@ int main(int argc,char* argv[])
             line[charCount++] = convertCharToHex(chl, ch);
             // PRINT_DEBUG_c(ch)
             // PRINT_DEBUG_c(chl)
-            //PRINT_DEBUG(charCount)
+            // PRINT_DEBUG(charCount)
             // DEBUG_P(Im in the sub loop)
         }
         
-        DEBUG_P(leaving loop)
+        // DEBUG_P(leaving loop)
 
         if((ch == '\n') || (feof(txFile)) || (chl == '\n'))
         {
-            printf("Started the transmission.");
             //transmit the data
             #ifdef DEBUG
                 for(int i = 0; i < charCount; i++)
@@ -412,10 +411,7 @@ char convertCharToHex (char lowByte, char highByte)
     //shift high and add it to low.
     char new = 127;
     if(!((low == 127) || (high == 127))) {
-        //printf("We are actually creating a new hex.");
-        new = low + (high << 4);
-        //printf("Is this still working? %X", new);
+        char new = low + (high << 4);
     }
-    //printf("\nConverted hex to: %X\n", new);
     return new;
 }
