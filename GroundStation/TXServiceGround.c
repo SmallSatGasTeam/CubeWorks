@@ -12,12 +12,6 @@
 #define DEBUG
 #include "debug.h"
 
-//enable and disable are set up in the make file,
-#define ENABLE "./configPinsTXISR"
-#define DISABLE "./configPinsTXISRDone"
-
-#define FLAG_FILE "/home/pi/TXISRData/flagsFile.txt" //change this later for the real program
-#define FORMAT_FILE "../data/txFile.txt" //this is the file that dallan will creat 
 #define UART_PORT "/dev/serial0" //this is serial port name, make sure this is correct for the final code
 
 //this is our time delay
@@ -30,19 +24,18 @@
 #define SIZE_OF_TIME_STAMP 10
 #define PHOTO_TYPE 3
 #define TIME_DEVISOR ':'
+#define COMMAND_SIZE 30
 
 //NOTE: becasue of how we have to set the boud rate I cannot use a define for it in ceritian places, just do a contrl f and look for BOUD_RATE
 //it is place next to every place that the boud rate is used, you also need to change the define as it is used as well.
 //NOTE: this boud rate (9600) is the radio speed. We talk to it with a diffrent speed, in other words the 9600 is our divisor for the delay
 #define BOUD_RATE 9600
 
-int changeCharToInt(char a);
 
 //this sets control of the settings for our serial port
 struct termios options;
 
 void setUpUart();
-char convertCharToHex (char lowByte, char highByte);
 void getInput(char * a);
 
 //returns ms since the epoch
@@ -74,51 +67,17 @@ intmax_t millis()
 int main(int argc,char* argv[])
 {
     DEBUG_P(Began main)
-    /////TODO/////
-    /*
-    *debug the time check on transmissionWindow 
-    *debug the wait after each transmission 
-    *Write the time to the flags file
-    *Add in any set up commucation to the radio
-    * TEST, UART, and the bash commands
-    */
     intmax_t startTime = millis();
     intmax_t currentTime = millis();
     intmax_t startTimeTX = 0;
     intmax_t currentTimeTX = 0;
-    char data[64];
+    char data[COMMAND_SIZE];
     DEBUG_P(Made it past all of these variable instantiations)
     //gather user input
     getInput(&data);
-    int dataType;
-    if(argc == 2) {
-        printf("About to convert char to int: %s %c\n", argv[1], *argv[1]);
-        dataType = changeCharToInt(*argv[1]);
-        printf("DataType: %d\n", dataType);
-    }
-    else dataType = changeCharToInt(127);
     //DEBUG_P(Made it past the problem spot)
     int transmissionWindow = 0;
-    char sendingData[(MAX_NUM_OF_DATA_TYPES / 2)] = {0}; 
 
-
-    FILE *txFile;
-    txFile = fopen(FORMAT_FILE, "r");
-    if (txFile == NULL)
-    {
-        //if we fail exit
-        DEBUG_P(Failed to open file)
-        exit(1);
-    }
-
-    FILE *recordFile;
-    recordFile = fopen(FLAG_FILE, "r+");
-    if (recordFile == NULL)
-    {
-        //if we fail exit
-        DEBUG_P(Failed to open the flags file)
-        exit(1);
-    }
 
     //open the serial ports
     //NOTE: opening the serial port clears the buffer!!!
@@ -154,31 +113,9 @@ int main(int argc,char* argv[])
     write(txPort, "ES+W23003321\r", 13);
     //Sleep for 1 second to allow time to go into pipe mode
     sleep(1);
-
-    currentTime = millis();
-    DEBUG_P(currentTime - startTime)
-    DEBUG_P(\nSending>>>)
-
-    int charCount = 0;
-    int end = 0;
-    int charTimeCount = 0;
-    char chl = '0';
-    for(int i = 0; i < MAX_BYTES_PER_LINE; i++){
-        line[i] = '0';
-    }
-
-    line[charCount++] = 
-    line[charCount++] = 
+    write(txPort, data, COMMAND_SIZE);
 
     exit(0);
-     //give control of the port back to linuxs
-    //  int disable = system(DISABLE);
-    //  //if we fail reboot
-    //  if(disable != 0) 
-    //  {
-    //      DEBUG_P(Failed to release tx uart pin)
-    //      exit(1);
-    //  } 
 }
 
 /*******************************************************************************************
@@ -196,93 +133,17 @@ void setUpUart()
     options.c_cflag |= CS8;
 }
 
-/*******************************************************************************************
- * setUpUart
- * this func will convert a char in to an int (works for 0 though 9 and a - f)
- * if it fails to convert the vaule it exits the program and sends an error message.
- *******************************************************************************************/
-int changeCharToInt(char a)
-{
-    switch(a)
-    {
-        //use assci table to decode this part of the code
-        case '0':
-            return 0;
-        case '1':
-            return 1;
-        case '2':
-            return 2;
-        case '3':
-            return 3;
-        case '4':
-            return 4;
-        case '5':
-            return 5;
-        case '6':
-            return 6;
-        case '7':
-            return 7;
-        case '8':
-            return 8;
-        case '9':
-            return 9;
-        case 'a':
-            return 10;
-        case 'b':
-            return 11;
-        case 'c':
-            return 12;
-        case 'd':
-            return 13;
-        case 'e':
-            return 14;
-        case 'f':
-            return 15;
-        default :
-            {
-                DEBUG_P(invaild data type)
-                PRINT_DEBUG_c(a)
-                printf("A in int form: %d\n", a);
-                return 127;
-            }
-    }
-}
-/*******************************************************************************************
- * Convertto hex
- * this func will convert a char in to hex 
- * if it fails to convert the vaule it exits the program and sends an error message.
- * it returns the int value
- *******************************************************************************************/
-char convertCharToHex (char lowByte, char highByte)
-{
-    //convert to ints
-    char low = changeCharToInt(lowByte);
-    char high = changeCharToInt(highByte);
-    //shift high and add it to low.
-    char new = 127;
-    if(!((low == 127) || (high == 127))) {
-        char new = low + (high << 4);
-    }
-    return new;
-}
 
-void getInput(int * a)
+void getInput(char * a)
 {
-    FILE *fptr;
-	fptr = fopen("/home/pi/TXISRData/txWindows.txt","a+");
 	int flag = 0;
-	int input, length, dataType, windowsNumber, windowLength, n, i, line, picture;
+	int input, length, dataType, windowsNumber, windowLength, n, i, picture;
+    int line;
 	long int txTime;
-
-    if(fptr == NULL)
-    {
-            printf("ERROR WITH FILEPATH\n");
-            exit(1);
-    } 
-
+    char message [COMMAND_SIZE];
+    a = message;
     while(1){
-        printf("1:\tCreate single new txWindow.\n"
-        "2:\tCreate multiple txWindows with varying time inbetween.\n"
+        printf("1:\tCreate new txWindow.\n"
         "0:\tClose\nInput: ");
         scanf("%d", &input);
         switch(input){
@@ -301,42 +162,39 @@ void getInput(int * a)
                 txTime = time(NULL);
                 // fprintf(fptr, "%ld,%d,%d,0,%d\n", 
                 // txTime, windowLength, dataType, line);
-                length += (int) txTime;
-                *a = (int) txTime + length;
-                a++;
-                *a = windowLength;
-                a++;
-                *a = dataType;
-                a++;
-                *a = picture;
-                a++;
-                *a = line;
-                break;
-            case 2:
-                printf("Warning, this one has not been edited yet and is not working.\n");
-                printf("Input the number of windows to create: ");
-                scanf("%d", &n);
-                for(i = 0; i < n; i++){
-                    printf("Window %d.\n", i+1);
-                    printf("Input time until next window: ");
-                    scanf("%d", &length);
-                    printf("Input the length of the window: ");
-                    scanf("%d", &windowLength);
-                    printf("Input the data type: ");
-                    scanf("%d", &dataType);
-                    printf("Input the line number: ");
-                    scanf("%d", &line);
-                    if(!flag) txTime = (long int) time(NULL);
-                    txTime += length;
-                    fprintf(fptr, "%ld,%d,%d,0,%d\n", 
-                    txTime, windowLength, dataType, line);
-                    flag = 1;
+                char temp = 0;
+                //4 byte of time stamp
+                for(int i = 0; i < 8; i++)
+                {
+                    temp = length >>8;
+                    message[i] = temp;
+                }
+
+                //two bytes of window durations
+                temp = windowLength >>8;
+                message[5] = temp;
+                temp = windowLength >>8;
+                message[6] = temp;
+
+                //one byte data type
+                temp = dataType >>8;
+                message[7] = temp;
+
+                //two bytes of picture
+                temp = picture >>8;
+                message[8] = temp;
+                temp = picture >>8;
+                message[9] = temp;
+
+                //4 bytes of line number
+                for(int i = 0; i < 8; i++)
+                {
+                    temp = line >>8;
+                    message[i + 10] = temp;
                 }
                 break;
             default:
                 return;
         }
     }
-
-	fclose(fptr);
 }
