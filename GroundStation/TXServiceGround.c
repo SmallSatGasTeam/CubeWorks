@@ -8,6 +8,9 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <stdint.h>
+#include "config.h"
+#include "md5.h"
+#include "hmac-md5.h"
 //Take just the DEBUG line out when your are done debugging and leave debug.h
 #define DEBUG
 #include "debug.h"
@@ -192,6 +195,9 @@ void getInput(char * a)
                     temp = line >>8;
                     message[i + 10] = temp;
                 }
+
+                char* dest[];
+                hmac_md5(dest, &'SECRETKEY', 72, message, 112);
                 break;
             default:
                 return;
