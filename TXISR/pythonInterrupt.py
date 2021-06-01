@@ -34,6 +34,7 @@ async def interrupt():
 				print('Data in waiting')
 				data = str(serialport.read(serialport.in_waiting).hex()) #This produces a list of nibbles (half bytes)
 				# sleep(.5)
+				
 				data = leftovers+data #Append any leftover data for evaluation
 				if leftovers is not '':
 					leftoverEmpty = False
@@ -44,10 +45,11 @@ async def interrupt():
 					#Operates on the assumption that 2 consecutive partial packets is practically impossible
 					leftovers = ''
 				for command in commands:
-					print(command)
+					#print(command)
 					await packetProcessing.processPacket(command) #Process Command Packets
 				for ax25 in ax25Packets:
 					await packetProcessing.processPacket(ax25) #Process AX.25 Packets
+				print("Made it all the way.")
 				await asyncio.sleep(5)
 			else: #No contents in serial buffer
 				print('buffer empty')
