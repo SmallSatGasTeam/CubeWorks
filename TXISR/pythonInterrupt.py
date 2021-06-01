@@ -29,6 +29,7 @@ async def interrupt():
 	while True:
 		try:
 			if serialport == None:
+				print("Reopening serial port")
 				serialport = serial.Serial('/dev/serial0', 115200) #Open serial port. Currently /dev/serial0, might change to the PL011 port for flight article
 			print("Python interrupt.", serialport.in_waiting)
 			if serialport.in_waiting: #If there is content in the serial buffer, read it and act on it
@@ -63,6 +64,7 @@ async def interrupt():
 		except:
 			print("Failure to run interrupt. Exception:")
 			serialport.reset_input_buffer()
+			print("Closing the port")
 			serialport.close()
 			await asyncio.sleep(3)
 
