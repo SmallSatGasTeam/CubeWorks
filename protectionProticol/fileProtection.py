@@ -112,19 +112,27 @@ class FileReset():
             except:
                 print("Error trying to make directory ", dirPath)
     
-    # def windowProtection(self):
-    #     file = open(self.__windowFilePath, 'w+')
-    #     windowsList = file.split("\n")
-    #     for window in windowsList:
-            
+    def windowProtection(self):
+        file = open(self.__windowFilePath, 'w+')
 
-#         file = open("/home/pi/TXISRData/txWindows.txt")
+        windowsList = []
 
-# # def deleteFile():
+        lines = file.readlines
+        for window in lines:
+            window.split(',')
 
+            # Below variables are all booleans, deciding if part of window is "good" or "bad"
 
-# for window in file:
-#     line.split(',')
+            # Check if timestamp is long enough
+            goodTime = len(window[0]) != 10
 
-#     # Check if timestamp is long enough
-#     if (len(line[0]) != 10):
+            # Check if length is 
+
+            if (len(window[0]) != 10) and (2 == 2):
+                # TODO Delete the line
+                print()#Delete me
+            else:
+                # TODO Add to windowsList
+                # TODO Then delete the line
+                print()#Delete me
+
