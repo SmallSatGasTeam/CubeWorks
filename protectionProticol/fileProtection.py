@@ -117,3 +117,14 @@ class FileReset():
         windowsList = file.split("\n")
         for window in windowsList:
             
+
+#         file = open("/home/pi/TXISRData/txWindows.txt")
+
+# # def deleteFile():
+
+
+# for window in file:
+#     line.split(',')
+
+#     # Check if timestamp is long enough
+#     if (len(line[0]) != 10):
