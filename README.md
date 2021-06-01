@@ -43,7 +43,7 @@ This file structure comprises the major compoments of CubeWorks.
 3. return to the root and then use `./upDateCode.exe`
 
 
-###Important Notes:
+### Important Notes:
 -TX windows have to be seperated by at least 25 seconds. This is the time from ending one window to the start time of the next window. If it is not separated by this buffer, then it is NOT guaranted that the TX window will be serviced. 
 
 ```
