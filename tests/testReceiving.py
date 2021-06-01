@@ -19,3 +19,5 @@ async def receive():
             print("Received: ", data)
         
         await asyncio.sleep(.5)
+
+receive()
