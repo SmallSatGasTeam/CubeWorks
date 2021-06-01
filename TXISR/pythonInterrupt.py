@@ -48,7 +48,7 @@ async def interrupt():
 					await packetProcessing.processPacket(ax25) #Process AX.25 Packets
 				await asyncio.sleep(5)
 			else: #No contents in serial buffer
-				#print('buffer empty')
+				print('buffer empty')
 				await asyncio.sleep(3)
 		except Exception as e:
 			print("Failure to run interrupt. Exception: ", e)
