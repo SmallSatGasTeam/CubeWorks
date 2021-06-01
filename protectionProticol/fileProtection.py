@@ -142,9 +142,8 @@ class FileReset():
                 # TODO Add to windowsList
                 # TODO Then delete the line
                 print()#Delete me
-        if goodTime = True and goodLength = True and:
-            windowsList += window + "\n"
-        else:
-            continue
+        if goodTime == True and goodLength == True:
+            windowsList.append(window + "\n")
+            
         file.writelines(windowsList)
 
