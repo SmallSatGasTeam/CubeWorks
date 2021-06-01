@@ -28,7 +28,7 @@ async def interrupt():
 	leftoversEmpty = True
 	gaspacsHex = str(b'GASPACS'.hex())
 	while True:
-		print("Python interrupt.", serialport.in_waiting)
+		# print("Python interrupt.", serialport.in_waiting)
 		try:
 			if serialport.in_waiting: #If there is content in the serial buffer, read it and act on it
 			#if True: #This is a testing line
@@ -51,7 +51,7 @@ async def interrupt():
 					await packetProcessing.processPacket(command) #Process Command Packets
 				for ax25 in ax25Packets:
 					await packetProcessing.processPacket(ax25) #Process AX.25 Packets
-				print("Made it all the way. Leftovers: ", leftovers)
+				# print("Made it all the way. Leftovers: ", leftovers)
 				await asyncio.sleep(5)
 			else: #No contents in serial buffer
 				print('buffer empty')
