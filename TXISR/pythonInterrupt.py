@@ -28,7 +28,6 @@ async def interrupt():
 	gaspacsHex = str(b'GASPACS'.hex())
 	while True:
 		try:
-			print("Running interrupt")
 			if serialport.in_waiting: #If there is content in the serial buffer, read it and act on it
 			#if True: #This is a testing line
 				print('Data in waiting')
