@@ -123,12 +123,19 @@ class FileReset():
 
             # Below variables are all booleans, deciding if part of window is "good" or "bad"
 
-            # Check if timestamp is long enough
-            goodTime = len(window[0]) != 10
+            # Check if timestamp is integer and long enough
+            if isinstance(window[0], int) and len(window[0]) != 10:
+                goodTime = True
+            else:
+                goodTime = False
 
-            # Check if length is 
+            # Check if length is integer, positive, and 80 characters long or less
+            if isinstance(window[1], int) and window[1] > 0 and len(window[1] >= 80):
+                goodLength = True
+            else:
+                goodLength = False
 
-            if (len(window[0]) != 10) and (2 == 2):
+            if goodTime and goodLength:
                 # TODO Delete the line
                 print()#Delete me
             else:
