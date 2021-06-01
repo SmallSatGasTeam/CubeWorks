@@ -19,7 +19,8 @@ class FileReset():
             "/home/pi/flightLogicData/bootRecords.txt" , 
             "/home/pi/flightLogicData/Attitude_Data.txt" , 
             "/home/pi/flightLogicData/Deploy_Data.txt" , 
-            "/home/pi/flightLogicData/TTNC_Data.txt" ]
+            "/home/pi/flightLogicData/TTNC_Data.txt",
+            "/home/pi/flightLogicData/Pictures/Placeholder.txt" ]
         self.__filePath = ""
         self.__windowFilePath = "/home/pi/TXISRData/txWindows.txt"
         self.fullReset()
@@ -47,6 +48,7 @@ class FileReset():
         if self.__filePath == "/home/pi/TXISRData/AX25Flag.txt" or self.__filePath == "../../AX25Flag.txt":
             file.write("Disabled")
             file.close()
+
         # This closes the file so it is no longer being edited
     
     def fullReset(self):
