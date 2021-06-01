@@ -8,7 +8,7 @@ async def receive():
     heartbeat.setUp()
     asyncio.create_task(heartbeat.longTap())
 
-    serialport = serial.Serial('/dev/serial10', 115200)
+    serialport = serial.Serial('/dev/serial0', 115200)
 
     while True:
         print(serialport.in_waiting(), "objects in waiting.")
