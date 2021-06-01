@@ -51,6 +51,7 @@ async def interrupt():
 				for ax25 in ax25Packets:
 					await packetProcessing.processPacket(ax25) #Process AX.25 Packets
 				print("Made it all the way. Leftovers: ", leftovers)
+				serialport.reset_input_buffer()
 				await asyncio.sleep(5)
 			else: #No contents in serial buffer
 				print('buffer empty')
