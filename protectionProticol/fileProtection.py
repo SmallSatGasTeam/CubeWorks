@@ -21,6 +21,7 @@ class FileReset():
             "/home/pi/flightLogicData/Deploy_Data.txt" , 
             "/home/pi/flightLogicData/TTNC_Data.txt" ]
         self.__filePath = ""
+        self.__windowFilePath = "/home/pi/TXISRData/txWindows.txt"
         self.fullReset()
 
     def __reset(self):
@@ -110,3 +111,9 @@ class FileReset():
                 os.mkdir(dirPath)
             except:
                 print("Error trying to make directory ", dirPath)
+    
+    def windowProtection(self):
+        file = open(self.__windowFilePath, 'w+')
+        windowsList = file.split("\n")
+        for window in windowsList:
+            
