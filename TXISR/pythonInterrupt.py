@@ -38,7 +38,7 @@ async def interrupt():
 				data = leftovers + data #Append any leftover data for evaluation
 				if leftovers is not '':
 					leftoverEmpty = False
-					print(leftover, leftoverEmpty)
+					print(leftovers, leftoverEmpty)
 				commands, ax25Packets = [], []
 				commands, ax25Packets, leftovers = parseData(data, gaspacsHex)
 				print("Commands:" + str(commands))
