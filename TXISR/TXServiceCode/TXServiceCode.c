@@ -411,7 +411,7 @@ char convertCharToHex (char lowByte, char highByte)
     //shift high and add it to low.
     char new = 127;
     if(!((low == 127) || (high == 127))) {
-        char new = low + (high << 4);
+        new = low + (high << 4);
     }
     return new;
 }
