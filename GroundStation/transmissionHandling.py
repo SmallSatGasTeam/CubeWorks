@@ -40,9 +40,8 @@ def packetSelect():
 			packet += int2tobin(int(input('Input the duration of the window in seconds: ')))
 			packet += int1tobin(int(input('Number from 0-4 corresponding to requested data type. See flight logic document: ')))
 			packet += int2tobin(int(input('If picture is requested, number of the picture that is requested: ')))
-			packet += int1tobin(int(input('Type 0 to start transmission where last transmission ended, type 1 to start from beginning: ')))
-			packet += int34tobin(int(input("Type the line number you want to index from or type 0 to go from the last transmission: ")))
-			return hex(int(packet, 2))[2:].zfill(56)
+			packet += int4tobin(int(input("Type the line number you want to index from or type 0 to go from the last transmission: ")))
+			return hex(int(packet, 2))[2:].zfill(14)
 
 		else:
 			#Command Packet
