@@ -18,7 +18,8 @@ class Camera(Driver):
         self.highRes = (3280, 2464)
         self.lowRes = (640, 480)
         #self.pictureDirectoryPath = expanduser('~/Pictures')
-        self.pictureDirectoryPath = str(Path(__file__).parent / "../../Pictures")
+        #self.pictureDirectoryPath = str(Path(__file__).parent / "../../Pictures")
+        self.pictureDirectoryPath = "/home/pi/flightLogicData/Pictures"
         self.cam = None
         self.pictureNumber = 0
 
