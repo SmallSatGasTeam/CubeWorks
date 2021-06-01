@@ -28,7 +28,7 @@ async def interrupt():
 	leftoversEmpty = True
 	gaspacsHex = str(b'GASPACS'.hex())
 	while True:
-		print("Python interrupt.")
+		print("Python interrupt.", serialport.in_waiting)
 		try:
 			if serialport.in_waiting: #If there is content in the serial buffer, read it and act on it
 			#if True: #This is a testing line
