@@ -18,17 +18,18 @@ To defray the possibility of half a packet being in the buffer, any half-packets
 
 async def interrupt():
 	fileChecker.fullReset()
-	# try:
-	# 	serialport = serial.Serial('/dev/serial0', 115200) #Open serial port. Currently /dev/serial0, might change to the PL011 port for flight article
-	# except Exception as e:
-	# 	print("Failed to open serialport. Exception:", repr(e))
-	# 	serialport = None
+	try:
+		serialport = serial.Serial('/dev/serial0', 115200) #Open serial port. Currently /dev/serial0, might change to the PL011 port for flight article
+	except Exception as e:
+		print("Failed to open serialport. Exception:", repr(e))
+		serialport = None
 	leftovers = '' #Stores any half-packets for evaluation the next loop
 	leftoversEmpty = True
 	gaspacsHex = str(b'GASPACS'.hex())
 	while True:
 		try:
-			serialport = serial.Serial('/dev/serial0', 115200) #Open serial port. Currently /dev/serial0, might change to the PL011 port for flight article
+			if serialport == None:
+				serialport = serial.Serial('/dev/serial0', 115200) #Open serial port. Currently /dev/serial0, might change to the PL011 port for flight article
 			print("Python interrupt.", serialport.in_waiting)
 			if serialport.in_waiting: #If there is content in the serial buffer, read it and act on it
 			#if True: #This is a testing line
@@ -58,7 +59,7 @@ async def interrupt():
 				print('buffer empty')
 				await asyncio.sleep(3)
 				
-			serialport.close()
+			# serialport.close()
 		except:
 			print("Failure to run interrupt. Exception:")
 			serialport.reset_input_buffer()
