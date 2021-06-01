@@ -23,13 +23,15 @@ async def interrupt():
 	except Exception as e:
 		print("Failed to open serialport. Exception:", repr(e))
 		serialport = None
-
 	leftovers = '' #Stores any half-packets for evaluation the next loop
 	leftoversEmpty = True
 	gaspacsHex = str(b'GASPACS'.hex())
 	while True:
-		# print("Python interrupt.", serialport.in_waiting)
 		try:
+			if serialport == None:
+				print("Reopening serial port")
+				serialport = serial.Serial('/dev/serial0', 115200) #Open serial port. Currently /dev/serial0, might change to the PL011 port for flight article
+			print("Python interrupt.", serialport.in_waiting)
 			if serialport.in_waiting: #If there is content in the serial buffer, read it and act on it
 			#if True: #This is a testing line
 				print('Data in waiting')
@@ -40,81 +42,99 @@ async def interrupt():
 					# print(leftovers, leftoverEmpty)
 				commands, ax25Packets = [], []
 				commands, ax25Packets, leftovers = parseData(data, gaspacsHex)
-				#print("Commands:" + str(commands))
-				#print("ax25Packets:" + str(ax25Packets))
+				# print("Commands:" + str(commands))
+				# print("ax25Packets:" + str(ax25Packets))
 				if leftovers is not '' and leftoversEmpty is False:
 					#Something is sticking around in leftovers, let's clear it
 					#Operates on the assumption that 2 consecutive partial packets is practically impossible
 					leftovers = ''
 				for command in commands:
-					#print(command)
+					# print(command)
 					await packetProcessing.processPacket(command) #Process Command Packets
 				for ax25 in ax25Packets:
 					await packetProcessing.processPacket(ax25) #Process AX.25 Packets
-				# print("Made it all the way. Leftovers: ", leftovers)
+				print("Made it all the way. Leftovers: ", leftovers)
+				serialport.reset_input_buffer()
 				await asyncio.sleep(5)
 			else: #No contents in serial buffer
 				print('buffer empty')
 				await asyncio.sleep(3)
-		except Exception as e:
-			print("Failure to run interrupt. Exception: ", e)
+				
+			# serialport.close()
+		except:
+			print("Failure to run interrupt. Exception:")
+			serialport.reset_input_buffer()
+			print("Closing the port")
+			serialport.close()
 			await asyncio.sleep(3)
 
 def parseData(data, bracket): #Takes data string, in the form of hex, from async read serial function. Spits out all AX.25 packets and GASPACS packets contained inside, as well as remaining data to be put into the leftovers
 	# fileChecker.fullReset()
-	searching = True
-	gaspacsPackets = []
-	ax25Packets = []
-	modifiedString = data
-	while searching: #Searching for packets bracketed by Hex-bytes of 'GASPACS'
-		content = None
-		content, modifiedString, searching = searchGASPACS(modifiedString, bracket)
-		if searching:
-			gaspacsPackets.append(content)
+	try:
+		searching = True
+		gaspacsPackets = []
+		ax25Packets = []
+		modifiedString = data
+		while searching: #Searching for packets bracketed by Hex-bytes of 'GASPACS'
+			content = None
+			content, modifiedString, searching = searchGASPACS(modifiedString, bracket)
+			if searching:
+				gaspacsPackets.append(content)
 
-	searching = True
-	while searching: #Searching for packets bracketed by AX.25 header and footer, as described in Endurosat UHF Transceiver II User Manual Rev. 1.8
-		content = None
-		content, modifiedString, searching = searchAX25(modifiedString)
-		if searching:
-			ax25Packets.append(content)
+		searching = True
+		while searching: #Searching for packets bracketed by AX.25 header and footer, as described in Endurosat UHF Transceiver II User Manual Rev. 1.8
+			content = None
+			content, modifiedString, searching = searchAX25(modifiedString)
+			if searching:
+				ax25Packets.append(content)
 
-	return gaspacsPackets, ax25Packets, modifiedString
+		return gaspacsPackets, ax25Packets, modifiedString
+	except Exception as e:
+		print("Failed in parse Data. Error:", e)
+		return 0, 0, 0
 
 def searchAX25(data): #Finds AX.25 packets stored in the data string, which is a string of hex. Removes it from data, returns AX.25 packet and modified data
-	prefix = '7e7e7e7e7e7e7e7e7e'
-	postfix = '7e7e7e7e'
-	changed = False
-	modifiedString = ''
-	content = []
-	startIndex = data.find(prefix)
-	endIndex = data.find(postfix)
-	if startIndex is not -1:
-		#AX25 prefix exists
-		endIndex = data.find(postfix, startIndex+17)
-		if endIndex is not -1:
-			#Both exist
-			content = data[startIndex:endIndex+len(postfix)]
-			changed = True
-			modifiedString = data[0:startIndex] + data[endIndex+len(postfix):]
-	return content, modifiedString, changed
+	try:
+		prefix = '7e7e7e7e7e7e7e7e7e'
+		postfix = '7e7e7e7e'
+		changed = False
+		modifiedString = ''
+		content = []
+		startIndex = data.find(prefix)
+		endIndex = data.find(postfix)
+		if startIndex is not -1:
+			#AX25 prefix exists
+			endIndex = data.find(postfix, startIndex+17)
+			if endIndex is not -1:
+				#Both exist
+				content = data[startIndex:endIndex+len(postfix)]
+				changed = True
+				modifiedString = data[0:startIndex] + data[endIndex+len(postfix):]
+		return content, modifiedString, changed
+	except Exception as e:
+		print("Error in search AX25, Error", e)
+		return 0, 0, 0
 
 
 def searchGASPACS(data, str): #Must be passed as a string of hex, for both parameters
 	#Finds command or window packets, bracketed by <str> in <data>. Removes the brackets and the contents in between from <data>. Returns the command contents
 	# fileChecker.fullReset()
-	content=''
-	occurences = findOccurences(data, str)
-	modifiedString = data
-	changed = False
-	i=0
-	if (0<len(occurences)-1):
-		changed = True
-		startIndex = occurences[i]+len(str)
-		endIndex = occurences[i+1]
-		content = (data[startIndex:endIndex])
-		modifiedString = data[0:startIndex-len(str)] + data[endIndex+len(str):]
-	return content, modifiedString, changed
+	try:
+		content=''
+		occurences = findOccurences(data, str)
+		modifiedString = data
+		changed = False
+		i=0
+		if (0<len(occurences)-1):
+			changed = True
+			startIndex = occurences[i]+len(str)
+			endIndex = occurences[i+1]
+			content = (data[startIndex:endIndex])
+			modifiedString = data[0:startIndex-len(str)] + data[endIndex+len(str):]
+		return content, modifiedString, changed
+	except Exception as e:
+		print("Error in searchGASPACS. Error:", e)
+		return 0, 0, 0
 
 def findOccurences(str1, str2): #Finds all occurences of String 2 in String 1, returns a list of all the indices where String 2 appeared
 	occurenceList = []

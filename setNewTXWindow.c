@@ -59,7 +59,7 @@ int main(int argc, char * argv[])
 						scanf("%d", &dataType);
 						printf("Input the line number: ");
 						scanf("%d", &line);
-						if(!flag) txTime = (long int) time(NULL);
+						if(!flag) txTime = (long int)time(NULL);
 						txTime += length;
 						fprintf(fptr, "%ld,%d,%d,0,%d\n", 
 						txTime, windowLength, dataType, line);
