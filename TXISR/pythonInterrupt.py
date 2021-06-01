@@ -37,19 +37,16 @@ async def interrupt():
 				if leftovers is not '':
 					leftoverEmpty = False
 					# print(leftovers, leftoverEmpty)
-					print(leftovers, leftoverEmpty)
 				commands, ax25Packets = [], []
 				commands, ax25Packets, leftovers = parseData(data, gaspacsHex)
-				#print("Commands:" + str(commands))
-				#print("ax25Packets:" + str(ax25Packets))
-				print("Commands:" + str(commands))
-				print("ax25Packets:" + str(ax25Packets))
+				# print("Commands:" + str(commands))
+				# print("ax25Packets:" + str(ax25Packets))
 				if leftovers is not '' and leftoversEmpty is False:
 					#Something is sticking around in leftovers, let's clear it
 					#Operates on the assumption that 2 consecutive partial packets is practically impossible
 					leftovers = ''
 				for command in commands:
-					print(command)
+					# print(command)
 					await packetProcessing.processPacket(command) #Process Command Packets
 				for ax25 in ax25Packets:
 					await packetProcessing.processPacket(ax25) #Process AX.25 Packets
@@ -58,8 +55,8 @@ async def interrupt():
 			else: #No contents in serial buffer
 				print('buffer empty')
 				await asyncio.sleep(3)
-		except Exception as e:
-			print("Failure to run interrupt. Exception: ", e)
+		except:
+			print("Failure to run interrupt. Exception:")
 			await asyncio.sleep(3)
 
 def parseData(data, bracket): #Takes data string, in the form of hex, from async read serial function. Spits out all AX.25 packets and GASPACS packets contained inside, as well as remaining data to be put into the leftovers
