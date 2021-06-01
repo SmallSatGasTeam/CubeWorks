@@ -14,6 +14,7 @@ int main(void){
         printf("Error, couldn't open the serial port.\n");
         exit(1);
     }
+    setUpUart();
 
     for(;;){
         write(txPort, "ES+W22003321\r", 13);
