@@ -20,4 +20,4 @@ async def receive():
         
         await asyncio.sleep(.5)
 
-receive()
+asyncio.run(receive())
