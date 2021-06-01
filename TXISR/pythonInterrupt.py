@@ -32,9 +32,7 @@ async def interrupt():
 			if serialport.in_waiting: #If there is content in the serial buffer, read it and act on it
 			#if True: #This is a testing line
 				print('Data in waiting')
-				# data = str(serialport.read(serialport.in_waiting).hex()) #This produces a list of nibbles (half bytes)
-				# sleep(.5)
-				data = '0'
+				data = str(serialport.read(serialport.in_waiting).hex()) #This produces a list of nibbles (half bytes)
 				data = leftovers + data #Append any leftover data for evaluation
 				if leftovers is not '':
 					leftoverEmpty = False
