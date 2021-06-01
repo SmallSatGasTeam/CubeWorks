@@ -35,9 +35,10 @@ async def interrupt():
 				# data = str(serialport.read(serialport.in_waiting).hex()) #This produces a list of nibbles (half bytes)
 				# sleep(.5)
 				data = '0'
-				data = leftovers+data #Append any leftover data for evaluation
+				data = leftovers + data #Append any leftover data for evaluation
 				if leftovers is not '':
 					leftoverEmpty = False
+					print(leftover, leftoverEmpty)
 				commands, ax25Packets = [], []
 				commands, ax25Packets, leftovers = parseData(data, gaspacsHex)
 				print(commands)
