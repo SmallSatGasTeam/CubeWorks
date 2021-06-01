@@ -57,6 +57,7 @@ async def interrupt():
 			else: #No contents in serial buffer
 				print('buffer empty')
 				await asyncio.sleep(3)
+				
 			serialport.close()
 		except:
 			print("Failure to run interrupt. Exception:")
