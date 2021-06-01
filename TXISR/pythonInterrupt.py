@@ -33,7 +33,7 @@ async def interrupt():
 			#if True: #This is a testing line
 				print('Data in waiting')
 				data = str(serialport.read(serialport.in_waiting).hex()) #This produces a list of nibbles (half bytes)
-				sleep(.5)
+				# sleep(.5)
 				data = leftovers+data #Append any leftover data for evaluation
 				if leftovers is not '':
 					leftoverEmpty = False
@@ -57,7 +57,7 @@ async def interrupt():
 			await asyncio.sleep(3)
 
 def parseData(data, bracket): #Takes data string, in the form of hex, from async read serial function. Spits out all AX.25 packets and GASPACS packets contained inside, as well as remaining data to be put into the leftovers
-	fileChecker.fullReset()
+	# fileChecker.fullReset()
 	searching = True
 	gaspacsPackets = []
 	ax25Packets = []
@@ -98,7 +98,7 @@ def searchAX25(data): #Finds AX.25 packets stored in the data string, which is a
 
 def searchGASPACS(data, str): #Must be passed as a string of hex, for both parameters
 	#Finds command or window packets, bracketed by <str> in <data>. Removes the brackets and the contents in between from <data>. Returns the command contents
-	fileChecker.fullReset()
+	# fileChecker.fullReset()
 	content=''
 	occurences = findOccurences(data, str)
 	modifiedString = data
