@@ -24,7 +24,9 @@ async def longTap():
     while True:
         # send a pulse
         GPIO.output(21, GPIO.HIGH)
+        print("Heartbeat high")
         await asyncio.sleep(waitTime/2)
         GPIO.output(21, GPIO.LOW)
+        print("Heartbeat low")
         # wait a four seconds.
         await asyncio.sleep(waitTime/2)
