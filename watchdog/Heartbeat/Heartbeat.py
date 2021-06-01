@@ -30,3 +30,6 @@ async def longTap():
         print("Heartbeat low")
         # wait a four seconds.
         await asyncio.sleep(waitTime/2)
+
+
+asyncio.run(longTap())
