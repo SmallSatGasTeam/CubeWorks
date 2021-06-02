@@ -157,7 +157,7 @@ class FileReset():
                 line = '/n'
                 continue
 
-        for line in TXwindows:
-            if line == "/n":
-                del line
-        file.close()
+        # for line in TXwindows:
+        #     if line == "/n":
+        #         del line
+        # file.close()
