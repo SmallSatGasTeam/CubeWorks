@@ -325,13 +325,10 @@ class packetProcessing:
 		bootRecords.readline()
 		bootRecords.readline()
 		skip = int(bootRecords.readline())
-		print(skip)
 		bootRecords.close()
 		if skip == 4:
-			print("Skip to post boom is true.")
 			return True
 		else:
-			print("Skip to post boom is false.")
 			return False
 
 	# Command packet
