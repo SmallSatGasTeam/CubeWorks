@@ -34,8 +34,8 @@ class boomMode:
 		self.__tasks.append(asyncio.create_task(self.__transmit.transmit()))
 
 		# Deploy boom, take picture
-		# if await self.skipToPostBoom():
-		# 	return True
+		if await self.skipToPostBoom():
+			return True
 		await asyncio.sleep(5)
 		if DONTMURDERBEN:
 			deployer = DummyBoomDeployer()
@@ -44,8 +44,8 @@ class boomMode:
 		cam = Camera()
 		await deployer.deploy() #From LOGAN: Deployer.deploy is now an asyncio method, run it like the others
 		
-		# if await self.skipToPostBoom():
-		# 	return True
+		if await self.skipToPostBoom():
+			return True
 
 		try:
 			cam.takePicture()
@@ -62,10 +62,10 @@ class boomMode:
 		except asyncio.exceptions.CancelledException:
 			print("Caught thrown exception in cancelling background task")
 
-	# async def skipToPostBoom(self):
-	# 	print("Inside skipToPostBoom, skipping value is:", packetProcessing.__skippingToPostBoom)
-	# 	if packetProcessing.__skippingToPostBoom:
-	# 		self.cancelAllTasks(self.__tasks)
-	# 		return True
-	# 	else:
-	# 		await asyncio.sleep(1)
+	async def skip(self):
+		print("Inside skipToPostBoom, skipping value is:", packetProcessing.__skippingToPostBoom)
+		if packetProcessing.__skippingToPostBoom:
+			self.cancelAllTasks(self.__tasks)
+			return True
+		else:
+			await asyncio.sleep(1)
