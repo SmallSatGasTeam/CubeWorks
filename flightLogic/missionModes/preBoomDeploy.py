@@ -54,7 +54,7 @@ class preBoomMode:
 
 		while True: #iterate through array, checking for set amount of dark minutes, then set amount of light minutes no greater than the maximum. When light minutes are greater than the maximum, empties array
 			if await self.skipToPostBoom():
-				print("Exiting postBoomDeploy through skipToPostBoom")
+				print("Exiting preBoomDeploy through skipToPostBoom")
 				return True
 			i=0
 			darkLength = 0
