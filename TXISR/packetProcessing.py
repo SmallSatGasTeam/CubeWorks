@@ -313,6 +313,8 @@ class packetProcessing:
 		progressFile.write('0\n')
 		progressFile.write('0\n')
 
+	def skip(self):
+		return self.__skippingToPostBoom
 
 	# Command packet
 	# processPacket('C8')
