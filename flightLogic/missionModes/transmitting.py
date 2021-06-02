@@ -106,7 +106,7 @@ class Transmitting:
                 print("Transmit time to next window:", self.__timeToNextWindow)
                 #if close enough, prep files
                 #wait until 5 seconds before, return True
-                if (self.__timeToNextWindow != -1) and (self.__timeToNextWindow < 14) and (self.__timeToNextWindow >= -5):
+                if (self.__timeToNextWindow != -1) and (self.__timeToNextWindow < 20) and (self.__timeToNextWindow >= -5):
                     print("Self.__timeToNextWindow is less than 14.")
                     if self.__datatype < 3: #Attitude, TTNC, or Deployment data respectively
                         prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
@@ -114,9 +114,11 @@ class Transmitting:
                     else:
                         prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber)
                     break
-                await asyncio.sleep(10)
+                 #I decearsed the wait time because we were missing windows.
+                await asyncio.sleep(5)
             while True:
-                if (self.__timeToNextWindow <= 5) and (self.__timeToNextWindow > -100):
+                #I added a neg time buff as well incase we are a little late gettering here
+                if (self.__timeToNextWindow <= 5) and (self.__timeToNextWindow > -5):
                     fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
                     self.__transmissionFlagFile.seek(0)
                     if self.__transmissionFlagFile.readline() == 'Enabled':
