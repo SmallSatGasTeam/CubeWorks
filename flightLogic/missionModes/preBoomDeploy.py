@@ -59,7 +59,7 @@ class preBoomMode:
 			i=0
 			darkLength = 0
 			lastDark = 0
-			print(self.sunlightData)
+			# print(self.sunlightData)
 			print("Skipping to post boom is", packetProcessing.skip())
 			while i < len(self.sunlightData): #Loop through sunlightData, checking for X minutes of darkness
 				if(self.sunlightData[i]<self.darkVoltage):
