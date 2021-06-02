@@ -115,7 +115,7 @@ class FileReset():
     def windowProtection(self):
         print("!!!!!!!!!!!!!!!!!!!!!!!Checking TXWindows")
         file = open(self.__windowFilePath, 'w+')
-        file.seek()
+        file.seek(0)
 
         TXwindows = file.readlines()
         for line in TXwindows:
