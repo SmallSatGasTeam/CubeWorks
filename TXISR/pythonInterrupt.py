@@ -2,13 +2,13 @@ import serial
 import asyncio
 import sys
 sys.path.append('../')
-from TXISR.packetProcessing import packetProcessing as process
+from TXISR.packetProcessing import packetProcessing
 from protectionProticol.fileProtection import FileReset
 from time import sleep
 
 
 fileChecker = FileReset()
-packetProcessing = process()
+packet = packetProcessing()
 
 """
 This file sets up the interrupt process. Every five seconds, the buffer of the serial port at /dev/serial0 is read.
