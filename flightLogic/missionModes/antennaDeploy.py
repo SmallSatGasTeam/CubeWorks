@@ -14,7 +14,10 @@ import Drivers.eps.EPS as EPS
 import asyncio
 import flightLogic.getDriverData as getDriverData
 from TXISR import pythonInterrupt
-from TXISR import packetProcessing
+from TXISR.packetProcessing import packetProcessing as packet
+
+
+packetProcessing = packet()
 
 
 class antennaMode:
@@ -102,9 +105,9 @@ class antennaMode:
 		Skips to postBoomDeploy mode if the command is received from the ground
 		station.
 		"""
-		print("Inside skipToPostBoom, skipping value is:", packetProcessing.skippingToPostBoom)
+		print("Inside skipToPostBoom, skipping value is:", packetProcessing.__skippingToPostBoom)
 		#If the command has been received to skip to postBoom
-		if packetProcessing.skippingToPostBoom:
+		if packetProcessing.__skippingToPostBoom:
 			self.cancelAllTasks(self.__tasks) #Cancel all tasks
 			return True #Finish this mode and move on
 		else:

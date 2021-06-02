@@ -2,12 +2,13 @@ import serial
 import asyncio
 import sys
 sys.path.append('../')
-import TXISR.packetProcessing as packetProcessing
+from TXISR.packetProcessing import packetProcessing as process
 from protectionProticol.fileProtection import FileReset
 from time import sleep
 
 
 fileChecker = FileReset()
+packetProcessing = process()
 
 """
 This file sets up the interrupt process. Every five seconds, the buffer of the serial port at /dev/serial0 is read.
@@ -62,7 +63,7 @@ async def interrupt():
 				
 			# serialport.close()
 		except Exception as e:
-			print("Failure to run interrupt. Exception:", e)
+			print("Failure to run interrupt. Exception:", repr(e))
 			await asyncio.sleep(3)
 
 def parseData(data, bracket): #Takes data string, in the form of hex, from async read serial function. Spits out all AX.25 packets and GASPACS packets contained inside, as well as remaining data to be put into the leftovers
