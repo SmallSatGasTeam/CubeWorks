@@ -62,9 +62,9 @@ class boomMode:
 		except asyncio.exceptions.CancelledException:
 			print("Caught thrown exception in cancelling background task")
 
-	async def skip(self):
-		print("Inside skipToPostBoom, skipping value is:", packetProcessing.__skippingToPostBoom)
-		if packetProcessing.__skippingToPostBoom:
+	async def skipToPostBoom(self):
+		print("Inside skipToPostBoom, skipping value is:", packetProcessing.skip())
+		if packetProcessing.skip():
 			self.cancelAllTasks(self.__tasks)
 			return True
 		else:
