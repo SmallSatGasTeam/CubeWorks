@@ -35,7 +35,7 @@ class BoomDeployer(Driver):
         GPIO.setup(self.wireCutter2_low1,GPIO.OUT, initial=GPIO.HIGH)
         """
 
-    def deploy(self):
+    async def deploy(self):
         """
         Loop a specified number of times, setting the correct GPIO pins to HIGH/LOW  to start/stop
 	the burn. Wait and then repeat with the other wirecutter mechanism
