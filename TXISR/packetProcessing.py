@@ -20,6 +20,7 @@ from TXISR.transmitionQueue import Queue
 from flightLogic.missionModes.transmitting import Transmitting
 import subprocess
 import asyncio
+import linecache
 
 fileChecker = FileReset()
 windows = Queue('/home/pi/TXISRData/txWindows.txt')
@@ -27,7 +28,7 @@ windows = Queue('/home/pi/TXISRData/txWindows.txt')
 
 class packetProcessing:
 	def __init__(self):
-		self.__skippingToPostBoom = False
+		self.__bootRecordsPath = ("/home/pi/flightLogicData/bootRecords.txt")
 		self.__filePaths = ["/home/pi/CubeWorks0/TXISR/", "/home/pi/CubeWorks1/TXISR/", "/home/pi/CubeWorks2/TXISR/", "/home/pi/CubeWorks3/TXISR/", "/home/pi/CubeWorks4/TXISR/"]
 
 	async def processAX25(self, AX25):  #Placeholder function
@@ -212,13 +213,18 @@ class packetProcessing:
 					print("Turn on AX25")
 					self.enableAX25()
 
-				if binaryData[56:64] == '00000000':
-					#Chose whether or not to skip to post boom deploy
-					print("Running flight logic normally.")
-					self.__skippingToPostBoom = False
-				else:
-					print("Skipping to post boom deploy.")
-					self.__skippingToPostBoom = True
+				fileChecker.checkFile(self.__bootRecordsPath)
+				reboots = linecache.getline(self.__bootRecordsPath, 1)
+				skip = linecache.getline(self.__bootRecordsPath, 3)
+				if skip != 4:
+					if binaryData[56:64] == '00000000':
+						#Chose whether or not to skip to post boom deploy
+						print("Running flight logic normally.")
+					else:
+						print("Skipping to post boom deploy.")
+						bootRecords = open(self.__bootRecordsPath, 'w+')
+						bootRecords.write(reboots + "\n0\n4")
+						bootRecords.close()
 			else:
 				print("Hashes do not match, will not execute commands!")
 
@@ -314,7 +320,14 @@ class packetProcessing:
 		progressFile.write('0\n')
 
 	def skip(self):
-		return self.__skippingToPostBoom
+		fileChecker.checkFile(self.__bootRecordsPath)
+		skip = int(linecache.getline(self.__bootRecordsPath, 3))
+		if skip == 4:
+			print("Skip to post boom is true.")
+			return True
+		else:
+			print("Skip to post boom is false.")
+			return False
 
 	# Command packet
 	# processPacket('C8')
