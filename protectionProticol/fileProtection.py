@@ -113,9 +113,11 @@ class FileReset():
                 print("Error trying to make directory ", dirPath)
     
     def windowProtection(self):
+        print("!!!!!!!!!!!!!!!!!!!!!!!Checking TXWindows")
         file = open(self.__windowFilePath, 'w+')
+        file.seek()
 
-        TXwindows = file.readlines
+        TXwindows = file.readlines()
         for line in TXwindows:
             window = line.split(',')
 
@@ -159,3 +161,4 @@ class FileReset():
         for line in TXwindows:
             if line == "/n":
                 del line
+        file.close()
