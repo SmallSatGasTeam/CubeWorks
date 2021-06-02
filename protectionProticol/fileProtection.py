@@ -115,8 +115,6 @@ class FileReset():
     def windowProtection(self):
         file = open(self.__windowFilePath, 'w+')
 
-        windowsList = []
-
         lines = file.readlines
         for window in lines:
             window.split(',')
