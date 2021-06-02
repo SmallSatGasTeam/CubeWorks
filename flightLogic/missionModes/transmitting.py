@@ -31,7 +31,6 @@ class Transmitting:
         fileChecker.checkFile("/home/pi/TXISRData/transmissionFlag.txt")
         self.__transmissionFlagFile = open('/home/pi/TXISRData/transmissionFlag.txt')
         self.__txWindowsPath = ('/home/pi/TXISRData/txWindows.txt')
-        fileChecker.windowProtection()
         fileChecker.checkFile(self.__txWindowsPath)
         self.__queue = Queue(self.__txWindowsPath)
         if self.__queue.dequeue(0) != -1:
