@@ -127,7 +127,6 @@ class FileReset():
                 line = '/n'
                 continue
 
-
             # All of these are checking if values are positive integers
 
             # Check if timestamp is ten characters long
@@ -158,7 +157,7 @@ class FileReset():
                 line = '/n'
                 continue
 
-        for line in TXwindows:
-            if line == "/n":
-                del line
+        # for line in TXwindows:
+        #     if line == "/n":
+        #         del line
         file.close()
