@@ -223,7 +223,7 @@ class packetProcessing:
 					else:
 						print("Skipping to post boom deploy.")
 						bootRecords = open(self.__bootRecordsPath, 'w+')
-						bootRecords.write(str(reboots) + "\n0\n4")
+						bootRecords.write(str(reboots) + "\n0\n4\n")
 						bootRecords.close()
 			else:
 				print("Hashes do not match, will not execute commands!")
