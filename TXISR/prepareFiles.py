@@ -104,7 +104,7 @@ def prepareData(duration, dataType, startFrom):
 		dataSize = 0
 		lineNumber = startFrom
 	
-	print("Line107---- prepare code ---- End")
+		print("Line107---- prepare code ---- End")
 
 		while dataSize < numPackets:
 			line = linecache.getline(dataFilePath, lineNumber)
