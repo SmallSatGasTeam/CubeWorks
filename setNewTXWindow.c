@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 /* This code provides a simple way to feed a transmission window into txWindows.txt while running the main flight logic. */
 
@@ -80,8 +81,8 @@ int main(int argc, char * argv[])
 		windowLength = atoi(argv[3]);
 		dataType = atoi(argv[4]);
 		txTime = time(NULL);
-		pic = argv[5];
-		line = argv[6];
+		pic = atoi(argv[5]);
+		line = atoi(argv[6]);
 
 		for(i = 0; i < n; i++){
 			length = (long int) txTime + length;
