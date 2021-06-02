@@ -130,7 +130,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 		await asyncio.gather(preBoomDeploy.run())
 		if not packet.skip():
 			lastMode = 3
-		recordData(bootCount, antennaDeploy, lastMode)
+			recordData(bootCount, antennaDeploy, lastMode)
 		print("Finished running preBoomDeploy")
 
 
