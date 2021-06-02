@@ -63,7 +63,7 @@ class Transmitting:
             #20 seconds before
             if (self.__queue.dequeue(0) - time.time() <= 20) and (self.__queue.dequeue(0) != -1) and (self.__data == []) and (self.__queue.dequeue(0) > 0):
                 #pull the packet
-                line = self.__queue.dequeue(True)
+                line = self.__queue.dequeue(1)
                 self.__data = line.split(',')
             elif ((self.__timeToNextWindow < 0) or (self.__timeToNextWindow > 20)) and (self.__queue.dequeue(0) != -1):
                 self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
@@ -84,7 +84,7 @@ class Transmitting:
 
             if self.__sendData.__len__() == 5:
                 print(self.__sendData)
-                self.__timeToNextWindow = float(self.__queue.dequeue(False)) - time.time()
+                self.__timeToNextWindow = float(self.__sendData[0]) - time.time()
                 self.__duration = int(self.__sendData[1])
                 self.__datatype = int(self.__sendData[2])
                 self.__pictureNumber = int(self.__sendData[3])
