@@ -54,6 +54,7 @@ class Transmitting:
         """
         while True:
             print("INSIDE TRANSFER WINDOW")
+            #fileChecker.windowProtection()
             #read the given transfer window file and extract the data for the soonest transfer window
             soonestWindowTime = 0
 
@@ -106,7 +107,7 @@ class Transmitting:
                 print("Transmit time to next window:", self.__timeToNextWindow)
                 #if close enough, prep files
                 #wait until 5 seconds before, return True
-                if (self.__timeToNextWindow != -1) and (self.__timeToNextWindow < 20) and (self.__timeToNextWindow >= -5):
+                if (self.__timeToNextWindow != -1) and (self.__timeToNextWindow < 20) and (self.__timeToNextWindow >= 0):
                     print("Self.__timeToNextWindow is less than 14.")
                     if self.__datatype < 3: #Attitude, TTNC, or Deployment data respectively
                         prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
@@ -128,13 +129,6 @@ class Transmitting:
                         subprocess.Popen(['sudo', './TXService.run', str(self.__datatype)], cwd = str(txisrCodePath))
                         #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype))
                         self.__timeToNextWindow = -1
-                        
-                        #this will help us rest the tx window
-                        self.__sendData[0] = -1;
-                        self.__sendData[1] = -1;
-                        self.__sendData[2] = -1;
-                        self.__sendData[3] = -1;
-                        self.__sendData[4] = -1;
                         break
                     else:
                         print("Transmission flag is not enabled")
