@@ -215,7 +215,7 @@ async def processPacket(packetData):
 				skippingToPostBoom = False
 			else:
 				print("Skipping to post boom deploy.")
-				skip()
+				skippingToPostBoom = True
 		else:
 			print("Hashes do not match, will not execute commands!")
 
@@ -310,8 +310,6 @@ def clearTXProgress():
 	progressFile.write('0\n')
 	progressFile.write('0\n')
 
-def skip():
-	skippingToPostBoom = True
 
 # Command packet
 # processPacket('C8')
