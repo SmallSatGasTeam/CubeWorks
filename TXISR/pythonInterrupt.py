@@ -51,9 +51,9 @@ async def interrupt():
 					leftovers = ''
 				for command in commands:
 					# print(command)
-					await packetProcessing.processPacket(command) #Process Command Packets
+					await packet.processPacket(command) #Process Command Packets
 				for ax25 in ax25Packets:
-					await packetProcessing.processPacket(ax25) #Process AX.25 Packets
+					await packet.processPacket(ax25) #Process AX.25 Packets
 				print("Made it all the way. Leftovers: ", leftovers)
 				serialport.reset_input_buffer()
 				await asyncio.sleep(5)
