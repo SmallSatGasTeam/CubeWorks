@@ -5,6 +5,7 @@ sys.path.append('../')
 import watchdog.Heartbeat.Heartbeat as heartbeat
 
 async def receive():
+    print("Starting receive.")
     heartbeat.setUp()
     asyncio.create_task(heartbeat.longTap())
     print("Finished creating tasks")
