@@ -322,7 +322,8 @@ class packetProcessing:
 	def skip(self):
 		fileChecker.checkFile(self.__bootRecordsPath)
 		bootRecords = open(self.__bootRecordsPath, "r")
-		bootRecords.readlines(2)
+		bootRecords.readline()
+		bootRecords.readline()
 		skip = int(bootRecords.readline())
 		print(skip)
 		bootRecords.close()
