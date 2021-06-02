@@ -47,8 +47,9 @@ class Queue ():
                 file.write(minLine + "\n")
             for j in contents:
                 line = j.split(',')
-                if(int(line[0]) >= 0):
-                    file.write(j + "\n")
+                if line[0] != '':
+                    if(int(line[0]) >= 0):
+                        file.write(j + "\n")
             file.close()
         if(not delete):
             return int (min[0])
