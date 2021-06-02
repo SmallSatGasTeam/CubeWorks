@@ -128,13 +128,6 @@ class Transmitting:
                         subprocess.Popen(['sudo', './TXService.run', str(self.__datatype)], cwd = str(txisrCodePath))
                         #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype))
                         self.__timeToNextWindow = -1
-                        
-                        #this will help us rest the tx window
-                        self.__sendData[0] = -1;
-                        self.__sendData[1] = -1;
-                        self.__sendData[2] = -1;
-                        self.__sendData[3] = -1;
-                        self.__sendData[4] = -1;
                         break
                     else:
                         print("Transmission flag is not enabled")
