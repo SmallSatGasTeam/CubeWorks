@@ -214,8 +214,8 @@ class packetProcessing:
 					self.enableAX25()
 
 				fileChecker.checkFile(self.__bootRecordsPath)
-				reboots = linecache.getline(self.__bootRecordsPath, 1)
-				skip = linecache.getline(self.__bootRecordsPath, 3)
+				reboots = int(linecache.getline(self.__bootRecordsPath, 1))
+				skip = int(linecache.getline(self.__bootRecordsPath, 3))
 				if skip != 4:
 					if binaryData[56:64] == '00000000':
 						#Chose whether or not to skip to post boom deploy
