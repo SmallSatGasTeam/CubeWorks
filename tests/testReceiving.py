@@ -7,13 +7,16 @@ import watchdog.Heartbeat.Heartbeat as heartbeat
 async def receive():
     heartbeat.setUp()
     asyncio.create_task(heartbeat.longTap())
+    print("Finished creating tasks")
 
     try:
         serialport = serial.Serial('/dev/serial0', 115200)
     except Exception as e:
         print("Failed, error:", e)
 
+    print("Finished the serial port")
     while True:
+        print("In the loop.")
         try:
             print(serialport.in_waiting, "objects in waiting.")
             
