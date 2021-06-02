@@ -132,3 +132,7 @@ class FileReset():
                 continue
 
             #if isinstance(window[1], int) or window[1] < 0 
+
+        for line in TXwindows:
+            if line == "/n":
+                del line
