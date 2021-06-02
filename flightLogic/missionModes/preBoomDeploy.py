@@ -8,8 +8,10 @@ from Drivers.sunSensors import sunSensorDriver
 from DummyDrivers.sunSensors import sunSensorDriver as DummySunSensorDriver
 from TXISR import pythonInterrupt
 from inspect import currentframe, getframeinfo
-from TXISR import packetProcessing
+from TXISR.packetProcessing import packetProcessing as packet
 
+
+packetProcessing = packet()
 
 sunSensorMin = 0.0
 sunSensorMax = 3.3
@@ -58,7 +60,7 @@ class preBoomMode:
 			darkLength = 0
 			lastDark = 0
 			#print(self.sunlightData)
-			print("Skipping to post boom is", packetProcessing.skippingToPostBoom)
+			print("Skipping to post boom is", packetProcessing.__skippingToPostBoom)
 			while i < len(self.sunlightData): #Loop through sunlightData, checking for X minutes of darkness
 				if(self.sunlightData[i]<self.darkVoltage):
 					darkLength+=1 #It was in the dark for the 5 seconds recorded in the ith position of sunlightData
@@ -160,8 +162,8 @@ class preBoomMode:
 			print("Caught thrown exception in cancelling background task")
 	
 	async def skipToPostBoom(self):
-		print("Inside skipToPostBoom, skipping value is:", packetProcessing.skippingToPostBoom)
-		if packetProcessing.skippingToPostBoom:
+		print("Inside skipToPostBoom, skipping value is:", packetProcessing.__skippingToPostBoom)
+		if packetProcessing.__skippingToPostBoom:
 			self.cancelAllTasks(self.__tasks)
 			return True
 		else:
