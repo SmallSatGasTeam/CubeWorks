@@ -223,7 +223,7 @@ class packetProcessing:
 					else:
 						print("Skipping to post boom deploy.")
 						bootRecords = open(self.__bootRecordsPath, 'w+')
-						bootRecords.write(str(reboots) + "\n0\n4\n")
+						bootRecords.write(str(reboots) + "\n1\n4\n")
 						bootRecords.close()
 			else:
 				print("Hashes do not match, will not execute commands!")
@@ -321,7 +321,11 @@ class packetProcessing:
 
 	def skip(self):
 		fileChecker.checkFile(self.__bootRecordsPath)
-		skip = int(linecache.getline(self.__bootRecordsPath, 3))
+		bootRecords = open(self.__bootRecordsPath, "r")
+		bootRecords.readlines(2)
+		skip = int(bootRecords.readline())
+		print(skip)
+		bootRecords.close()
 		if skip == 4:
 			print("Skip to post boom is true.")
 			return True
