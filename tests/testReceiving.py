@@ -8,7 +8,6 @@ async def receive():
     print("Starting receive.")
     heartbeat.setUp()
     asyncio.create_task(heartbeat.longTap())
-    print("Finished creating tasks")
 
     try:
         serialport = serial.Serial('/dev/serial0', 115200)
