@@ -8,16 +8,22 @@ async def receive():
     heartbeat.setUp()
     asyncio.create_task(heartbeat.longTap())
 
-    serialport = serial.Serial('/dev/serial0', 115200)
+    try:
+        serialport = serial.Serial('/dev/serial0', 115200)
+    except Exception as e:
+        print("Failed, error:", e)
 
     while True:
-        print(serialport.in_waiting, "objects in waiting.")
-        
-        if serialport.in_waiting:
-            print("Data in waiting")
-            data = serialport.read_all()
-            print("Received: ", data)
-        
-        await asyncio.sleep(.5)
+        try:
+            print(serialport.in_waiting, "objects in waiting.")
+            
+            if serialport.in_waiting:
+                print("Data in waiting")
+                data = serialport.read_all()
+                print("Received: ", data)
+            
+            await asyncio.sleep(.5)
+        except Exception as e:
+            print("Error:", e)
 
 asyncio.run(receive())
