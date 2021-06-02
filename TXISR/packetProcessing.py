@@ -23,297 +23,298 @@ import asyncio
 
 fileChecker = FileReset()
 windows = Queue('/home/pi/TXISRData/txWindows.txt')
-skippingToPostBoom = False
-filePaths = ["/home/pi/CubeWorks0/TXISR/", "/home/pi/CubeWorks1/TXISR/", "/home/pi/CubeWorks2/TXISR/", "/home/pi/CubeWorks3/TXISR/", "/home/pi/CubeWorks4/TXISR/"] 
 #These file paths are slightly different from the ones in transmitting.py
 
-async def processAX25(AX25):  #Placeholder function
-	"""
-	processAX25 is called once the packet is identified as an AX25 packet. 
-	It references what codeBase is being used. It then creates or opens for writing the txFile within the correct base.
-	The AX25Flag is checked to see if it is enabled or disabled.
-	The AX25packet is written to the txFile and then we run the TXServiceCode to transmit it back
-	(This function requires further testing on the stack as of 5/27/21. We need to try running some AX25 packets over the serial port.)
-	"""
-	print(">>>Starting AX25 packet processing.")
-	#Check AX25 Transmission flag, if it is OK then open a pyserial connection and transmit the content of the packet
-	try:	
-		fileChecker.checkFile("/home/pi/TXISRData/AX25Flag.txt")
-		AX25Flag_File = open("/home/pi/TXISRData/AX25Flag.txt", "r")
-		baseFile = open("/home/pi/lastBase.txt")
-		codeBase = int(baseFile.read())
-		txisrCodePath = filePaths[codeBase]
-		timeToNextWindow = int(windows.dequeue(0))
-		print(">>>Initialized all variables.")
+class packetProcessing:
+	def __init__(self):
+		self.__skippingToPostBoom = False
+		self.__filePaths = ["/home/pi/CubeWorks0/TXISR/", "/home/pi/CubeWorks1/TXISR/", "/home/pi/CubeWorks2/TXISR/", "/home/pi/CubeWorks3/TXISR/", "/home/pi/CubeWorks4/TXISR/"]
 
-		transmissionFilePath = txisrCodePath + 'data/txFile.txt' #File path to txFile. This is where data will be stored
-		fileChecker.checkFile(transmissionFilePath)	
-		txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
-		print(">>>About to enter infinite loop.")
-		while True:
-			if timeToNextWindow - time.time() >= 25:	
-				if AX25Flag_File.readlines() == "Enabled":
-					print(">>>Processing AX25 Packet")
-					txDataFile.write("10000")
-					txDataFile.write(AX25) #Write to txData.
-					subprocess.Popen(['sudo', './TXService.run'], cwd = str(txisrCodePath + "TXServiceCode/")) #This might not work
-					break
+	async def processAX25(self, AX25):  #Placeholder function
+		"""
+		processAX25 is called once the packet is identified as an AX25 packet. 
+		It references what codeBase is being used. It then creates or opens for writing the txFile within the correct base.
+		The AX25Flag is checked to see if it is enabled or disabled.
+		The AX25packet is written to the txFile and then we run the TXServiceCode to transmit it back
+		(This function requires further testing on the stack as of 5/27/21. We need to try running some AX25 packets over the serial port.)
+		"""
+		print(">>>Starting AX25 packet processing.")
+		#Check AX25 Transmission flag, if it is OK then open a pyserial connection and transmit the content of the packet
+		try:	
+			fileChecker.checkFile("/home/pi/TXISRData/AX25Flag.txt")
+			AX25Flag_File = open("/home/pi/TXISRData/AX25Flag.txt", "r")
+			baseFile = open("/home/pi/lastBase.txt")
+			codeBase = int(baseFile.read())
+			txisrCodePath = self.__filePaths[codeBase]
+			timeToNextWindow = int(windows.dequeue(0))
+			print(">>>Initialized all variables.")
 
-				elif AX25Flag_File.readlines() == "Disabled":
-					print(">>>AX25 Packets are disabled")
-					break
+			transmissionFilePath = txisrCodePath + 'data/txFile.txt' #File path to txFile. This is where data will be stored
+			fileChecker.checkFile(transmissionFilePath)	
+			txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
+			print(">>>About to enter infinite loop.")
+			while True:
+				if timeToNextWindow - time.time() >= 25:	
+					if AX25Flag_File.readlines() == "Enabled":
+						print(">>>Processing AX25 Packet")
+						txDataFile.write("10000")
+						txDataFile.write(AX25) #Write to txData.
+						subprocess.Popen(['sudo', './TXService.run'], cwd = str(txisrCodePath + "TXServiceCode/")) #This might not work
+						break
+
+					elif AX25Flag_File.readlines() == "Disabled":
+						print(">>>AX25 Packets are disabled")
+						break
+					else:
+						print(">>>AX25Flag.txt contains unrecognized data")
+						break
+		except Exception as e:
+			print(">>>Error in AX25 processing:", e)
+		print(">>>txFile.txt is full or next txWindow is too close to transmit")
+		await asyncio.sleep(3)
+
+		AX25Flag_File.close()
+		txDataFile.close()
+
+	async def processPacket(self, packetData):
+		print('Processing packet')
+		# Packet data comes in as hex, need to convet to binary to parse
+		binaryDataLength = len(packetData) * 4
+		print('bin data len' + str(binaryDataLength))
+		binaryData = format(int(packetData,16), 'b').zfill(binaryDataLength)
+		secretKey = b'SECRETKEY'
+
+		if binaryData[0:8] == '00000000':
+			# This is a TX Schedule packet.
+			print("TX Schedule Packet")
+
+			# Get window start delta T
+			windowStartBinary = binaryData[8:40]
+			windowStartDecimal = int(windowStartBinary,2)
+			print("Window start in seconds: ", windowStartDecimal)
+
+			# Get window duration
+			windowDurationBinary = binaryData[40:56]
+			windowDurationDecimal = int(windowDurationBinary,2)
+			print("Window duration in seconds: ", windowDurationDecimal)
+
+			# Get data type
+			dataTypeBinary = binaryData[56:64]
+			dataTypeDecimal = int(dataTypeBinary,2)
+			print("Data type: ", dataTypeDecimal)
+
+			# Get picture number
+			pictureNumberBinary = binaryData[64:80]
+			pictureNumberDecimal = int(pictureNumberBinary,2)
+			print("Picture number: ", pictureNumberDecimal)
+
+			#Get index
+			print("index will be:", int(binaryData[80:112], 2))
+			if int(binaryData[80:112], 2) == 0:
+				index = -1
+			else:
+				index = int(binaryData[80:112], 2)
+			print("Indexing to:", index)
+
+			# Get the appended hash - it is a 16 byte (128 bit) value
+			receivedHash = binaryData[112:]
+			print("Received Hash: ", receivedHash)
+
+			# Generated hash from received data
+			generatedHash = hmac.new(secretKey, bytes(binaryData[0:112], 'utf-8'), hashlib.md5)
+			generatedHashHex = generatedHash.hexdigest()
+			generatedHashLength = len(generatedHashHex) * 4
+			generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)
+			print("Generated hash: ", generatedHashBinary)
+			if receivedHash == generatedHashBinary:
+				print("Hashes match! Writing window")
+				self.writeTXWindow(windowStartDecimal, windowDurationDecimal, dataTypeDecimal, pictureNumberDecimal, index)
+
+			else:
+				print("Hashes do not match, will not save window!")
+		
+		elif binaryData[0:8] == "01111110":
+			# This is an AX25 packet
+			print("AX25 Packet")
+			self.processAX25(binaryData)
+
+
+		else:
+			# This is a command packet
+			print("Command packet")
+
+			# Validate HMAC Hash
+			# Note, hash is 16 bytes (128 bits). Command packet is 1 byte (8 bits)
+			receivedHash = binaryData[64:]
+			print("Received Hash: ", receivedHash)
+
+			# Generated hash from received data
+			generatedHash = hmac.new(secretKey, bytes(binaryData[0:64], 'utf-8'), hashlib.md5)
+			generatedHashHex = generatedHash.hexdigest()
+			generatedHashLength = len(generatedHashHex) * 4
+			generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)
+			print("Generated hash: ", generatedHashBinary)
+			if receivedHash == generatedHashBinary:
+				print("Hashes match! Executing commands")
+
+				if binaryData[8:16] == '00000000':
+					# Turn off Transmitter
+					print("Turn off Transmissions")
+					self.disableTransmissions()
 				else:
-					print(">>>AX25Flag.txt contains unrecognized data")
-					break
-	except Exception as e:
-		print(">>>Error in AX25 processing:", e)
-	print(">>>txFile.txt is full or next txWindow is too close to transmit")
-	await asyncio.sleep(3)
+					#Turn on Transmitter
+					print("Turn on Transmitter")
+					self.enableTransmissions()
 
-	AX25Flag_File.close()
-	txDataFile.close()
+				if binaryData[16:24] == '00000000':
+					# DO NOT Clear TX Schedule and Progress
+					print("Do NOT Clear TX Schedule and Progress")
+				else:
+					# Clear TX Schedule & Progress
+					print("Clear TX Schedule and Progress")
+					self.clearTXFile()
+					self.clearTXProgress()
 
-async def processPacket(packetData):
-	print('Processing packet')
-	# Packet data comes in as hex, need to convet to binary to parse
-	binaryDataLength = len(packetData) * 4
-	print('bin data len' + str(binaryDataLength))
-	binaryData = format(int(packetData,16), 'b').zfill(binaryDataLength)
-	secretKey = b'SECRETKEY'
+				if binaryData[24:32] == '00000000':
+					# Do not take picture
+					print("Do not take picture")
+				else:
+					# Take picture
+					print("Take picture")
+					cam = Camera()
+					cam.takePicture()
 
-	if binaryData[0:8] == '00000000':
-		# This is a TX Schedule packet.
-		print("TX Schedule Packet")
+				if binaryData[32:40] == '00000000':
+					# Do not deploy boom
+					print("Do not deploy boom")
+				else:
+					# Deploy boom
+					print("Deploy boom")
+					deployer = boomDeployer.BoomDeployer()
+					await deployer.deploy()
 
-		# Get window start delta T
-		windowStartBinary = binaryData[8:40]
-		windowStartDecimal = int(windowStartBinary,2)
-		print("Window start in seconds: ", windowStartDecimal)
+				if binaryData[40:48] == '00000000':
+					# Do not reboot
+					print("Do not reboot")
+				else:
+					#Send reboot command to Beetle
+					print("Reboot")
+					bus = smbus.SMBus(1)
+					address = 0x08
+					bus.write_byte(address, 1)
 
-		# Get window duration
-		windowDurationBinary = binaryData[40:56]
-		windowDurationDecimal = int(windowDurationBinary,2)
-		print("Window duration in seconds: ", windowDurationDecimal)
+				if binaryData[48:56] == '00000000':
+					# Turn off AX25
+					print("Turn off AX25")
+					self.disableAX25()
+				else:
+					#Turn on AX25
+					print("Turn on AX25")
+					self.enableAX25()
 
-		# Get data type
-		dataTypeBinary = binaryData[56:64]
-		dataTypeDecimal = int(dataTypeBinary,2)
-		print("Data type: ", dataTypeDecimal)
-
-		# Get picture number
-		pictureNumberBinary = binaryData[64:80]
-		pictureNumberDecimal = int(pictureNumberBinary,2)
-		print("Picture number: ", pictureNumberDecimal)
-
-		#Get index
-		print("index will be:", int(binaryData[80:112], 2))
-		if int(binaryData[80:112], 2) == 0:
-			index = -1
-		else:
-			index = int(binaryData[80:112], 2)
-		print("Indexing to:", index)
-
-		# Get the appended hash - it is a 16 byte (128 bit) value
-		receivedHash = binaryData[112:]
-		print("Received Hash: ", receivedHash)
-
-		# Generated hash from received data
-		generatedHash = hmac.new(secretKey, bytes(binaryData[0:112], 'utf-8'), hashlib.md5)
-		generatedHashHex = generatedHash.hexdigest()
-		generatedHashLength = len(generatedHashHex) * 4
-		generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)
-		print("Generated hash: ", generatedHashBinary)
-		if receivedHash == generatedHashBinary:
-			print("Hashes match! Writing window")
-			writeTXWindow(windowStartDecimal, windowDurationDecimal, dataTypeDecimal, pictureNumberDecimal, index)
-
-		else:
-			print("Hashes do not match, will not save window!")
-	
-	elif binaryData[0:8] == "01111110":
-		# This is an AX25 packet
-		print("AX25 Packet")
-		processAX25(binaryData)
-
-
-	else:
-		# This is a command packet
-		print("Command packet")
-
-		# Validate HMAC Hash
-		# Note, hash is 16 bytes (128 bits). Command packet is 1 byte (8 bits)
-		receivedHash = binaryData[64:]
-		print("Received Hash: ", receivedHash)
-
-		# Generated hash from received data
-		generatedHash = hmac.new(secretKey, bytes(binaryData[0:64], 'utf-8'), hashlib.md5)
-		generatedHashHex = generatedHash.hexdigest()
-		generatedHashLength = len(generatedHashHex) * 4
-		generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)
-		print("Generated hash: ", generatedHashBinary)
-		if receivedHash == generatedHashBinary:
-			print("Hashes match! Executing commands")
-
-			if binaryData[8:16] == '00000000':
-				# Turn off Transmitter
-				print("Turn off Transmissions")
-				disableTransmissions()
+				if binaryData[56:64] == '00000000':
+					#Chose whether or not to skip to post boom deploy
+					print("Running flight logic normally.")
+					self.__skippingToPostBoom = False
+				else:
+					print("Skipping to post boom deploy.")
+					self.__skippingToPostBoom = True
 			else:
-				#Turn on Transmitter
-				print("Turn on Transmitter")
-				enableTransmissions()
-
-			if binaryData[16:24] == '00000000':
-				# DO NOT Clear TX Schedule and Progress
-				print("Do NOT Clear TX Schedule and Progress")
-			else:
-				# Clear TX Schedule & Progress
-				print("Clear TX Schedule and Progress")
-				clearTXFile()
-				clearTXProgress()
-
-			if binaryData[24:32] == '00000000':
-				# Do not take picture
-				print("Do not take picture")
-			else:
-				# Take picture
-				print("Take picture")
-				cam = Camera()
-				cam.takePicture()
-
-			if binaryData[32:40] == '00000000':
-				# Do not deploy boom
-				print("Do not deploy boom")
-			else:
-				# Deploy boom
-				print("Deploy boom")
-				deployer = boomDeployer.BoomDeployer()
-				await deployer.deploy()
-
-			if binaryData[40:48] == '00000000':
-				# Do not reboot
-				print("Do not reboot")
-			else:
-				#Send reboot command to Beetle
-				print("Reboot")
-				bus = smbus.SMBus(1)
-				address = 0x08
-				bus.write_byte(address, 1)
-
-			if binaryData[48:56] == '00000000':
-				# Turn off AX25
-				print("Turn off AX25")
-				disableAX25()
-			else:
-				#Turn on AX25
-				print("Turn on AX25")
-				enableAX25()
-
-			if binaryData[56:64] == '00000000':
-				#Chose whether or not to skip to post boom deploy
-				print("Running flight logic normally.")
-				skippingToPostBoom = False
-			else:
-				print("Skipping to post boom deploy.")
-				skip()
-		else:
-			print("Hashes do not match, will not execute commands!")
+				print("Hashes do not match, will not execute commands!")
 
 
-def writeTXWindow(windowStart, windowDuration, dataType, pictureNumber, index):
-	# This function will write the TX window packet information to a file. Pass in the window start (delta T), window duration, data type, picture number, and Start From Beginning (1/0).
-	# Note that this function saves the window start as an actual time, not a delta T - this is critical.
+	def writeTXWindow(self, windowStart, windowDuration, dataType, pictureNumber, index):
+		# This function will write the TX window packet information to a file. Pass in the window start (delta T), window duration, data type, picture number, and Start From Beginning (1/0).
+		# Note that this function saves the window start as an actual time, not a delta T - this is critical.
 
-	# Convert window start from delta T to seconds since epoch
-	windowStartTime = windowStart + int(time.time())
-	print("Current time: ", int(time.time()))
-	print("Start time: ", windowStartTime)
-	
-	fileChecker.checkFile("/home/pi/TXISRData/txWindows.txt")
-	TXWindow_File = open("/home/pi/TXISRData/txWindows.txt", "a+")
-       
-	#write the data to the file, using the new queue
-	txWindow = ( str(windowStartTime) + ',' + str(windowDuration) + ','
-					+ str(dataType) + ',' + str(pictureNumber) + ','
-					+ str(index) + '\n')
-	windows.enqueue(txWindow)
-	# TXWindow_File.write(str(windowStartTime)+',')
-	# TXWindow_File.write(str(windowDuration)+',')
-	# TXWindow_File.write(str(dataType)+',')
-	# TXWindow_File.write(str(pictureNumber)+',')
-	# TXWindow_File.write(str(index))
-	# TXWindow_File.write('\n')
-	
-	# close file
-	TXWindow_File.close()
-	
-def disableTransmissions():
-	# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
-	fileChecker.checkFile("/home/pi/TXISRData/transmissionFlag.txt")
-	transmissionFlag_File = open("/home/pi/TXISRData/transmissionFlag.txt", "w")
-	
-	# write the data to the file,
-	transmissionFlag_File.write("Disabled")
-	
-	# close the file
-	transmissionFlag_File.close()
-	
-def enableTransmissions():
-	fileChecker.checkFile("/home/pi/TXISRData/transmissionFlag.txt")
-	# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
-	transmissionFlag_File = open("/home/pi/TXISRData/transmissionFlag.txt", "w")
-	
-	# write the data to the file,
-	transmissionFlag_File.write("Enabled")
-	
-	# close file
-	transmissionFlag_File.close()
-	
-def disableAX25():
-	fileChecker.checkFile("/home/pi/TXISRData/AX25Flag.txt")
-	# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
-	AX25Flag_File = open("/home/pi/TXISRData/AX25Flag.txt", "w")
-	
-	# write the data to the file,
-	AX25Flag_File.write("Disabled")
-	
-	# close the file
-	AX25Flag_File.close()
-	
-def enableAX25():
-	fileChecker.checkFile("/home/pi/TXISRData/AX25Flag.txt")
-	# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
-	AX25Flag_File = open("/home/pi/TXISRData/AX25Flag.txt", "w")
-	
-	# write the data to the file,
-	AX25Flag_File.write("Enabled")
-	
-	# close file
-	AX25Flag_File.close()
-	
-def clearTXFile():
-	fileChecker.checkFile("/home/pi/TXISRData/txWindows.txt")
-	# This function clears the TX windows file
-	transmissionFlag_File = open("/home/pi/TXISRData/txWindows.txt", "w")
-	
-	# close file
-	transmissionFlag_File.close()
-	
-def clearTXProgress():
-	fileChecker.checkFile("/home/pi/TXISRData/flagsFile.txt")
-	# This function will clear the file that saves which timestamp has been transmitted most recently for each data type
-	print("I don't know which file to clear!!!")
-	progressFile = open("/home/pi/TXISRData/flagsFile.txt", "w")
-	progressFile.write('0\n')
-	progressFile.write('0\n')
-	progressFile.write('0\n')
-	progressFile.write('0\n')
-	progressFile.write('0\n')
+		# Convert window start from delta T to seconds since epoch
+		windowStartTime = windowStart + int(time.time())
+		print("Current time: ", int(time.time()))
+		print("Start time: ", windowStartTime)
+		
+		fileChecker.checkFile("/home/pi/TXISRData/txWindows.txt")
+		TXWindow_File = open("/home/pi/TXISRData/txWindows.txt", "a+")
+		
+		#write the data to the file, using the new queue
+		txWindow = ( str(windowStartTime) + ',' + str(windowDuration) + ','
+						+ str(dataType) + ',' + str(pictureNumber) + ','
+						+ str(index) + '\n')
+		windows.enqueue(txWindow)
+		# TXWindow_File.write(str(windowStartTime)+',')
+		# TXWindow_File.write(str(windowDuration)+',')
+		# TXWindow_File.write(str(dataType)+',')
+		# TXWindow_File.write(str(pictureNumber)+',')
+		# TXWindow_File.write(str(index))
+		# TXWindow_File.write('\n')
+		
+		# close file
+		TXWindow_File.close()
+		
+	def disableTransmissions(self):
+		# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
+		fileChecker.checkFile("/home/pi/TXISRData/transmissionFlag.txt")
+		transmissionFlag_File = open("/home/pi/TXISRData/transmissionFlag.txt", "w")
+		
+		# write the data to the file,
+		transmissionFlag_File.write("Disabled")
+		
+		# close the file
+		transmissionFlag_File.close()
+		
+	def enableTransmissions(self):
+		fileChecker.checkFile("/home/pi/TXISRData/transmissionFlag.txt")
+		# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
+		transmissionFlag_File = open("/home/pi/TXISRData/transmissionFlag.txt", "w")
+		
+		# write the data to the file,
+		transmissionFlag_File.write("Enabled")
+		
+		# close file
+		transmissionFlag_File.close()
+		
+	def disableAX25(self):
+		fileChecker.checkFile("/home/pi/TXISRData/AX25Flag.txt")
+		# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
+		AX25Flag_File = open("/home/pi/TXISRData/AX25Flag.txt", "w")
+		
+		# write the data to the file,
+		AX25Flag_File.write("Disabled")
+		
+		# close the file
+		AX25Flag_File.close()
+		
+	def enableAX25(self):
+		fileChecker.checkFile("/home/pi/TXISRData/AX25Flag.txt")
+		# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
+		AX25Flag_File = open("/home/pi/TXISRData/AX25Flag.txt", "w")
+		
+		# write the data to the file,
+		AX25Flag_File.write("Enabled")
+		
+		# close file
+		AX25Flag_File.close()
+		
+	def clearTXFile(self):
+		fileChecker.checkFile("/home/pi/TXISRData/txWindows.txt")
+		# This function clears the TX windows file
+		transmissionFlag_File = open("/home/pi/TXISRData/txWindows.txt", "w")
+		
+		# close file
+		transmissionFlag_File.close()
+		
+	def clearTXProgress(self):
+		fileChecker.checkFile("/home/pi/TXISRData/flagsFile.txt")
+		# This function will clear the file that saves which timestamp has been transmitted most recently for each data type
+		print("I don't know which file to clear!!!")
+		progressFile = open("/home/pi/TXISRData/flagsFile.txt", "w")
+		progressFile.write('0\n')
+		progressFile.write('0\n')
+		progressFile.write('0\n')
+		progressFile.write('0\n')
+		progressFile.write('0\n')
 
-def skip():
-	skippingToPostBoom = True
 
-# Command packet
-# processPacket('C8')
-# TX Window Packet
-#processPacket('0000000F007801000000')
+	# Command packet
+	# processPacket('C8')
+	# TX Window Packet
+	#processPacket('0000000F007801000000')
