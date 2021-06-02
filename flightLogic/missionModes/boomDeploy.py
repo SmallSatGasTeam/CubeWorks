@@ -7,7 +7,9 @@ import Drivers.boomDeployer as boomDeployer
 from Drivers.camera import Camera
 from TXISR import pythonInterrupt
 from TXISR import packetProcessing
+from DummyDrivers.boomDeployer.BoomDeployer import BoomDeployer as DummyBoomDeployer
 
+DONTMURDERBEN = True
 
 class boomMode:
 	def __init__(self, saveObject, safeModeObject, transmitObject):
@@ -34,7 +36,10 @@ class boomMode:
 		if await self.skipToPostBoom():
 			return True
 		await asyncio.sleep(5)
-		deployer = boomDeployer.BoomDeployer()
+		if DONTMURDERBEN:
+			deployer = DummyBoomDeployer()
+		else:
+			deployer = boomDeployer.BoomDeployer()
 		cam = Camera()
 		await deployer.deploy() #From LOGAN: Deployer.deploy is now an asyncio method, run it like the others
 		
