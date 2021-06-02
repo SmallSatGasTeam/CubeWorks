@@ -36,9 +36,10 @@ class Queue ():
             minLine = contents[0]
             for i in contents:
                 line = i.split(',')
-                if(int(line[0]) < int(min[0]) and int(line[0]) >= 0): 
-                    min = line
-                    minLine = i
+                if line[0] != '':
+                    if(int(line[0]) < int(min[0]) and int(line[0]) >= 0): 
+                        min = line
+                        minLine = i
             contents.remove(minLine)
             self.__fileChecher.checkFile(self.__filepath)
             file = open(self.__filepath, "w")
