@@ -54,7 +54,7 @@ class Transmitting:
         """
         while True:
             print("INSIDE TRANSFER WINDOW")
-            fileChecker.windowProtection()
+            #fileChecker.windowProtection()
             #read the given transfer window file and extract the data for the soonest transfer window
             soonestWindowTime = 0
 
