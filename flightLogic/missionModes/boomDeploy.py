@@ -29,7 +29,7 @@ class boomMode:
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__getDeployData.collectDeployData()))
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
-		# self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
+		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.transmit()))
 
