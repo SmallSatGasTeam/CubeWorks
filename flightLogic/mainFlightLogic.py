@@ -137,7 +137,8 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	while True: # This loop executes the rest of the flight logic
 	# pre boom deploy
 		print("Entered the loop that chooses the next mission mode.")
-		if packet.skip(): # Check if we're git ping to Post Boom Deploy
+		if packet.skip(): # Check if we're skipping to Post Boom Deploy
+			print("Skipping to post boom")
 			lastMode = 4
 			recordData(bootCount, antennaDeployed, lastMode)  # Save into files
 		if antennaDeployed == True and lastMode not in (3,4):
