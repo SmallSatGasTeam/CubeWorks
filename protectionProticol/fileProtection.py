@@ -117,20 +117,20 @@ class FileReset():
 
         windowsList = []
 
-        lines = file.readlines
-        for window in lines:
-            window.split(',')
+        TXwindows = file.readlines
+        for line in TXwindows:
+            line.split(',')
 
             # Below variables are all booleans, deciding if part of window is "good" or "bad"
 
             # Check if timestamp is integer and long enough
-            if isinstance(window[0], int) and len(window[0]) != 10:
+            if isinstance(line[0], int) and len(line[0]) != 10:
                 goodTime = True
             else:
                 goodTime = False
 
             # Check if length is integer, positive, and 80 characters long or less
-            if isinstance(window[1], int) and window[1] > 0 and len(window[1] >= 80):
+            if isinstance(line[1], int) and line[1] > 0 and len(line[1] >= 80):
                 goodLength = True
             else:
                 goodLength = False
@@ -143,7 +143,7 @@ class FileReset():
                 # TODO Then delete the line
                 print()#Delete me
         if goodTime == True and goodLength == True:
-            windowsList.append(window + "\n")
+            windowsList.append(line + "\n")
             
         file.writelines(windowsList)
 
