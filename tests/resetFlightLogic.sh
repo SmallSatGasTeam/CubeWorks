@@ -10,7 +10,7 @@
 # - Erase AX25Flag file and set to Disabled
 
 # Erase pictures
-rm -rf ../Pictures/*
+rm -rf ../../flightLogicData/Pictures/*
 
 # Erase flight logic boot records and replace with 3 lines of 0s. Note, bootRecords and backupBootRecords need to be erased.
 cat /dev/null > ../flightLogic/bootRecords
