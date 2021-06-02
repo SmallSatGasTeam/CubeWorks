@@ -115,35 +115,21 @@ class FileReset():
     def windowProtection(self):
         file = open(self.__windowFilePath, 'w+')
 
-        windowsList = []
 
         TXwindows = file.readlines
         for line in TXwindows:
-            line.split(',')
+            window = line.split(',')
 
-            # Below variables are all booleans, deciding if part of window is "good" or "bad"
+            # Check to see if window has 5 elements
+            if len(window) != 5:
+                # If not then erase it and skip current iteration
+                line = '/n'
+                continue
 
-            # Check if timestamp is integer and long enough
-            if isinstance(line[0], int) and len(line[0]) != 10:
-                goodTime = True
-            else:
-                goodTime = False
+            # Check to see if timestamp is ten characters long
+            if isinstance(window[0], int) or window[0] < 0 or len(window[0]) != 10:
+                # If not then erase it and skip current iteration
+                line = '/n'
+                continue
 
-            # Check if length is integer, positive, and 80 characters long or less
-            if isinstance(line[1], int) and line[1] > 0 and len(line[1] >= 80):
-                goodLength = True
-            else:
-                goodLength = False
-
-            if goodTime and goodLength:
-                # TODO Delete the line
-                print()#Delete me
-            else:
-                # TODO Add to windowsList
-                # TODO Then delete the line
-                print()#Delete me
-        if goodTime == True and goodLength == True:
-            windowsList.append(line + "\n")
-            
-        file.writelines(windowsList)
-
+            # if isinstance(window[1], int) or 
