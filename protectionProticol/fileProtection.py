@@ -119,16 +119,39 @@ class FileReset():
         for line in TXwindows:
             window = line.split(',')
 
-            # Check to see if window has 5 elements
+            # Check if window has five elements
             if len(window) != 5:
                 # If not then erase it and skip current iteration
                 line = '/n'
                 continue
 
-            # Check to see if timestamp is ten characters long
-            if isinstance(window[0], int) or window[0] < 0 or len(window[0]) != 10:
+
+            # All of these are checking if values are positive integers
+
+            # Check if timestamp is ten characters long
+            if (not isinstance(window[0], int)) or window[0] < 0 or len(window[0]) != 10:
                 # If not then erase it and skip current iteration
                 line = '/n'
                 continue
 
-            #if isinstance(window[1], int) or window[1] < 0 
+            # Check if window length is less than or equal to eighty
+            if (not isinstance(window[1], int)) or window[1] < 0 or window[1] > 80:
+                # If not then erase it and skip current iteration
+                line = '/n'
+                continue
+
+            # Check if type is less than or equal to five
+            if (not isinstance(window[2], int)) or window[2] < 0 or window[2] > 5:
+                # If not then erase it and skip current iteration
+                line = '/n'
+                continue
+
+            # This is the picture number (not number of pictures), don't put limits on it
+            if (not isinstance(window[3], int)) or window[3] < 0:
+                line = '/n'
+                continue
+
+            # This is the TX flag, don't put limits on it
+            if (not isinstance(window[4], int)) or window[4] < -1:
+                line = '/n'
+                continue
