@@ -6,10 +6,11 @@ from flightLogic.getDriverData import *
 import Drivers.boomDeployer as boomDeployer
 from Drivers.camera import Camera
 from TXISR import pythonInterrupt
-from TXISR import packetProcessing
+from TXISR.packetProcessing import packetProcessing as packet
 from DummyDrivers.boomDeployer.BoomDeployer import BoomDeployer as DummyBoomDeployer
 
 DONTMURDERBEN = True
+packetProcessing = packet()
 
 class boomMode:
 	def __init__(self, saveObject, safeModeObject, transmitObject):
@@ -62,8 +63,8 @@ class boomMode:
 			print("Caught thrown exception in cancelling background task")
 
 	async def skipToPostBoom(self):
-		print("Inside skipToPostBoom, skipping value is:", packetProcessing.skippingToPostBoom)
-		if packetProcessing.skippingToPostBoom:
+		print("Inside skipToPostBoom, skipping value is:", packetProcessing.__skippingToPostBoom)
+		if packetProcessing.__skippingToPostBoom:
 			self.cancelAllTasks(self.__tasks)
 			return True
 		else:
