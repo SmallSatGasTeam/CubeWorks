@@ -63,7 +63,7 @@ class Transmitting:
             #20 seconds before
             if (self.__queue.dequeue(0) - time.time() <= 20) and (self.__queue.dequeue(0) != -1) and (self.__data == []) and (self.__queue.dequeue(0) > 0):
                 #pull the packet
-                line = self.__queue.dequeue(1)
+                line = self.__queue.dequeue(True)
                 self.__data = line.split(',')
             elif ((self.__timeToNextWindow < 0) or (self.__timeToNextWindow > 20)) and (self.__queue.dequeue(0) != -1):
                 self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
@@ -84,7 +84,7 @@ class Transmitting:
 
             if self.__sendData.__len__() == 5:
                 print(self.__sendData)
-                self.__timeToNextWindow = float(self.__sendData[0]) - time.time()
+                self.__timeToNextWindow = float(self.__queue.dequeue(False)) - time.time()
                 self.__duration = int(self.__sendData[1])
                 self.__datatype = int(self.__sendData[2])
                 self.__pictureNumber = int(self.__sendData[3])
@@ -116,7 +116,7 @@ class Transmitting:
                     break
                 await asyncio.sleep(10)
             while True:
-                if (self.__timeToNextWindow <= 5) and (self.__timeToNextWindow > 0):
+                if (self.__timeToNextWindow <= 5) and (self.__timeToNextWindow > -100):
                     fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
                     self.__transmissionFlagFile.seek(0)
                     if self.__transmissionFlagFile.readline() == 'Enabled':
