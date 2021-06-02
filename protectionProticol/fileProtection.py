@@ -132,4 +132,4 @@ class FileReset():
                 line = '/n'
                 continue
 
-            # if isinstance(window[1], int) or 
+            #if isinstance(window[1], int) or window[1] < 0 
