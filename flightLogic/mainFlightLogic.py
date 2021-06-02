@@ -15,7 +15,7 @@ from flightLogic.missionModes import *
 from protectionProticol.fileProtection import FileReset
 import asyncio
 from TXISR import pythonInterrupt
-from TXISR import packetProcessing
+from TXISR.packetProcessing import packetProcessing as packet
 
 
 # from TXISR import interrupt
@@ -32,6 +32,7 @@ from TXISR import packetProcessing
 # NOTE: DO NOTE record safe mode in the bootRecords file
 ##################################################################################################################
 fileChecker = FileReset()
+packetProcessing = packet()
 
 def __main__():
 	asyncio.run(executeFlightLogic())
@@ -76,7 +77,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	if lastMode not in range(0,7): #Mission Mode invalid
 		lastMode = 0
 		antennaDeployed = False
-	if packetProcessing.skippingToPostBoom: # Check if we're skipping to Post Boom Deploy
+	if packetProcessing.__skippingToPostBoom: # Check if we're skipping to Post Boom Deploy
 		lastMode = 4
 		antennaDeployed = True
 	recordData(bootCount, antennaDeployed, lastMode)
@@ -107,7 +108,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 
 	recordData(bootCount, antennaDeployed, lastMode)
 
-	if packetProcessing.skippingToPostBoom: # Check if we're skipping to Post Boom Deploy
+	if packetProcessing.__skippingToPostBoom: # Check if we're skipping to Post Boom Deploy
 		lastMode = 4
 	if not antennaDeployed:
 		await asyncio.gather(antennaDeploy.run())
@@ -135,7 +136,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	while True: # This loop executes the rest of the flight logic
 	# pre boom deploy
 		print("Entered the loop that chooses the next mission mode.")
-		if packetProcessing.skippingToPostBoom: # Check if we're skipping to Post Boom Deploy
+		if packetProcessing.__skippingToPostBoom: # Check if we're skipping to Post Boom Deploy
 			lastMode = 4
 			recordData(bootCount, antennaDeployed, lastMode)  # Save into files
 		if antennaDeployed == True and lastMode not in (3,4):
