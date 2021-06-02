@@ -71,6 +71,8 @@ def prepareData(duration, dataType, startFrom):
 	#This is where the new code starts_________________________________________
 	dataFile.close()
 	#If -1 is passed to StartFrom then search for the furthest transmitted data
+	print("Line 74 ---- prepare code ---- Start")
+
 	if startFrom == -1:
 		lineNumber = 0
 		progressFile.seek(transmissionProgress)
@@ -96,10 +98,14 @@ def prepareData(duration, dataType, startFrom):
 				lineNumber += 1
 				#Does this line need to be here? Woudln't it just do nothing? 
 				continue
+			
+		print("Line102 ---- prepare code ---- End")
 	else:
 		dataSize = 0
 		lineNumber = startFrom
 	
+	print("Line107---- prepare code ---- End")
+
 		while dataSize < numPackets:
 			line = linecache.getline(dataFilePath, lineNumber)
 			if (line == "") | (lineNumber == 0):

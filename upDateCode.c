@@ -9,11 +9,11 @@ char cammand4 [] = "cd CubeWorks4/ ; git fetch ; git stash ; git pull";
 char upDateStartUpCode [] = "cd CubeWorks0/ ; gcc startup.c -o startup.exe ; ";
 char upDateStartUpCode2 [] = "cd CubeWorks0/ ; cp startup.exe ~/ ; rm startup.exe";
 
-char branchCommand0 [] = "cd ; cd CubeWorks0/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
-char branchCommand1 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
-char branchCommand2 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
-char branchCommand3 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
-char branchCommand4 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
+char branchCommand0 [] = "cd ; cd CubeWorks0/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run;";
+char branchCommand1 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run";
+char branchCommand2 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run";
+char branchCommand3 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run";
+char branchCommand4 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run";
 
 //compile testing code
 char testingCommand [] = "cd ; cd CubeWorks0/ ; gcc setNewTXWindow.c -o setNewTXWindow.exe ; sudo cp setNewTXWindow.exe ~/TXISRData ; rm setNewTXWindow.exe";

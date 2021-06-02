@@ -127,7 +127,7 @@ flightLogic/bootRecords
 flightLogic/backupBootRecords
 ~/flightLogicData/*
 ~/TXISRData/*
-TXISR/TXServiceCode/TXService.run
+flightLogic/TXISR/TXServiceCode/TXService.run
 
 # TXISR Data Files
 TXISR/data/*
