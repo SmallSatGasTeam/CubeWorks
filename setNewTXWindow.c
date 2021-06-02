@@ -10,8 +10,9 @@ int main(int argc, char * argv[])
 	FILE *fptr;
 	fptr = fopen("/home/pi/TXISRData/txWindows.txt","a+");
 	int flag = 0;
-	int input, length, dataType, windowsNumber, windowLength, n, i, line;
-	long int txTime;
+	int input, dataType, windowsNumber, windowLength, n, i, line, pic;
+	long int length;
+	time_t txTime;
 
         if(fptr == NULL)
         {
@@ -23,7 +24,7 @@ int main(int argc, char * argv[])
 		printf("You are creating custom txWindows. To create multiple at equal"
 		" intervals, the usage is: sudo ./setNewTXWindow.c <number of"
 		" intervals> <time between each window> <length of each window>" 
-		"<data type>\n");
+		"<data type> <picture number> <line number>\n");
 
 		while(1){
 			printf("1:\tCreate single new txWindow.\n"
@@ -39,12 +40,14 @@ int main(int argc, char * argv[])
 					scanf("%d", &windowLength);
 					printf("Input the data type: ");
 					scanf("%d", &dataType);
+					printf("Input the picture number:");
+					scanf("%d", &pic);
 					printf("Input line to start from:");
 					scanf("%d", &line);
-					txTime = (long int)time(NULL);
-					txTime += length;
-					fprintf(fptr, "%ld,%d,%d,0,%d\n", 
-					txTime, windowLength, dataType, line);
+					txTime = time(NULL);
+					length += (long int) txTime;
+					fprintf(fptr, "%ld,%d,%d,%d,%d\n", 
+					length, windowLength, dataType, pic, line);
 					break;
 				case 2:
 					printf("Input the number of windows to create: ");
@@ -59,10 +62,10 @@ int main(int argc, char * argv[])
 						scanf("%d", &dataType);
 						printf("Input the line number: ");
 						scanf("%d", &line);
-						if(!flag) txTime = (long int)time(NULL);
-						txTime += length;
-						fprintf(fptr, "%ld,%d,%d,0,%d\n", 
-						txTime, windowLength, dataType, line);
+						if(!flag) txTime = time(NULL);
+						length += (long int) txTime;
+						fprintf(fptr, "%ld,%d,%d,%d,%d\n", 
+						length, windowLength, dataType, pic, line);
 						flag = 1;
 					}
 					break;
@@ -71,25 +74,28 @@ int main(int argc, char * argv[])
 			}
 		}
 	}
-	else if(argc == 5) {
+	else if(argc == 7) {
 		n = atoi(argv[1]);
 		length = atoi(argv[2]);
 		windowLength = atoi(argv[3]);
 		dataType = atoi(argv[4]);
-		txTime = (long int)time(NULL);
-		if(dataType == 0) line = 11859;
-		else line = 1;
+		txTime = time(NULL);
+		pic = argv[5];
+		line = argv[6];
 
 		for(i = 0; i < n; i++){
-			txTime = txTime + length;
-			printf("Creating window %d: %ld,%d,%d,0,1\n", i+1, txTime, windowLength, dataType);
-			fprintf(fptr, "%ld,%d,%d,0,1\n", txTime, windowLength, dataType);
+			length = (long int) txTime + length;
+			printf("Creating window %d: %ld,%d,%d,%d,%d \n", 
+				i+1, length, windowLength, dataType, pic, line);
+			fprintf(fptr, "%ld,%d,%d,%d,%d\n", 
+				length, windowLength, dataType, pic, line);
 		}
 	}
 	else {
 		printf("ERROR. Improper usage.\n"
 		"Usage: sudo ./setNewTXWindow.c <number of intervals> "
-		"<time between windows> <length of each window> <data type>\n");
+		"<time between windows> <length of each window> <data type>"
+		" <picture number> <line number>\n");
 	}
 
 	// system(command0);
