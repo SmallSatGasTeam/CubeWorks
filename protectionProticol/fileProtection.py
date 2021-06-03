@@ -164,6 +164,7 @@ class FileReset():
 
             # This is the TX flag, don't put limits on it
             TXflagStripped = window[4].strip('\n')
+            print("STRIP: ", TXflagStripped)
             if (not isinstance(TXflagStripped, int)) or window[4] < -1:
                 TXwindows[count] = "BADLINE\n"
                 #line = file.writelines("BADLINE\n")
