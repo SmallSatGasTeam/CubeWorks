@@ -65,7 +65,9 @@ class Transmitting:
                 #pull the packet
                 line = self.__queue.dequeue(1)
                 self.__data = line.split(',')
+            #If not within 20 seconds of the next time stamp
             elif ((self.__timeToNextWindow < 0) or (self.__timeToNextWindow > 20)) and (self.__queue.dequeue(0) != -1):
+                #Reset data and sendData lists, pull the time till next window from the next element in the queue
                 self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
                 self.__data = []
                 self.__sendData = []
@@ -73,17 +75,23 @@ class Transmitting:
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
             print(self.__data)
             try:
+                #If the data list isn't empty
                 if (self.__data != []) or (self.__data != ['']):
                     print(float(self.__data[0]), float(self.__data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
+                    #If the time to next window is less than 10
                     if(float(self.__data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME): #If the transfer window is at BUFFER_TIME milliseconds in the future
+                        #If the time is greater than 0 or the soonestWindowTime is 0
                         if(soonestWindowTime == 0) or (float(self.__data[0]) - time.time()):
+                            #Assign soonest window time and assign sendData to Data
                             soonestWindowTime = float(self.__data[0]) - time.time()
                             self.__sendData = self.__data
             except Exception as e:
                 print("Error measuring transfer window:", e)
 
+            #If sendData has the right number of members
             if self.__sendData.__len__() == 5:
                 print(self.__sendData)
+                #Assign the variables appropriately
                 self.__timeToNextWindow = float(self.__sendData[0]) - time.time()
                 self.__duration = int(self.__sendData[1])
                 self.__datatype = int(self.__sendData[2])
