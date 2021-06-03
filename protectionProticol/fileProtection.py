@@ -113,25 +113,21 @@ class FileReset():
                 print("Error trying to make directory ", dirPath)
     
     def windowProtection(self):
-        print("!!!!!!!!!!!!!!!!!!!!!!!Checking txWindows")
+        print("<Checking txWindows>")
         file = open(self.__windowFilePath, 'r')
         file.seek(0)
 
         TXwindows = file.readlines()
-        print("THIS IS WHAT WE READ: ", TXwindows)
         count = 0
         for line in TXwindows:
             if line == "":
                 continue
             window = line.split(',')
-            print("THIS IS THE WINDOW: ", window)
 
             # Check if window has five elements
             if len(window) != 5:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
-                print("First if broke it")
-                #line = file.writelines("BADLINE\n")
                 continue
 
             # All of these are checking if values are positive integers
@@ -140,31 +136,23 @@ class FileReset():
             if (not isinstance(int(window[0]), int)) or int(window[0]) < 0 or len(window[0]) != 10:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
-                print("Second if broke it")
-                # = file.writelines("BADLINE\n")
                 continue
 
             # Check if window length is less than or equal to eighty
             if (not isinstance(int(window[1]), int)) or int(window[1]) < 0 or int(window[1]) > 80:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
-                print("Third if broke it")
-                #line = file.writelines("BADLINE\n")
                 continue
 
             # Check if type is less than or equal to five
             if (not isinstance(int(window[2]), int)) or int(window[2]) < 0 or int(window[2]) > 5:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
-                print("Fourth if broke it")
-                #line = file.writelines("BADLINE\n")
                 continue
 
             # This is the picture number (not number of pictures), don't put limits on it
             if (not isinstance(int(window[3]), int)) or int(window[3]) < 0:
                 TXwindows[count] = ""
-                print("Fifth if broke it")
-                #line = file.writelines("BADLINE\n")
                 continue
 
             # This is the TX flag, don't put limits on it
@@ -172,7 +160,6 @@ class FileReset():
             print("STRIP: ", TXflagStripped)
             if (not isinstance(int(TXflagStripped), int)) or int(window[4]) < -1:
                 TXwindows[count] = ""
-                #line = file.writelines("BADLINE\n")
                 continue
             count += 1
 
