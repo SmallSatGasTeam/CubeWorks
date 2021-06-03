@@ -145,7 +145,7 @@ class FileReset():
                 continue
 
             # Check if window length is less than or equal to eighty
-            if (not isinstance(window[1], int)) or window[1] < 0 or window[1] > 80:
+            if (not isinstance(int(window[1]), int)) or int(window[1]) < 0 or int(window[1]) > 80:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = "BADLINE\n"
                 print("Third if broke it")
@@ -153,7 +153,7 @@ class FileReset():
                 continue
 
             # Check if type is less than or equal to five
-            if (not isinstance(window[2], int)) or window[2] < 0 or window[2] > 5:
+            if (not isinstance(int(window[2]), int)) or int(window[2]) < 0 or int(window[2]) > 5:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = "BADLINE\n"
                 print("Fourth if broke it")
@@ -161,7 +161,7 @@ class FileReset():
                 continue
 
             # This is the picture number (not number of pictures), don't put limits on it
-            if (not isinstance(window[3], int)) or window[3] < 0:
+            if (not isinstance(int(window[3]), int)) or int(window[3]) < 0:
                 TXwindows[count] = "BADLINE\n"
                 print("Fifth if broke it")
                 #line = file.writelines("BADLINE\n")
@@ -170,7 +170,7 @@ class FileReset():
             # This is the TX flag, don't put limits on it
             TXflagStripped = window[4].strip('\n')
             print("STRIP: ", TXflagStripped)
-            if (not isinstance(TXflagStripped, int)) or window[4] < -1:
+            if (not isinstance(int(TXflagStripped), int)) or int(window[4]) < -1:
                 TXwindows[count] = "BADLINE\n"
                 #line = file.writelines("BADLINE\n")
                 continue
