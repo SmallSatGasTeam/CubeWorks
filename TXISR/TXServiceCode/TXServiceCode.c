@@ -238,7 +238,8 @@ int main(int argc,char* argv[])
             else temp = convertCharToHex(chl, ch);
             //If we receive a bad value
             if(temp == -1){
-                fscanf("%s", NULL); //We pull the rest of the line and throw it away
+                char trash[256];
+                fscanf("%s", trash); //We pull the rest of the line and throw it away
 
                 //Then empty the array
                 for(int i = 0; i < 256; i++){
