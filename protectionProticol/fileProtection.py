@@ -114,7 +114,7 @@ class FileReset():
     
     def windowProtection(self):
         print("!!!!!!!!!!!!!!!!!!!!!!!Checking txWindows")
-        file = open(self.__windowFilePath, 'w+')
+        file = open(self.__windowFilePath, 'r+')
         file.seek(0)
 
         TXwindows = file.readlines()
@@ -124,7 +124,7 @@ class FileReset():
             # Check if window has five elements
             if len(window) != 5:
                 # If not then erase it and skip current iteration
-                line = '/n'
+                line = file.writelines("BADLINE")
                 continue
 
             # All of these are checking if values are positive integers
@@ -132,32 +132,32 @@ class FileReset():
             # Check if timestamp is ten characters long
             if (not isinstance(window[0], int)) or window[0] < 0 or len(window[0]) != 10:
                 # If not then erase it and skip current iteration
-                line = '/n'
+                line = file.writelines("BADLINE")
                 continue
 
             # Check if window length is less than or equal to eighty
             if (not isinstance(window[1], int)) or window[1] < 0 or window[1] > 80:
                 # If not then erase it and skip current iteration
-                line = '/n'
+                line = file.writelines("BADLINE")
                 continue
 
             # Check if type is less than or equal to five
             if (not isinstance(window[2], int)) or window[2] < 0 or window[2] > 5:
                 # If not then erase it and skip current iteration
-                line = '/n'
+                line = file.writelines("BADLINE")
                 continue
 
             # This is the picture number (not number of pictures), don't put limits on it
             if (not isinstance(window[3], int)) or window[3] < 0:
-                line = '/n'
+                line = file.writelines("BADLINE")
                 continue
 
             # This is the TX flag, don't put limits on it
             if (not isinstance(window[4], int)) or window[4] < -1:
-                line = '/n'
+                line = file.writelines("BADLINE")
                 continue
 
-        # for line in TXwindows:
-        #     if line == "/n":
-        #         del line
-        # file.close()
+        for line in TXwindows:
+            if line == "BADLINE":
+                del line
+        file.close()
