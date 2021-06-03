@@ -178,4 +178,10 @@ be repoerted.
     boot records are at 4. This has been implemented into each mission mode
     as a test on when to cancel all tasks and end the mission mode.
 
-#26 <Added
+#26 <Added txWindow checking to fileProtection> 
+    "protectionProticol.fileProtection.py" Lines 115-172
+        To ensure that no bad windows get sent this was written to identify
+        and remove bad windows.
+
+    "TXISR/transmissionQueue.py" Lines 14, 28, 47, 64
+        Implementing the window protection.
