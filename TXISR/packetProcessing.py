@@ -122,7 +122,7 @@ class packetProcessing:
 			print("Received Hash: ", receivedHash)
 
 			# Generated hash from received data
-			generatedHash = hmac.new(secretKey, bytes(binaryData[0:112], 'utf-8'), hashlib.md5)
+			generatedHash = hmac.new(secretKey, bytes(binaryData[0:112], 'utf-8'), digestmod=hashlib.md5)
 			generatedHashHex = generatedHash.hexdigest()
 			generatedHashLength = len(generatedHashHex) * 4
 			generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)
@@ -150,7 +150,7 @@ class packetProcessing:
 			print("Received Hash: ", receivedHash)
 
 			# Generated hash from received data
-			generatedHash = hmac.new(secretKey, bytes(binaryData[0:64], 'utf-8'), hashlib.md5)
+			generatedHash = hmac.new(secretKey, bytes(binaryData[0:64], 'utf-8'), digestmod=hashlib.md5)
 			generatedHashHex = generatedHash.hexdigest()
 			generatedHashLength = len(generatedHashHex) * 4
 			generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)

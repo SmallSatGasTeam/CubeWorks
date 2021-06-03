@@ -114,7 +114,7 @@ def prepareData(duration, dataType, startFrom):
 	progressFile.close()
 	txDataFile.close()
 
-def preparePicture(duration, dataType, pictureNumber):
+def preparePicture(duration, dataType, pictureNumber, index):
 	if dataType == 3: #HQ Picture
 		cam = Camera()
 		cam.compressHighResToFiles(pictureNumber)
@@ -142,7 +142,10 @@ def preparePicture(duration, dataType, pictureNumber):
 	progressFile = open(progressFilePath) #Opens progress file as read only
 	progressList = progressFile.read().splitlines()
 	# If Start From Beginning flag is false, set transmissionProgress to the last transmitted packet. Else, set to true to start from beginning.
-	transmissionProgress = int(progressList[dataType])
+	if(index == -1):
+		transmissionProgress = int(progressList[dataType])
+	else:
+		transmissionProgress = 0
 
 	fileChecker.checkFile(dataFilePath)
 	pictureFile = open(dataFilePath, 'rb')

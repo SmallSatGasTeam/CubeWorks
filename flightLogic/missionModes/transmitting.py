@@ -113,7 +113,7 @@ class Transmitting:
                         print("Preparing data")
                     else:
                         print("Transimtting.py:", self.__duration, self.__datatype, self.__pictureNumber)
-                        prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber)
+                        prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__index)
                     break
                  #I decearsed the wait time because we were missing windows.
                 await asyncio.sleep(5)

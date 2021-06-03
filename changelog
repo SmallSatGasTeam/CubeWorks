@@ -161,3 +161,21 @@ be repoerted.
 #23 <Added AX25 packet> "TXISR/packetProcessing.py" Lines: 30-61, 119-122
     Gave packet processing the ability to process an AX25 packet and
     immediately spit it back out.
+
+#24 <Updated TXServiceCode to skip lines and deal with \n>
+    "TXISR/TXServiceCode/TXServiceCode.c" Lines 235-253, 417
+    Changed the program to return -1 if it's a bad character and then to skip
+    the entire line rather than just the single character. Additionally added
+    a break statement to allow it to better handle new line characters.
+
+#25 <Made packetProcessing a class> "TXISR/packetProcessing.py" Throughout
+    Took the collection of functions and put them into a class so that we could
+    keep some of the variables across all of the functions.
+
+#25 <Added skip to packetProcessing> "TXISR/packetPRocessing.py" Lines 322-332
+    Adjusted packetProcessing so that if it receives skip to post boom, it will
+    change the boot records to 4. The skip function checks this to see if the
+    boot records are at 4. This has been implemented into each mission mode
+    as a test on when to cancel all tasks and end the mission mode.
+
+#26 <Added
