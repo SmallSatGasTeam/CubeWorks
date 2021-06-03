@@ -41,10 +41,10 @@ class Camera(Driver):
         self.cam.resolution = self.lowRes
         sleep(2)
         makedirs(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes", exist_ok=True)
-        self.cam.capture(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/LowResOriginal"+str(self.pictureNumber)+".jpeg")
+        self.cam.capture(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/LowResOriginal"+str(self.pictureNumber)+".jpg")
         self.cam.resolution = self.highRes
         makedirs(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes", exist_ok=True)
-        self.cam.capture(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".jpeg")
+        self.cam.capture(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".jpg")
         return self.pictureNumber
 
     def compressLowResToFiles(self, pictureNumber):
@@ -53,7 +53,7 @@ class Camera(Driver):
         """
         self.pictureNumber = pictureNumber
         #Set up paths for low res picture and creates the packets directory
-        lowResOriginalPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/LowResOriginal"+str(self.pictureNumber)+".jpeg"
+        lowResOriginalPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/LowResOriginal"+str(self.pictureNumber)+".jpg"
         lowResSSDVPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/LowResOriginal"+str(self.pictureNumber)+".bin"
         print("before compress")
         ssdv_lowRes_picture = system('sudo /home/pi/ssdv/ssdv -e ' + str(lowResOriginalPath) + ' ' + str(lowResSSDVPath))
@@ -65,7 +65,7 @@ class Camera(Driver):
         self.pictureNumber = pictureNumber
 
         #Set up paths for high res picture and creates the packets directory
-        highResOriginalPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".jpeg"
+        highResOriginalPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".jpg"
         highResSSDVPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".bin"
 
         ssdv_highRes_picture = system('sudo /home/pi/ssdv/ssdv -e ' + str(highResOriginalPath) + ' ' + str(highResSSDVPath))
