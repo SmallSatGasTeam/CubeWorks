@@ -11,7 +11,7 @@ class Queue():
 
     def enqueue(self, data):
         self.__fileChecher.checkFile(self.__filepath)
-        self.__fileChecher.windowProtection()
+        #self.__fileChecher.windowProtection()
         file = open(self.__filepath, "a+") 
         file.write(str(data) + "\n")
         file.close()
@@ -25,7 +25,7 @@ class Queue():
         line = []
         minLine = ""
         self.__fileChecher.checkFile(self.__filepath)
-        self.__fileChecher.windowProtection()
+        #self.__fileChecher.windowProtection()
         file = open(self.__filepath, "r") 
         contents = file.read().splitlines()
         file.close()
@@ -44,7 +44,7 @@ class Queue():
                         minLine = i
             contents.remove(minLine)
             self.__fileChecher.checkFile(self.__filepath)
-            self.__fileChecher.windowProtection()
+            #self.__fileChecher.windowProtection()
             file = open(self.__filepath, "w")
             if(not delete):
                 file.write(minLine + "\n")
@@ -61,7 +61,7 @@ class Queue():
 
     def clearQueue(self):
         self.__fileChecher.checkFile(self.__filepath)
-        self.__fileChecher.windowProtection()
+        #self.__fileChecher.windowProtection()
         file = open(self.__filepath, "w")
         file.close()
 
