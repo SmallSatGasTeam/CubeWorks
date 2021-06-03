@@ -15,11 +15,7 @@ from flightLogic.missionModes import *
 from protectionProticol.fileProtection import FileReset
 import asyncio
 from TXISR import pythonInterrupt
-<<<<<<< HEAD
-from TXISR.packetProcessing import packetProcessing as packet
-=======
 from TXISR.packetProcessing import packetProcessing
->>>>>>> 9eb15215694fd365c7fee63706934c3c224ea10c
 
 
 # from TXISR import interrupt
@@ -36,11 +32,7 @@ from TXISR.packetProcessing import packetProcessing
 # NOTE: DO NOTE record safe mode in the bootRecords file
 ##################################################################################################################
 fileChecker = FileReset()
-<<<<<<< HEAD
-packetProcessing = packet()
-=======
 packet = packetProcessing()
->>>>>>> 9eb15215694fd365c7fee63706934c3c224ea10c
 
 def __main__():
 	asyncio.run(executeFlightLogic())
@@ -85,11 +77,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	if lastMode not in range(0,7): #Mission Mode invalid
 		lastMode = 0
 		antennaDeployed = False
-<<<<<<< HEAD
-	if packetProcessing.__skippingToPostBoom: # Check if we're skipping to Post Boom Deploy
-=======
 	if packet.skip(): # Check if we're skipping to Post Boom Deploy
->>>>>>> 9eb15215694fd365c7fee63706934c3c224ea10c
 		lastMode = 4
 		antennaDeployed = True
 	recordData(bootCount, antennaDeployed, lastMode)
@@ -120,11 +108,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 
 	recordData(bootCount, antennaDeployed, lastMode)
 
-<<<<<<< HEAD
-	if packetProcessing.__skippingToPostBoom: # Check if we're skipping to Post Boom Deploy
-=======
 	if packet.skip(): # Check if we're skipping to Post Boom Deploy
->>>>>>> 9eb15215694fd365c7fee63706934c3c224ea10c
 		lastMode = 4
 	if not antennaDeployed:
 		await asyncio.gather(antennaDeploy.run())
@@ -153,12 +137,8 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	while True: # This loop executes the rest of the flight logic
 	# pre boom deploy
 		print("Entered the loop that chooses the next mission mode.")
-<<<<<<< HEAD
-		if packetProcessing.__skippingToPostBoom: # Check if we're skipping to Post Boom Deploy
-=======
 		if packet.skip(): # Check if we're skipping to Post Boom Deploy
 			print("Skipping to post boom")
->>>>>>> 9eb15215694fd365c7fee63706934c3c224ea10c
 			lastMode = 4
 			recordData(bootCount, antennaDeployed, lastMode)  # Save into files
 		if antennaDeployed == True and lastMode not in (3,4):
