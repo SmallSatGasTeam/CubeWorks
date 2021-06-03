@@ -157,7 +157,6 @@ class FileReset():
 
             # This is the TX flag, don't put limits on it
             TXflagStripped = window[4].strip('\n')
-            print("STRIP: ", TXflagStripped)
             if (not isinstance(int(TXflagStripped), int)) or int(window[4]) < -1:
                 TXwindows[count] = ""
                 continue
