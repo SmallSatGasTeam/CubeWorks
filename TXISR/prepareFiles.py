@@ -159,6 +159,7 @@ def preparePicture(duration, dataType, pictureNumber):
 			substringOfData += pictureContent[0:position].decode()
 		else: #Nominal situation
 			position=position+128
+		print("Writing:", str(dataSize).zfill(10)+':'+substringOfData+'\n')
 		txDataFile.write(str(dataSize).zfill(10)+':'+substringOfData+'\n')
 		dataSize+=1
 
