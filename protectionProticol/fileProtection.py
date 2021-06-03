@@ -127,10 +127,10 @@ class FileReset():
             print("THIS IS THE WINDOW: ", window)
 
             # Check if window has five elements
-            print("LENGTH OF WINDOW IS: ", len(window))
             if len(window) != 5:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = "BADLINE\n"
+                print("First if broke it")
                 #line = file.writelines("BADLINE\n")
                 continue
 
@@ -140,6 +140,7 @@ class FileReset():
             if (not isinstance(window[0], int)) or window[0] < 0 or len(window[0]) != 10:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = "BADLINE\n"
+                print("Second if broke it")
                 # = file.writelines("BADLINE\n")
                 continue
 
@@ -147,6 +148,7 @@ class FileReset():
             if (not isinstance(window[1], int)) or window[1] < 0 or window[1] > 80:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = "BADLINE\n"
+                print("Third if broke it")
                 #line = file.writelines("BADLINE\n")
                 continue
 
@@ -154,12 +156,14 @@ class FileReset():
             if (not isinstance(window[2], int)) or window[2] < 0 or window[2] > 5:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = "BADLINE\n"
+                print("Fourth if broke it")
                 #line = file.writelines("BADLINE\n")
                 continue
 
             # This is the picture number (not number of pictures), don't put limits on it
             if (not isinstance(window[3], int)) or window[3] < 0:
                 TXwindows[count] = "BADLINE\n"
+                print("Fifth if broke it")
                 #line = file.writelines("BADLINE\n")
                 continue
 
