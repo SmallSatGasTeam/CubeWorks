@@ -112,6 +112,7 @@ class Transmitting:
                         prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
                         print("Preparing data")
                     else:
+                        print("Transimtting.py:", self.__duration, self.__datatype, self.__pictureNumber)
                         prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber)
                     break
                  #I decearsed the wait time because we were missing windows.
