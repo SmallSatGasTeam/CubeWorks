@@ -127,6 +127,7 @@ class FileReset():
             print("THIS IS THE WINDOW: ", window)
 
             # Check if window has five elements
+            print("LENGTH OF WINDOW IS: ", len(window))
             if len(window) != 5:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = "BADLINE\n"
