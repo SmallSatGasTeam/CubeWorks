@@ -124,7 +124,7 @@ class FileReset():
             # Check if window has five elements
             if len(window) != 5:
                 # If not then erase it and skip current iteration
-                line = file.writelines("BADLINE")
+                line = file.writelines("BADLINE\n")
                 continue
 
             # All of these are checking if values are positive integers
