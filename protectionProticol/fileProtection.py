@@ -123,7 +123,7 @@ class FileReset():
             if line == "":
                 continue
             window = line.split(',')
-            print(window)
+            print("THIS IS THE WINDOW: ", window)
 
             # Check if window has five elements
             if len(window) != 5:
