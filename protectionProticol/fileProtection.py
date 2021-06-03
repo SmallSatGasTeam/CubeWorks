@@ -132,7 +132,7 @@ class FileReset():
             # Check if timestamp is ten characters long
             if (not isinstance(window[0], int)) or window[0] < 0 or len(window[0]) != 10:
                 # If not then erase it and skip current iteration
-                line = '/n'
+                line = 'BAD LINE'
                 continue
 
             # Check if window length is less than or equal to eighty
