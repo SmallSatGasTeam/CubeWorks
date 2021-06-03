@@ -239,7 +239,7 @@ int main(int argc,char* argv[])
             //If we receive a bad value
             if(temp == -1){
                 char trash[256];
-                fscanf("%s", trash); //We pull the rest of the line and throw it away
+                fscanf(txFile, "%s", trash); //We pull the rest of the line and throw it away
 
                 //Then empty the array
                 for(int i = 0; i < 256; i++){
