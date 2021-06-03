@@ -157,7 +157,7 @@ class FileReset():
                 line = file.writelines("BADLINE")
                 continue
 
-        # for line in TXwindows:
-        #     if line == "/n":
-        #         del line
+        for line in TXwindows:
+            if line == "BADLINE":
+                del line
         file.close()
