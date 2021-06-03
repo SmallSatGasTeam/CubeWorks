@@ -2,13 +2,13 @@ import serial
 import asyncio
 import sys
 sys.path.append('../')
-from TXISR.packetProcessing import packetProcessing as process
+from TXISR.packetProcessing import packetProcessing
 from protectionProticol.fileProtection import FileReset
 from time import sleep
 
 
 fileChecker = FileReset()
-packetProcessing = process()
+packet = packetProcessing()
 
 """
 This file sets up the interrupt process. Every five seconds, the buffer of the serial port at /dev/serial0 is read.
@@ -51,9 +51,9 @@ async def interrupt():
 					leftovers = ''
 				for command in commands:
 					# print(command)
-					await packetProcessing.processPacket(command) #Process Command Packets
+					await packet.processPacket(command) #Process Command Packets
 				for ax25 in ax25Packets:
-					await packetProcessing.processPacket(ax25) #Process AX.25 Packets
+					await packet.processPacket(ax25) #Process AX.25 Packets
 				print("Made it all the way. Leftovers: ", leftovers)
 				serialport.reset_input_buffer()
 				await asyncio.sleep(5)

@@ -56,8 +56,8 @@ class antennaMode:
 		
 		eps=EPS()
 		#If ground station has sent command to skip to post boom
-		if await self.skipToPostBoom():
-			return True	#Finish this mode and move on
+		# if await self.skipToPostBoom():
+		# 	return True	#Finish this mode and move on
 		while True: #Runs antenna deploy loop
 			if (eps.getBusVoltage()>self.deployVoltage): #If the bus voltage is high enough
 				await asyncio.gather(self.__antennaDeployer.deployPrimary()) #Fire Primary Backup Resistor
@@ -105,9 +105,15 @@ class antennaMode:
 		Skips to postBoomDeploy mode if the command is received from the ground
 		station.
 		"""
+<<<<<<< HEAD
 		print("Inside skipToPostBoom, skipping value is:", packetProcessing.__skippingToPostBoom)
 		#If the command has been received to skip to postBoom
 		if packetProcessing.__skippingToPostBoom:
+=======
+		print("Inside skipToPostBoom, skipping value is:", packetProcessing.skip())
+		#If the command has been received to skip to postBoom
+		if packetProcessing.skip():
+>>>>>>> 9eb15215694fd365c7fee63706934c3c224ea10c
 			self.cancelAllTasks(self.__tasks) #Cancel all tasks
 			return True #Finish this mode and move on
 		else:

@@ -63,8 +63,13 @@ class boomMode:
 			print("Caught thrown exception in cancelling background task")
 
 	async def skipToPostBoom(self):
+<<<<<<< HEAD
 		print("Inside skipToPostBoom, skipping value is:", packetProcessing.__skippingToPostBoom)
 		if packetProcessing.__skippingToPostBoom:
+=======
+		print("Inside skipToPostBoom, skipping value is:", packetProcessing.skip())
+		if packetProcessing.skip():
+>>>>>>> 9eb15215694fd365c7fee63706934c3c224ea10c
 			self.cancelAllTasks(self.__tasks)
 			return True
 		else:

@@ -54,13 +54,17 @@ class preBoomMode:
 
 		while True: #iterate through array, checking for set amount of dark minutes, then set amount of light minutes no greater than the maximum. When light minutes are greater than the maximum, empties array
 			if await self.skipToPostBoom():
-				print("Exiting postBoomDeploy through skipToPostBoom")
+				print("Exiting preBoomDeploy through skipToPostBoom")
 				return True
 			i=0
 			darkLength = 0
 			lastDark = 0
+<<<<<<< HEAD
 			#print(self.sunlightData)
 			print("Skipping to post boom is", packetProcessing.__skippingToPostBoom)
+=======
+			# print(self.sunlightData)
+>>>>>>> 9eb15215694fd365c7fee63706934c3c224ea10c
 			while i < len(self.sunlightData): #Loop through sunlightData, checking for X minutes of darkness
 				if(self.sunlightData[i]<self.darkVoltage):
 					darkLength+=1 #It was in the dark for the 5 seconds recorded in the ith position of sunlightData
@@ -162,8 +166,13 @@ class preBoomMode:
 			print("Caught thrown exception in cancelling background task")
 	
 	async def skipToPostBoom(self):
+<<<<<<< HEAD
 		print("Inside skipToPostBoom, skipping value is:", packetProcessing.__skippingToPostBoom)
 		if packetProcessing.__skippingToPostBoom:
+=======
+		print("Inside skipToPostBoom, skipping value is:", packetProcessing.skip())
+		if packetProcessing.skip():
+>>>>>>> 9eb15215694fd365c7fee63706934c3c224ea10c
 			self.cancelAllTasks(self.__tasks)
 			return True
 		else:

@@ -20,6 +20,7 @@ from TXISR.transmitionQueue import Queue
 from flightLogic.missionModes.transmitting import Transmitting
 import subprocess
 import asyncio
+import linecache
 
 fileChecker = FileReset()
 windows = Queue('/home/pi/TXISRData/txWindows.txt')
@@ -27,7 +28,7 @@ windows = Queue('/home/pi/TXISRData/txWindows.txt')
 
 class packetProcessing:
 	def __init__(self):
-		self.__skippingToPostBoom = False
+		self.__bootRecordsPath = ("/home/pi/flightLogicData/bootRecords.txt")
 		self.__filePaths = ["/home/pi/CubeWorks0/TXISR/", "/home/pi/CubeWorks1/TXISR/", "/home/pi/CubeWorks2/TXISR/", "/home/pi/CubeWorks3/TXISR/", "/home/pi/CubeWorks4/TXISR/"]
 
 	async def processAX25(self, AX25):  #Placeholder function
@@ -212,13 +213,18 @@ class packetProcessing:
 					print("Turn on AX25")
 					self.enableAX25()
 
-				if binaryData[56:64] == '00000000':
-					#Chose whether or not to skip to post boom deploy
-					print("Running flight logic normally.")
-					self.__skippingToPostBoom = False
-				else:
-					print("Skipping to post boom deploy.")
-					self.__skippingToPostBoom = True
+				fileChecker.checkFile(self.__bootRecordsPath)
+				reboots = int(linecache.getline(self.__bootRecordsPath, 1))
+				skip = int(linecache.getline(self.__bootRecordsPath, 3))
+				if skip != 4:
+					if binaryData[56:64] == '00000000':
+						#Chose whether or not to skip to post boom deploy
+						print("Running flight logic normally.")
+					else:
+						print("Skipping to post boom deploy.")
+						bootRecords = open(self.__bootRecordsPath, 'w+')
+						bootRecords.write(str(reboots) + "\n1\n4\n")
+						bootRecords.close()
 			else:
 				print("Hashes do not match, will not execute commands!")
 
@@ -313,6 +319,17 @@ class packetProcessing:
 		progressFile.write('0\n')
 		progressFile.write('0\n')
 
+	def skip(self):
+		fileChecker.checkFile(self.__bootRecordsPath)
+		bootRecords = open(self.__bootRecordsPath, "r")
+		bootRecords.readline()
+		bootRecords.readline()
+		skip = int(bootRecords.readline())
+		bootRecords.close()
+		if skip == 4:
+			return True
+		else:
+			return False
 
 	# Command packet
 	# processPacket('C8')
