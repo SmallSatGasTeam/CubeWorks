@@ -93,7 +93,7 @@ int main(int argc,char* argv[])
         dataType = changeCharToInt(*argv[1]);
         printf("DataType: %d\n", dataType);
     }
-    else dataType = changeCharToInt(127);
+    else dataType = changeCharToInt(-1);
     //DEBUG_P(Made it past the problem spot)
     int transmissionWindow = 0;
     char sendingData[(MAX_NUM_OF_DATA_TYPES / 2)] = {0}; 
@@ -224,12 +224,33 @@ int main(int argc,char* argv[])
 
         while((ch != '\n') && (!feof(txFile)) && (chl != '\n'))
         {
+            char temp;
             //if(feof(txFile)) break;
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
             ch = fgetc(txFile);
             chl = fgetc(txFile);
-            line[charCount++] = convertCharToHex(chl, ch);
+            /*If we hit a new line character, break out of the loop so we don't
+            ever run the code beneath it*/
+            if((ch == '\n') || (chl == '\n')){
+                break;
+            }
+            else temp = convertCharToHex(chl, ch);
+            //If we receive a bad value
+            if(temp == -1){
+                char trash[256];
+                fscanf(txFile, "%s", trash); //We pull the rest of the line and throw it away
+
+                //Then empty the array
+                for(int i = 0; i < 256; i++){
+                    line[i] = 0;
+                }
+
+                break;  //Then break from the loop
+            }
+            else {
+                line[charCount++] = temp;
+            }
             // PRINT_DEBUG_c(ch)
             // PRINT_DEBUG_c(chl)
             // PRINT_DEBUG(charCount)
@@ -259,13 +280,13 @@ int main(int argc,char* argv[])
             //this will let us print to the file
             int written = 0;
             //this stores the last sent data time
-            if(!(dataType == 127)){
+            if(!(dataType == -1)){
                 flags[dataType] = atoi(timeStamp);
             }
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence.
             //this stores the last sent data time
-            if(!(dataType == 127)){
+            if(!(dataType == -1)){
                 flags[dataType] = atoi(timeStamp);
             }
             PRINT_LONG(flags[dataType])
@@ -393,7 +414,7 @@ int changeCharToInt(char a)
                 DEBUG_P(invaild data type)
                 PRINT_DEBUG_c(a)
                 printf("A in int form: %d\n", a);
-                return 127;
+                return -1;
             }
     }
 }
@@ -409,8 +430,8 @@ char convertCharToHex (char lowByte, char highByte)
     char low = changeCharToInt(lowByte);
     char high = changeCharToInt(highByte);
     //shift high and add it to low.
-    char new = 127;
-    if(!((low == 127) || (high == 127))) {
+    char new = -1;
+    if(!((low == -1) || (high == -1))) {
         new = low + (high << 4);
     }
     return new;
