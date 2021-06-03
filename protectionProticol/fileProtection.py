@@ -120,6 +120,7 @@ class FileReset():
         TXwindows = file.readlines()
         for line in TXwindows:
             window = line.split(',')
+            print(window)
 
             # Check if window has five elements
             if len(window) != 5:
