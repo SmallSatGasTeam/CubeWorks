@@ -147,11 +147,13 @@ def preparePicture(duration, dataType, pictureNumber):
 	fileChecker.checkFile(dataFilePath)
 	pictureFile = open(dataFilePath, 'rb')
 	pictureContent = hexlify(pictureFile.read()) #Picture content is now a string with the hex data of the file in it
+	print("The picture content is:", pictureContent)
 	dataSize = 0
 	position = transmissionProgress*128
 
 	while dataSize < numPackets: #NOTE: @SHAWN THIS WILL BREAK IF THE FILE IS LESS THAN 128 bytes
 		substringOfData = pictureContent[position:position+128].decode()
+		print("The substring of Data is: ", substringOfData)
 		if(len(substringOfData)<128): #EOF - Loop back to start
 			position = 128-len(substringOfData)
 			substringOfData += pictureContent[0:position].decode()
