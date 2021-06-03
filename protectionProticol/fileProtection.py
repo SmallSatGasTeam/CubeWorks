@@ -137,7 +137,7 @@ class FileReset():
             # All of these are checking if values are positive integers
 
             # Check if timestamp is ten characters long
-            if (not isinstance(window[0], int)) or window[0] < 0 or len(window[0]) != 10:
+            if (not isinstance(int(window[0]), int)) or window[0] < 0 or len(window[0]) != 10:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = "BADLINE\n"
                 print("Second if broke it")
