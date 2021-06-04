@@ -60,6 +60,7 @@ class packetProcessing:
 			AX25Flag = AX25Flag_File.readline()
 			print(AX25Flag)
 			print(">>>About to enter infinite loop.")
+			print(timeToNextWindow -time.time())
 			if (timeToNextWindow - time.time() >= 25) and (not self.__transmit.isRunning()):	
 				if AX25Flag == "Enabled":
 					print(">>>Processing AX25 Packet")

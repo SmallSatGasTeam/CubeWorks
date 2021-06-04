@@ -93,16 +93,16 @@ def parseData(data, bracket): #Takes data string, in the form of hex, from async
 
 def searchAX25(data): #Finds AX.25 packets stored in the data string, which is a string of hex. Removes it from data, returns AX.25 packet and modified data
 	try:
-		prefix = '7e'
-		postfix = '7e'
+		flag = '7e'
 		changed = False
 		modifiedString = ''
 		content = []
-		startIndex = data.find(prefix)
-		endIndex = data.find(postfix)
+		modifiedString = ''
+		startIndex = data.find(flag)
+		endIndex = data.find(flag, 2)
 		if startIndex is not -1:
 			#AX25 prefix exists
-			endIndex = data.find(postfix, startIndex+17)
+			# endIndex = data.find(postfix, startIndex+17) I don't know why this was here, this seems to require it to be super long but Shawn said that when in doubt read it in and spit it back out
 			if endIndex is not -1:
 				#Both exist
 				content = data[startIndex:endIndex+len(postfix)]
