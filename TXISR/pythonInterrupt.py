@@ -91,7 +91,7 @@ def parseData(data, bracket): #Takes data string, in the form of hex, from async
 		print("Failed in parse Data. Error:", e)
 		return 0, 0, 0
 
-def searchAX25(data): #Finds AX.25 packets stored in the data string, which is a string of hex. Removes it from data, returns AX.25 packet and modified data
+def searchAX25(data): #Finds AX.25 packets stored in the data string, which is a string of hex. Removes it from data, returns AX.25 packet, modified data and whether or not anything was changed
 	try:
 		flag = '7e'
 		changed = False
