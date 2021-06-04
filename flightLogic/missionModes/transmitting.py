@@ -105,8 +105,8 @@ class Transmitting:
                 print("sendData is empty.")
 
             if (not self.__inProgress) and (self.__sendData != []):
-                await self.transmissionRunning()
-
+                asyncio.tasks.create_task(self.transmissionRunning())
+                
             print("Time to next window:", self.__timeToNextWindow)
             await asyncio.sleep(5)
     

@@ -138,7 +138,7 @@ class FileReset():
                 TXwindows[count] = ""
                 continue
 
-            # Check if window length is less than or equal to eighty
+            # Check if window length is less than or equal to 3600
             if (not isinstance(int(window[1]), int)) or int(window[1]) < 0 or int(window[1]) > 3600:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
