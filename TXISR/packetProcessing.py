@@ -64,7 +64,7 @@ class packetProcessing:
 				if AX25Flag == "Enabled":
 					print(">>>Processing AX25 Packet")
 					txDataFile.write("10000\n")
-					txDataFile.write(AX25 + "\n") #Write to txData.
+					txDataFile.write("0000000000:" + AX25 + "\n") #Write to txData.
 					txDataFile.close()
 					subprocess.Popen(['sudo', './TXService.run'], cwd = str(txisrCodePath + "TXServiceCode/")) #This might not work
 				elif AX25Flag == "Disabled":
