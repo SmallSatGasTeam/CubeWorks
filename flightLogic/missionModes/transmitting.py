@@ -74,6 +74,9 @@ class Transmitting:
                 self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
                 self.__data = []
                 self.__sendData = []
+            elif self.__queue.dequeue(0) == -1:
+                self.__timeToNextWindow = 3133728366
+
 
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
             print(self.__data)
@@ -106,7 +109,7 @@ class Transmitting:
 
             if (not self.__inProgress) and (self.__sendData != []):
                 asyncio.tasks.create_task(self.transmissionRunning())
-                
+
             print("Time to next window:", self.__timeToNextWindow)
             await asyncio.sleep(5)
     
