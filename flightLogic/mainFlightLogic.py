@@ -32,7 +32,6 @@ from TXISR.packetProcessing import packetProcessing
 # NOTE: DO NOTE record safe mode in the bootRecords file
 ##################################################################################################################
 fileChecker = FileReset()
-packet = packetProcessing()
 
 def __main__():
 	asyncio.run(executeFlightLogic())
@@ -50,6 +49,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	attitudeData = getDriverData.AttitudeData(saveObject)
 	safeModeObject = safe.safe(saveObject)
 	transmitObject = Transmitting(codeBase)
+	packet = packetProcessing(transmitObject)
 
 	print('Starting data collection') #Setting up Background tasks for BOOT mode
 	tasks=[]
