@@ -93,8 +93,8 @@ def parseData(data, bracket): #Takes data string, in the form of hex, from async
 
 def searchAX25(data): #Finds AX.25 packets stored in the data string, which is a string of hex. Removes it from data, returns AX.25 packet and modified data
 	try:
-		prefix = '7e'
-		postfix = '7e'
+		prefix = '7e7e7e7e7e7e7e7e7e'
+		postfix = '7e7e7e7e'
 		changed = False
 		modifiedString = ''
 		content = []
