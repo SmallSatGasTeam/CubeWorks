@@ -8,7 +8,6 @@ from time import sleep
 
 
 fileChecker = FileReset()
-packet = packetProcessing()
 
 """
 This file sets up the interrupt process. Every five seconds, the buffer of the serial port at /dev/serial0 is read.
@@ -17,7 +16,8 @@ TODO: Implement AX.25 digipeating, probably in packetProcessing.py
 To defray the possibility of half a packet being in the buffer, any half-packets are stored and evaluated the next time around
 """
 
-async def interrupt():
+async def interrupt(transmitObject):
+	packet = packetProcessing(transmitObject)
 	fileChecker.fullReset()
 	try:
 		serialport = serial.Serial('/dev/serial0', 115200) #Open serial port. Currently /dev/serial0, might change to the PL011 port for flight article
