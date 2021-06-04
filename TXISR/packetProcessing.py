@@ -57,15 +57,17 @@ class packetProcessing:
 			transmissionFilePath = txisrCodePath + 'data/txFile.txt' #File path to txFile. This is where data will be stored
 			fileChecker.checkFile(transmissionFilePath)	
 			txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
+			AX25Flag = AX25Flag_File.readline()
+			print(AX25Flag)
 			print(">>>About to enter infinite loop.")
 			if (timeToNextWindow - time.time() >= 25) and (not self.__transmit.isRunning()):	
-				if AX25Flag_File.readlines() == "Enabled":
+				if AX25Flag == "Enabled":
 					print(">>>Processing AX25 Packet")
-					txDataFile.write("10000")
+					txDataFile.write("10000\n")
 					txDataFile.write(AX25) #Write to txData.
 					txDataFile.close()
 					subprocess.Popen(['sudo', './TXService.run'], cwd = str(txisrCodePath + "TXServiceCode/")) #This might not work
-				elif AX25Flag_File.readlines() == "Disabled":
+				elif AX25Flag == "Disabled":
 					print(">>>AX25 Packets are disabled")
 				else:
 					print(">>>AX25Flag.txt contains unrecognized data")
