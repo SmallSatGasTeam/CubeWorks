@@ -23,7 +23,7 @@ char branchCommand4 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXService
 
 char upDateCommand [] = "cd ; cd CubeWorks0/ ; gcc upDateCode.c -o upDateCode.exe ; cp upDateCode.exe ~/ ; rm upDateCode.exe";
 
-char testingCommand [] = "cd ; cd CubeWorks0/ ; gcc setNewTXWindow.c -o setNewTXWindow.exe ; sudo cp setNewTXWindow.exe ~/TXISRData ; rm setNewTXWindow.exe";
+char testingCommand [] = "cd ; cd CubeWorks0/ ; gcc setNewTXWindow.c -o setNewTXWindow.exe ; mkdir ../TXISRData; sudo cp setNewTXWindow.exe ~/TXISRData/setNewTXWindow.exe ; rm setNewTXWindow.exe";
 
 
 
