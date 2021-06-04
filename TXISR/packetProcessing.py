@@ -73,7 +73,7 @@ class packetProcessing:
 					print(">>>AX25Flag.txt contains unrecognized data")
 		except Exception as e:
 			print(">>>Error in AX25 processing:", e)
-		print(">>>txFile.txt is full or next txWindow is too close to transmit")
+			print(">>>txFile.txt is full or next txWindow is too close to transmit")
 		await asyncio.sleep(3)
 
 		AX25Flag_File.close()
@@ -139,7 +139,7 @@ class packetProcessing:
 		elif binaryData[0:8] == "01111110":
 			# This is an AX25 packet
 			print("AX25 Packet")
-			await self.processAX25(binaryData)
+			await self.processAX25(packetData)
 
 
 		else:
