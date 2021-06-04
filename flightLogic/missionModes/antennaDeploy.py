@@ -17,8 +17,6 @@ from TXISR import pythonInterrupt
 from TXISR.packetProcessing import packetProcessing as packet
 
 
-packetProcessing = packet()
-
 
 class antennaMode:
 	"""
@@ -37,6 +35,7 @@ class antennaMode:
 		self.__antennaDeployer = BackupAntennaDeployer()
 		self.__antennaDoor = AntennaDoor()
 		self.__transmit = transmitObject
+		self.__packetProcessing = packet(transmitObject)
 
 
 	async def run(self):
@@ -105,9 +104,9 @@ class antennaMode:
 		Skips to postBoomDeploy mode if the command is received from the ground
 		station.
 		"""
-		print("Inside skipToPostBoom, skipping value is:", packetProcessing.skip())
+		print("Inside skipToPostBoom, skipping value is:", self.__packetProcessing.skip())
 		#If the command has been received to skip to postBoom
-		if packetProcessing.skip():
+		if self.__packetProcessing.skip():
 			self.cancelAllTasks(self.__tasks) #Cancel all tasks
 			return True #Finish this mode and move on
 		else:

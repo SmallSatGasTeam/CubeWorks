@@ -10,7 +10,6 @@ from TXISR.packetProcessing import packetProcessing as packet
 from DummyDrivers.boomDeployer.BoomDeployer import BoomDeployer as DummyBoomDeployer
 
 DONTMURDERBEN = True
-packetProcessing = packet()
 
 class boomMode:
 	def __init__(self, saveObject, safeModeObject, transmitObject):
@@ -21,6 +20,7 @@ class boomMode:
 		self.__safeMode = safeModeObject
 		self.__saveObject = saveObject
 		self.__transmit = transmitObject
+		self.__packetProcessing = packet(transmitObject)
 
 	async def run(self):
 		# Setting up background processes
@@ -63,8 +63,8 @@ class boomMode:
 			print("Caught thrown exception in cancelling background task")
 
 	async def skipToPostBoom(self):
-		print("Inside skipToPostBoom, skipping value is:", packetProcessing.skip())
-		if packetProcessing.skip():
+		print("Inside skipToPostBoom, skipping value is:", self.__packetProcessing.skip())
+		if self.__packetProcessing.skip():
 			self.cancelAllTasks(self.__tasks)
 			return True
 		else:
