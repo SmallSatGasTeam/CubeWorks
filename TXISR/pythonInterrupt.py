@@ -105,9 +105,9 @@ def searchAX25(data): #Finds AX.25 packets stored in the data string, which is a
 			# endIndex = data.find(postfix, startIndex+17) I don't know why this was here, this seems to require it to be super long but Shawn said that when in doubt read it in and spit it back out
 			if endIndex is not -1:
 				#Both exist
-				content = data[startIndex:endIndex+len(postfix)]
+				content = data[startIndex:endIndex+len(flag)]
 				changed = True
-				modifiedString = data[0:startIndex] + data[endIndex+len(postfix):]
+				modifiedString = data[0:startIndex] + data[endIndex+len(flag):]
 		return content, modifiedString, changed
 	except Exception as e:
 		print("Error in search AX25, Error", e)
