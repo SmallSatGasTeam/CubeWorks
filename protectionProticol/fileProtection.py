@@ -42,10 +42,10 @@ class FileReset():
             file.write("0\n0\n0\n0\n0\n")
             file.close()
         if self.__filePath == "/home/pi/TXISRData/transmissionFlag.txt" or self.__filePath == "../../transmissionFlag.txt":
-            file.write("Enabled\n")
+            file.write("Enabled")
             file.close()
         if self.__filePath == "/home/pi/TXISRData/AX25Flag.txt" or self.__filePath == "../../AX25Flag.txt":
-            file.write("Disabled\n")
+            file.write("Disabled")
             file.close()
         # This closes the file so it is no longer being edited
     
