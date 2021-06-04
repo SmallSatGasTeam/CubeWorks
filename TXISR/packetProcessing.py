@@ -27,9 +27,10 @@ windows = Queue('/home/pi/TXISRData/txWindows.txt')
 #These file paths are slightly different from the ones in transmitting.py
 
 class packetProcessing:
-	def __init__(self):
+	def __init__(self, transmitObject):
 		self.__bootRecordsPath = ("/home/pi/flightLogicData/bootRecords.txt")
 		self.__filePaths = ["/home/pi/CubeWorks0/TXISR/", "/home/pi/CubeWorks1/TXISR/", "/home/pi/CubeWorks2/TXISR/", "/home/pi/CubeWorks3/TXISR/", "/home/pi/CubeWorks4/TXISR/"]
+		self.__transmit = transmitObject
 
 	async def processAX25(self, AX25):  #Placeholder function
 		"""
@@ -55,11 +56,12 @@ class packetProcessing:
 			txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
 			print(">>>About to enter infinite loop.")
 			while True:
-				if timeToNextWindow - time.time() >= 25:	
+				if (timeToNextWindow - time.time() >= 25) and (not self.__transmit.isRunning()):	
 					if AX25Flag_File.readlines() == "Enabled":
 						print(">>>Processing AX25 Packet")
 						txDataFile.write("10000")
 						txDataFile.write(AX25) #Write to txData.
+						txDataFile.close()
 						subprocess.Popen(['sudo', './TXService.run'], cwd = str(txisrCodePath + "TXServiceCode/")) #This might not work
 						break
 

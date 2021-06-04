@@ -45,6 +45,7 @@ class Transmitting:
         self.__codeBase = codeBase
         self.__data = []
         self.__sendData = []
+        self.__inProgress = False
 
 
     async def readNextTransferWindow(self):
@@ -61,7 +62,9 @@ class Transmitting:
             while (self.__queue.dequeue(0) < time.time()) and (self.__queue.dequeue(0) != -1):
                 self.__queue.dequeue(1)
             #20 seconds before
-            if (self.__queue.dequeue(0) - time.time() <= 20) and (self.__queue.dequeue(0) != -1) and (self.__data == []) and (self.__queue.dequeue(0) > 0):
+            if ((self.__queue.dequeue(0) - time.time() <= 20) and 
+                (self.__queue.dequeue(0) != -1) and (self.__data == []) and 
+                (self.__queue.dequeue(0) > 0) and (not self.__inProgress)):
                 #pull the packet
                 line = self.__queue.dequeue(1)
                 self.__data = line.split(',')
@@ -101,6 +104,9 @@ class Transmitting:
             else:
                 print("sendData is empty.")
 
+            if (not self.__inProgress) and (self.__sendData != []):
+                await self.transmissionRunning()
+
             print("Time to next window:", self.__timeToNextWindow)
             await asyncio.sleep(5)
     
@@ -114,8 +120,7 @@ class Transmitting:
                 print("Transmit time to next window:", self.__timeToNextWindow)
                 #if close enough, prep files
                 #wait until 5 seconds before, return True
-                if (self.__timeToNextWindow != -1) and (self.__timeToNextWindow < 20) and (self.__timeToNextWindow >= 0):
-                    print("Self.__timeToNextWindow is less than 14.")
+                if (self.__timeToNextWindow != -1) and (self.__timeToNextWindow < 14) and (self.__timeToNextWindow >= 0):
                     if self.__datatype < 3: #Attitude, TTNC, or Deployment data respectively
                         prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
                         print("Preparing data")
@@ -142,6 +147,14 @@ class Transmitting:
                         print("Transmission flag is not enabled")
 
                 await asyncio.sleep(.01)
+
+    async def transmissionRunning(self):
+        self.__inProgress = True
+        await asyncio.sleep(self.__duration + 5)
+        self.__inProgress = False
+
+    def isRunning(self):
+        return self.__inProgress
 
     def timeToNextWindow(self):
         return self.__timeToNextWindow
