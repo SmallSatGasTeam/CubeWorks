@@ -48,29 +48,27 @@ class packetProcessing:
 			baseFile = open("/home/pi/lastBase.txt")
 			codeBase = int(baseFile.read())
 			txisrCodePath = self.__filePaths[codeBase]
-			timeToNextWindow = int(windows.dequeue(0))
+			if windows.dequeue(0) != -1:
+				timeToNextWindow = int(windows.dequeue(0))
+			else:
+				timeToNextWindow = 999999999999999
 			print(">>>Initialized all variables.")
 
 			transmissionFilePath = txisrCodePath + 'data/txFile.txt' #File path to txFile. This is where data will be stored
 			fileChecker.checkFile(transmissionFilePath)	
 			txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
 			print(">>>About to enter infinite loop.")
-			while True:
-				if (timeToNextWindow - time.time() >= 25) and (not self.__transmit.isRunning()):	
-					if AX25Flag_File.readlines() == "Enabled":
-						print(">>>Processing AX25 Packet")
-						txDataFile.write("10000")
-						txDataFile.write(AX25) #Write to txData.
-						txDataFile.close()
-						subprocess.Popen(['sudo', './TXService.run'], cwd = str(txisrCodePath + "TXServiceCode/")) #This might not work
-						break
-
-					elif AX25Flag_File.readlines() == "Disabled":
-						print(">>>AX25 Packets are disabled")
-						break
-					else:
-						print(">>>AX25Flag.txt contains unrecognized data")
-						break
+			if (timeToNextWindow - time.time() >= 25) and (not self.__transmit.isRunning()):	
+				if AX25Flag_File.readlines() == "Enabled":
+					print(">>>Processing AX25 Packet")
+					txDataFile.write("10000")
+					txDataFile.write(AX25) #Write to txData.
+					txDataFile.close()
+					subprocess.Popen(['sudo', './TXService.run'], cwd = str(txisrCodePath + "TXServiceCode/")) #This might not work
+				elif AX25Flag_File.readlines() == "Disabled":
+					print(">>>AX25 Packets are disabled")
+				else:
+					print(">>>AX25Flag.txt contains unrecognized data")
 		except Exception as e:
 			print(">>>Error in AX25 processing:", e)
 		print(">>>txFile.txt is full or next txWindow is too close to transmit")
