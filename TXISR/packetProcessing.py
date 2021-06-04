@@ -139,7 +139,7 @@ class packetProcessing:
 		elif binaryData[0:8] == "01111110":
 			# This is an AX25 packet
 			print("AX25 Packet")
-			self.processAX25(binaryData)
+			await self.processAX25(binaryData)
 
 
 		else:
