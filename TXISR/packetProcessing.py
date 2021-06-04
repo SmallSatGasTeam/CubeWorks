@@ -262,7 +262,7 @@ class packetProcessing:
 		transmissionFlag_File = open("/home/pi/TXISRData/transmissionFlag.txt", "w")
 		
 		# write the data to the file,
-		transmissionFlag_File.write("Disabled")
+		transmissionFlag_File.write("Disabled\n")
 		
 		# close the file
 		transmissionFlag_File.close()
@@ -273,7 +273,7 @@ class packetProcessing:
 		transmissionFlag_File = open("/home/pi/TXISRData/transmissionFlag.txt", "w")
 		
 		# write the data to the file,
-		transmissionFlag_File.write("Enabled")
+		transmissionFlag_File.write("Enabled\n")
 		
 		# close file
 		transmissionFlag_File.close()
@@ -284,7 +284,7 @@ class packetProcessing:
 		AX25Flag_File = open("/home/pi/TXISRData/AX25Flag.txt", "w")
 		
 		# write the data to the file,
-		AX25Flag_File.write("Disabled")
+		AX25Flag_File.write("Disabled\n")
 		
 		# close the file
 		AX25Flag_File.close()
@@ -295,7 +295,7 @@ class packetProcessing:
 		AX25Flag_File = open("/home/pi/TXISRData/AX25Flag.txt", "w")
 		
 		# write the data to the file,
-		AX25Flag_File.write("Enabled")
+		AX25Flag_File.write("Enabled\n")
 		
 		# close file
 		AX25Flag_File.close()
