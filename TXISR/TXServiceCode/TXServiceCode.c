@@ -89,13 +89,10 @@ int main(int argc,char* argv[])
     //gather user input
     int dataType;
     int writeFlag;
-    if(argc == 3) {
+    if(argc == 2) {
         printf("About to convert char to int: %s %c\n", argv[1], *argv[1]);
         dataType = changeCharToInt(*argv[1]);
         printf("DataType: %d\n", dataType);
-        writeFlag = argv[2];
-        if(writeFlag) printf("We'll write to the flag file.\n");
-        else printf("Flag file will not be written to.\n");
     }
     else dataType = changeCharToInt(-1);
     //DEBUG_P(Made it past the problem spot)
@@ -304,7 +301,7 @@ int main(int argc,char* argv[])
                     
                         //delete the existing data
                         //fclose(recordFile);
-                        if ((recordFile = fopen(FLAG_FILE,"w")) && writeFlag)
+                        if (recordFile = fopen(FLAG_FILE,"w"))
                         {
                             //if succesfull we will print it and set the written to true else we will try again.
                             //reprint it

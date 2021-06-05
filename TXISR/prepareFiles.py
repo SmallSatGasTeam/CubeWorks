@@ -71,9 +71,8 @@ def prepareData(duration, dataType, startFrom):
 	#This is where the new code starts_________________________________________
 	dataFile.close()
 	#If -1 is passed to StartFrom then search for the furthest transmitted data
-	eof = 0
 	if startFrom == -1:
-		print("We're starting from the beginning now.")
+		print("Transmitting from last transmission")
 		lineNumber = 0
 		progressFile.seek(transmissionProgress)
 		lineNumber = progressFile.tell()
@@ -91,7 +90,6 @@ def prepareData(duration, dataType, startFrom):
 			if line == "":
 				print("At the end of the file")
 				lineNumber = 1
-				eof = 1
 				#Why do we need continue if we're not skipping anything?
 				continue
 			else:
@@ -102,7 +100,7 @@ def prepareData(duration, dataType, startFrom):
 				#Does this line need to be here? Woudln't it just do nothing? 
 				continue
 	else:
-		print("Preparing file that doesn't hit the end.", startFrom)
+		print("Preparing file from line.", startFrom)
 		dataSize = 0
 		lineNumber = startFrom
 	
@@ -112,7 +110,6 @@ def prepareData(duration, dataType, startFrom):
 				txDataFile.write(line)
 				dataSize+=1
 				lineNumber = 2
-				eof = 1
 			else:
 				line = linecache.getline(dataFilePath, lineNumber)
 				txDataFile.write(line)
@@ -121,8 +118,6 @@ def prepareData(duration, dataType, startFrom):
 
 	progressFile.close()
 	txDataFile.close()
-
-	return eof
 
 def preparePicture(duration, dataType, pictureNumber, index):
 	if dataType == 3: #HQ Picture
