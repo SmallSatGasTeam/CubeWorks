@@ -46,6 +46,7 @@ class Transmitting:
         self.__data = []
         self.__sendData = []
         self.__inProgress = False
+        self.__writeFlag = 1
 
 
     async def readNextTransferWindow(self):
@@ -125,7 +126,7 @@ class Transmitting:
                 #wait until 5 seconds before, return True
                 if (self.__timeToNextWindow != -1) and (self.__timeToNextWindow < 14) and (self.__timeToNextWindow >= 0):
                     if self.__datatype < 3: #Attitude, TTNC, or Deployment data respectively
-                        prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
+                        self.__writeFlag = not prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
                         print("Preparing data")
                     else:
                         print("Transimtting.py:", self.__duration, self.__datatype, self.__pictureNumber)
@@ -134,6 +135,7 @@ class Transmitting:
                  #I decearsed the wait time because we were missing windows.
                 await asyncio.sleep(5)
             while True:
+                print("Checking whether or not to transmit")
                 #I added a neg time buff as well incase we are a little late gettering here
                 if (self.__timeToNextWindow <= 5) and (self.__timeToNextWindow > -5):
                     fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
@@ -142,9 +144,14 @@ class Transmitting:
                         txisrCodePath = filePaths[self.__codeBase]
                         #These two are old code that we may potentially have to come back to
                         #subprocess.Popen([txisrCodePath, str(self.__datatype)])
-                        subprocess.Popen(['sudo', './TXService.run', str(self.__datatype)], cwd = str(txisrCodePath))
+                        print("About to run the C code.")
+                        try:
+                            subprocess.Popen(['sudo', './TXService.run', str(self.__datatype), str(self.__writeFlag)], cwd = str(txisrCodePath))
+                        except Exception as e:
+                            print("Error:", e)
                         #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype))
                         self.__timeToNextWindow = -1
+                        self.__writeFlag = 1
                         break
                     else:
                         print("Transmission flag is not enabled")

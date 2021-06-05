@@ -88,15 +88,19 @@ int main(int argc,char* argv[])
     DEBUG_P(Made it past all of these variable instantiations)
     //gather user input
     int dataType;
-    if(argc == 2) {
+    int writeFlag;
+    if(argc == 3) {
         printf("About to convert char to int: %s %c\n", argv[1], *argv[1]);
         dataType = changeCharToInt(*argv[1]);
         printf("DataType: %d\n", dataType);
+        writeFlag = argv[2];
+        if(writeFlag) printf("We'll write to the flag file.\n");
+        else printf("Flag file will not be written to.\n");
     }
     else dataType = changeCharToInt(-1);
     //DEBUG_P(Made it past the problem spot)
     int transmissionWindow = 0;
-    char sendingData[(MAX_NUM_OF_DATA_TYPES / 2)] = {0}; 
+    char sendingData[(MAX_NUM_OF_DATA_TYPES / 2)] = {0};
 
 
     FILE *txFile;
@@ -300,7 +304,7 @@ int main(int argc,char* argv[])
                     
                         //delete the existing data
                         //fclose(recordFile);
-                        if (recordFile = fopen(FLAG_FILE,"w"))
+                        if ((recordFile = fopen(FLAG_FILE,"w")) && writeFlag)
                         {
                             //if succesfull we will print it and set the written to true else we will try again.
                             //reprint it
