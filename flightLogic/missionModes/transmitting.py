@@ -127,6 +127,7 @@ class Transmitting:
                     if self.__datatype < 3: #Attitude, TTNC, or Deployment data respectively
                         prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
                         print("Preparing data")
+                        break
                     else:
                         print("Transimtting.py:", self.__duration, self.__datatype, self.__pictureNumber)
                         prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__index)
