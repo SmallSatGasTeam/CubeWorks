@@ -93,7 +93,7 @@ int main(int argc,char* argv[])
         printf("About to convert char to int: %s %c\n", argv[1], *argv[1]);
         dataType = changeCharToInt(*argv[1]);
         printf("DataType: %d\n", dataType);
-        writeFlag = atoi(argv[2]);
+        writeFlag = argv[2];
         if(writeFlag) printf("We'll write to the flag file.\n");
         else printf("Flag file will not be written to.\n");
     }
