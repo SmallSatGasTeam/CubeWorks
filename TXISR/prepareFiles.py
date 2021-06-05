@@ -72,6 +72,7 @@ def prepareData(duration, dataType, startFrom):
 	dataFile.close()
 	#If -1 is passed to StartFrom then search for the furthest transmitted data
 	if startFrom == -1:
+		print("We're starting from the beginning now.")
 		lineNumber = 0
 		progressFile.seek(transmissionProgress)
 		lineNumber = progressFile.tell()
@@ -87,26 +88,30 @@ def prepareData(duration, dataType, startFrom):
 			it be better just to filler data so we knew exactly what to look
 			for in extra data?"""
 			if line == "":
+				print("At the end of the file")
 				lineNumber = 1
 				#Why do we need continue if we're not skipping anything?
 				continue
 			else:
+				print("In the middle of the file")
 				txDataFile.write(line)
 				dataSize += 1
 				lineNumber += 1
 				#Does this line need to be here? Woudln't it just do nothing? 
 				continue
 	else:
+		print("Preparing file that doesn't hit the end.", startFrom)
 		dataSize = 0
 		lineNumber = startFrom
 	
 		while dataSize < numPackets:
-			line = linecache.getline(dataFilePath, lineNumber)
 			if (line == "") | (lineNumber == 0):
 				line = linecache.getline(dataFilePath, 1)
 				txDataFile.write(line)
 				dataSize+=1
+				lineNumber = 2
 			else:
+				line = linecache.getline(dataFilePath, lineNumber)
 				txDataFile.write(line)
 				lineNumber+=1
 				dataSize+=1
