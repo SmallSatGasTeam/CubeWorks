@@ -126,18 +126,13 @@ class Transmitting:
                 if (self.__timeToNextWindow != -1) and (self.__timeToNextWindow < 14) and (self.__timeToNextWindow >= 0):
                     if self.__datatype < 3: #Attitude, TTNC, or Deployment data respectively
                         prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
-                        print("Preparing data")
                     else:
                         print("Transimtting.py:", self.__duration, self.__datatype, self.__pictureNumber)
                         prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__index)
-                    print("Hitting break")
                     break
                  #I decearsed the wait time because we were missing windows.
-                print("sleeping")
                 await asyncio.sleep(5)
-            print("Finsihed preparing Data")
             while True:
-                print("Looking for transfer window now.")
                 #I added a neg time buff as well incase we are a little late gettering here
                 if (self.__timeToNextWindow <= 5) and (self.__timeToNextWindow > -5):
                     fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
