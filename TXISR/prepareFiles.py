@@ -93,7 +93,6 @@ def prepareData(duration, dataType, startFrom):
 				txDataFile.write(line)
 				dataSize += 1
 				lineNumber += 1
-				finalLine = lineNumber
 				#Does this line need to be here? Woudln't it just do nothing? 
 				continue
 	else:
@@ -111,12 +110,9 @@ def prepareData(duration, dataType, startFrom):
 				txDataFile.write(line)
 				lineNumber+=1
 				dataSize+=1
-				finalLine = lineNumber
 
 	progressFile.close()
 	txDataFile.close()
-	print("Going to return:", finalLine)
-	return finalLine
 
 def preparePicture(duration, dataType, pictureNumber, index):
 	if dataType == 3: #HQ Picture
