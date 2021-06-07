@@ -69,7 +69,6 @@ def prepareData(duration, dataType, startFrom):
 		print("not enough data")
 		return
 	#This is where the new code starts_________________________________________
-	dataFile.close()
 	#If -1 is passed to StartFrom then search for the furthest transmitted data
 	if startFrom == -1:
 		print("Starting from last transmitted line.")
@@ -82,6 +81,7 @@ def prepareData(duration, dataType, startFrom):
 		except Exception as e:
 			print("Error:", e)
 		print("The lineNumber found is", lineNumber)
+		dataFile.close()
 
 		dataSize = 0
 		while dataSize < numPackets:
