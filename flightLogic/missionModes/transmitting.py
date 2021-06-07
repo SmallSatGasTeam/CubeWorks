@@ -82,7 +82,7 @@ class Transmitting:
             print(self.__data)
             try:
                 #If the data list isn't empty
-                if (self.__data != []) or (self.__data != ['']):
+                if self.__data != []:
                     print(float(self.__data[0]), float(self.__data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
                     #If the time to next window is less than 10
                     if(float(self.__data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME): #If the transfer window is at BUFFER_TIME milliseconds in the future
