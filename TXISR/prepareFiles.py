@@ -75,6 +75,7 @@ def prepareData(duration, dataType, startFrom):
 		print("Starting from last transmitted line.")
 		lineNumber = 0
 		for index, line in enumerate(progressFile):
+			print("Index:", index, "Line:", int(line[1:9]))
 			if int(line[1:9]) == transmissionProgress:
 				lineNumber = int(index)
 		print("The lineNumber found is", lineNumber)
