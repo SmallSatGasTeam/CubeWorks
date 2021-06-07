@@ -73,14 +73,12 @@ def prepareData(duration, dataType, startFrom):
 	if startFrom == -1:
 		print("Starting from last transmitted line.")
 		lineNumber = 0
-		try:
-			for index, line in enumerate(dataFile):
-				print("Index:", index, "Line:", int(line[1:10]), "Searching for:", transmissionProgress)
-				if int(line[1:10]) == transmissionProgress:
-					print("Found the correct line")
-					lineNumber = int(index) + 1
-		except Exception as e:
-			print("Error:", e)
+		for index, line in enumerate(dataFile):
+			print("Index:", index, "Line:", int(line[1:10]), "Searching for:", transmissionProgress)
+			if int(line[1:10]) == transmissionProgress:
+				print("Found the correct line")
+				lineNumber = int(index) + 1
+				break
 		print("The lineNumber found is", lineNumber)
 		dataFile.close()
 
