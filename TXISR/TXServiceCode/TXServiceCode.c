@@ -251,6 +251,9 @@ int main(int argc,char* argv[])
             }
             else {
                 line[charCount++] = temp;
+                if((dataType == 3) || (dataType == 4)) {
+                    
+                }
             }
             // PRINT_DEBUG_c(ch)
             // PRINT_DEBUG_c(chl)

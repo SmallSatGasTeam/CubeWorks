@@ -155,7 +155,9 @@ def preparePicture(duration, dataType, pictureNumber, index):
 	pictureFile = open(dataFilePath, 'rb')
 	pictureContent = hexlify(pictureFile.read()) #Picture content is now a string with the hex data of the file in it
 	dataSize = 0
+	print("Transmission progress is:", transmissionProgress)
 	position = transmissionProgress*128
+	print("Position is:", position)
 
 	while dataSize < numPackets: #NOTE: @SHAWN THIS WILL BREAK IF THE FILE IS LESS THAN 128 bytes
 		substringOfData = pictureContent[position:position+128].decode()
