@@ -24,12 +24,12 @@ def prepareData(duration, dataType, startFrom):
 	elif (dataType == 1): #TTNC Data
 		packetLength = 92 + 14 #Packet length in bytes plus the 7 GASPACS bytes on each end
 		fileChecker.checkFile('/home/pi/flightLogicData/TTNC_Data.txt')
-		dataFilePath = ('/home/pi/flightLogicData/TTNC_Data.txt') #Set data file path to respective file		
+		dataFilePath = ('/home/pi/flightLogicData/TTNC_Data.txt') #Set data file path to respective file	
 		print("TTNC Data selected")
 	else: #Deploy Data
 		packetLength = 25 + 14 #Packet length in bytes plus the 7 GASPACS bytes on each end
 		fileChecker.checkFile('/home/pi/flightLogicData/Deploy_Data.txt')
-		dataFilePath = ('/home/pi/flightLogicData/Deploy_Data.txt') #Set data file path to respective file		
+		dataFilePath = ('/home/pi/flightLogicData/Deploy_Data.txt') #Set data file path to respective file
 		print("Deploy Data selected")
 	minFileSize = packetLength*2+12 #Minimum characters in file
 
@@ -72,47 +72,47 @@ def prepareData(duration, dataType, startFrom):
 	dataFile.close()
 	#If -1 is passed to StartFrom then search for the furthest transmitted data
 	if startFrom == -1:
+		print("Starting from last transmitted line.")
 		lineNumber = 0
 		progressFile.seek(transmissionProgress)
 		lineNumber = progressFile.tell()
+		print("The lineNumber found is", lineNumber)
 
 		dataSize = 0
 		while dataSize < numPackets:
 			line = linecache.getline(dataFilePath, lineNumber)
-			"""What's the purpose of this if statement? I can tell that it's
-			checking to make sure that we don't hit the end of the file, but
-			why does it go back to the beginning of the file? I'm guessing
-			that it's just because we need to send the exact same size of packet
-			and needed filler data. But why go back to the beginning? wouldn't
-			it be better just to filler data so we knew exactly what to look
-			for in extra data?"""
-			if line == "":
+			if (line == "") | (lineNumber == 0):
+				print("End of the line, resetting.")
 				lineNumber = 1
-				#Why do we need continue if we're not skipping anything?
 				continue
 			else:
 				txDataFile.write(line)
 				dataSize += 1
 				lineNumber += 1
+				finalLine = lineNumber
 				#Does this line need to be here? Woudln't it just do nothing? 
 				continue
 	else:
 		dataSize = 0
 		lineNumber = startFrom
+		print("Starting from the provided line:", lineNumber)
 	
 		while dataSize < numPackets:
 			line = linecache.getline(dataFilePath, lineNumber)
 			if (line == "") | (lineNumber == 0):
-				line = linecache.getline(dataFilePath, 1)
-				txDataFile.write(line)
-				dataSize+=1
+				print("At the end of the file, going back to the beginning")
+				lineNumber = 1
+				continue
 			else:
 				txDataFile.write(line)
 				lineNumber+=1
 				dataSize+=1
+				finalLine = lineNumber
 
 	progressFile.close()
 	txDataFile.close()
+	print("Going to return:", finalLine)
+	return finalLine
 
 def preparePicture(duration, dataType, pictureNumber, index):
 	if dataType == 3: #HQ Picture
