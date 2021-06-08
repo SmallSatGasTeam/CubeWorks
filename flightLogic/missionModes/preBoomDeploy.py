@@ -11,8 +11,6 @@ from inspect import currentframe, getframeinfo
 from TXISR.packetProcessing import packetProcessing as packet
 
 
-packetProcessing = packet()
-
 sunSensorMin = 0.0
 sunSensorMax = 3.3
 getBusVoltageMin = 3.5
