@@ -155,12 +155,13 @@ def preparePicture(duration, dataType, pictureNumber, index):
 	position = transmissionProgress*128
 	print("Position is:", position)
 	gaspacsHex = str(b'GASPACS'.hex())
+	position += gaspacsHex.encode()
 
 	while dataSize < numPackets: #NOTE: @SHAWN THIS WILL BREAK IF THE FILE IS LESS THAN 128 bytes
 		substringOfData = pictureContent[position:position+128].decode()
 		if(len(substringOfData)<128): #EOF - Loop back to start
-			position = 0
-			substringOfData += gaspacsHex
+			position = 128-len(substringOfData)
+			substringOfData += pictureContent[0:position].decode()
 		else: #Nominal situation
 			position=position+128
 		txDataFile.write(str(transmissionProgress).zfill(10)+':'+substringOfData+'\n')
