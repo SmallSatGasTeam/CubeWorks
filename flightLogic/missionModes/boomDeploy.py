@@ -9,7 +9,7 @@ from TXISR import pythonInterrupt
 from TXISR.packetProcessing import packetProcessing as packet
 from DummyDrivers.boomDeployer.BoomDeployer import BoomDeployer as DummyBoomDeployer
 
-DONTMURDERBEN = False
+DONTMURDERBEN = True
 "safeModeObject was deleted below in the init parameters after saveObject"
 class boomMode:
 	def __init__(self, saveObject, transmitObject):
