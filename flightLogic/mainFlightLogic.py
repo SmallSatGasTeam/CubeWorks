@@ -61,10 +61,11 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	# Initialize all mission mode objects
 	# NOTE: the comms-tx is the only exception to this rule as it is to be handled differently than other mission modes
 	# NOTE: Boot Mode is defined and executed in this document, instead of a separate mission mode
-	antennaDeploy = antennaMode(saveObject", safeModeObject", transmitObject)
-	preBoomDeploy = preBoomMode(saveObject", safeModeObject", transmitObject)
-	postBoomDeploy = postBoomMode(saveObject", safeModeObject", transmitObject)
-	boomDeploy = boomMode(saveObject", safeModeObject", transmitObject)
+	"safeModeObject was deleted below in the init parameters after saveObject"
+	antennaDeploy = antennaMode(saveObject, transmitObject)
+	preBoomDeploy = preBoomMode(saveObject, transmitObject)
+	postBoomDeploy = postBoomMode(saveObject, transmitObject)
+	boomDeploy = boomMode(saveObject, transmitObject)
 
 	if(readData() == (None, None, None)):
 		print('Files are empty')
