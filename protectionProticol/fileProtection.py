@@ -124,10 +124,9 @@ class FileReset():
                 continue
             window = line.split(',')
 
-<<<<<<< HEAD
-            if type(line) is str:
-                del line
-=======
+            # if type(line) is str:
+            #     del line
+                
             for i in window:
                 shouldCont = False
                 try:
@@ -138,7 +137,6 @@ class FileReset():
                     
             if shouldCont:
                 continue
->>>>>>> c8bb0bbf15ab5d4ba2a54fa4e775938b25cc3d30
 
             # Check if window has five elements
             if len(window) != 5:
