@@ -126,8 +126,12 @@ class FileReset():
 
             # if type(line) is str:
             #     del line
-                
+             
             for i in window:
+                if type(window[i]) is str:
+                    TXwindows[count] = ""
+                else:
+                    continue
                 shouldCont = False
                 try:
                     int(window[i])
