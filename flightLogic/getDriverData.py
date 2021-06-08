@@ -517,6 +517,7 @@ class AttitudeData():
 	async def collectAttitudeData(self):
 		# Data collection loop
 		while True:
+			print("This is where we are stuck")
 			# Get Attitude data
 			await self.getData()
 			# Write data to file
