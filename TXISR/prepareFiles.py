@@ -157,7 +157,7 @@ def preparePicture(duration, dataType, pictureNumber, index):
 
 	while dataSize < numPackets: #NOTE: @SHAWN THIS WILL BREAK IF THE FILE IS LESS THAN 128 bytes
 		substringOfData = pictureContent[position:position+256].decode()
-		if(len(substringOfData)<128): #EOF - Loop back to start
+		if(len(substringOfData)<256): #EOF - Loop back to start
 			position = 256-len(substringOfData)
 			substringOfData += pictureContent[0:position].decode()
 		else: #Nominal situation
