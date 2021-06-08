@@ -48,6 +48,7 @@ class boomMode:
 			return True
 
 		try:
+			print("Taking picture")
 			cam.takePicture()
 		except Exception as e:
 			print("Failed to take a picture because we received excpetion:", repr(e))

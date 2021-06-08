@@ -405,7 +405,7 @@ class DeployData():
 	async def collectDeployData(self):
 		# Data collection loop
 		while True:
-			print("We are also stuck in this one")
+			#print("We are also stuck in this one")
 			# Get Deploy data
 			await self.getData()
 			# Write data to file
@@ -518,7 +518,6 @@ class AttitudeData():
 	async def collectAttitudeData(self):
 		# Data collection loop
 		while True:
-			print("This is where we are stuck")
 			# Get Attitude data
 			await self.getData()
 			# Write data to file
