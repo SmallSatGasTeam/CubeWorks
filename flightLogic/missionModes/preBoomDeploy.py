@@ -5,7 +5,7 @@ from flightLogic.getDriverData import *
 from Drivers.eps import EPS as EPS
 from Drivers.sunSensors import sunSensorDriver
 """DO NOT PUSH "from DummyDrivers.sunSensors import sunSensorDriver as DummySunSensorDriver" TO MASTER! THIS IS FOR TESTING PURPOSES ONLY."""
-from DummyDrivers.sunSensors import sunSensorDriver as DummySunSensorDriver
+# from DummyDrivers.sunSensors import sunSensorDriver as DummySunSensorDriver
 from TXISR import pythonInterrupt
 from inspect import currentframe, getframeinfo
 from TXISR.packetProcessing import packetProcessing as packet
@@ -19,7 +19,7 @@ getBusVoltageMin = 3.5
 getBusVoltageMax = 5.1
 
 
-DummySunSensor = True
+DummySunSensor = False
 DEBUG = False
 
 
@@ -29,8 +29,8 @@ class preBoomMode:
 		self.criticalVoltage = 3.1 #Critical voltage, below this go to SAFE
 		self.darkVoltage = .1 #Average voltage from sunsors that, if below this, indicates GASPACS is in darkness
 		self.darkMinutes = .2 #How many minutes GASPACS must be on the dark side for before moving forward
-		self.lightMinimumMinutes = 1 #Minimum amount of time GASPACS must be on light side of orbit before deploying
-		self.lightMaximumMinutes = 60 #Maximum amount of time GASPACS may be on light side of orbit before deploying, must be less than 90 by a fair margin since less than half of orbit can be sun
+		# self.lightMinimumMinutes = 1 #Minimum amount of time GASPACS must be on light side of orbit before deploying
+		# self.lightMaximumMinutes = 60 #Maximum amount of time GASPACS may be on light side of orbit before deploying, must be less than 90 by a fair margin since less than half of orbit can be sun
 		self.batteryStatusOk = False
 		self.maximumWaitTime = 240 #Max time GASPACS can wait, charging batteries, before SAFEing
 		self.timeWaited = 0
@@ -57,45 +57,45 @@ class preBoomMode:
 				print("Exiting preBoomDeploy through skipToPostBoom")
 				return True
 			i=0
-			darkLength = 0
+			# darkLength = 0
 			lastDark = 0
-			# print(self.sunlightData)
-			while i < len(self.sunlightData): #Loop through sunlightData, checking for X minutes of darkness
-				if(self.sunlightData[i]<self.darkVoltage):
-					darkLength+=1 #It was in the dark for the 5 seconds recorded in the ith position of sunlightData
-					index = i
-				else:
-					if(darkLength>self.darkMinutes*12):
-						lastDark = i
-						break
-					darkLength = 0 #Maybe darkLength -=1 to avoid damage from one bad measurement? Maybe a smoother running average?
-				i+=1
+			print(self.sunlightData)
+			# while i < len(self.sunlightData): #Loop through sunlightData, checking for X minutes of darkness
+			# 	if(self.sunlightData[i]<self.darkVoltage):
+			# 		darkLength+=1 #It was in the dark for the 5 seconds recorded in the ith position of sunlightData
+			# 		index = i
+			# 	else:
+			# 		if(darkLength>self.darkMinutes*12):
+			# 			lastDark = i
+			# 			break
+			# 		darkLength = 0 #Maybe darkLength -=1 to avoid damage from one bad measurement? Maybe a smoother running average?
+			# 	i += 1
+			# if DEBUG:
+			# 	print("Dark Length: ", darkLength)
+
+
+			# print('Last Dark ' + str(lastDark))
+
+			# if lastDark != 0: #Condition from previous while loop has  been met
+			# 	q = lastDark
+			# 	lightLength = 0
+			# 	print("Now looking for min minutes of Sunlight")
+			# 	while q < len(self.sunlightData):
+			# 		if(self.sunlightData[q]>=self.darkVoltage):
+			# 			lightLength+=1
+			# 		else:
+			# 			lightLength = 0 #Maybe lightLength -=1 to avoid 1 bad measurement resetting everything
+
+			# 		if(lightLength>self.lightMaximumMinutes*12): #Has been in the light for too long
+			# 			self.sunlightData.clear() #Reset array of data
+			# 			break
+			if(lightLength>self.darkVoltage and self.batteryStatusOk==True):
+				self.cancelAllTasks(self.__tasks) #Cancel all background processes
+				print('Returning and exiting')
+				return True #Go on to Boom Deploy Mode if the battery is Ok
+			q += 1
 			if DEBUG:
-				print("Dark Length: ", darkLength)
-
-
-			print('Last Dark ' + str(lastDark))
-
-			if lastDark != 0: #Condition from previous while loop has  been met
-				q=lastDark
-				lightLength = 0
-				print("Now looking for min minutes of Sunlight")
-				while q < len(self.sunlightData):
-					if(self.sunlightData[q]>=self.darkVoltage):
-						lightLength+=1
-					else:
-						lightLength = 0 #Maybe lightLength -=1 to avoid 1 bad measurement resetting everything
-
-					if(lightLength>self.lightMaximumMinutes*12): #Has been in the light for too long
-						self.sunlightData.clear() #Reset array of data
-						break
-					if(lightLength>self.lightMinimumMinutes*12 and self.batteryStatusOk==True):
-						self.cancelAllTasks(self.__tasks) #Cancel all background processes
-						print('Returning and exiting')
-						return True #Go on to Boom Deploy Mode if the battery is Ok
-					q += 1
-				if DEBUG:
-					print("Light length: ", lightLength)
+				print("Light length: ", lightLength)
 			await asyncio.sleep(5) #Run this whole while loop every 15 seconds
 
 	async def sunCheck(self):
