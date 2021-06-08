@@ -160,7 +160,7 @@ def preparePicture(duration, dataType, pictureNumber, index):
 	position = transmissionProgress*128
 	print("Position is:", position)
 	gaspacsHex = str(b'GASPACS'.hex())
-	position += gaspacsHex.encode()
+	pictureContent += gaspacsHex
 
 	print("Line 165")
 
