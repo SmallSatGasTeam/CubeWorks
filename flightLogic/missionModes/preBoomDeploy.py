@@ -19,7 +19,7 @@ getBusVoltageMax = 5.1
 
 
 DummySunSensor = False
-DEBUG = False
+DEBUG = True
 
 
 class preBoomMode:
