@@ -127,16 +127,16 @@ class FileReset():
             # if type(line) is str:
             #     del line
                 
-            for i in window:
-                shouldCont = False
-                try:
-                    int(window[i])
-                except:
-                    TXwindows[count] = ""
-                    shouldCont = True
+            # for i in window:
+            #     shouldCont = False
+            #     try:
+            #         int(window[i])
+            #     except:
+            #         TXwindows[count] = ""
+            #         shouldCont = True
                     
-            if shouldCont:
-                continue
+            # if shouldCont:
+            #     continue
 
             # Check if window has five elements
             if len(window) != 5:
