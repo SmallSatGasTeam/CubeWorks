@@ -21,9 +21,9 @@ getBusVoltageMax = 5.1
 DummySunSensor = False
 DEBUG = False
 
-
+"safeModeObject was deleted below in the init parameters after saveObject"
 class preBoomMode:
-	def __init__(self, saveObject, safeModeObject, transmitObject):
+	def __init__(self, saveObject, transmitObject):
 		self.thresholdVoltage = 3.5 #Threshold voltage to deploy AeroBoom.
 		self.criticalVoltage = 3.1 #Critical voltage, below this go to SAFE
 		self.darkVoltage = .1 #Average voltage from sunsors that, if below this, indicates GASPACS is in darkness
@@ -38,7 +38,7 @@ class preBoomMode:
 		self.__getAttitudeData = AttitudeData(saveObject)
 		self.__tasks = [] #Will be populated with tasks
 		self.__saveOject = saveObject
-		self.__safeMode = safeModeObject
+		# self.__safeMode = safeModeObject
 		self.__packetProcessing = packet(transmitObject)
 		self.__transmit = transmitObject
 
@@ -46,7 +46,7 @@ class preBoomMode:
 		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt(self.__transmit)))
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(2))) #Pre-Boom is mode 2
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
-		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
+		# self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
 		self.__tasks.append(asyncio.create_task(self.sunCheck()))
 		self.__tasks.append(asyncio.create_task(self.batteryCheck()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
@@ -143,7 +143,7 @@ class preBoomMode:
 				self.batteryStatusOk=False
 
 				if(self.timeWaited*12 > self.maximumWaitTime): #5 seconds every wait
-						self.__safeMode.run(10) #1 hour
+						# self.__safeMode.run(10) #1 hour
 						print('Battery too low for too long. Rebooting')
 						self.timeWaited = 0
 						await asyncio.sleep(5)

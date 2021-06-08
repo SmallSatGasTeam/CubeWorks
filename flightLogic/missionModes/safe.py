@@ -18,6 +18,7 @@ import smbus
 #pass 120 for 12 hours
 #pass 24 for a day
 #####################################################################################
+"HEY WERE NOT USING THIS RIGHT NOW" 
 class safe:
 	def __init__(self, saveObject):
 		#Setup I2C bus for communication

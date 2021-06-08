@@ -9,7 +9,7 @@ from flightLogic.missionModes.antennaDeploy import antennaMode as antennaMode
 from flightLogic.missionModes.preBoomDeploy import preBoomMode
 from flightLogic.missionModes.boomDeploy import boomMode
 from flightLogic.missionModes.postBoomDeploy import postBoomMode
-from flightLogic.missionModes import safe
+# from flightLogic.missionModes import safe
 from flightLogic.missionModes.transmitting import Transmitting
 from flightLogic.missionModes import *
 from protectionProticol.fileProtection import FileReset
@@ -47,7 +47,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	# startTXISR(save)
 	ttncData = getDriverData.TTNCData(saveObject)
 	attitudeData = getDriverData.AttitudeData(saveObject)
-	safeModeObject = safe.safe(saveObject)
+	# safeModeObject = safe.safe(saveObject)
 	transmitObject = Transmitting(codeBase)
 	packet = packetProcessing(transmitObject)
 
@@ -56,15 +56,15 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	tasks.append(asyncio.create_task(pythonInterrupt.interrupt(transmitObject)))
 	tasks.append(asyncio.create_task(ttncData.collectTTNCData(0))) #Boot Mode is classified as 0
 	tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
-	tasks.append(asyncio.create_task(safeModeObject.thresholdCheck()))
+	# tasks.append(asyncio.create_task(safeModeObject.thresholdCheck()))
 
 	# Initialize all mission mode objects
 	# NOTE: the comms-tx is the only exception to this rule as it is to be handled differently than other mission modes
 	# NOTE: Boot Mode is defined and executed in this document, instead of a separate mission mode
-	antennaDeploy = antennaMode(saveObject, safeModeObject, transmitObject)
-	preBoomDeploy = preBoomMode(saveObject, safeModeObject, transmitObject)
-	postBoomDeploy = postBoomMode(saveObject, safeModeObject, transmitObject)
-	boomDeploy = boomMode(saveObject, safeModeObject, transmitObject)
+	antennaDeploy = antennaMode(saveObject", safeModeObject", transmitObject)
+	preBoomDeploy = preBoomMode(saveObject", safeModeObject", transmitObject)
+	postBoomDeploy = postBoomMode(saveObject", safeModeObject", transmitObject)
+	boomDeploy = boomMode(saveObject", safeModeObject", transmitObject)
 
 	if(readData() == (None, None, None)):
 		print('Files are empty')
