@@ -7,6 +7,7 @@ from Drivers.sunSensors import sunSensorDriver
 """DO NOT PUSH "from DummyDrivers.sunSensors import sunSensorDriver as DummySunSensorDriver" TO MASTER! THIS IS FOR TESTING PURPOSES ONLY."""
 from DummyDrivers.sunSensors import sunSensorDriver as DummySunSensorDriver
 from TXISR import pythonInterrupt
+
 from inspect import currentframe, getframeinfo
 from TXISR.packetProcessing import packetProcessing as packet
 
@@ -88,7 +89,7 @@ class preBoomMode:
 		# 			if(lightLength>self.lightMaximumMinutes*12): #Has been in the light for too long
 		# 				self.sunlightData.clear() #Reset array of data
 		# 				break
-			if ((sunlightData > self.darkVoltage) and self.batteryStatusOk == True):
+			if ((self.sunlightData > self.darkVoltage) and self.batteryStatusOk == True):
 				self.cancelAllTasks(self.__tasks) #Cancel all background processes
 				print('Returning and exiting')
 				return True #Go on to Boom Deploy Mode if the battery is Ok
