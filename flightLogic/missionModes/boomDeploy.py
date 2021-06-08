@@ -9,7 +9,7 @@ from TXISR import pythonInterrupt
 from TXISR.packetProcessing import packetProcessing as packet
 from DummyDrivers.boomDeployer.BoomDeployer import BoomDeployer as DummyBoomDeployer
 
-DONTMURDERBEN = True
+DONTMURDERBEN = False
 
 class boomMode:
 	def __init__(self, saveObject, safeModeObject, transmitObject):

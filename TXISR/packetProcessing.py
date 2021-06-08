@@ -51,7 +51,7 @@ class packetProcessing:
 			if windows.dequeue(0) != -1:
 				timeToNextWindow = int(windows.dequeue(0))
 			else:
-				timeToNextWindow = 999999999999999
+				timeToNextWindow = 3133685166
 			print(">>>Initialized all variables.")
 
 			transmissionFilePath = txisrCodePath + 'data/txFile.txt' #File path to txFile. This is where data will be stored

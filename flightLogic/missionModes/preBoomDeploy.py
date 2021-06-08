@@ -11,8 +11,6 @@ from inspect import currentframe, getframeinfo
 from TXISR.packetProcessing import packetProcessing as packet
 
 
-packetProcessing = packet()
-
 sunSensorMin = 0.0
 sunSensorMax = 3.3
 getBusVoltageMin = 3.5
@@ -40,10 +38,11 @@ class preBoomMode:
 		self.__tasks = [] #Will be populated with tasks
 		self.__saveOject = saveObject
 		self.__safeMode = safeModeObject
+		self.__packetProcessing = packet(transmitObject)
 		self.__transmit = transmitObject
 
 	async def run(self):
-		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt()))
+		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt(self.__transmit)))
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(2))) #Pre-Boom is mode 2
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
@@ -161,8 +160,8 @@ class preBoomMode:
 			print("Caught thrown exception in cancelling background task")
 	
 	async def skipToPostBoom(self):
-		print("Inside skipToPostBoom, skipping value is:", packetProcessing.skip())
-		if packetProcessing.skip():
+		print("Inside skipToPostBoom, skipping value is:", self.__packetProcessing.skip())
+		if self.__packetProcessing.skip():
 			self.cancelAllTasks(self.__tasks)
 			return True
 		else:
