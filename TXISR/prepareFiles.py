@@ -152,15 +152,18 @@ def preparePicture(duration, dataType, pictureNumber, index):
 
 	print("Line 153")
 
-	fileChecker.checkFile(dataFilePath)
-	pictureFile = open(dataFilePath, 'rb')
-	pictureContent = hexlify(pictureFile.read()) #Picture content is now a string with the hex data of the file in it
-	dataSize = 0
-	print("Transmission progress is:", transmissionProgress)
-	position = transmissionProgress*128
-	print("Position is:", position)
-	gaspacsHex = str(b'GASPACS'.hex())
-	pictureContent += gaspacsHex
+	try:
+		fileChecker.checkFile(dataFilePath)
+		pictureFile = open(dataFilePath, 'rb')
+		pictureContent = hexlify(pictureFile.read()) #Picture content is now a string with the hex data of the file in it
+		dataSize = 0
+		print("Transmission progress is:", transmissionProgress)
+		position = transmissionProgress*128
+		print("Position is:", position)
+		gaspacsHex = str(b'GASPACS'.hex())
+		pictureContent += gaspacsHex
+	except Exception as e:
+		print("Error: " + e)
 
 	print("Line 165")
 
