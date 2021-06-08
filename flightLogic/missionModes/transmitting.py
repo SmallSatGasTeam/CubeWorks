@@ -63,8 +63,8 @@ class Transmitting:
                 self.__queue.dequeue(1)
             #20 seconds before
             if ((self.__queue.dequeue(0) - time.time() <= 20) and 
-                (self.__queue.dequeue(0) != -1) and (self.__data == []) and 
-                (self.__queue.dequeue(0) > 0) and (not self.__inProgress)):
+                (self.__data == []) and (self.__queue.dequeue(0) > 0) 
+                and (not self.__inProgress)):
                 #pull the packet
                 line = self.__queue.dequeue(1)
                 self.__data = line.split(',')
