@@ -38,6 +38,7 @@ class preBoomMode:
 		self.__tasks = [] #Will be populated with tasks
 		self.__saveOject = saveObject
 		self.__safeMode = safeModeObject
+		self.__packetProcessing = packet(transmitObject)
 		self.__transmit = transmitObject
 
 	async def run(self):
@@ -159,8 +160,8 @@ class preBoomMode:
 			print("Caught thrown exception in cancelling background task")
 	
 	async def skipToPostBoom(self):
-		print("Inside skipToPostBoom, skipping value is:", packetProcessing.skip())
-		if packetProcessing.skip():
+		print("Inside skipToPostBoom, skipping value is:", self.__packetProcessing.skip())
+		if self.__packetProcessing.skip():
 			self.cancelAllTasks(self.__tasks)
 			return True
 		else:
