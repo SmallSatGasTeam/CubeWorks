@@ -111,6 +111,7 @@ def prepareData(duration, dataType, startFrom):
 				lineNumber+=1
 				dataSize+=1
 
+	print("Finished prepare files.")
 	progressFile.close()
 	txDataFile.close()
 
