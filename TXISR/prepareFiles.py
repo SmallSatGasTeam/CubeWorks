@@ -169,6 +169,7 @@ def preparePicture(duration, dataType, pictureNumber, index):
 		dataSize+=1
 		transmissionProgress += 1
 
+	print("Finished prepare files.")
 	progressFile.close() #Close files
 	pictureFile.close()
 	txDataFile.close()
