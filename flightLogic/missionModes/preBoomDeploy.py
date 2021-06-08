@@ -18,7 +18,7 @@ getBusVoltageMin = 3.5
 getBusVoltageMax = 5.1
 
 
-DummySunSensor = False
+DummySunSensor = True
 DEBUG = True
 
 
