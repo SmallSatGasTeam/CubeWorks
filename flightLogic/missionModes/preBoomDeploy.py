@@ -42,7 +42,7 @@ class preBoomMode:
 		self.__transmit = transmitObject
 
 	async def run(self):
-		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt()))
+		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt(self.__transmit)))
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(2))) #Pre-Boom is mode 2
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
