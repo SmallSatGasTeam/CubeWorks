@@ -19,7 +19,7 @@ getBusVoltageMin = 3.5
 getBusVoltageMax = 5.1
 
 
-DummySunSensor = True
+DummySunSensor = False
 DEBUG = False
 
 
@@ -34,7 +34,7 @@ class preBoomMode:
 		self.batteryStatusOk = False
 		self.maximumWaitTime = 240 #Max time GASPACS can wait, charging batteries, before SAFEing
 		self.timeWaited = 0
-		self.sunlightData = []
+		self.sunlightData = 0
 		self.__getTTNCData = TTNCData(saveObject)
 		self.__getAttitudeData = AttitudeData(saveObject)
 		self.__tasks = [] #Will be populated with tasks
@@ -52,50 +52,50 @@ class preBoomMode:
 		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.transmit()))
 
-		while True: #iterate through array, checking for set amount of dark minutes, then set amount of light minutes no greater than the maximum. When light minutes are greater than the maximum, empties array
-			if await self.skipToPostBoom():
-				print("Exiting preBoomDeploy through skipToPostBoom")
-				return True
-			i=0
-			darkLength = 0
-			lastDark = 0
-			# print(self.sunlightData)
-			while i < len(self.sunlightData): #Loop through sunlightData, checking for X minutes of darkness
-				if(self.sunlightData[i]<self.darkVoltage):
-					darkLength+=1 #It was in the dark for the 5 seconds recorded in the ith position of sunlightData
-					index = i
-				else:
-					if(darkLength>self.darkMinutes*12):
-						lastDark = i
-						break
-					darkLength = 0 #Maybe darkLength -=1 to avoid damage from one bad measurement? Maybe a smoother running average?
-				i+=1
+		# while True: #iterate through array, checking for set amount of dark minutes, then set amount of light minutes no greater than the maximum. When light minutes are greater than the maximum, empties array
+		# 	if await self.skipToPostBoom():
+		# 		print("Exiting preBoomDeploy through skipToPostBoom")
+		# 		return True
+		# 	i=0
+		# 	darkLength = 0
+		# 	lastDark = 0
+		# 	# print(self.sunlightData)
+		# 	while i < len(self.sunlightData): #Loop through sunlightData, checking for X minutes of darkness
+		# 		if(self.sunlightData[i]<self.darkVoltage):
+		# 			darkLength+=1 #It was in the dark for the 5 seconds recorded in the ith position of sunlightData
+		# 			index = i
+		# 		else:
+		# 			if(darkLength>self.darkMinutes*12):
+		# 				lastDark = i
+		# 				break
+		# 			darkLength = 0 #Maybe darkLength -=1 to avoid damage from one bad measurement? Maybe a smoother running average?
+		# 		i+=1
+		# 	if DEBUG:
+		# 		print("Dark Length: ", darkLength)
+
+
+		# 	print('Last Dark ' + str(lastDark))
+
+		# 	if lastDark != 0: #Condition from previous while loop has  been met
+		# 		q=lastDark
+		# 		lightLength = 0
+		# 		print("Now looking for min minutes of Sunlight")
+		# 		while q < len(self.sunlightData):
+		# 			if(self.sunlightData[q]>=self.darkVoltage):
+		# 				lightLength+=1
+		# 			else:
+		# 				lightLength = 0 #Maybe lightLength -=1 to avoid 1 bad measurement resetting everything
+
+		# 			if(lightLength>self.lightMaximumMinutes*12): #Has been in the light for too long
+		# 				self.sunlightData.clear() #Reset array of data
+		# 				break
+			if ((sunlightData > self.darkVoltage) and self.batteryStatusOk == True):
+				self.cancelAllTasks(self.__tasks) #Cancel all background processes
+				print('Returning and exiting')
+				return True #Go on to Boom Deploy Mode if the battery is Ok
+			q += 1
 			if DEBUG:
-				print("Dark Length: ", darkLength)
-
-
-			print('Last Dark ' + str(lastDark))
-
-			if lastDark != 0: #Condition from previous while loop has  been met
-				q=lastDark
-				lightLength = 0
-				print("Now looking for min minutes of Sunlight")
-				while q < len(self.sunlightData):
-					if(self.sunlightData[q]>=self.darkVoltage):
-						lightLength+=1
-					else:
-						lightLength = 0 #Maybe lightLength -=1 to avoid 1 bad measurement resetting everything
-
-					if(lightLength>self.lightMaximumMinutes*12): #Has been in the light for too long
-						self.sunlightData.clear() #Reset array of data
-						break
-					if(lightLength>self.lightMinimumMinutes*12 and self.batteryStatusOk==True):
-						self.cancelAllTasks(self.__tasks) #Cancel all background processes
-						print('Returning and exiting')
-						return True #Go on to Boom Deploy Mode if the battery is Ok
-					q += 1
-				if DEBUG:
-					print("Light length: ", lightLength)
+				print("Light length: ", lightLength)
 			await asyncio.sleep(5) #Run this whole while loop every 15 seconds
 
 	async def sunCheck(self):
@@ -120,7 +120,7 @@ class preBoomMode:
 				getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 				vList[0] = sunSensorMax + 1
 
-			self.sunlightData.append(max(vList))
+			self.sunlightData = max(vList)
 			await asyncio.sleep(5)
 
 	async def batteryCheck(self):
