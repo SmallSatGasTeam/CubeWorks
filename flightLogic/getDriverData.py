@@ -405,6 +405,7 @@ class DeployData():
 	async def collectDeployData(self):
 		# Data collection loop
 		while True:
+			#print("We are also stuck in this one")
 			# Get Deploy data
 			await self.getData()
 			# Write data to file

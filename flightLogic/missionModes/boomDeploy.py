@@ -9,7 +9,7 @@ from TXISR import pythonInterrupt
 from TXISR.packetProcessing import packetProcessing as packet
 from DummyDrivers.boomDeployer.BoomDeployer import BoomDeployer as DummyBoomDeployer
 
-DONTMURDERBEN = False
+DONTMURDERBEN = True
 "safeModeObject was deleted below in the init parameters after saveObject"
 class boomMode:
 	def __init__(self, saveObject, transmitObject):
@@ -33,6 +33,7 @@ class boomMode:
 		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.transmit()))
 
+		print("Starting boom deploy")
 		# Deploy boom, take picture
 		if await self.skipToPostBoom():
 			return True
@@ -48,6 +49,7 @@ class boomMode:
 			return True
 
 		try:
+			print("Taking picture")
 			cam.takePicture()
 		except Exception as e:
 			print("Failed to take a picture because we received excpetion:", repr(e))
