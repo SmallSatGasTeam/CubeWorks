@@ -124,6 +124,17 @@ class FileReset():
                 continue
             window = line.split(',')
 
+            for i in window:
+                shouldCont = False
+                try:
+                    int(window[i])
+                except:
+                    TXwindows[count] = ""
+                    shouldCont = True
+                    
+            if shouldCont:
+                continue
+
             # Check if window has five elements
             if len(window) != 5:
                 # If not then erase it and skip current iteration
@@ -166,6 +177,6 @@ class FileReset():
         file.writelines(TXwindows)
 
         for line in TXwindows:
-            if line == "BADLINE\n":
+            if line == "\n":
                 del line
         file.close()
