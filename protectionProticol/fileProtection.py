@@ -124,6 +124,9 @@ class FileReset():
                 continue
             window = line.split(',')
 
+            if type(line) is str:
+                del line
+
             # Check if window has five elements
             if len(window) != 5:
                 # If not then erase it and skip current iteration
