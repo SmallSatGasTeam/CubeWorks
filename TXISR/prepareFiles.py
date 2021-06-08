@@ -138,6 +138,8 @@ def preparePicture(duration, dataType, pictureNumber, index):
 	txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
 	txDataFile.write(str(duration*1000) + '\n') #Write first line to txData. Duration of window in milliseconds
 
+	print("Line 141")
+
 	progressFilePath = ('/home/pi/TXISRData/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
 	fileChecker.checkFile(progressFilePath)
 	progressFile = open(progressFilePath) #Opens progress file as read only
@@ -148,6 +150,8 @@ def preparePicture(duration, dataType, pictureNumber, index):
 	else:
 		transmissionProgress = 0
 
+	print("Line 153")
+
 	fileChecker.checkFile(dataFilePath)
 	pictureFile = open(dataFilePath, 'rb')
 	pictureContent = hexlify(pictureFile.read()) #Picture content is now a string with the hex data of the file in it
@@ -157,6 +161,8 @@ def preparePicture(duration, dataType, pictureNumber, index):
 	print("Position is:", position)
 	gaspacsHex = str(b'GASPACS'.hex())
 	position += gaspacsHex.encode()
+
+	print("Line 165")
 
 	while dataSize < numPackets: #NOTE: @SHAWN THIS WILL BREAK IF THE FILE IS LESS THAN 128 bytes
 		substringOfData = pictureContent[position:position+128].decode()
