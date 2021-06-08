@@ -23,15 +23,15 @@ class antennaMode:
 	Deploys the antenna when the battery voltage is high enough.
 	Instantiated in mainFlightLogic.
 	"""
-
-	def __init__(self, saveObject, safeModeObject, transmitObject):
+	"safeModeObject was deleted below in the init parameters after saveObject"
+	def __init__(self, saveObject, transmitObject):
 		self.deployVoltage = 3 #Threshold voltage to deploy
 		self.maximumWaitTime = 30 #Maximum time to wait for deployment before going to SAFE
 		self.timeWaited = 0 #Time already waited - zero
 		self.__getTTNCData = getDriverData.TTNCData(saveObject)
 		self.__getAttitudeData = getDriverData.AttitudeData(saveObject)
 		self.__tasks = [] #List will be populated with background tasks to cancel them
-		self.__safeMode = safeModeObject
+		# self.__safeMode = safeModeObject
 		self.__antennaDeployer = BackupAntennaDeployer()
 		self.__antennaDoor = AntennaDoor()
 		self.__transmit = transmitObject
@@ -48,7 +48,7 @@ class antennaMode:
 		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt(self.__transmit)))
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(1))) #Antenna deploy is mission mode 1
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
-		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck())) #Check battery conditions, run safe mode if battery drops below safe level
+		# self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck())) #Check battery conditions, run safe mode if battery drops below safe level
 		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.transmit()))
@@ -81,7 +81,7 @@ class antennaMode:
 				if await self.skipToPostBoom():
 					return True #Finish this mode and move on
 				if(self.timeWaited > self.maximumWaitTime):
-					self.__safeMode.run(10) #1 hour
+					# self.__safeMode.run(10) #1 hour
 					await asyncio.sleep(5) #This is an artifact of testing, and will not matter for the actual flight software
 				else:
 					#Wait 1 minute

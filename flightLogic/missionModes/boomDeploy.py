@@ -10,14 +10,14 @@ from TXISR.packetProcessing import packetProcessing as packet
 from DummyDrivers.boomDeployer.BoomDeployer import BoomDeployer as DummyBoomDeployer
 
 DONTMURDERBEN = False
-
+"safeModeObject was deleted below in the init parameters after saveObject"
 class boomMode:
-	def __init__(self, saveObject, safeModeObject, transmitObject):
+	def __init__(self, saveObject, transmitObject):
 		self.__getTTNCData = TTNCData(saveObject)
 		self.__getAttitudeData = AttitudeData(saveObject)
 		self.__getDeployData = DeployData(saveObject)
 		self.__tasks = []  # Empty list will be populated with all background tasks
-		self.__safeMode = safeModeObject
+		# self.__safeMode = safeModeObject
 		self.__saveObject = saveObject
 		self.__transmit = transmitObject
 		self.__packetProcessing = packet(transmitObject)
@@ -28,7 +28,7 @@ class boomMode:
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(3)))  # Boom deploy is mode 3
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__getDeployData.collectDeployData()))
-		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
+		# self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
 		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.transmit()))
