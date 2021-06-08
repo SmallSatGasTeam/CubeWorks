@@ -90,13 +90,12 @@ class preBoomMode:
 		# 				self.sunlightData.clear() #Reset array of data
 		# 				break
 		while True:
+			print("checking for sunlight")
 			if ((self.sunlightData > self.darkVoltage) and self.batteryStatusOk == True):
 				self.cancelAllTasks(self.__tasks) #Cancel all background processes
 				print('Returning and exiting')
 				return True #Go on to Boom Deploy Mode if the battery is Ok
 			q += 1
-			if DEBUG:
-				print("Light length: ", lightLength)
 			await asyncio.sleep(5) #Run this whole while loop every 15 seconds
 
 	async def sunCheck(self):
