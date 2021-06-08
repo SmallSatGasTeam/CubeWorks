@@ -8,7 +8,6 @@ from time import sleep
 
 
 fileChecker = FileReset()
-packet = packetProcessing()
 
 """
 This file sets up the interrupt process. Every five seconds, the buffer of the serial port at /dev/serial0 is read.
@@ -17,7 +16,8 @@ TODO: Implement AX.25 digipeating, probably in packetProcessing.py
 To defray the possibility of half a packet being in the buffer, any half-packets are stored and evaluated the next time around
 """
 
-async def interrupt():
+async def interrupt(transmitObject):
+	packet = packetProcessing(transmitObject)
 	fileChecker.fullReset()
 	try:
 		serialport = serial.Serial('/dev/serial0', 115200) #Open serial port. Currently /dev/serial0, might change to the PL011 port for flight article
@@ -91,23 +91,23 @@ def parseData(data, bracket): #Takes data string, in the form of hex, from async
 		print("Failed in parse Data. Error:", e)
 		return 0, 0, 0
 
-def searchAX25(data): #Finds AX.25 packets stored in the data string, which is a string of hex. Removes it from data, returns AX.25 packet and modified data
+def searchAX25(data): #Finds AX.25 packets stored in the data string, which is a string of hex. Removes it from data, returns AX.25 packet, modified data and whether or not anything was changed
 	try:
-		prefix = '7e7e7e7e7e7e7e7e7e'
-		postfix = '7e7e7e7e'
+		flag = '7e'
 		changed = False
 		modifiedString = ''
 		content = []
-		startIndex = data.find(prefix)
-		endIndex = data.find(postfix)
+		modifiedString = ''
+		startIndex = data.find(flag)
+		endIndex = data.find(flag, 2)
 		if startIndex is not -1:
 			#AX25 prefix exists
-			endIndex = data.find(postfix, startIndex+17)
+			# endIndex = data.find(postfix, startIndex+17) I don't know why this was here, this seems to require it to be super long but Shawn said that when in doubt read it in and spit it back out
 			if endIndex is not -1:
 				#Both exist
-				content = data[startIndex:endIndex+len(postfix)]
+				content = data[startIndex:endIndex+len(flag)]
 				changed = True
-				modifiedString = data[0:startIndex] + data[endIndex+len(postfix):]
+				modifiedString = data[0:startIndex] + data[endIndex+len(flag):]
 		return content, modifiedString, changed
 	except Exception as e:
 		print("Error in search AX25, Error", e)

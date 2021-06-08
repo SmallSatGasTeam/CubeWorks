@@ -17,8 +17,6 @@ from TXISR import pythonInterrupt
 from TXISR.packetProcessing import packetProcessing as packet
 
 
-packetProcessing = packet()
-
 
 class antennaMode:
 	"""
@@ -37,6 +35,7 @@ class antennaMode:
 		self.__antennaDeployer = BackupAntennaDeployer()
 		self.__antennaDoor = AntennaDoor()
 		self.__transmit = transmitObject
+		self.__packetProcessing = packet(transmitObject)
 
 
 	async def run(self):
@@ -46,7 +45,7 @@ class antennaMode:
 		thresholdcheck, skipToPostBoom, readNextTransferWindow, trasmit
 		"""
 		print('Antenna Deploy Running!')
-		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt()))
+		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt(self.__transmit)))
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(1))) #Antenna deploy is mission mode 1
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck())) #Check battery conditions, run safe mode if battery drops below safe level
@@ -105,9 +104,9 @@ class antennaMode:
 		Skips to postBoomDeploy mode if the command is received from the ground
 		station.
 		"""
-		print("Inside skipToPostBoom, skipping value is:", packetProcessing.skip())
+		print("Inside skipToPostBoom, skipping value is:", self.__packetProcessing.skip())
 		#If the command has been received to skip to postBoom
-		if packetProcessing.skip():
+		if self.__packetProcessing.skip():
 			self.cancelAllTasks(self.__tasks) #Cancel all tasks
 			return True #Finish this mode and move on
 		else:

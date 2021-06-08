@@ -27,9 +27,10 @@ windows = Queue('/home/pi/TXISRData/txWindows.txt')
 #These file paths are slightly different from the ones in transmitting.py
 
 class packetProcessing:
-	def __init__(self):
+	def __init__(self, transmitObject):
 		self.__bootRecordsPath = ("/home/pi/flightLogicData/bootRecords.txt")
 		self.__filePaths = ["/home/pi/CubeWorks0/TXISR/", "/home/pi/CubeWorks1/TXISR/", "/home/pi/CubeWorks2/TXISR/", "/home/pi/CubeWorks3/TXISR/", "/home/pi/CubeWorks4/TXISR/"]
+		self.__transmit = transmitObject
 
 	async def processAX25(self, AX25):  #Placeholder function
 		"""
@@ -47,31 +48,33 @@ class packetProcessing:
 			baseFile = open("/home/pi/lastBase.txt")
 			codeBase = int(baseFile.read())
 			txisrCodePath = self.__filePaths[codeBase]
-			timeToNextWindow = int(windows.dequeue(0))
+			if windows.dequeue(0) != -1:
+				timeToNextWindow = int(windows.dequeue(0))
+			else:
+				timeToNextWindow = 999999999999999
 			print(">>>Initialized all variables.")
 
 			transmissionFilePath = txisrCodePath + 'data/txFile.txt' #File path to txFile. This is where data will be stored
 			fileChecker.checkFile(transmissionFilePath)	
 			txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
+			AX25Flag = AX25Flag_File.readline()
+			print(AX25Flag)
 			print(">>>About to enter infinite loop.")
-			while True:
-				if timeToNextWindow - time.time() >= 25:	
-					if AX25Flag_File.readlines() == "Enabled":
-						print(">>>Processing AX25 Packet")
-						txDataFile.write("10000")
-						txDataFile.write(AX25) #Write to txData.
-						subprocess.Popen(['sudo', './TXService.run'], cwd = str(txisrCodePath + "TXServiceCode/")) #This might not work
-						break
-
-					elif AX25Flag_File.readlines() == "Disabled":
-						print(">>>AX25 Packets are disabled")
-						break
-					else:
-						print(">>>AX25Flag.txt contains unrecognized data")
-						break
+			print(timeToNextWindow -time.time())
+			if (timeToNextWindow - time.time() >= 25) and (not self.__transmit.isRunning()):	
+				if AX25Flag == "Enabled":
+					print(">>>Processing AX25 Packet")
+					txDataFile.write("10000\n")
+					txDataFile.write("0000000000:" + AX25 + "\n") #Write to txData.
+					txDataFile.close()
+					subprocess.Popen(['sudo', './TXService.run'], cwd = str(txisrCodePath + "TXServiceCode/")) #This might not work
+				elif AX25Flag == "Disabled":
+					print(">>>AX25 Packets are disabled")
+				else:
+					print(">>>AX25Flag.txt contains unrecognized data")
 		except Exception as e:
 			print(">>>Error in AX25 processing:", e)
-		print(">>>txFile.txt is full or next txWindow is too close to transmit")
+			print(">>>txFile.txt is full or next txWindow is too close to transmit")
 		await asyncio.sleep(3)
 
 		AX25Flag_File.close()
@@ -122,7 +125,7 @@ class packetProcessing:
 			print("Received Hash: ", receivedHash)
 
 			# Generated hash from received data
-			generatedHash = hmac.new(secretKey, bytes(binaryData[0:112], 'utf-8'), hashlib.md5)
+			generatedHash = hmac.new(secretKey, bytes(binaryData[0:112], 'utf-8'), digestmod=hashlib.md5)
 			generatedHashHex = generatedHash.hexdigest()
 			generatedHashLength = len(generatedHashHex) * 4
 			generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)
@@ -137,7 +140,7 @@ class packetProcessing:
 		elif binaryData[0:8] == "01111110":
 			# This is an AX25 packet
 			print("AX25 Packet")
-			self.processAX25(binaryData)
+			await self.processAX25(packetData)
 
 
 		else:
@@ -150,7 +153,7 @@ class packetProcessing:
 			print("Received Hash: ", receivedHash)
 
 			# Generated hash from received data
-			generatedHash = hmac.new(secretKey, bytes(binaryData[0:64], 'utf-8'), hashlib.md5)
+			generatedHash = hmac.new(secretKey, bytes(binaryData[0:64], 'utf-8'), digestmod=hashlib.md5)
 			generatedHashHex = generatedHash.hexdigest()
 			generatedHashLength = len(generatedHashHex) * 4
 			generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)

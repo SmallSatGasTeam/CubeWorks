@@ -88,6 +88,7 @@ int main(int argc,char* argv[])
     DEBUG_P(Made it past all of these variable instantiations)
     //gather user input
     int dataType;
+    int writeFlag;
     if(argc == 2) {
         printf("About to convert char to int: %s %c\n", argv[1], *argv[1]);
         dataType = changeCharToInt(*argv[1]);
@@ -96,7 +97,7 @@ int main(int argc,char* argv[])
     else dataType = changeCharToInt(-1);
     //DEBUG_P(Made it past the problem spot)
     int transmissionWindow = 0;
-    char sendingData[(MAX_NUM_OF_DATA_TYPES / 2)] = {0}; 
+    char sendingData[(MAX_NUM_OF_DATA_TYPES / 2)] = {0};
 
 
     FILE *txFile;

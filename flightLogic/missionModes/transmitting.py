@@ -45,6 +45,7 @@ class Transmitting:
         self.__codeBase = codeBase
         self.__data = []
         self.__sendData = []
+        self.__inProgress = False
 
 
     async def readNextTransferWindow(self):
@@ -61,29 +62,42 @@ class Transmitting:
             while (self.__queue.dequeue(0) < time.time()) and (self.__queue.dequeue(0) != -1):
                 self.__queue.dequeue(1)
             #20 seconds before
-            if (self.__queue.dequeue(0) - time.time() <= 20) and (self.__queue.dequeue(0) != -1) and (self.__data == []) and (self.__queue.dequeue(0) > 0):
+            if ((self.__queue.dequeue(0) - time.time() <= 20) and 
+                (self.__queue.dequeue(0) != -1) and (self.__data == []) and 
+                (self.__queue.dequeue(0) > 0) and (not self.__inProgress)):
                 #pull the packet
                 line = self.__queue.dequeue(1)
                 self.__data = line.split(',')
+            #If not within 20 seconds of the next time stamp
             elif ((self.__timeToNextWindow < 0) or (self.__timeToNextWindow > 20)) and (self.__queue.dequeue(0) != -1):
+                #Reset data and sendData lists, pull the time till next window from the next element in the queue
                 self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
                 self.__data = []
                 self.__sendData = []
+            elif self.__queue.dequeue(0) == -1:
+                self.__timeToNextWindow = 3133728366
+
 
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
             print(self.__data)
             try:
-                if (self.__data != []) or (self.__data != ['']):
+                #If the data list isn't empty
+                if self.__data != []:
                     print(float(self.__data[0]), float(self.__data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
+                    #If the time to next window is less than 10
                     if(float(self.__data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME): #If the transfer window is at BUFFER_TIME milliseconds in the future
+                        #If the time is greater than 0 or the soonestWindowTime is 0
                         if(soonestWindowTime == 0) or (float(self.__data[0]) - time.time()):
+                            #Assign soonest window time and assign sendData to Data
                             soonestWindowTime = float(self.__data[0]) - time.time()
                             self.__sendData = self.__data
             except Exception as e:
                 print("Error measuring transfer window:", e)
 
+            #If sendData has the right number of members
             if self.__sendData.__len__() == 5:
                 print(self.__sendData)
+                #Assign the variables appropriately
                 self.__timeToNextWindow = float(self.__sendData[0]) - time.time()
                 self.__duration = int(self.__sendData[1])
                 self.__datatype = int(self.__sendData[2])
@@ -92,6 +106,9 @@ class Transmitting:
                 self.__index = int(self.__sendData[4])
             else:
                 print("sendData is empty.")
+
+            if (not self.__inProgress) and (self.__sendData != []):
+                asyncio.tasks.create_task(self.transmissionRunning())
 
             print("Time to next window:", self.__timeToNextWindow)
             await asyncio.sleep(5)
@@ -106,14 +123,12 @@ class Transmitting:
                 print("Transmit time to next window:", self.__timeToNextWindow)
                 #if close enough, prep files
                 #wait until 5 seconds before, return True
-                if (self.__timeToNextWindow != -1) and (self.__timeToNextWindow < 20) and (self.__timeToNextWindow >= 0):
-                    print("Self.__timeToNextWindow is less than 14.")
+                if (self.__timeToNextWindow != -1) and (self.__timeToNextWindow < 14) and (self.__timeToNextWindow >= 0):
                     if self.__datatype < 3: #Attitude, TTNC, or Deployment data respectively
                         prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
-                        print("Preparing data")
                     else:
                         print("Transimtting.py:", self.__duration, self.__datatype, self.__pictureNumber)
-                        prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber)
+                        prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__index)
                     break
                  #I decearsed the wait time because we were missing windows.
                 await asyncio.sleep(5)
@@ -134,6 +149,14 @@ class Transmitting:
                         print("Transmission flag is not enabled")
 
                 await asyncio.sleep(.01)
+
+    async def transmissionRunning(self):
+        self.__inProgress = True
+        await asyncio.sleep(self.__duration + 5)
+        self.__inProgress = False
+
+    def isRunning(self):
+        return self.__inProgress
 
     def timeToNextWindow(self):
         return self.__timeToNextWindow
