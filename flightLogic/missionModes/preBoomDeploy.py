@@ -89,14 +89,14 @@ class preBoomMode:
 		# 			if(lightLength>self.lightMaximumMinutes*12): #Has been in the light for too long
 		# 				self.sunlightData.clear() #Reset array of data
 		# 				break
-			if ((self.sunlightData > self.darkVoltage) and self.batteryStatusOk == True):
-				self.cancelAllTasks(self.__tasks) #Cancel all background processes
-				print('Returning and exiting')
-				return True #Go on to Boom Deploy Mode if the battery is Ok
-			q += 1
-			if DEBUG:
-				print("Light length: ", lightLength)
-			await asyncio.sleep(5) #Run this whole while loop every 15 seconds
+		if ((self.sunlightData > self.darkVoltage) and self.batteryStatusOk == True):
+			self.cancelAllTasks(self.__tasks) #Cancel all background processes
+			print('Returning and exiting')
+			return True #Go on to Boom Deploy Mode if the battery is Ok
+		q += 1
+		if DEBUG:
+			print("Light length: ", lightLength)
+		await asyncio.sleep(5) #Run this whole while loop every 15 seconds
 
 	async def sunCheck(self):
 		"""DO NOT PUSH THIS IF STATEMENT TO MASTER. THIS IS FOR TESTING PURPOSES ONLY"""
