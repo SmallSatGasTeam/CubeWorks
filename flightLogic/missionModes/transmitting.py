@@ -70,11 +70,9 @@ class Transmitting:
                 self.__data = []
                 self.__sendData = []
                 #Reset data and sendData lists, pull the time till next window from the next element in the queue
-            if(self.__queue.dequeue(0) > 0):
+            elif(self.__queue.dequeue(0) > 0):
                 self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
             else :
-                self.__timeToNextWindow = 3133728366
-            if self.__queue.dequeue(0) == -1:
                 self.__timeToNextWindow = 3133728366
 
 
