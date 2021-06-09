@@ -131,43 +131,38 @@ class FileReset():
                 continue
 
             # All of these are checking if values are positive integers
+            # All of these use isnumeric to make sure everything is a number
 
-            # Check if all characters in timestamp are numbers
-            if (not window[0].isnumeric):
-                TXwindows[count] = ""
-                count += 1
-                continue
-            
             # Check if timestamp is ten characters long
-            if (not isinstance(int(window[0]), int)) or int(window[0]) < 0 or len(window[0]) != 10:
+            if (not window[0].isnumeric) or int(window[0]) < 0 or len(window[0]) != 10:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
                 count += 1
                 continue
 
             # Check if window length is less than or equal to 3600
-            if (not isinstance(int(window[1]), int)) or int(window[1]) < 0 or int(window[1]) > 3600:
+            if (not window[1].isnumeric) or int(window[1]) < 0 or int(window[1]) > 3600:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
                 count += 1
                 continue
 
             # Check if type is less than or equal to five
-            if (not isinstance(int(window[2]), int)) or int(window[2]) < 0 or int(window[2]) > 5:
+            if (not window[2].isnumeric) or int(window[2]) < 0 or int(window[2]) > 5:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
                 count += 1
                 continue
 
             # This is the picture number (not number of pictures), don't put limits on it
-            if (not isinstance(int(window[3]), int)) or int(window[3]) < 0:
+            if (not window[3].isnumeric) or int(window[3]) < 0:
                 TXwindows[count] = ""
                 count += 1
                 continue
 
             # This is the TX flag, don't put limits on it
             TXflagStripped = window[4].strip('\n')
-            if (not isinstance(int(TXflagStripped), int)) or int(window[4]) < -1:
+            if (not TXflagStripped.isnumeric) or int(window[4]) < -1:
                 TXwindows[count] = ""
                 count += 1
                 continue
