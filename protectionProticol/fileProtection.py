@@ -142,7 +142,8 @@ class FileReset():
             print(window, len(window))
             if len(window) != 5:
                 # If not then erase it and skip current iteration
-                TXwindows[count] = ""
+                # TXwindows[count] = ""
+                line = ""
                 continue
 
             # All of these are checking if values are positive integers
