@@ -152,16 +152,16 @@ def preparePicture(duration, dataType, pictureNumber, index):
 	pictureContent = hexlify(pictureFile.read()) #Picture content is now a string with the hex data of the file in it
 	dataSize = 0
 	print("Transmission progress is:", transmissionProgress)
-	position = transmissionProgress*128
+	position = transmissionProgress*256
 	print("Position is:", position)
 
 	while dataSize < numPackets: #NOTE: @SHAWN THIS WILL BREAK IF THE FILE IS LESS THAN 128 bytes
-		substringOfData = pictureContent[position:position+128].decode()
-		if(len(substringOfData)<128): #EOF - Loop back to start
-			position = 128-len(substringOfData)
+		substringOfData = pictureContent[position:position+256].decode()
+		if(len(substringOfData)<256): #EOF - Loop back to start
+			position = 256-len(substringOfData)
 			substringOfData += pictureContent[0:position].decode()
 		else: #Nominal situation
-			position=position+128
+			position=position+256
 		txDataFile.write(str(transmissionProgress).zfill(10)+':'+substringOfData+'\n')
 		dataSize+=1
 		transmissionProgress += 1

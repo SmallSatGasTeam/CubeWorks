@@ -113,6 +113,7 @@ class FileReset():
                 print("Error trying to make directory ", dirPath)
     
     def windowProtection(self):
+        """Deletes everything in txWindows.txt that is not a valid window"""
         print("<Checking txWindows>")
         file = open(self.__windowFilePath, 'r')
         file.seek(0)
@@ -120,64 +121,57 @@ class FileReset():
         TXwindows = file.readlines()
         count = 0
         for line in TXwindows:
-            if line == "":
-                continue
             window = line.split(',')
-
-            # if type(line) is str:
-            #     del line
-                
-            # for i in window:
-            #     shouldCont = False
-            #     try:
-            #         int(window[i])
-            #     except:
-            #         TXwindows[count] = ""
-            #         shouldCont = True
-                    
-            # if shouldCont:
-            #     continue
 
             # Check if window has five elements
             if len(window) != 5:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
+                count += 1
                 continue
 
             # All of these are checking if values are positive integers
+            # All of these use isnumeric to make sure everything is a number
 
             # Check if timestamp is ten characters long
-            if (not isinstance(int(window[0]), int)) or int(window[0]) < 0 or len(window[0]) != 10:
+            if (not window[0].isnumeric()) or int(window[0]) < 0 or len(window[0]) != 10:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
+                count += 1
                 continue
 
             # Check if window length is less than or equal to 3600
-            if (not isinstance(int(window[1]), int)) or int(window[1]) < 0 or int(window[1]) > 3600:
+            if (not window[1].isnumeric()) or int(window[1]) < 0 or int(window[1]) > 3600:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
+                count += 1
                 continue
 
             # Check if type is less than or equal to five
-            if (not isinstance(int(window[2]), int)) or int(window[2]) < 0 or int(window[2]) > 5:
+            if (not window[2].isnumeric()) or int(window[2]) < 0 or int(window[2]) > 5:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
+                count += 1
                 continue
 
             # This is the picture number (not number of pictures), don't put limits on it
-            if (not isinstance(int(window[3]), int)) or int(window[3]) < 0:
+            if (not window[3].isnumeric()) or int(window[3]) < 0:
                 TXwindows[count] = ""
+                count += 1
                 continue
 
             # This is the TX flag, don't put limits on it
             TXflagStripped = window[4].strip('\n')
-            if (not isinstance(int(TXflagStripped), int)) or int(window[4]) < -1:
+            if (not TXflagStripped.isnumeric()) or int(window[4]) < -1:
                 TXwindows[count] = ""
+                count += 1
                 continue
             count += 1
 
         file = open(self.__windowFilePath, 'w')
         file.writelines(TXwindows)
+
+        file.seek(0)
 
         for line in TXwindows:
             if line == "\n":
