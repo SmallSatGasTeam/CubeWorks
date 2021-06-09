@@ -17,6 +17,7 @@ class Queue():
         file.close()
 
     def dequeue(self, delet):
+        self.__fileChecher.windowProtection()
         return self.__short(delet)
 
 
