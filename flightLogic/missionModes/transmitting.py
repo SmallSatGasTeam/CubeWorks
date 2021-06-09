@@ -34,6 +34,7 @@ class Transmitting:
         fileChecker.checkFile(self.__txWindowsPath)
         self.__queue = Queue(self.__txWindowsPath)
         if self.__queue.dequeue(0) != -1:
+            fileChecker.windowProtection()
             self.__timeToNextTXwindowVar = self.__queue.dequeue(0)
         else:
             self.__timeToNextTXwindowVar = -1
@@ -60,17 +61,20 @@ class Transmitting:
 
             #while timestamp < currenttimestamp
             while (self.__queue.dequeue(0) < time.time()) and (self.__queue.dequeue(0) != -1):
+                fileChecker.windowProtection()
                 self.__queue.dequeue(1)
             #20 seconds before
             if ((self.__queue.dequeue(0) - time.time() <= 20) and 
                 (self.__data == []) and (self.__queue.dequeue(0) > 0) 
                 and (not self.__inProgress)):
                 #pull the packet
+                fileChecker.windowProtection()
                 line = self.__queue.dequeue(1)
                 self.__data = line.split(',')
             #If not within 20 seconds of the next time stamp
             elif ((self.__timeToNextTXwindowVar < 0) or (self.__timeToNextTXwindowVar > 20)) and (self.__queue.dequeue(0) != -1):
                 #Reset data and sendData lists, pull the time till next window from the next element in the queue
+                fileChecker.windowProtection()
                 self.__timeToNextTXwindowVar = self.__queue.dequeue(0) - time.time()
                 self.__data = []
                 self.__sendData = []
