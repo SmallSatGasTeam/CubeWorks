@@ -120,8 +120,6 @@ class FileReset():
         TXwindows = file.readlines()
         count = 0
         for line in TXwindows:
-            if line == "":
-                continue
             window = line.split(',')
 
             # for i in window:
