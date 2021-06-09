@@ -55,12 +55,7 @@ class Transmitting:
         """
         while True:
             print("INSIDE TRANSFER WINDOW")
-            #Reset data and sendData lists, pull the time till next window from the next element in the queue
-            if(self.__queue.dequeue(0) > 0):
-                self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
-            else :
-                self.__timeToNextWindow = 3133728366
-                
+                            
             #20 seconds before
             if ((self.__queue.dequeue(0) - time.time() <= 20) and 
                 (self.__data == []) and (self.__queue.dequeue(0) > 0) 
@@ -68,10 +63,17 @@ class Transmitting:
                 #pull the packet
                 line = self.__queue.dequeue(1)
                 self.__data = line.split(',')
+                self.__timeToNextWindow = self.__timeToNestWindow - time.time()
+                await asyncio.sleep(5)
             #If not within 20 seconds of the next time stamp
             elif ((self.__timeToNextWindow < 0) or (self.__timeToNextWindow > 20)) and (self.__queue.dequeue(0) != -1):
                 self.__data = []
                 self.__sendData = []
+                #Reset data and sendData lists, pull the time till next window from the next element in the queue
+            if(self.__queue.dequeue(0) > 0):
+                self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
+            else :
+                self.__timeToNextWindow = 3133728366
             elif self.__queue.dequeue(0) == -1:
                 self.__timeToNextWindow = 3133728366
 
