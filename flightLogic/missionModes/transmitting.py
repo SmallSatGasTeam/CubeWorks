@@ -130,10 +130,10 @@ class Transmitting:
                         print("Transimtting.py:", self.__duration, self.__datatype, self.__pictureNumber)
                         prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__index)
                     break
-                 #I decearsed the wait time because we were missing windows.
+                 #I decreased the wait time because we were missing windows.
                 await asyncio.sleep(5)
             while True:
-                #I added a neg time buff as well incase we are a little late gettering here
+                #I added a negative time buffer as well incase we are a little late getting here
                 if (self.__timeToNextWindow <= 5) and (self.__timeToNextWindow > -5):
                     fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
                     self.__transmissionFlagFile.seek(0)

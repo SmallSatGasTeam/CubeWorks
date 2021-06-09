@@ -113,73 +113,75 @@ class FileReset():
                 print("Error trying to make directory ", dirPath)
     
     def windowProtection(self):
-        print("<Checking txWindows>")
-        file = open(self.__windowFilePath, 'r')
-        file.seek(0)
+        # print("<Checking txWindows>")
+        # file = open(self.__windowFilePath, 'r')
+        # file.seek(0)
 
-        TXwindows = file.readlines()
-        count = 0
-        for line in TXwindows:
-            if line == "":
-                continue
-            window = line.split(',')
+        # TXwindows = file.readlines()
+        # count = 0
+        # for line in TXwindows:
+        #     if line == "":
+        #         continue
+        #     window = line.split(',')
 
-            # if type(line) is str:
-            #     del line
+        #     # if type(line) is str:
+        #     #     del line
                 
-            # for i in window:
-            #     shouldCont = False
-            #     try:
-            #         int(window[i])
-            #     except:
-            #         TXwindows[count] = ""
-            #         shouldCont = True
+        #     # for i in window:
+        #     #     shouldCont = False
+        #     #     try:
+        #     #         int(window[i])
+        #     #     except:
+        #     #         TXwindows[count] = ""
+        #     #         shouldCont = True
                     
-            # if shouldCont:
-            #     continue
+        #     # if shouldCont:
+        #     #     continue
 
-            # Check if window has five elements
-            if len(window) != 5:
-                # If not then erase it and skip current iteration
-                TXwindows[count] = ""
-                continue
+        #     # Check if window has five elements
+        #     if len(window) != 5:
+        #         # If not then erase it and skip current iteration
+        #         TXwindows[count] = ""
+        #         continue
 
-            # All of these are checking if values are positive integers
+        #     # All of these are checking if values are positive integers
 
-            # Check if timestamp is ten characters long
-            if (not isinstance(int(window[0]), int)) or int(window[0]) < 0 or len(window[0]) != 10:
-                # If not then erase it and skip current iteration
-                TXwindows[count] = ""
-                continue
+        #     # Check if timestamp is ten characters long
+        #     if (not isinstance(int(window[0]), int)) or int(window[0]) < 0 or len(window[0]) != 10:
+        #         # If not then erase it and skip current iteration
+        #         TXwindows[count] = ""
+        #         continue
 
-            # Check if window length is less than or equal to 3600
-            if (not isinstance(int(window[1]), int)) or int(window[1]) < 0 or int(window[1]) > 3600:
-                # If not then erase it and skip current iteration
-                TXwindows[count] = ""
-                continue
+        #     # Check if window length is less than or equal to 3600
+        #     if (not isinstance(int(window[1]), int)) or int(window[1]) < 0 or int(window[1]) > 3600:
+        #         # If not then erase it and skip current iteration
+        #         TXwindows[count] = ""
+        #         continue
 
-            # Check if type is less than or equal to five
-            if (not isinstance(int(window[2]), int)) or int(window[2]) < 0 or int(window[2]) > 5:
-                # If not then erase it and skip current iteration
-                TXwindows[count] = ""
-                continue
+        #     # Check if type is less than or equal to five
+        #     if (not isinstance(int(window[2]), int)) or int(window[2]) < 0 or int(window[2]) > 5:
+        #         # If not then erase it and skip current iteration
+        #         TXwindows[count] = ""
+        #         continue
 
-            # This is the picture number (not number of pictures), don't put limits on it
-            if (not isinstance(int(window[3]), int)) or int(window[3]) < 0:
-                TXwindows[count] = ""
-                continue
+        #     # This is the picture number (not number of pictures), don't put limits on it
+        #     if (not isinstance(int(window[3]), int)) or int(window[3]) < 0:
+        #         TXwindows[count] = ""
+        #         continue
 
-            # This is the TX flag, don't put limits on it
-            TXflagStripped = window[4].strip('\n')
-            if (not isinstance(int(TXflagStripped), int)) or int(window[4]) < -1:
-                TXwindows[count] = ""
-                continue
-            count += 1
+        #     # This is the TX flag, don't put limits on it
+        #     TXflagStripped = window[4].strip('\n')
+        #     if (not isinstance(int(TXflagStripped), int)) or int(window[4]) < -1:
+        #         TXwindows[count] = ""
+        #         continue
+        #     count += 1
 
-        file = open(self.__windowFilePath, 'w')
-        file.writelines(TXwindows)
+        # file = open(self.__windowFilePath, 'w')
+        # file.writelines(TXwindows)
 
-        for line in TXwindows:
-            if line == "\n":
-                del line
-        file.close()
+        # for line in TXwindows:
+        #     if line == "\n":
+        #         del line
+        # file.close()
+        pass
+        
