@@ -132,7 +132,7 @@ class FileReset():
                     continue
                 shouldCont = False
                 try:
-                    int(window[i])
+                    testVar = int(window[i])
                 except ValueError:
                     TXwindows[count] = ""
                     shouldCont = True
