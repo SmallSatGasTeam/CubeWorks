@@ -134,10 +134,10 @@ class Transmitting:
                  #I decearsed the wait time because we were missing windows.
                 await asyncio.sleep(5)
             while True:
-                print("Is it time?")
+                #print("Is it time?")
                 #I added a neg time buff as well incase we are a little late gettering here
                 if (self.__timeToNextWindow <= 5) and (self.__timeToNextWindow > -5):
-                    fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
+                    fileChecker.('/home/pi/TXISRData/transmissionsFlag.txt')
                     self.__transmissionFlagFile.seek(0)
                     if self.__transmissionFlagFile.readline() == 'Enabled':
                         txisrCodePath = filePaths[self.__codeBase]
