@@ -135,7 +135,7 @@ class FileReset():
 
             # Check if timestamp is ten characters long
             print("window[0] is: ", window[0])
-            print("window[0].isnumeric is: ", window[0].isnumeric)
+            print("window[0].isnumeric is: ", window[0].isnumeric())
             if (not window[0].isnumeric) or int(window[0]) < 0 or len(window[0]) != 10:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
