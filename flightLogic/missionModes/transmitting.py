@@ -128,7 +128,7 @@ class Transmitting:
                 print("Transmit time to next window:", self.__timeToNextTXwindowVar)
                 #if close enough, prep files
                 #wait until 5 seconds before, return True
-                if (self.__timeToNextTXwindowVar != -1) and (self.__timeToNextTXwindowVar < 14) and (self.__timeToNextTXwindowVar >= 0):
+                if (self.__timeToNextTXwindowVar != -1) and (self.__timeToNextTXwindowVar < 15) and (self.__timeToNextTXwindowVar >= 0):
                     if self.__datatype < 3: #Attitude, TTNC, or Deployment data respectively
                         prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
                     else:
