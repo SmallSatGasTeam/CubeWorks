@@ -160,6 +160,3 @@ class Transmitting:
 
     def isRunning(self):
         return self.__inProgress
-
-    def timeToNextWindow(self):
-        return self.__timeToNextWindow
