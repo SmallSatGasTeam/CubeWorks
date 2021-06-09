@@ -74,7 +74,7 @@ class Transmitting:
                 self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
             else :
                 self.__timeToNextWindow = 3133728366
-            elif self.__queue.dequeue(0) == -1:
+            if self.__queue.dequeue(0) == -1:
                 self.__timeToNextWindow = 3133728366
 
 
