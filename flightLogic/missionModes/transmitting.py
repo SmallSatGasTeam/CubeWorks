@@ -55,7 +55,12 @@ class Transmitting:
         """
         while True:
             print("INSIDE TRANSFER WINDOW")
-                            
+            #read the given transfer window file and extract the data for the soonest transfer window
+            soonestWindowTime = 0
+
+            #while timestamp < currenttimestamp
+            while (self.__queue.dequeue(0) < time.time()) and (self.__queue.dequeue(0) != -1):
+                self.__queue.dequeue(1)
             #20 seconds before
             if ((self.__queue.dequeue(0) - time.time() <= 20) and 
                 (self.__data == []) and (self.__queue.dequeue(0) > 0) 
@@ -65,12 +70,11 @@ class Transmitting:
                 self.__data = line.split(',')
             #If not within 20 seconds of the next time stamp
             elif ((self.__timeToNextWindow < 0) or (self.__timeToNextWindow > 20)) and (self.__queue.dequeue(0) != -1):
+                #Reset data and sendData lists, pull the time till next window from the next element in the queue
+                self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
                 self.__data = []
                 self.__sendData = []
-                #Reset data and sendData lists, pull the time till next window from the next element in the queue
-            elif(self.__queue.dequeue(0) > 0):
-                self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
-            else :
+            elif self.__queue.dequeue(0) == -1:
                 self.__timeToNextWindow = 3133728366
 
 
@@ -82,7 +86,11 @@ class Transmitting:
                     print(float(self.__data[0]), float(self.__data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
                     #If the time to next window is less than 10
                     if(float(self.__data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME): #If the transfer window is at BUFFER_TIME milliseconds in the future
-                       self.__sendData = self.__data
+                        #If the time is greater than 0 or the soonestWindowTime is 0
+                        if(soonestWindowTime == 0) or (float(self.__data[0]) - time.time()):
+                            #Assign soonest window time and assign sendData to Data
+                            soonestWindowTime = float(self.__data[0]) - time.time()
+                            self.__sendData = self.__data
             except Exception as e:
                 print("Error measuring transfer window:", e)
 
@@ -122,10 +130,11 @@ class Transmitting:
                         print("Transimtting.py:", self.__duration, self.__datatype, self.__pictureNumber)
                         prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__index)
                     break
-                 #I decreased the wait time because we were missing windows.
+                 #I decearsed the wait time because we were missing windows.
                 await asyncio.sleep(5)
             while True:
-                #I added a negative time buffer as well incase we are a little late getting here
+                print("Is it time?")
+                #I added a neg time buff as well incase we are a little late gettering here
                 if (self.__timeToNextWindow <= 5) and (self.__timeToNextWindow > -5):
                     fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
                     self.__transmissionFlagFile.seek(0)
@@ -133,6 +142,7 @@ class Transmitting:
                         txisrCodePath = filePaths[self.__codeBase]
                         #These two are old code that we may potentially have to come back to
                         #subprocess.Popen([txisrCodePath, str(self.__datatype)])
+                        print("We should literally be running this.")
                         subprocess.Popen(['sudo', './TXService.run', str(self.__datatype)], cwd = str(txisrCodePath))
                         #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype))
                         self.__timeToNextWindow = -1
