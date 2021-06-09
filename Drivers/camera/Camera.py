@@ -56,7 +56,7 @@ class Camera(Driver):
         lowResOriginalPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/LowResOriginal"+str(self.pictureNumber)+".jpg"
         lowResSSDVPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/LowResOriginal"+str(self.pictureNumber)+".bin"
         print("before compress")
-        ssdv_lowRes_picture = system('sudo /home/pi/ssdv/ssdv -e -c N7GAS ' + str(lowResOriginalPath) + ' ' + str(lowResSSDVPath))
+        ssdv_lowRes_picture = system('sudo /home/pi/ssdv/ssdv -e -c N7GAS -i' + str(pictureNumber) + str(lowResOriginalPath) + ' ' + str(lowResSSDVPath))
         print("After compress")
     def compressHighResToFiles(self,pictureNumber):
         """
@@ -68,5 +68,5 @@ class Camera(Driver):
         highResOriginalPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".jpg"
         highResSSDVPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".bin"
 
-        ssdv_highRes_picture = system('sudo /home/pi/ssdv/ssdv -e -c N7GAS' + str(highResOriginalPath) + ' ' + str(highResSSDVPath))
+        ssdv_highRes_picture = system('sudo /home/pi/ssdv/ssdv -e -c N7GAS -i' + str(pictureNumber) + str(highResOriginalPath) + ' ' + str(highResSSDVPath))
 
