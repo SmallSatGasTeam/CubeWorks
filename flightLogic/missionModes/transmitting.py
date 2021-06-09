@@ -137,7 +137,7 @@ class Transmitting:
                 #print("Is it time?")
                 #I added a neg time buff as well incase we are a little late gettering here
                 if (self.__timeToNextWindow <= 5) and (self.__timeToNextWindow > -5):
-                    fileChecker.('/home/pi/TXISRData/transmissionsFlag.txt')
+                    fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
                     self.__transmissionFlagFile.seek(0)
                     if self.__transmissionFlagFile.readline() == 'Enabled':
                         txisrCodePath = filePaths[self.__codeBase]
