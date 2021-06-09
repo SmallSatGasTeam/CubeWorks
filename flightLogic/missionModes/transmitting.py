@@ -119,6 +119,7 @@ class Transmitting:
         TXService.run once under 5 seconds to transmit the prepared data.
         """
         while True:
+            self.__timeToNextWindow -= time.time()
             while True:
                 print("Transmit time to next window:", self.__timeToNextWindow)
                 #if close enough, prep files
