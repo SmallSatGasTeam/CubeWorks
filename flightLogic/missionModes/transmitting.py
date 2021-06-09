@@ -34,9 +34,9 @@ class Transmitting:
         fileChecker.checkFile(self.__txWindowsPath)
         self.__queue = Queue(self.__txWindowsPath)
         if self.__queue.dequeue(0) != -1:
-            self.__timeToNextWindow = self.__queue.dequeue(0)
+            self.__timeToNextTXwindowVar = self.__queue.dequeue(0)
         else:
-            self.__timeToNextWindow = -1
+            self.__timeToNextTXwindowVar = -1
         self.__nextWindowTime = -1
         self.__duration = -1
         self.__datatype = -1
@@ -69,13 +69,13 @@ class Transmitting:
                 line = self.__queue.dequeue(1)
                 self.__data = line.split(',')
             #If not within 20 seconds of the next time stamp
-            elif ((self.__timeToNextWindow < 0) or (self.__timeToNextWindow > 20)) and (self.__queue.dequeue(0) != -1):
+            elif ((self.__timeToNextTXwindowVar < 0) or (self.__timeToNextTXwindowVar > 20)) and (self.__queue.dequeue(0) != -1):
                 #Reset data and sendData lists, pull the time till next window from the next element in the queue
-                self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
+                self.__timeToNextTXwindowVar = self.__queue.dequeue(0) - time.time()
                 self.__data = []
                 self.__sendData = []
             elif self.__queue.dequeue(0) == -1:
-                self.__timeToNextWindow = 3133728366
+                self.__timeToNextTXwindowVar = 3133728366
 
 
             #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
@@ -98,7 +98,7 @@ class Transmitting:
             if self.__sendData.__len__() == 5:
                 print(self.__sendData)
                 #Assign the variables appropriately
-                self.__timeToNextWindow = float(self.__sendData[0]) - time.time()
+                self.__timeToNextTXwindowVar = float(self.__sendData[0]) - time.time()
                 self.__duration = int(self.__sendData[1])
                 self.__datatype = int(self.__sendData[2])
                 self.__pictureNumber = int(self.__sendData[3])
@@ -110,7 +110,7 @@ class Transmitting:
             if (not self.__inProgress) and (self.__sendData != []):
                 asyncio.tasks.create_task(self.transmissionRunning())
 
-            print("Time to next window:", self.__timeToNextWindow)
+            print("Time to next window:", self.__timeToNextTXwindowVar)
             await asyncio.sleep(5)
     
     async def transmit(self):
@@ -119,12 +119,12 @@ class Transmitting:
         TXService.run once under 5 seconds to transmit the prepared data.
         """
         while True:
-            self.__timeToNextWindow -= time.time()
+            self.__timeToNextTXwindowVar -= time.time()
             while True:
-                print("Transmit time to next window:", self.__timeToNextWindow)
+                print("Transmit time to next window:", self.__timeToNextTXwindowVar)
                 #if close enough, prep files
                 #wait until 5 seconds before, return True
-                if (self.__timeToNextWindow != -1) and (self.__timeToNextWindow < 14) and (self.__timeToNextWindow >= 0):
+                if (self.__timeToNextTXwindowVar != -1) and (self.__timeToNextTXwindowVar < 14) and (self.__timeToNextTXwindowVar >= 0):
                     if self.__datatype < 3: #Attitude, TTNC, or Deployment data respectively
                         prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
                     else:
@@ -136,7 +136,7 @@ class Transmitting:
             while True:
                 #print("Is it time?")
                 #I added a neg time buff as well incase we are a little late gettering here
-                if (self.__timeToNextWindow <= 5) and (self.__timeToNextWindow > -5):
+                if (self.__timeToNextTXwindowVar <= 5) and (self.__timeToNextTXwindowVar > -5):
                     fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
                     self.__transmissionFlagFile.seek(0)
                     if self.__transmissionFlagFile.readline() == 'Enabled':
@@ -146,7 +146,7 @@ class Transmitting:
                         print("We should literally be running this.")
                         subprocess.Popen(['sudo', './TXService.run', str(self.__datatype)], cwd = str(txisrCodePath))
                         #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype))
-                        self.__timeToNextWindow = -1
+                        self.__timeToNextTXwindowVar = -1
                         break
                     else:
                         print("Transmission flag is not enabled")
@@ -163,4 +163,4 @@ class Transmitting:
 
     
     def timeToNextWindow(self):
-        return self.__timeToNextWindow
+        return self.__timeToNextTXwindowVar
