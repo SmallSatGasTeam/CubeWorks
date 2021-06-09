@@ -21,7 +21,7 @@ class Queue():
 
 
     def __short(self, delete):
-        print("starting short")
+        #print("starting short")
         contents = []
         line = []
         minLine = ""
@@ -30,7 +30,7 @@ class Queue():
         file = open(self.__filepath, "r") 
         contents = file.read().splitlines()
         file.close()
-        print("finished reading the files")
+        #print("finished reading the files")
         #print("Printing contents", contents)
         if(len(contents) == 0):
             return -1
@@ -46,7 +46,7 @@ class Queue():
                         minLine = i
             contents.remove(minLine)
             self.__fileChecher.checkFile(self.__filepath)
-            print("repopulating file")
+            #print("repopulating file")
             file = open(self.__filepath, "w")
             if(not delete):
                 file.write(minLine + "\n")
@@ -56,7 +56,7 @@ class Queue():
                     if(int(line[0]) >= 0):
                         file.write(j + "\n")
             file.close()
-        print("finished the short code")
+        #print("finished the short code")
         if(not delete):
             return int (min[0])
         else :
