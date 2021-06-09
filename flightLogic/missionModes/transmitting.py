@@ -55,6 +55,12 @@ class Transmitting:
         """
         while True:
             print("INSIDE TRANSFER WINDOW")
+            #Reset data and sendData lists, pull the time till next window from the next element in the queue
+            if(self.__queue.dequeue(0) > 0):
+                self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
+            else :
+                self.__timeToNextWindow = 3133728366
+                
             #read the given transfer window file and extract the data for the soonest transfer window
             soonestWindowTime = 0
 
@@ -70,8 +76,6 @@ class Transmitting:
                 self.__data = line.split(',')
             #If not within 20 seconds of the next time stamp
             elif ((self.__timeToNextWindow < 0) or (self.__timeToNextWindow > 20)) and (self.__queue.dequeue(0) != -1):
-                #Reset data and sendData lists, pull the time till next window from the next element in the queue
-                self.__timeToNextWindow = self.__queue.dequeue(0) - time.time()
                 self.__data = []
                 self.__sendData = []
             elif self.__queue.dequeue(0) == -1:
