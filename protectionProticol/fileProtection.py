@@ -132,6 +132,12 @@ class FileReset():
 
             # All of these are checking if values are positive integers
 
+            # Check if all characters in timestamp are numbers
+            if (not window[0].isnumeric):
+                TXwindows[count] = ""
+                count += 1
+                continue
+            
             # Check if timestamp is ten characters long
             if (not isinstance(int(window[0]), int)) or int(window[0]) < 0 or len(window[0]) != 10:
                 # If not then erase it and skip current iteration
