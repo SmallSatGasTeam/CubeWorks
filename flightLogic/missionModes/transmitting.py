@@ -109,6 +109,7 @@ class Transmitting:
                         print("Transmission flag is not enabled")
 
                     #turn off tx in progress flag
+                    print("\n\nResetting the TX Service code\n\n")
                     self.__TXServiceRunning = False
                     self.__inProgress = False
                     break
