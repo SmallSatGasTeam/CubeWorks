@@ -76,9 +76,12 @@ class Transmitting:
                         print(">>> Preparing data 3 - 4 <<<")
                         print("Transimtting.py:", self.__duration, self.__datatype, self.__pictureNumber)
                         prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__index)
+                    self.getReadyForWindos()
                 await asyncio.sleep(5)
-                break
-            while True:
+
+    #this func will get call right before the tx window is ready, it calls the c code when everything is ready
+    async def getReadyForWindows (self):
+        while True:
                 if (self.__timeToNextTXwindowVar <= 5) and (self.__timeToNextTXwindowVar > -5):
                     print(">>> Calling c code <<<")
                     fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
@@ -89,6 +92,7 @@ class Transmitting:
                         #subprocess.Popen([txisrCodePath, str(self.__datatype)])
                         #print("We should literally be running this.")
                         subprocess.Popen(['sudo', './TXService.run', str(self.__datatype)], cwd = str(txisrCodePath))
+                        asyncio.kill
                         #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype)
                     else:
                         print("Transmission flag is not enabled")
@@ -96,7 +100,7 @@ class Transmitting:
                     #turn off tx in progress flag
                     self.__inProgress = False
                     break
-                await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds	
+                await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
     
     async def transmissionRunning(self):
         self.__inProgress = True
