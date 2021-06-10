@@ -93,5 +93,5 @@ class Transmitting:
         print("Time to next window:", self.__timeToNextTXwindowVar)
         await asyncio.sleep(2.5)
 
-    def isRunning(self):
+    def isRunning(self): #Other transmission are authorized though self.__inProgress which is set by transmissionRunning
         return self.__inProgress

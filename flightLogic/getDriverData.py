@@ -16,6 +16,12 @@ fileChecker = FileReset()
 
 gaspacsBytes = str(b'GASPACS'.hex())
 
+"""
+All of the minimum and maximum values are listed here. If values from
+the sensors/drivers are outside of the valid range, we return exceptions
+as error statements.
+"""
+
 SP_Plus_TempMin = -40.0
 SP_Plus_TempMax = 155.0
 piTempMin = 0.0
