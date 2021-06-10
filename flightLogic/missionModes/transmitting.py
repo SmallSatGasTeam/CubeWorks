@@ -115,12 +115,13 @@ class Transmitting:
     async def upDateTime(self):
         while True :
             print(">>> Up dating time to tx window <<<")
-            #this will delete past windows
+            #this will delete past windows, it should be called first
             if(self.__nextWindow - time.time() <= -10):
                 self.__queue.dequeue(True)
             #count down the time
             #set new window if one is not inprogress
             if(not self.__inProgress):
+                print(">>> finding next window <<<")
                 self.__nextWindow = self.__queue.dequeue(False)
             print("Last window", self.__nextWindow)
             self.__timeToNextTXwindowVar = self.__nextWindow - time.time()
