@@ -66,6 +66,6 @@ class Camera(Driver):
 
         #Set up paths for high res picture and creates the packets directory
         highResOriginalPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".jpg"
-        highResSSDVPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber + 100)+"/HighRes/HighResOriginal"+str(self.pictureNumber + 100)+".bin"
+        highResSSDVPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".bin"
 
-        ssdv_highRes_picture = system('sudo /home/pi/ssdv/ssdv -e -c N7GAS -i ' + str(pictureNumber) + " " + str(highResOriginalPath) + ' ' + str(highResSSDVPath))
+        ssdv_highRes_picture = system('sudo /home/pi/ssdv/ssdv -e -c N7GAS -i ' + str(pictureNumber + 100) + " " + str(highResOriginalPath) + ' ' + str(highResSSDVPath))
