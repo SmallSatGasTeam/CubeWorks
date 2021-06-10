@@ -49,6 +49,7 @@ class Transmitting:
         then dequeues a transfer window once within 20 seconds of that timestamp
         """
         while True:
+            print(">>> Monitoring windows <<<")
             while True:
                 #if close enough, prep files
                 #wait until 5 seconds before, return True
