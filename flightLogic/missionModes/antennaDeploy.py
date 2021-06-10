@@ -51,9 +51,9 @@ class antennaMode:
 		# self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck())) #Check battery conditions, run safe mode if battery drops below safe level
 		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
-		self.__tasks.append(asyncio.create_task(self.__transmit.transmit()))
+		# self.__tasks.append(asyncio.create_task(self.__transmit.transmit()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.upDateTime()))
-		
+
 		
 		eps=EPS()
 		#If ground station has sent command to skip to post boom
