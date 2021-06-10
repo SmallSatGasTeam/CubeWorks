@@ -96,7 +96,10 @@ class Transmitting:
                         #These two are old code that we may potentially have to come back to
                         #subprocess.Popen([txisrCodePath, str(self.__datatype)])
                         #print("We should literally be running this.")
+                        startTime = time.time()
                         subprocess.Popen(['sudo', './TXService.run', str(self.__datatype)], cwd = str(txisrCodePath))
+                        while(self.__duration >= time.time() - startTime):
+                            await asyncio.sleep(2)
                         #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype)
                     else:
                         print("Transmission flag is not enabled")
