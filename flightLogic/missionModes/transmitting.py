@@ -54,28 +54,32 @@ class Transmitting:
                 #wait until 5 seconds before, return True
                 if((self.__timeToNextTXwindowVar > 10) and self.__timeToNextTXwindowVar<20): #If next window is in 2 minutes or less
                     #get the data 
+                    print(">>> Getting data from the queue <<<")
+                    #turn on tx in progress flag
+                    self.__inProgress = True
                     self.__sendData = self.__queue.dequeue(True)
                     #If sendData has the right number of members
-                if self.__sendData.__len__() == 5:
-                    print(self.__sendData)
-                    #Assign the variables appropriately
-                    self.__timeToNextWindow = float(self.__sendData[0]) - time.time()
-                    self.__duration = int(self.__sendData[1])
-                    self.__datatype = int(self.__sendData[2])
-                    self.__pictureNumber = int(self.__sendData[3])
-                    self.__nextWindowTime = float(self.__sendData[0])
-                    self.__index = int(self.__sendData[4])
-                else:
-                    print("sendData is empty.")
-                if self.__datatype < 3:#Attitude, TTNC, or Deployment data respectively
-                    prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
-                else:
-                    print("Transimtting.py:", self.__duration, self.__datatype, self.__pictureNumber)
-                    prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__index)
+                    if self.__sendData.__len__() == 5:
+                        print(self.__sendData)
+                        #Assign the variables appropriately
+                        self.__duration = int(self.__sendData[1])
+                        self.__datatype = int(self.__sendData[2])
+                        self.__pictureNumber = int(self.__sendData[3])
+                        self.__index = int(self.__sendData[4])
+                    else:
+                        print("sendData is empty.")
+                    if self.__datatype < 3:#Attitude, TTNC, or Deployment data respectively
+                        print(">>> Preparing data 0 - 2 <<<")
+                        prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
+                    else:
+                        print(">>> Preparing data 3 - 4 <<<")
+                        print("Transimtting.py:", self.__duration, self.__datatype, self.__pictureNumber)
+                        prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__index)
                 await asyncio.sleep(5)
                 break
             while True:
                 if (self.__timeToNextTXwindowVar <= 5) and (self.__timeToNextTXwindowVar > -5):
+                    print(">>> Calling c code <<<")
                     fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
                     self.__transmissionFlagFile.seek(0)
                     if self.__transmissionFlagFile.readline() == 'Enabled':
@@ -87,6 +91,9 @@ class Transmitting:
                         #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype)
                     else:
                         print("Transmission flag is not enabled")
+
+                    #turn off tx in progress flag
+                    self.__inProgress = False
                     break
                 await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds	
     
