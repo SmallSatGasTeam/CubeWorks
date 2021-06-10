@@ -185,3 +185,7 @@ be repoerted.
 
     "TXISR/transmissionQueue.py" Lines 14, 28, 47, 64
         Implementing the window protection.
+#27 <Changed pic IDs for the commpression of the picture>
+    "Drivers/camera/Camera.py" Line 71
+        HQ pictures now get compressed with IDs 100 - 255. They are still saved the same way.
+        Example: picture 0, LQ ID is 0, HQ ID is 100
