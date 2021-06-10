@@ -83,9 +83,8 @@ class Transmitting:
                         print("sendData is incorrect.")
                     #This is what calls the c code
                     if(not self.__TXServiceRunning):
-                        self.__TXServiceRunning = True
-                        print(">>> Preparing c code <<<")
                         if (self.__timeToNextTXwindowVar <= 5) and (self.__timeToNextTXwindowVar > -5):
+                            self.__TXServiceRunning = True
                             print(">>> Calling c code <<<")
                             fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
                             self.__transmissionFlagFile.seek(0)
@@ -98,14 +97,13 @@ class Transmitting:
                                 subprocess.Popen(['sudo', './TXService.run', str(self.__datatype)], cwd = str(txisrCodePath))
                                 while(self.__duration >= time.time() - startTime):
                                     print("\tWaiting for TX to finsih", self.__duration >= time.time() - startTime)
+                                #turn off tx in progress flag
+                                print("\n\nResetting the TX Service code\n\n")
+                                self.__TXServiceRunning = False
+                                self.__inProgress = False
                                 #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype)
                             else:
                                 print("Transmission flag is not enabled")
-
-                            #turn off tx in progress flag
-                            print("\n\nResetting the TX Service code\n\n")
-                            self.__TXServiceRunning = False
-                            self.__inProgress = False
                 await asyncio.sleep(2.5)          
     
     async def transmissionRunning(self):
