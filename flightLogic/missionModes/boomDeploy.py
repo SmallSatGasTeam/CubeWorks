@@ -10,7 +10,7 @@ from TXISR.packetProcessing import packetProcessing as packet
 from DummyDrivers.boomDeployer.BoomDeployer import BoomDeployer as DummyBoomDeployer
 
 DONTMURDERBEN = False
-"safeModeObject was deleted below in the init parameters after saveObject"
+#safeModeObject was deleted below in the init parameters after saveObject
 class boomMode:
 	def __init__(self, saveObject, transmitObject):
 		self.__getTTNCData = TTNCData(saveObject)
@@ -66,6 +66,10 @@ class boomMode:
 			print("Caught thrown exception in cancelling background task")
 
 	async def skipToPostBoom(self):
+		"""
+		Skips to postBoomDeploy mode if the command is received from the ground
+		station.
+		"""
 		print("Inside skipToPostBoom, skipping value is:", self.__packetProcessing.skip())
 		if self.__packetProcessing.skip():
 			self.cancelAllTasks(self.__tasks)
