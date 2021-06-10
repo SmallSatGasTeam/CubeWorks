@@ -82,11 +82,11 @@ class Transmitting:
                         print(self.__sendData)
                         print("sendData is incorrect.")
                     if(not self.__TXServiceRunning):
-                        asyncio.create_task(self.getReadyForWindows())
-                await asyncio.sleep(5)
+                        self.getReadyForWindows()
+                await asyncio.sleep(2.5)
 
     #this func will get call right before the tx window is ready, it calls the c code when everything is ready
-    async def getReadyForWindows (self):
+    def getReadyForWindows (self):
         self.__TXServiceRunning = True
         print(">>> Preparing c code <<<")
         while True:
@@ -103,7 +103,6 @@ class Transmitting:
                         subprocess.Popen(['sudo', './TXService.run', str(self.__datatype)], cwd = str(txisrCodePath))
                         while(self.__duration >= time.time() - startTime):
                             print("\tWaiting for TX to finsih", self.__duration >= time.time() - startTime)
-                            await asyncio.sleep(2)
                         #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype)
                     else:
                         print("Transmission flag is not enabled")
@@ -113,7 +112,6 @@ class Transmitting:
                     self.__TXServiceRunning = False
                     self.__inProgress = False
                     break
-                await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
     
     async def transmissionRunning(self):
         self.__inProgress = True
