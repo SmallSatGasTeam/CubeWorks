@@ -162,7 +162,7 @@ class Transmitting:
 
     async def upDateTime(self):
         self.__timeToNextTXwindowVar = self.__queue.dequeue(0) - time.time()
-        await asyncio.sleep(5)
+        await asyncio.sleep(2.5)
 
     def isRunning(self):
         return self.__inProgress
