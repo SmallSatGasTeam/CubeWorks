@@ -103,9 +103,9 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	if antennaDeployed == True:
 		pass
 	elif status == (1,1,1,1): #This will need to be changed to reflect the real antenna
-		antennaDeployed = True #NOTE: took out the == 
+		antennaDeployed = True
 	else:
-		antennaDeployed = False #NOTE: took out the == 
+		antennaDeployed = False
 
 	recordData(bootCount, antennaDeployed, lastMode)
 
