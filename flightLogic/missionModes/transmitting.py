@@ -41,6 +41,7 @@ class Transmitting:
         self.__codeBase = codeBase
         self.__sendData = []
         self.__inProgress = False
+        self.__lastwindow = -1
 
 
     async def readNextTransferWindow(self):
@@ -82,7 +83,7 @@ class Transmitting:
                     else:
                         print(self.__sendData)
                         print("sendData is incorrect.")
-                    asyncio.create_task(self.getReadyForWindos())
+                    asyncio.create_task(self.getReadyForWindows())
                 await asyncio.sleep(5)
 
     #this func will get call right before the tx window is ready, it calls the c code when everything is ready
@@ -118,7 +119,12 @@ class Transmitting:
         while True :
             print(">>> Up dating time to tx window <<<")
             #count down the time
-            self.__timeToNextTXwindowVar = self.__queue.dequeue(False) - time.time()
+            #if we have past the current tx window move on the next one
+            if(self.__queue.dequeue(False) - time.time() < -10):
+                self.__lastwindow = self.__queue.dequeue(False)
+            #other wise just update the count
+            else :
+                self.__timeToNextTXwindowVar = self.__lastwindow - time.time()
             print("Time to next window:", self.__timeToNextTXwindowVar)
             await asyncio.sleep(2.5)
 
