@@ -111,11 +111,12 @@ class Transmitting:
         self.__inProgress = False
 
     async def upDateTime(self):
-        print(">>> Up dating time to tx window <<<")
-        #count down the time
-        self.__timeToNextTXwindowVar = self.__queue.dequeue(False) - time.time()
-        print("Time to next window:", self.__timeToNextTXwindowVar)
-        await asyncio.sleep(2.5)
+        while True :
+            print(">>> Up dating time to tx window <<<")
+            #count down the time
+            self.__timeToNextTXwindowVar = self.__queue.dequeue(False) - time.time()
+            print("Time to next window:", self.__timeToNextTXwindowVar)
+            await asyncio.sleep(2.5)
 
     def isRunning(self): #Other transmission are authorized though self.__inProgress which is set by transmissionRunning
         return self.__inProgress
