@@ -51,7 +51,7 @@ class Transmitting:
         """
         while True:
             #this will delete past windows
-            if(self.__timeToNextTXwindowVar < -40):
+            if(self.__lastwindow - time.time() <= -10):
                 self.__queue.dequeue(True)
             while True:
                 print(">>> Monitoring windows <<<")
@@ -118,6 +118,7 @@ class Transmitting:
     async def upDateTime(self):
         while True :
             print(">>> Up dating time to tx window <<<")
+            print("Last window: " + self.__lastwindow)
             #count down the time
             #if we have past the current tx window move on the next one
             if(self.__queue.dequeue(False) - time.time() < -10):
