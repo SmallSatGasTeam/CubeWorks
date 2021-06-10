@@ -108,6 +108,7 @@ class Transmitting:
         self.__inProgress = False
 
     async def upDateTime(self):
+        print(">>> Up dating time to tx window <<<")
         #count down the time
         if (self.__queue.dequeue(False) != -1):
             self.__timeToNextTXwindowVar = self.__queue.dequeue(False) - time.time()
