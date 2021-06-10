@@ -61,7 +61,9 @@ class Transmitting:
                     print(">>> Getting data from the queue <<<")
                     #turn on tx in progress flag
                     self.__inProgress = True
-                    self.__sendData = self.__queue.dequeue(True)
+                    #read in data and then split it
+                    line = self.__queue.dequeue(True)
+                    self.__sendData = line.split(',')
                     #If sendData has the right number of members
                     if self.__sendData.__len__() == 5:
                         print(self.__sendData)
