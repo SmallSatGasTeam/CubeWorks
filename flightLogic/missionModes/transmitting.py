@@ -41,6 +41,7 @@ class Transmitting:
         self.__codeBase = codeBase
         self.__sendData = []
         self.__inProgress = False
+        self.__TXServiceRunning = False
         self.__nextWindow = -1
 
 
@@ -80,12 +81,13 @@ class Transmitting:
                     else:
                         print(self.__sendData)
                         print("sendData is incorrect.")
-                    if(not self.__inProgress):
+                    if(not self.__TXServiceRunning):
                          asyncio.create_task(self.getReadyForWindows())
                 await asyncio.sleep(5)
 
     #this func will get call right before the tx window is ready, it calls the c code when everything is ready
     async def getReadyForWindows (self):
+        self.__TXServiceRunning = True
         print(">>> Preparing c code <<<")
         while True:
                 if (self.__timeToNextTXwindowVar <= 5) and (self.__timeToNextTXwindowVar > -5):
@@ -107,6 +109,7 @@ class Transmitting:
                         print("Transmission flag is not enabled")
 
                     #turn off tx in progress flag
+                    self.__TXServiceRunning = False
                     self.__inProgress = False
                     break
                 await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
