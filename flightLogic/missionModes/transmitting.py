@@ -97,7 +97,6 @@ class Transmitting:
                         #subprocess.Popen([txisrCodePath, str(self.__datatype)])
                         #print("We should literally be running this.")
                         subprocess.Popen(['sudo', './TXService.run', str(self.__datatype)], cwd = str(txisrCodePath))
-                        asyncio.kill
                         #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype)
                     else:
                         print("Transmission flag is not enabled")
