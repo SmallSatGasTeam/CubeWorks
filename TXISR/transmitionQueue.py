@@ -9,6 +9,7 @@ class Queue():
         self.__filepath = filepath
         self.__fileChecher = FileReset()
 
+    #this adds a data point to the txWindows folder
     def enqueue(self, data):
         self.__fileChecher.checkFile(self.__filepath)
         self.__fileChecher.windowProtection()
@@ -16,6 +17,9 @@ class Queue():
         file.write(str(data) + "\n")
         file.close()
 
+    
+    #this code returns data form the queue, if you say true it will return the whole line and delete that line from the queue. If you give it a 1 then it returns the next time but 
+    #does not delete the data in the queue
     def dequeue(self, delet):
         self.__fileChecher.windowProtection()
         return self.__short(delet)
