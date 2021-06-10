@@ -50,9 +50,6 @@ class Transmitting:
         then dequeues a transfer window once within 20 seconds of that timestamp
         """
         while True:
-            #this will delete past windows
-            if(self.__nextWindow - time.time() <= -10):
-                self.__queue.dequeue(True)
             while True:
                 print(">>> Monitoring windows <<<")
                 #if close enough, prep files
@@ -107,7 +104,6 @@ class Transmitting:
 
                     #turn off tx in progress flag
                     self.__inProgress = False
-                    self.__nextWindow = self.__queue.dequeue(False)
                     break
                 await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
     
@@ -119,7 +115,13 @@ class Transmitting:
     async def upDateTime(self):
         while True :
             print(">>> Up dating time to tx window <<<")
+            #this will delete past windows
+            if(self.__nextWindow - time.time() <= -10):
+                self.__queue.dequeue(True)
             #count down the time
+            #set new window if one is not inprogress
+            if(not self.__inProgress):
+                self.__nextWindow = self.__queue.dequeue(False)
             print("Last window", self.__nextWindow)
             self.__timeToNextTXwindowVar = self.__nextWindow - time.time()
             print("Time to next window:", self.__timeToNextTXwindowVar)
