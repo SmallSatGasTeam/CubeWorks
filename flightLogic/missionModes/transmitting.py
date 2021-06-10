@@ -81,37 +81,32 @@ class Transmitting:
                     else:
                         print(self.__sendData)
                         print("sendData is incorrect.")
+                    #This is what calls the c code
                     if(not self.__TXServiceRunning):
-                        self.getReadyForWindows()
-                await asyncio.sleep(2.5)
+                        self.__TXServiceRunning = True
+                        print(">>> Preparing c code <<<")
+                        if (self.__timeToNextTXwindowVar <= 5) and (self.__timeToNextTXwindowVar > -5):
+                            print(">>> Calling c code <<<")
+                            fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
+                            self.__transmissionFlagFile.seek(0)
+                            if self.__transmissionFlagFile.readline() == 'Enabled':
+                                txisrCodePath = filePaths[self.__codeBase]
+                                #These two are old code that we may potentially have to come back to
+                                #subprocess.Popen([txisrCodePath, str(self.__datatype)])
+                                #print("We should literally be running this.")
+                                startTime = time.time()
+                                subprocess.Popen(['sudo', './TXService.run', str(self.__datatype)], cwd = str(txisrCodePath))
+                                while(self.__duration >= time.time() - startTime):
+                                    print("\tWaiting for TX to finsih", self.__duration >= time.time() - startTime)
+                                #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype)
+                            else:
+                                print("Transmission flag is not enabled")
 
-    #this func will get call right before the tx window is ready, it calls the c code when everything is ready
-    def getReadyForWindows (self):
-        self.__TXServiceRunning = True
-        print(">>> Preparing c code <<<")
-        while True:
-                if (self.__timeToNextTXwindowVar <= 5) and (self.__timeToNextTXwindowVar > -5):
-                    print(">>> Calling c code <<<")
-                    fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
-                    self.__transmissionFlagFile.seek(0)
-                    if self.__transmissionFlagFile.readline() == 'Enabled':
-                        txisrCodePath = filePaths[self.__codeBase]
-                        #These two are old code that we may potentially have to come back to
-                        #subprocess.Popen([txisrCodePath, str(self.__datatype)])
-                        #print("We should literally be running this.")
-                        startTime = time.time()
-                        subprocess.Popen(['sudo', './TXService.run', str(self.__datatype)], cwd = str(txisrCodePath))
-                        while(self.__duration >= time.time() - startTime):
-                            print("\tWaiting for TX to finsih", self.__duration >= time.time() - startTime)
-                        #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype)
-                    else:
-                        print("Transmission flag is not enabled")
-
-                    #turn off tx in progress flag
-                    print("\n\nResetting the TX Service code\n\n")
-                    self.__TXServiceRunning = False
-                    self.__inProgress = False
-                    break
+                            #turn off tx in progress flag
+                            print("\n\nResetting the TX Service code\n\n")
+                            self.__TXServiceRunning = False
+                            self.__inProgress = False
+                await asyncio.sleep(2.5)          
     
     async def transmissionRunning(self):
         self.__inProgress = True
