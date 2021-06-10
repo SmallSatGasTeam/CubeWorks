@@ -41,7 +41,7 @@ class Transmitting:
         self.__codeBase = codeBase
         self.__sendData = []
         self.__inProgress = False
-        self.__lastwindow = -1
+        self.__nextWindow = -1
 
 
     async def readNextTransferWindow(self):
@@ -51,7 +51,7 @@ class Transmitting:
         """
         while True:
             #this will delete past windows
-            if(self.__lastwindow - time.time() <= -10):
+            if(self.__nextWindow - time.time() <= -10):
                 self.__queue.dequeue(True)
             while True:
                 print(">>> Monitoring windows <<<")
@@ -107,6 +107,7 @@ class Transmitting:
 
                     #turn off tx in progress flag
                     self.__inProgress = False
+                    self.__nextWindow = self.__queue.dequeue(False)
                     break
                 await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
     
@@ -119,12 +120,8 @@ class Transmitting:
         while True :
             print(">>> Up dating time to tx window <<<")
             #count down the time
-            #if we have past the current tx window move on the next one
-            if((self.__queue.dequeue(False) - time.time()) < -10):
-                print(">>> checking the queue <<<")
-                self.__lastwindow = self.__queue.dequeue(False)
-            print("Last window", self.__lastwindow)
-            self.__timeToNextTXwindowVar = self.__lastwindow - time.time()
+            print("Last window", self.__nextWindow)
+            self.__timeToNextTXwindowVar = self.__nextWindow - time.time()
             print("Time to next window:", self.__timeToNextTXwindowVar)
             await asyncio.sleep(2.5)
 
