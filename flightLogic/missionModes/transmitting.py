@@ -155,14 +155,14 @@ class Transmitting:
 
                 await asyncio.sleep(.01)
 
-    async def transmissionRunning(self):
+    async def transmissionRunning(self): #Check if a transmission is running.
         self.__inProgress = True
         await asyncio.sleep(self.__duration + 5)
         self.__inProgress = False
 
-    async def upDateTime(self):
+    async def upDateTime(self): #updates the time to the next window using the queue
         self.__timeToNextTXwindowVar = self.__queue.dequeue(0) - time.time()
         await asyncio.sleep(2.5)
 
-    def isRunning(self):
+    def isRunning(self): #Other transmission are authorized though self.__inProgress which is set by transmissionRunning
         return self.__inProgress
