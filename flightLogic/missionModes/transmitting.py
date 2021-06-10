@@ -120,7 +120,7 @@ class Transmitting:
             print(">>> Up dating time to tx window <<<")
             #count down the time
             #if we have past the current tx window move on the next one
-            if(self.__queue.dequeue(False) - time.time() < -10):
+            if((self.__queue.dequeue(False) - time.time()) < -10):
                 print(">>> checking the queue <<<")
                 self.__lastwindow = self.__queue.dequeue(False)
             print("Last window", self.__lastwindow)
