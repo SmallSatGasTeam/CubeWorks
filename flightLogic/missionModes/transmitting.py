@@ -49,8 +49,8 @@ class Transmitting:
         then dequeues a transfer window once within 20 seconds of that timestamp
         """
         while True:
-            print(">>> Monitoring windows <<<")
             while True:
+                print(">>> Monitoring windows <<<")
                 #if close enough, prep files
                 #wait until 5 seconds before, return True
                 if((self.__timeToNextTXwindowVar > 10) and self.__timeToNextTXwindowVar<20): #If next window is in 2 minutes or less
