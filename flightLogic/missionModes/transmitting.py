@@ -112,7 +112,7 @@ class Transmitting:
                     print("\n\nResetting the TX Service code\n\n")
                     self.__TXServiceRunning = False
                     self.__inProgress = False
-                    break
+                    return
                 await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
     
     async def transmissionRunning(self):
