@@ -21,6 +21,8 @@ class Queue():
         return self.__short(delet)
 
 
+    #this function returns the next time that is stored in the file. If you give it a true it returns the all the data that is stored in the file, and then deletes the line. 
+    #if it is given a 0 then it will just return the time to the next window. 
     def __short(self, delete):
         #print("starting short")
         contents = []
