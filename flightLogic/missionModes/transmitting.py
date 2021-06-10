@@ -44,7 +44,6 @@ class Transmitting:
         self.__pictureNumber = -1
         self.__index = -1
         self.__codeBase = codeBase
-        self.__data = []
         self.__sendData = []
         self.__inProgress = False
 
@@ -70,50 +69,32 @@ class Transmitting:
                 #pull the packet
                 fileChecker.windowProtection()
                 line = self.__queue.dequeue(1)
-                self.__data = line.split(',')
+                self.__sendData = line.split(',')
             #If not within 20 seconds of the next time stamp
             elif ((self.__timeToNextTXwindowVar < 0) or (self.__timeToNextTXwindowVar > 20)) and (self.__queue.dequeue(0) != -1):
                 #Reset data and sendData lists, pull the time till next window from the next element in the queue
                 fileChecker.windowProtection()
-                self.__data = []
                 self.__sendData = []
-            elif self.__queue.dequeue(0) == -1:
-                self.__timeToNextTXwindowVar = 3133728366
-
-
-            #data[0] = time of next window, data[1] = duration of window, data[2] = datatype, data[3] = picture number, data[4] = line index
-            print(self.__data)
-            try:
-                #If the data list isn't empty
-                if self.__data != []:
-                    print(float(self.__data[0]), float(self.__data[0]) - time.time(), TRANSFER_WINDOW_BUFFER_TIME)
-                    #If the time to next window is less than 10
-                    if(float(self.__data[0]) - time.time() > TRANSFER_WINDOW_BUFFER_TIME): #If the transfer window is at BUFFER_TIME milliseconds in the future
-                        #If the time is greater than 0 or the soonestWindowTime is 0
-                        if(soonestWindowTime == 0) or (float(self.__data[0]) - time.time()):
-                            #Assign soonest window time and assign sendData to Data
-                            soonestWindowTime = float(self.__data[0]) - time.time()
-                            self.__sendData = self.__data
-            except Exception as e:
-                print("Error measuring transfer window:", e)
 
             #If sendData has the right number of members
             if self.__sendData.__len__() == 5:
                 print(self.__sendData)
                 #Assign the variables appropriately
-                self.__timeToNextTXwindowVar = float(self.__sendData[0]) - time.time()
-                self.__duration = int(self.__sendData[1])
-                self.__datatype = int(self.__sendData[2])
-                self.__pictureNumber = int(self.__sendData[3])
-                self.__nextWindowTime = float(self.__sendData[0])
-                self.__index = int(self.__sendData[4])
+                try :
+                    self.__timeToNextTXwindowVar = float(self.__sendData[0]) - time.time()
+                    self.__duration = int(self.__sendData[1])
+                    self.__datatype = int(self.__sendData[2])
+                    self.__pictureNumber = int(self.__sendData[3])
+                    self.__nextWindowTime = float(self.__sendData[0])
+                    self.__index = int(self.__sendData[4])
+                except :
+                    print("Data window is unreadable")
             else:
                 print("sendData is empty.")
 
             if (not self.__inProgress) and (self.__sendData != []):
                 asyncio.tasks.create_task(self.transmissionRunning())
 
-            print("Time to next window:", self.__timeToNextTXwindowVar)
             await asyncio.sleep(5)
     
     async def transmit(self):
@@ -147,8 +128,7 @@ class Transmitting:
                         #subprocess.Popen([txisrCodePath, str(self.__datatype)])
                         #print("We should literally be running this.")
                         subprocess.Popen(['sudo', './TXService.run', str(self.__datatype)], cwd = str(txisrCodePath))
-                        #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype))
-                        self.__timeToNextTXwindowVar = -1
+                        #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype)
                         break
                     else:
                         print("Transmission flag is not enabled")
@@ -161,7 +141,13 @@ class Transmitting:
         self.__inProgress = False
 
     async def upDateTime(self):
-        self.__timeToNextTXwindowVar = self.__queue.dequeue(0) - time.time()
+        #count down the time
+        if (self.__queue.dequeue(0) != -1):
+            self.__timeToNextTXwindowVar = self.__queue.dequeue(0) - time.time()
+        #other wise set the time to the defualt vaule
+        elif (self.__queue.dequeue(0) == -1) and (self.__queue.dequeue(0) - time.time()) > -10:
+                self.__timeToNextTXwindowVar = 3133728366
+        print("Time to next window:", self.__timeToNextTXwindowVar)
         await asyncio.sleep(2.5)
 
     def isRunning(self):
