@@ -25,7 +25,7 @@ class postBoomMode:
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		# self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
-		# self.__tasks.append(asyncio.create_task(self.__transmit.transmit()))
+		self.__tasks.append(asyncio.create_task(self.__transmit.getReadyForWindows()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.upDateTime()))
 
 		print("Initalized all tasks.")

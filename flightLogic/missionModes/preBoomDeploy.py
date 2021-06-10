@@ -48,7 +48,7 @@ class preBoomMode:
 		self.__tasks.append(asyncio.create_task(self.sunCheck()))
 		self.__tasks.append(asyncio.create_task(self.batteryCheck()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
-		# self.__tasks.append(asyncio.create_task(self.__transmit.transmit()))
+		self.__tasks.append(asyncio.create_task(self.__transmit.getReadyForWindows()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.upDateTime()))
 
 		"""This code was intended to find out when to deploy the boom based on how long GASPACS was in the light. 
