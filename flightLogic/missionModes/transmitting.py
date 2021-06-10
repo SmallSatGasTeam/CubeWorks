@@ -80,7 +80,7 @@ class Transmitting:
                     else:
                         print(self.__sendData)
                         print("sendData is incorrect.")
-                    if(self.__inProgress):
+                    if(not self.__inProgress):
                          asyncio.create_task(self.getReadyForWindows())
                 await asyncio.sleep(5)
 
