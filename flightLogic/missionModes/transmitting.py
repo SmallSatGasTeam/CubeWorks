@@ -75,7 +75,6 @@ class Transmitting:
             elif ((self.__timeToNextTXwindowVar < 0) or (self.__timeToNextTXwindowVar > 20)) and (self.__queue.dequeue(0) != -1):
                 #Reset data and sendData lists, pull the time till next window from the next element in the queue
                 fileChecker.windowProtection()
-                self.__timeToNextTXwindowVar = self.__queue.dequeue(0) - time.time()
                 self.__data = []
                 self.__sendData = []
             elif self.__queue.dequeue(0) == -1:
@@ -123,7 +122,6 @@ class Transmitting:
         TXService.run once under 5 seconds to transmit the prepared data.
         """
         while True:
-            self.__timeToNextTXwindowVar -= time.time()
             while True:
                 print("Transmit time to next window:", self.__timeToNextTXwindowVar)
                 #if close enough, prep files
@@ -161,6 +159,9 @@ class Transmitting:
         self.__inProgress = True
         await asyncio.sleep(self.__duration + 5)
         self.__inProgress = False
+
+    async def upDateTime(self):
+        self.__timeToNextTXwindowVar = self.__queue.dequeue(0) - time.time()
 
     def isRunning(self):
         return self.__inProgress

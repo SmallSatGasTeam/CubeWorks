@@ -32,6 +32,7 @@ class boomMode:
 		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.transmit()))
+		self.__tasks.append(asyncio.create_task(self.__transmit.upDateTime()))
 
 		print("Starting boom deploy")
 		# Deploy boom, take picture

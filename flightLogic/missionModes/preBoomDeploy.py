@@ -37,8 +37,6 @@ class preBoomMode:
 		self.__getTTNCData = TTNCData(saveObject)
 		self.__getAttitudeData = AttitudeData(saveObject)
 		self.__tasks = [] #Will be populated with tasks
-		self.__saveOject = saveObject
-		# self.__safeMode = safeModeObject
 		self.__packetProcessing = packet(transmitObject)
 		self.__transmit = transmitObject
 
@@ -51,6 +49,7 @@ class preBoomMode:
 		self.__tasks.append(asyncio.create_task(self.batteryCheck()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.transmit()))
+		self.__tasks.append(asyncio.create_task(self.__transmit.upDateTime()))
 
 		# while True: #iterate through array, checking for set amount of dark minutes, then set amount of light minutes no greater than the maximum. When light minutes are greater than the maximum, empties array
 		# 	if await self.skipToPostBoom():
