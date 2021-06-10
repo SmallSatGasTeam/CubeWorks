@@ -91,7 +91,7 @@ class preBoomMode:
 		while True:
 			print("checking for sunlight")
 			if ((self.sunlightData > self.darkVoltage) and self.batteryStatusOk == True):
-				self.cancelAllTasks(self.__tasks) #Cancel all background processes
+				self.cancelAllTasks(self.__tasks) #Cancel all background processes, this depolys the boom basically
 				print('Returning and exiting')
 				return True #Go on to Boom Deploy Mode if the battery is Ok
 			await asyncio.sleep(5) #Run this whole while loop every 15 seconds
