@@ -80,7 +80,8 @@ class Transmitting:
                     else:
                         print(self.__sendData)
                         print("sendData is incorrect.")
-                    asyncio.create_task(self.getReadyForWindows())
+                    if(self.__inProgress):
+                         asyncio.create_task(self.getReadyForWindows())
                 await asyncio.sleep(5)
 
     #this func will get call right before the tx window is ready, it calls the c code when everything is ready
