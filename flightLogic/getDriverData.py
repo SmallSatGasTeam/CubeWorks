@@ -138,8 +138,7 @@ class TTNCData:
 			print("Failed to retrieve cpuTempSensor. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 			piTemp = float4tohex(piTempMax + 1)
-# TRY/EXCEPT needs to be added for EPS, it gets used several times in this block of code (136-295)
-#________________________________________________________________________________________
+
 		try:
 			EPSMCUTemp = float4tohex(self.EPS.getMCUTemp())
 			if ((EPSMCUTemp < float4tohex(EPSMCUMin)) & (EPSMCUTemp > str(80000000))) | ((EPSMCUTemp > float4tohex(EPSMCUMax)) & (EPSMCUTemp < str(80000000))):
