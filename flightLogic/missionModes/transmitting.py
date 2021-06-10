@@ -116,7 +116,8 @@ class Transmitting:
         while True :
             print(">>> Up dating time to tx window <<<")
             #this will delete past windows, it should be called first
-            if(elf.__queue.dequeue(False) - time.time() <= -10):
+            if(self.__queue.dequeue(False) - time.time() <= -10):
+                print(">>> removing old window <<<")
                 self.__queue.dequeue(True)
             #count down the time
             #set new window if one is not inprogress
