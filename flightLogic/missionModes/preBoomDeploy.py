@@ -51,6 +51,8 @@ class preBoomMode:
 		# self.__tasks.append(asyncio.create_task(self.__transmit.transmit()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.upDateTime()))
 
+		"""This code was intended to find out when to deploy the boom based on how long GASPACS was in the light. 
+		This was commented out because there is no need for this functionality if there is no resin in the boom"""
 		# while True: #iterate through array, checking for set amount of dark minutes, then set amount of light minutes no greater than the maximum. When light minutes are greater than the maximum, empties array
 		# 	if await self.skipToPostBoom():
 		# 		print("Exiting preBoomDeploy through skipToPostBoom")
@@ -88,6 +90,7 @@ class preBoomMode:
 		# 			if(lightLength>self.lightMaximumMinutes*12): #Has been in the light for too long
 		# 				self.sunlightData.clear() #Reset array of data
 		# 				break
+
 		while True:
 			print("checking for sunlight")
 			if ((self.sunlightData > self.darkVoltage) and self.batteryStatusOk == True):
