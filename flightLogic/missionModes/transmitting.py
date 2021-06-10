@@ -58,11 +58,12 @@ class Transmitting:
                 if((self.__timeToNextTXwindowVar > 10) and self.__timeToNextTXwindowVar<20): #If next window is in 2 minutes or less
                     #get the data 
                     print(">>> Getting data from the queue <<<")
-                    #turn on tx in progress flag
-                    self.__inProgress = True
-                    #read in data and then split it
-                    line = self.__queue.dequeue(True)
-                    self.__sendData = line.split(',')
+                    if(not self.__inProgress):
+                        #turn on tx in progress flag
+                        self.__inProgress = True
+                        #read in data and then split it
+                        line = self.__queue.dequeue(True)
+                        self.__sendData = line.split(',')
                     #If sendData has the right number of members
                     if self.__sendData.__len__() == 5:
                         print(self.__sendData)
@@ -82,29 +83,29 @@ class Transmitting:
                         print(self.__sendData)
                         print("sendData is incorrect.")
                     #This is what calls the c code
-                    if(not self.__TXServiceRunning):
-                        if (self.__timeToNextTXwindowVar <= 5) and (self.__timeToNextTXwindowVar > -5):
-                            self.__TXServiceRunning = True
-                            print(">>> Calling c code <<<")
-                            fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
-                            self.__transmissionFlagFile.seek(0)
-                            if self.__transmissionFlagFile.readline() == 'Enabled':
-                                txisrCodePath = filePaths[self.__codeBase]
-                                #These two are old code that we may potentially have to come back to
-                                #subprocess.Popen([txisrCodePath, str(self.__datatype)])
-                                #print("We should literally be running this.")
-                                startTime = time.time()
+                    if (self.__timeToNextTXwindowVar <= 5) and (self.__timeToNextTXwindowVar > -5):
+                        print(">>> Calling c code <<<")
+                        fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
+                        self.__transmissionFlagFile.seek(0)
+                        if self.__transmissionFlagFile.readline() == 'Enabled':
+                            txisrCodePath = filePaths[self.__codeBase]
+                            #These two are old code that we may potentially have to come back to
+                            #subprocess.Popen([txisrCodePath, str(self.__datatype)])
+                            #print("We should literally be running this.")
+                            startTime = time.time()
+                            if(not self.__TXServiceRunning):
+                                self.__TXServiceRunning = True
                                 subprocess.Popen(['sudo', './TXService.run', str(self.__datatype)], cwd = str(txisrCodePath))
-                                while(self.__duration >= time.time() - startTime):
-                                    print("\tWaiting for TX to finsih", self.__duration >= time.time() - startTime)
-                                #turn off tx in progress flag
-                                print("\n\nResetting the TX Service code\n\n")
-                                self.__TXServiceRunning = False
-                                self.__inProgress = False
-                                #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype)
-                            else:
-                                print("Transmission flag is not enabled")
-                await asyncio.sleep(2.5)          
+                            while(self.__duration >= time.time() - startTime):
+                                print("\tWaiting for TX to finsih", self.__duration >= time.time() - startTime)
+                            #turn off tx in progress flag
+                            print("\n\nResetting the TX Service code\n\n")
+                            self.__TXServiceRunning = False
+                            self.__inProgress = False
+                            #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype)
+                        else:
+                            print("Transmission flag is not enabled")
+                await asyncio.sleep(1)          
     
     async def transmissionRunning(self):
         self.__inProgress = True
