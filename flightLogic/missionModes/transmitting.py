@@ -118,7 +118,7 @@ class Transmitting:
     async def upDateTime(self):
         while True :
             print(">>> Up dating time to tx window <<<")
-            print("Last window: " + self.__lastwindow)
+            print(self.__lastwindow)
             #count down the time
             #if we have past the current tx window move on the next one
             if(self.__queue.dequeue(False) - time.time() < -10):
