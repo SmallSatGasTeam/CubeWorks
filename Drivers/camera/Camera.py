@@ -62,11 +62,10 @@ class Camera(Driver):
         """
         Compresses the Low Res to files. Compresses with SSDV, converts from Hex to ASCII with xxd, splits into 128 byte files.
         """
-        self.pictureNumber = pictureNumber
+        self.pictureNumber = int(pictureNumber)
 
         #Set up paths for high res picture and creates the packets directory
         highResOriginalPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".jpg"
-        highResSSDVPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".bin"
+        highResSSDVPath = self.pictureDirectoryPath+"/"+str(self.pictureNumber + 100)+"/HighRes/HighResOriginal"+str(self.pictureNumber + 100)+".bin"
 
         ssdv_highRes_picture = system('sudo /home/pi/ssdv/ssdv -e -c N7GAS -i ' + str(pictureNumber) + " " + str(highResOriginalPath) + ' ' + str(highResSSDVPath))
-
