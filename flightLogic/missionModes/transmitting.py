@@ -70,15 +70,16 @@ class Transmitting:
                         self.__datatype = int(self.__sendData[2])
                         self.__pictureNumber = int(self.__sendData[3])
                         self.__index = int(self.__sendData[4])
+                        if self.__datatype < 3:#Attitude, TTNC, or Deployment data respectively
+                            print(">>> Preparing data 0 - 2 <<<")
+                            prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
+                        else:
+                            print(">>> Preparing data 3 - 4 <<<")
+                            print("Transimtting.py:", self.__duration, self.__datatype, self.__pictureNumber)
+                            prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__index)
                     else:
-                        print("sendData is empty.")
-                    if self.__datatype < 3:#Attitude, TTNC, or Deployment data respectively
-                        print(">>> Preparing data 0 - 2 <<<")
-                        prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
-                    else:
-                        print(">>> Preparing data 3 - 4 <<<")
-                        print("Transimtting.py:", self.__duration, self.__datatype, self.__pictureNumber)
-                        prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__index)
+                        print(self.__sendData)
+                        print("sendData is incorrect.")
                     self.getReadyForWindos()
                 await asyncio.sleep(5)
 
