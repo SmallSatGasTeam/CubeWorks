@@ -109,6 +109,8 @@ class Transmitting:
         #other wise set the time to the defualt vaule
         elif (self.__queue.dequeue(False) == -1) and (self.__timeToNextTXwindowVar - time.time()) < -10:
                 self.__timeToNextTXwindowVar = 3133728366
+                #this will remove past tx windows
+                self.__queue.dequeue(True)
         print("Time to next window:", self.__timeToNextTXwindowVar)
         await asyncio.sleep(2.5)
 
