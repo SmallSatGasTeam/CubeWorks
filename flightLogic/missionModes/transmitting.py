@@ -33,12 +33,8 @@ class Transmitting:
         self.__txWindowsPath = ('/home/pi/TXISRData/txWindows.txt')
         fileChecker.checkFile(self.__txWindowsPath)
         self.__queue = Queue(self.__txWindowsPath)
-        if self.__queue.dequeue(0) != -1:
-            fileChecker.windowProtection()
-            self.__timeToNextTXwindowVar = self.__queue.dequeue(0)
-        else:
-            self.__timeToNextTXwindowVar = -1
-        self.__nextWindowTime = 3133728366
+        self.__timeToNextTXwindowVar = 3133728366
+        self.__nextWindowTime = -1
         self.__duration = -1
         self.__datatype = -1
         self.__pictureNumber = -1
