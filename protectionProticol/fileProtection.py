@@ -174,6 +174,6 @@ class FileReset():
         file.seek(0)
 
         for line in TXwindows:
-            if line == "\n":
+            if line == "\n" or line == "":
                 del line
         file.close()
