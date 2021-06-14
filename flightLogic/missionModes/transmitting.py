@@ -118,7 +118,7 @@ class Transmitting:
 
     async def upDateTime(self):
         while True :
-            print(">>> Up dating time to tx window <<<")
+            print(">>> Updating time to tx window <<<")
             #this will delete past windows, it should be called first
             if(self.__queue.dequeue(False) - time.time() <= -10):
                 print(">>> removing old window <<<")
