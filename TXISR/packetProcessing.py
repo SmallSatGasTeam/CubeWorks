@@ -201,7 +201,11 @@ class packetProcessing:
 					# Do not reboot
 					print("Do not reboot")
 				else:
-					os.system("reboot")
+					#Send reboot command to Beetle
+					print("Reboot")
+					bus = smbus.SMBus(1)
+					address = 0x08
+					bus.write_byte(address, 1)
 
 				if binaryData[48:56] == '00000000':
 					# Turn off AX25
@@ -243,7 +247,7 @@ class packetProcessing:
 		#write the data to the file, using the new queue
 		txWindow = ( str(windowStartTime) + ',' + str(windowDuration) + ','
 						+ str(dataType) + ',' + str(pictureNumber) + ','
-						+ str(index))
+						+ str(index) + '\n')
 		windows.enqueue(txWindow)
 		# TXWindow_File.write(str(windowStartTime)+',')
 		# TXWindow_File.write(str(windowDuration)+',')
