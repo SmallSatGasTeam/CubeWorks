@@ -113,7 +113,7 @@ class FileReset():
                 print("Error trying to make directory ", dirPath)
     
     def windowProtection(self):
-        # """Deletes everything in txWindows.txt that is not a valid window - Written by Evan Anderson and Daniel Combs"""
+        """Deletes everything in txWindows.txt that is not a valid window - Written by Evan Anderson and Daniel Combs"""
         # print("<Checking txWindows>")
         # file = open(self.__windowFilePath, 'r')
         # file.seek(0)
