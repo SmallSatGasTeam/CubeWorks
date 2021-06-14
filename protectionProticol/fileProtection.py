@@ -122,6 +122,7 @@ class FileReset():
         count = 0
         for line in TXwindows:
             window = line.split(',')
+            print(window)
 
             # Check if window has five elements
             if len(window) != 5:
@@ -162,6 +163,7 @@ class FileReset():
 
             # This is the TX flag, don't put limits on it
             TXflagStripped = window[4].strip('\n')
+            print(TXflagStripped)
             if (not TXflagStripped.isnumeric()) or int(window[4]) < -1:
                 TXwindows[count] = ""
                 count += 1
