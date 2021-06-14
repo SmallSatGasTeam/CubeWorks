@@ -46,7 +46,7 @@ class antennaMode:
 		thresholdcheck, skipToPostBoom, readNextTransferWindow, trasmit
 		"""
 		print('Antenna Deploy Running!')
-		self.__tasks.append(asyncio.create_task(heart_beat()))
+		self.__tasks.append(asyncio.create_task(heart_beat.heartBeatRun()))
 		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt(self.__transmit)))
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(1))) #Antenna deploy is mission mode 1
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
