@@ -22,10 +22,11 @@ class boomMode:
 		self.__saveObject = saveObject
 		self.__transmit = transmitObject
 		self.__packetProcessing = packet(transmitObject)
+		self.__heartBeatObj = heart_beat()
 
 	async def run(self):
 		# Setting up background processes
-		self.__tasks.append(asyncio.create_task(heart_beat.heartBeatRun()))
+		self.__tasks.append(asyncio.create_task(self.__heartBeatObj.heartBeatRun()))
 		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt(self.__transmit)))
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(3)))  # Boom deploy is mode 3
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))

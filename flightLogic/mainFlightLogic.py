@@ -54,10 +54,11 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	# safeModeObject = safe.safe(saveObject)
 	transmitObject = Transmitting(codeBase)
 	packet = packetProcessing(transmitObject)
+	self.__heartBeatObj = heart_beat()
 
 	print('Starting data collection') #Setting up Background tasks for BOOT mode
 	tasks=[]
-	tasks.append(asyncio.create_task(heart_beat.heartBeatRun()))
+	tasks.append(asyncio.create_task(self.__heartBeatObj.heartBeatRun()))
 	tasks.append(asyncio.create_task(pythonInterrupt.interrupt(transmitObject)))
 	tasks.append(asyncio.create_task(ttncData.collectTTNCData(0))) #Boot Mode is classified as 0
 	tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
