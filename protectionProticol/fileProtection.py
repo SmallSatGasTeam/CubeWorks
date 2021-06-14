@@ -120,17 +120,23 @@ class FileReset():
         for i in windows:
             window = i.split(",")
             if len(window) != 5:
+                print("Not 5 long")
                 continue 
             if (not window[0].isnumeric()) or int(window[0]) < 0 or len(window[0]) != 10:
+                print("Bad time")
                 continue
             if (not window[1].isnumeric()) or int(window[1]) < 0 or int(window[1]) > 3600:
+                print("Bad window length")
                 continue
             if (not window[2].isnumeric()) or int(window[2]) < 0 or int(window[2]) > 5:
+                print("Bad data type")
                 continue
             if (not window[3].isnumeric()) or int(window[3]) < 0:
+                print("Bad picture number")
                 continue
             TXflagStripped = window[4].strip('\n')
             if (not TXflagStripped.isnumeric()) or (int(TXflagStripped) < -1):
+                print("Not a valid TXflag")
                 continue
             print("Good Windows: " + goodWindows)
             goodWindows.append(i)
