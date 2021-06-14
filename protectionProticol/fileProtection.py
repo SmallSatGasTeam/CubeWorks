@@ -165,7 +165,7 @@ class FileReset():
             TXflagStripped = window[4].strip('\n')
             # print(TXflagStripped)
             # print(window[4])
-            if (not TXflagStripped.isnumeric()) or int(window[4]) < -1:
+            if (not TXflagStripped.isnumeric()) or int(TXflagStripped) < -1:
                 TXwindows[count] = ""
                 count += 1
                 continue
