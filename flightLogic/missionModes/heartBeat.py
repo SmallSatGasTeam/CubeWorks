@@ -8,7 +8,7 @@ class heart_beat:
         GPIO.setup(21, GPIO.OUT, initial=GPIO.LOW) #Sets pin 40 (GPIO 21) to be an output pin and sets the initial value to low (off)
 
 
-    async def heartBeatRun(): #Sets up up-and-down voltage on pin 40 (GPIO 21) for heartbeat with Arduino
+    async def heartBeatRun(self): #Sets up up-and-down voltage on pin 40 (GPIO 21) for heartbeat with Arduino
         waitTime = 4
         while True:
             GPIO.output(21, GPIO.HIGH)
