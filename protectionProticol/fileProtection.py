@@ -194,9 +194,9 @@ class FileReset():
 
             # This is the TX flag, don't put limits on it
             TXflagStripped = window[4].strip('\n')
+            TXflagStripped = window[4].strip('-')
             print(TXflagStripped)
             print(TXflagStripped.isnumeric())
-            print(TXflagStripped)
             if (not TXflagStripped.isnumeric()) or int(TXflagStripped) < -1:
                 TXwindows[count] = ""
                 count += 1
