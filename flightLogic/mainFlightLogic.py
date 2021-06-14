@@ -9,6 +9,7 @@ from flightLogic.missionModes.antennaDeploy import antennaMode as antennaMode
 from flightLogic.missionModes.preBoomDeploy import preBoomMode
 from flightLogic.missionModes.boomDeploy import boomMode
 from flightLogic.missionModes.postBoomDeploy import postBoomMode
+from flightLogic.missionModes.heartBeat import heart_beat
 # from flightLogic.missionModes import safe
 from flightLogic.missionModes.transmitting import Transmitting
 from flightLogic.missionModes import *
@@ -16,7 +17,8 @@ from protectionProticol.fileProtection import FileReset
 import asyncio
 from TXISR import pythonInterrupt
 from TXISR.packetProcessing import packetProcessing
-import RPi.GPIO as GPIO
+
+
 
 
 # from TXISR import interrupt
@@ -55,7 +57,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 
 	print('Starting data collection') #Setting up Background tasks for BOOT mode
 	tasks=[]
-	tasks.append(asyncio.create_task(heartBeat()))#create the heart beat task
+	tasks.append(asyncio.create_task(heart_beat()))
 	tasks.append(asyncio.create_task(pythonInterrupt.interrupt(transmitObject)))
 	tasks.append(asyncio.create_task(ttncData.collectTTNCData(0))) #Boot Mode is classified as 0
 	tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))

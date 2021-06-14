@@ -3,6 +3,7 @@ sys.path.append('../../')
 import asyncio
 from flightLogic.getDriverData import *
 from TXISR import pythonInterrupt
+from flightLogic.missionModes.heartBeat import heart_beat
 
 
 REBOOT_WAIT_TIME = 900 #15 minutes, 900 seconds
@@ -20,6 +21,7 @@ class postBoomMode:
 	async def run(self):
 		#Set up background processes
 		print("Inside of run in postBoomDeploy")
+		self.__tasks.append(asyncio.create_task(heart_beat()))
 		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt(self.__transmit)))
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(4))) #Post-boom is mode 4
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
