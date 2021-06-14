@@ -164,6 +164,7 @@ class FileReset():
             # This is the TX flag, don't put limits on it
             TXflagStripped = window[4].strip('\n')
             print(TXflagStripped)
+            print(window[4])
             if (not TXflagStripped.isnumeric()) or int(window[4]) < -1:
                 TXwindows[count] = ""
                 count += 1
@@ -178,4 +179,6 @@ class FileReset():
         for line in TXwindows:
             if line == "\n" or line == "":
                 del line
+            # if "\n" in window[4]:
+            #     del line + 1
         file.close()
