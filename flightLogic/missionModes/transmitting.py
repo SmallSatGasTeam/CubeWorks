@@ -120,9 +120,9 @@ class Transmitting:
         while True :
             print(">>> Updating time to tx window <<<")
             #this will delete past windows, it should be called first
-            if(self.__queue.dequeue(False) - time.time() <= -10):
-                print(">>> removing old window <<<")
-                self.__queue.dequeue(True)
+            #if(self.__queue.dequeue(False) - time.time() <= -10):
+             #   print(">>> removing old window <<<")
+              #  self.__queue.dequeue(True)
             #count down the time
             #set new window if one is not inprogress
             if(not self.__inProgress):
