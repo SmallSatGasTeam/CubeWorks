@@ -3,7 +3,11 @@ import RPi.GPIO as GPIO
 
 class heart_beat:
     def __init__(self) -> None:
-        asyncio.create_task(self.heartBeat())
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM) #Physical Pin numbering
+        GPIO.setup(21, GPIO.OUT, initial=GPIO.LOW) #Sets pin 40 (GPIO 21) to be an output pin and sets the initial value to low (off)
+        syncio.create_task(self.heartBeat())
+
 
     async def heartBeat(self): #Sets up up-and-down voltage on pin 40 (GPIO 21) for heartbeat with Arduino
         waitTime = 4
