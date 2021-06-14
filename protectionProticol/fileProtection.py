@@ -179,7 +179,7 @@ class FileReset():
         file.seek(0)
 
         for line in TXwindows:
-            if line == "\n" or line == "":
+            if line == '\n' or line == "":
                 del line
             # if "\n" in window[4]:
             #     del line + 1
