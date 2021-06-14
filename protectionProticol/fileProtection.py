@@ -134,13 +134,11 @@ class FileReset():
             # All of these are checking if values are positive integers
             # All of these use isnumeric to make sure everything is a number
 
-            # Check if timestamp is ten characters long
-            print("window[0] is: ", window[0])
-            print("window[0].isnumeric is: ", window[0].isnumeric())
             if (not window[0].isnumeric()) or int(window[0]) < 0 or len(window[0]) != 10:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
                 count += 1
+                print("Bad Window: ", window)
                 continue
 
             # Check if window length is less than or equal to 3600
@@ -148,6 +146,7 @@ class FileReset():
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
                 count += 1
+                print("Bad Window: ", window)
                 continue
 
             # Check if type is less than or equal to five
@@ -155,12 +154,14 @@ class FileReset():
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
                 count += 1
+                print("Bad Window: ", window)
                 continue
 
             # This is the picture number (not number of pictures), don't put limits on it
             if (not window[3].isnumeric()) or int(window[3]) < 0:
                 TXwindows[count] = ""
                 count += 1
+                print("Bad Window: ", window)
                 continue
 
             # This is the TX flag, don't put limits on it
@@ -168,6 +169,7 @@ class FileReset():
             if (not TXflagStripped.isnumeric()) or int(window[4]) < -1:
                 TXwindows[count] = ""
                 count += 1
+                print("Bad Window: ", window)
                 continue
             count += 1
         file = open(self.__windowFilePath, 'w')
@@ -175,5 +177,6 @@ class FileReset():
         file.seek(0)
         for line in TXwindows:
             if line == "\n":
+                print("Bad Window: newline")
                 del line
         file.close()
