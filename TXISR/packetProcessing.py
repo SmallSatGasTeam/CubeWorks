@@ -52,7 +52,7 @@ class packetProcessing:
 				timeToNextWindow = int(windows.dequeue(0))
 			else:
 				timeToNextWindow = 3133685166
-			print(">>>Initialized all variables.")
+			print(">>>Initialized all variables<<<")
 
 			transmissionFilePath = txisrCodePath + 'data/txFile.txt' #File path to txFile. This is where data will be stored
 			fileChecker.checkFile(transmissionFilePath)	

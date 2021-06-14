@@ -54,7 +54,7 @@ class Transmitting:
                 print(">>> Monitoring windows <<<")
                 #if close enough, prep files
                 #wait until 5 seconds before, return True
-                if((self.__timeToNextTXwindowVar > 10) and self.__timeToNextTXwindowVar<20 and not self.__inProgress): #If next window is in 2 minutes or less
+                if((self.__timeToNextTXwindowVar > 10) and (self.__timeToNextTXwindowVar<20) and (not self.__inProgress)): #If next window is in 20 seconds or less
                     #get the data 
                     print(">>> Getting data from the queue <<<")
                     #turn on tx in progress flag
@@ -100,13 +100,15 @@ class Transmitting:
                         while(self.__duration >= time.time() - startTime):
                             print("\tWaiting for TX to finsih", self.__duration >= time.time() - startTime)
                             await asyncio.sleep(2)
+                        #turn off tx in progress flag
+                        print("\n\nResetting the TX Service code\n\n")
+                        self.__inProgress = False
                         #os.system("cd ; cd " + str(txisrCodePath) + " ; sudo ./TXService.run " + str(self.__datatype)
                     else:
                         print("Transmission flag is not enabled")
-
-                    #turn off tx in progress flag
-                    print("\n\nResetting the TX Service code\n\n")
-                    self.__inProgress = False
+                        #turn off tx in progress flag
+                        print("\n\nResetting the TX Service code\n\n")
+                        self.__inProgress = False
                 await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
     
     async def transmissionRunning(self):
