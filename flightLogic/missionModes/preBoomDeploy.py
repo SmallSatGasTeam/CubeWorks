@@ -10,6 +10,7 @@ from TXISR import pythonInterrupt
 
 from inspect import currentframe, getframeinfo
 from TXISR.packetProcessing import packetProcessing as packet
+from flightLogic.missionModes.heartBeat import heart_beat
 
 
 sunSensorMin = 0.0
@@ -39,8 +40,11 @@ class preBoomMode:
 		self.__tasks = [] #Will be populated with tasks
 		self.__packetProcessing = packet(transmitObject)
 		self.__transmit = transmitObject
+		self.__heartBeatObj = heart_beat()
+
 
 	async def run(self):
+		self.__tasks.append(asyncio.create_task(self.__heartBeatObj.heartBeatRun()))
 		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt(self.__transmit)))
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(2))) #Pre-Boom is mode 2
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))

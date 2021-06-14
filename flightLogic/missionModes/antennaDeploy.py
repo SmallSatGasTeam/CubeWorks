@@ -15,6 +15,7 @@ import asyncio
 import flightLogic.getDriverData as getDriverData
 from TXISR import pythonInterrupt
 from TXISR.packetProcessing import packetProcessing as packet
+from flightLogic.missionModes.heartBeat import heart_beat
 
 
 
@@ -36,6 +37,7 @@ class antennaMode:
 		self.__antennaDoor = AntennaDoor()
 		self.__transmit = transmitObject
 		self.__packetProcessing = packet(transmitObject)
+		self.__heartBeatObj = heart_beat()
 
 
 	async def run(self):
@@ -45,6 +47,7 @@ class antennaMode:
 		thresholdcheck, skipToPostBoom, readNextTransferWindow, trasmit
 		"""
 		print('Antenna Deploy Running!')
+		self.__tasks.append(asyncio.create_task(self.__heartBeatObj.heartBeatRun()))
 		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt(self.__transmit)))
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(1))) #Antenna deploy is mission mode 1
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
