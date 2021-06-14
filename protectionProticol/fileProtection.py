@@ -206,6 +206,6 @@ class FileReset():
         file.seek(0)
         for line in TXwindows:
             if line == "\n":
-                print("Removing bad window: ", window)
+                print("Removing bad window: ", window, " code: 6")
                 del line
         file.close()
