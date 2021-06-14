@@ -201,11 +201,7 @@ class packetProcessing:
 					# Do not reboot
 					print("Do not reboot")
 				else:
-					#Send reboot command to Beetle
-					print("Reboot")
-					bus = smbus.SMBus(1)
-					address = 0x08
-					bus.write_byte(address, 1)
+					os.system("poweroff")
 
 				if binaryData[48:56] == '00000000':
 					# Turn off AX25
