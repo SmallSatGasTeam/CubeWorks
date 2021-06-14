@@ -113,7 +113,7 @@ class FileReset():
                 print("Error trying to make directory ", dirPath)
     
     def windowProtection(self):
-        """Deletes everything in txWindows.txt that is not a valid window"""
+        """Deletes everything in txWindows.txt that is not a valid window - Written by Evan Anderson and Daniel Combs"""
         print("<Checking txWindows>")
         file = open(self.__windowFilePath, 'r')
         file.seek(0)
@@ -122,6 +122,7 @@ class FileReset():
         count = 0
         for line in TXwindows:
             window = line.split(',')
+            print(window)
 
             # Check if window has five elements
             if len(window) != 5:
@@ -162,6 +163,8 @@ class FileReset():
 
             # This is the TX flag, don't put limits on it
             TXflagStripped = window[4].strip('\n')
+            # print(TXflagStripped)
+            # print(window[4])
             if (not TXflagStripped.isnumeric()) or int(window[4]) < -1:
                 TXwindows[count] = ""
                 count += 1
@@ -176,4 +179,6 @@ class FileReset():
         for line in TXwindows:
             if line == "\n" or line == "":
                 del line
+            # if "\n" in window[4]:
+            #     del line + 1
         file.close()

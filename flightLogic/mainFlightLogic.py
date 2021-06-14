@@ -16,6 +16,7 @@ from protectionProticol.fileProtection import FileReset
 import asyncio
 from TXISR import pythonInterrupt
 from TXISR.packetProcessing import packetProcessing
+import RPi.GPIO as GPIO
 
 
 # from TXISR import interrupt
@@ -38,6 +39,7 @@ def __main__():
 
 
 async def executeFlightLogic():  # Open the file save object, start TXISR, and start Boot Mode data collection
+	
 	baseFile = open("/home/pi/lastBase.txt")
 	codeBase = int(baseFile.read())
 	# Variable setup
@@ -53,6 +55,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 
 	print('Starting data collection') #Setting up Background tasks for BOOT mode
 	tasks=[]
+	tasks.append(asyncio.create_task(heartBeat()))#create the heart beat task
 	tasks.append(asyncio.create_task(pythonInterrupt.interrupt(transmitObject)))
 	tasks.append(asyncio.create_task(ttncData.collectTTNCData(0))) #Boot Mode is classified as 0
 	tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
@@ -223,3 +226,13 @@ def readData():
 
 	recordData(bootCount, antennaDeployed, lastMode)
 	return bootCount, antennaDeployed, lastMode
+
+async def heartBeat(): #Sets up up-and-down voltage on pin 40 (GPIO 21) for heartbeat with Arduino
+		waitTime = 4
+		while True:
+			GPIO.output(21, GPIO.HIGH)
+			print("Heartbeat wave high")
+			await asyncio.sleep(waitTime/2)
+			GPIO.output(21, GPIO.LOW)
+			print("Heartbeat wave low")
+			await asyncio.sleep(waitTime/2)
