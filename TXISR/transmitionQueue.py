@@ -12,7 +12,7 @@ class Queue():
     #this adds a data point to the txWindows folder
     def enqueue(self, data):
         self.__fileChecher.checkFile(self.__filepath)
-        #self.__fileChecher.windowProtection()
+        self.__fileChecher.windowProtection()
         file = open(self.__filepath, "a+") 
         file.write(str(data) + "\n")
         file.close()
@@ -21,7 +21,7 @@ class Queue():
     #this code returns data form the queue, if you say true it will return the whole line and delete that line from the queue. If you give it a 1 then it returns the next time but 
     #does not delete the data in the queue
     def dequeue(self, delet):
-        #self.__fileChecher.windowProtection()
+        self.__fileChecher.windowProtection()
         return self.__short(delet)
 
 
@@ -33,7 +33,7 @@ class Queue():
         line = []
         minLine = ""
         self.__fileChecher.checkFile(self.__filepath)
-        #self.__fileChecher.windowProtection()
+        self.__fileChecher.windowProtection()
         file = open(self.__filepath, "r") 
         contents = file.read().splitlines()
         file.close()
@@ -71,7 +71,7 @@ class Queue():
 
     def clearQueue(self):
         self.__fileChecher.checkFile(self.__filepath)
-        #self.__fileChecher.windowProtection()
+        self.__fileChecher.windowProtection()
         file = open(self.__filepath, "w")
         file.close()
 
