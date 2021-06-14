@@ -227,7 +227,7 @@ def readData():
 	recordData(bootCount, antennaDeployed, lastMode)
 	return bootCount, antennaDeployed, lastMode
 
-async def heartBeat(self): #Sets up up-and-down voltage on pin 40 (GPIO 21) for heartbeat with Arduino
+async def heartBeat(): #Sets up up-and-down voltage on pin 40 (GPIO 21) for heartbeat with Arduino
 		waitTime = 4
 		while True:
 			GPIO.output(21, GPIO.HIGH)
