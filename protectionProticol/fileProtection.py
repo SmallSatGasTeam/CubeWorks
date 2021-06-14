@@ -156,7 +156,7 @@ class FileReset():
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
                 count += 1
-                print("Bad Window: ", window, "1")
+                print("Removing bad window: ", window, " code: 0")
                 continue
 
             # All of these are checking if values are positive integers
