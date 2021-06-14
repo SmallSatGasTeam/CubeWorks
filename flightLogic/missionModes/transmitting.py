@@ -135,3 +135,6 @@ class Transmitting:
 
     def isRunning(self): #Other transmission are authorized though self.__inProgress which is set by transmissionRunning
         return self.__inProgress
+
+    def nextTXTime(self):
+        return self.__timeToNextTXwindowVar

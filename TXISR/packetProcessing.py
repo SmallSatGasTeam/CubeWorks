@@ -48,8 +48,8 @@ class packetProcessing:
 			baseFile = open("/home/pi/lastBase.txt")
 			codeBase = int(baseFile.read())
 			txisrCodePath = self.__filePaths[codeBase]
-			if windows.dequeue(0) != -1:
-				timeToNextWindow = int(windows.dequeue(0))
+			if self.__transmit.nextTXTime() > -1:
+				timeToNextWindow = self.__transmit.nextTXTime()
 			else:
 				timeToNextWindow = 3133685166
 			print(">>>Initialized all variables<<<")
