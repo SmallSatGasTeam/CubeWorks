@@ -135,6 +135,9 @@ class FileReset():
             # All of these use isnumeric to make sure everything is a number
 
             # Check if timestamp is ten characters long
+            print("window[0] is: ", window[0])
+            print("window[0].isnumeric is: ", window[0].isnumeric())
+            if (not window[0].isnumeric) or int(window[0]) < 0 or len(window[0]) != 10:
             if (not window[0].isnumeric()) or int(window[0]) < 0 or len(window[0]) != 10:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
@@ -142,6 +145,7 @@ class FileReset():
                 continue
 
             # Check if window length is less than or equal to 3600
+            if (not window[1].isnumeric) or int(window[1]) < 0 or int(window[1]) > 3600:
             if (not window[1].isnumeric()) or int(window[1]) < 0 or int(window[1]) > 3600:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
@@ -149,6 +153,7 @@ class FileReset():
                 continue
 
             # Check if type is less than or equal to five
+            if (not window[2].isnumeric) or int(window[2]) < 0 or int(window[2]) > 5:
             if (not window[2].isnumeric()) or int(window[2]) < 0 or int(window[2]) > 5:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
@@ -156,6 +161,7 @@ class FileReset():
                 continue
 
             # This is the picture number (not number of pictures), don't put limits on it
+            if (not window[3].isnumeric) or int(window[3]) < 0:
             if (not window[3].isnumeric()) or int(window[3]) < 0:
                 TXwindows[count] = ""
                 count += 1
@@ -163,22 +169,16 @@ class FileReset():
 
             # This is the TX flag, don't put limits on it
             TXflagStripped = window[4].strip('\n')
-            # print(TXflagStripped)
-            # print(window[4])
-            if int(TXflagStripped == -1):
-                TXwindows[count+1] = ""
-            if (not TXflagStripped.isnumeric()) or (int(TXflagStripped) < -1):
+            if (not TXflagStripped.isnumeric) or int(window[4]) < -1:
+            if (not TXflagStripped.isnumeric()) or int(window[4]) < -1:
                 TXwindows[count] = ""
                 count += 1
                 continue
             count += 1
-
         file = open(self.__windowFilePath, 'w')
-
-        for line in TXwindows:
-            if line == '\n' or line == "":
-                del line
-            # if "\n" in window[4]:
-            #     del line + 1
         file.writelines(TXwindows)
+        file.seek(0)
+        for line in TXwindows:
+            if line == "\n":
+                del line
         file.close()
