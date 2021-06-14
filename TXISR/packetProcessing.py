@@ -201,7 +201,7 @@ class packetProcessing:
 					# Do not reboot
 					print("Do not reboot")
 				else:
-					os.system("poweroff")
+					os.system("reboot")
 
 				if binaryData[48:56] == '00000000':
 					# Turn off AX25
