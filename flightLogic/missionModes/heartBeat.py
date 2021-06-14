@@ -5,7 +5,7 @@ class heart_beat:
     def __init__(self) -> None:
         asyncio.create_task(self.heartBeat())
 
-    async def heartBeat(): #Sets up up-and-down voltage on pin 40 (GPIO 21) for heartbeat with Arduino
+    async def heartBeat(self): #Sets up up-and-down voltage on pin 40 (GPIO 21) for heartbeat with Arduino
         waitTime = 4
         while True:
             GPIO.output(21, GPIO.HIGH)
