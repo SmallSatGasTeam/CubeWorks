@@ -247,7 +247,7 @@ class packetProcessing:
 		#write the data to the file, using the new queue
 		txWindow = ( str(windowStartTime) + ',' + str(windowDuration) + ','
 						+ str(dataType) + ',' + str(pictureNumber) + ','
-						+ str(index) + '\n')
+						+ str(index))
 		windows.enqueue(txWindow)
 		# TXWindow_File.write(str(windowStartTime)+',')
 		# TXWindow_File.write(str(windowDuration)+',')
