@@ -174,13 +174,11 @@ class FileReset():
             count += 1
 
         file = open(self.__windowFilePath, 'w')
-        file.writelines(TXwindows)
-
-        file.seek(0)
 
         for line in TXwindows:
             if line == '\n' or line == "":
                 del line
             # if "\n" in window[4]:
             #     del line + 1
+        file.writelines(TXwindows)
         file.close()
