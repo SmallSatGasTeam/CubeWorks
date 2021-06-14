@@ -166,7 +166,7 @@ class FileReset():
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
                 count += 1
-                print("Bad Window: ", window, "2")
+                print("Removing bad window: ", window, " code: 1")
                 continue
 
             # Check if window length is less than or equal to 3600
@@ -174,7 +174,7 @@ class FileReset():
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
                 count += 1
-                print("Bad Window: ", window, "3")
+                print("Removing bad window: ", window, " code: 2")
                 continue
 
             # Check if type is less than or equal to five
@@ -182,25 +182,23 @@ class FileReset():
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
                 count += 1
-                print("Bad Window: ", window, "4")
+                print("Removing bad window: ", window, " code: 3")
                 continue
 
             # This is the picture number (not number of pictures), don't put limits on it
             if (not window[3].isnumeric()) or int(window[3]) < 0:
                 TXwindows[count] = ""
                 count += 1
-                print("Bad Window: ", window, "5")
+                print("Removing bad window: ", window, " code: 4")
                 continue
 
             # This is the TX flag, don't put limits on it
-            TXflagStripped = window[4].strip('\n')
+            TXflagStripped = window[4].strip('\n') # .isnumeric won't work on '\n' or '-', so we strip both
             TXflagStripped = TXflagStripped.strip('-')
-            print(TXflagStripped)
-            print(TXflagStripped.isnumeric())
             if (not TXflagStripped.isnumeric()) or int(TXflagStripped) < -1:
                 TXwindows[count] = ""
                 count += 1
-                print("Bad Window: ", window, "6")
+                print("Removing bad window: ", window, " code: 5")
                 continue
             count += 1
         file = open(self.__windowFilePath, 'w')
@@ -208,6 +206,6 @@ class FileReset():
         file.seek(0)
         for line in TXwindows:
             if line == "\n":
-                print("Bad Window: newline")
+                print("Removing bad window: ", window)
                 del line
         file.close()
