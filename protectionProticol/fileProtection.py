@@ -146,7 +146,7 @@ class FileReset():
         file = open(self.__windowFilePath, 'r')
         file.seek(0)
 
-         TXwindows = file.readlines()
+        TXwindows = file.readlines()
         count = 0
         for line in TXwindows:
             window = line.split(',')
