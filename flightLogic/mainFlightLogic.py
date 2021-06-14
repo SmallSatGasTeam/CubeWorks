@@ -39,8 +39,7 @@ def __main__():
 
 
 async def executeFlightLogic():  # Open the file save object, start TXISR, and start Boot Mode data collection
-	#create the heart beat task
-	heartbeatTask = asyncio.create_task(heartBeat())
+	
 	baseFile = open("/home/pi/lastBase.txt")
 	codeBase = int(baseFile.read())
 	# Variable setup
@@ -56,6 +55,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 
 	print('Starting data collection') #Setting up Background tasks for BOOT mode
 	tasks=[]
+	tasks.append(asyncio.create_task(heartBeat()))#create the heart beat task
 	tasks.append(asyncio.create_task(pythonInterrupt.interrupt(transmitObject)))
 	tasks.append(asyncio.create_task(ttncData.collectTTNCData(0))) #Boot Mode is classified as 0
 	tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
