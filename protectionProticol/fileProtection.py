@@ -122,13 +122,13 @@ class FileReset():
         count = 0
         for line in TXwindows:
             window = line.split(',')
-            print(window)
 
             # Check if window has five elements
             if len(window) != 5:
                 # If not then erase it and skip current iteration
                 TXwindows[count] = ""
                 count += 1
+                print("Bad Window: ", window)
                 continue
 
             # All of these are checking if values are positive integers
