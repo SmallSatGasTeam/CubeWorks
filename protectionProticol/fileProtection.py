@@ -132,6 +132,7 @@ class FileReset():
             TXflagStripped = window[4].strip('\n')
             if (not TXflagStripped.isnumeric()) or (int(TXflagStripped) < -1):
                 continue
+            print("Good Windows: " + goodWindows)
             goodWindows.append(i)
         file.writelines(goodWindows)
         file.close
