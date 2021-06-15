@@ -22,6 +22,7 @@ import subprocess
 import asyncio
 import linecache
 from os import listdir, remove, join
+import shutil
 
 fileChecker = FileReset()
 windows = Queue('/home/pi/TXISRData/txWindows.txt')
@@ -377,17 +378,20 @@ class packetProcessing:
 	def deletePictures(self):
 		picDir = "home/pi/flightLogicData/Pictures"
 		fileChecker.checkFile(picDir)
-		pictureFile = open(picDir, "w+")
+		pictureFile = open(picDir)
 		for picFiles in os.listdir(picDir):
 			picPath = os.path.join(picDir, picFiles)
 			try:
 				shutil.rmtree(picPath)
 			except OSError:
 				os.remove(picPath)
-		close(picDir)
+		picDir.close()
+
 
 	def deleteData(self):
-		pass
+		dataDir = "home/pi/flightlogicdata/"
+		os.system("cd " + dataDir + ";sudo rm Attitude_Data.txt bootRecords.txt backupBootRecords.txt Deploy_Data.txt TTNC_Data.txt")
+		dataDir.close()
 
 	def enableAudioBeacon(self):
 		pass
