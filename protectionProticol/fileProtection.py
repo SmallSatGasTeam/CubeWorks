@@ -194,8 +194,8 @@ class FileReset():
 
             # This is the TX flag, don't put limits on it
             TXflagStripped = window[4].strip('\n') # .isnumeric won't work on '\n' or '-', so we strip both
-            TXflagStripped = TXflagStripped.strip('-')
-            if (not TXflagStripped.isnumeric()) or int(TXflagStripped) < -1:
+            TXflagDoubleStripped = TXflagStripped.strip('-')
+            if (not TXflagDoubleStripped.isnumeric()) or int(TXflagStripped) < -1:
                 TXwindows[count] = ""
                 count += 1
                 print("Removing bad window: ", window, " code: 5")
