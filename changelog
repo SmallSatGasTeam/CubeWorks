@@ -205,4 +205,9 @@ be repoerted.
 
 #31 <Added more commands to packetProcessing.py>   
     "TXISR/packetProcessing.py" lines 233 - 265
-    These functions read the correct bits to execute commands on the flat sat. Not all of the functions that are called have been completed.   
+    These functions read the correct bits to execute commands on the flat sat. Not all of the functions that are called have been completed.
+
+#32 <Added a function in packetProcessing.py that deletes data files>
+    "TXISR/packetProcessing.py" line 391
+    This function should delete all data files from flightLogicData.
+    The other functions for the data and enabling beacons have not been added yet   
