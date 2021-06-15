@@ -29,6 +29,7 @@ windows = Queue('/home/pi/TXISRData/txWindows.txt')
 
 class packetProcessing:
 	def __init__(self, transmitObject):
+		self.__cam = Camera()
 		self.__bootRecordsPath = ("/home/pi/flightLogicData/bootRecords.txt")
 		self.__filePaths = ["/home/pi/CubeWorks0/TXISR/", "/home/pi/CubeWorks1/TXISR/", "/home/pi/CubeWorks2/TXISR/", "/home/pi/CubeWorks3/TXISR/", "/home/pi/CubeWorks4/TXISR/"]
 		self.__transmit = transmitObject
@@ -186,8 +187,7 @@ class packetProcessing:
 				else:
 					# Take picture
 					print("Take picture")
-					cam = Camera()
-					cam.takePicture()
+					self.__cam.takePicture()
 
 				if binaryData[32:40] == '00000000':
 					# Do not deploy boom
@@ -202,7 +202,11 @@ class packetProcessing:
 					# Do not reboot
 					print("Do not reboot")
 				else:
-					os.system("reboot")
+					#Send reboot command to Beetle
+					print("Reboot")
+					bus = smbus.SMBus(1)
+					address = 0x08
+					bus.write_byte(address, 1)
 
 				if binaryData[48:56] == '00000000':
 					# Turn off AX25
@@ -225,6 +229,36 @@ class packetProcessing:
 						bootRecords = open(self.__bootRecordsPath, 'w+')
 						bootRecords.write(str(reboots) + "\n1\n4\n")
 						bootRecords.close()
+				if binaryData[56:64] == '00000000':
+					# Keep Pictures
+					print("Keeping Pictures")
+				else:
+					#Delete Pictures
+					print("Deleting Pictures")
+					self.deletePictures()
+				if binaryData[64:72] == '00000000':
+					# Keep Data
+					print("Keeping Data")
+				else:
+					# Delete Data
+					print("Deleting Data")
+					self.deleteData()
+				if binaryData[72:80] == '00000000':
+					# Disable Beacon
+					print("Disable Beacon")
+					self.disableBeacon()
+				else:
+					#Enable Beacon
+					print("Enable Beacon")
+					self.enableBeacon()
+				if binaryData[80:88] == '00000000':
+					# Disable Audio Beacon
+					print("Enable Audio Beacon")
+					self.disableAudioBeacon()
+				else:
+					# Enable Audio Beacon
+					print("Disable Audio Beacon")
+					self.enableAudioBeacon()
 			else:
 				print("Hashes do not match, will not execute commands!")
 
@@ -311,7 +345,6 @@ class packetProcessing:
 	def clearTXProgress(self):
 		fileChecker.checkFile("/home/pi/TXISRData/flagsFile.txt")
 		# This function will clear the file that saves which timestamp has been transmitted most recently for each data type
-		print("I don't know which file to clear!!!")
 		progressFile = open("/home/pi/TXISRData/flagsFile.txt", "w")
 		progressFile.write('0\n')
 		progressFile.write('0\n')

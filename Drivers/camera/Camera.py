@@ -20,7 +20,7 @@ class Camera(Driver):
         #self.pictureDirectoryPath = expanduser('~/Pictures')
         #self.pictureDirectoryPath = str(Path(__file__).parent / "../../Pictures")
         self.pictureDirectoryPath = "/home/pi/flightLogicData/Pictures"
-        self.cam = None
+        self.cam = PiCamera()
         self.pictureNumber = 0
 
     def read(self):
@@ -36,8 +36,6 @@ class Camera(Driver):
         makedirs(self.pictureDirectoryPath, exist_ok=True)
         self.pictureNumber = len(listdir(self.pictureDirectoryPath))
         #count number of folders in directory, add 1 for current pic
-
-        self.cam = PiCamera()
         self.cam.resolution = self.lowRes
         sleep(2)
         makedirs(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes", exist_ok=True)
