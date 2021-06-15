@@ -21,6 +21,8 @@ from flightLogic.missionModes.transmitting import Transmitting
 import subprocess
 import asyncio
 import linecache
+import os
+import shutil
 
 fileChecker = FileReset()
 windows = Queue('/home/pi/TXISRData/txWindows.txt')
@@ -228,6 +230,41 @@ class packetProcessing:
 						bootRecords = open(self.__bootRecordsPath, 'w+')
 						bootRecords.write(str(reboots) + "\n1\n4\n")
 						bootRecords.close()
+
+				if binaryData[56:64] == '00000000':
+					# Keep Pictures
+					print("Keeping Pictures")
+				else:
+					#Delete Pictures
+					print("Deleting Pictures")
+					self.deletePictures()
+
+				if binaryData[64:72] == '00000000':
+					# Keep Data
+					print("Keeping Data")
+				else:
+					# Delete Data
+					print("Deleting Data")
+					self.deleteData()
+
+				if binaryData[72:80] == '00000000':
+					# Disable Beacon
+					print("Disable Beacon")
+					self.disableBeacon()
+				else:
+					#Enable Beacon
+					print("Enable Beacon")
+					self.enableBeacon()
+
+				if binaryData[80:88] == '00000000':
+					# Disable Audio Beacon
+					print("Enable Audio Beacon")
+					self.disableAudioBeacon()
+				else:
+					# Enable Audio Beacon
+					print("Disable Audio Beacon")
+					self.enableAudioBeacon()
+					
 			else:
 				print("Hashes do not match, will not execute commands!")
 
@@ -337,3 +374,34 @@ class packetProcessing:
 	# processPacket('C8')
 	# TX Window Packet
 	#processPacket('0000000F007801000000')
+
+	def deletePictures(self):
+		picDir = "home/pi/flightLogicData/Pictures"
+		fileChecker.checkFile(picDir)
+		pictureFile = open(picDir)
+		for picFiles in os.listdir(picDir):
+			picPath = os.path.join(picDir, picFiles)
+			try:
+				shutil.rmtree(picPath)
+			except OSError:
+				os.remove(picPath)
+		picDir.close()
+
+
+	def deleteData(self):
+		dataDir = "home/pi/flightlogicdata/"
+		os.system("~cd " + dataDir + ";sudo rm Attitude_Data.txt bootRecords.txt backupBootRecords.txt Deploy_Data.txt TTNC_Data.txt")
+		dataDir.close()
+
+	def enableAudioBeacon(self):
+		pass
+	
+	def disableAudioBeacon(self):
+		pass
+
+	def enableBeacon(self):
+		pass
+
+	def disableBeacon(self):
+		pass
+
