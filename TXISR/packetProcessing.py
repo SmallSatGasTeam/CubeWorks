@@ -228,6 +228,36 @@ class packetProcessing:
 						bootRecords = open(self.__bootRecordsPath, 'w+')
 						bootRecords.write(str(reboots) + "\n1\n4\n")
 						bootRecords.close()
+				if binaryData[56:64] == '00000000':
+					# Keep Pictures
+					print("Keeping Pictures")
+				else:
+					#Delete Pictures
+					print("Deleting Pictures")
+					self.deletePictures()
+				if binaryData[64:72] == '00000000':
+					# Keep Data
+					print("Keeping Data")
+				else:
+					# Delete Data
+					print("Deleting Data")
+					self.deleteData()
+				if binaryData[72:80] == '00000000':
+					# Disable Beacon
+					print("Disable Beacon")
+					self.disableBeacon()
+				else:
+					#Enable Beacon
+					print("Enable Beacon")
+					self.enableBeacon()
+				if binaryData[80:88] == '00000000':
+					# Disable Audio Beacon
+					print("Enable Audio Beacon")
+					self.disableAudioBeacon()
+				else:
+					# Enable Audio Beacon
+					print("Disable Audio Beacon")
+					self.enableAudioBeacon()
 			else:
 				print("Hashes do not match, will not execute commands!")
 
