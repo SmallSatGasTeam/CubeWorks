@@ -21,7 +21,8 @@ from flightLogic.missionModes.transmitting import Transmitting
 import subprocess
 import asyncio
 import linecache
-from os import listdir, remove, join
+import os
+import OSError
 import shutil
 
 fileChecker = FileReset()
@@ -390,7 +391,7 @@ class packetProcessing:
 
 	def deleteData(self):
 		dataDir = "home/pi/flightlogicdata/"
-		os.system("cd " + dataDir + ";sudo rm Attitude_Data.txt bootRecords.txt backupBootRecords.txt Deploy_Data.txt TTNC_Data.txt")
+		os.system("~cd " + dataDir + ";sudo rm Attitude_Data.txt bootRecords.txt backupBootRecords.txt Deploy_Data.txt TTNC_Data.txt")
 		dataDir.close()
 
 	def enableAudioBeacon(self):
