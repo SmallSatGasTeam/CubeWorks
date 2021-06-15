@@ -258,11 +258,11 @@ class packetProcessing:
 
 				if binaryData[88:96] == '00000000':
 					# Disable Audio Beacon
-					print("Enable Audio Beacon")
+					print("Disable Audio Beacon")
 					self.disableAudioBeacon()
 				else:
 					# Enable Audio Beacon
-					print("Disable Audio Beacon")
+					print("Enable Audio Beacon")
 					self.enableAudioBeacon()
 					
 			else:
