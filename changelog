@@ -201,4 +201,8 @@ be repoerted.
 #30 <Added a function in packetProcessing.py that deletes picture files>
     "TXISR/packetProcessing.py" line 378
     This function should delete all picture directories and their subsequent subdirs.
-        
+    The other functions for the data and enabling beacons have not been added yet
+
+#31 <Added more commands to packetProcessing.py>   
+    "TXISR/packetProcessing.py" lines 233 - 265
+    These functions read the correct bits to execute commands on the flat sat. Not all of the functions that are called have been completed.   
