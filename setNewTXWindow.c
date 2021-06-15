@@ -61,6 +61,8 @@ int main(int argc, char * argv[])
 						scanf("%d", &windowLength);
 						printf("Input the data type: ");
 						scanf("%d", &dataType);
+						printf("Input the picture number:");
+						scanf("%d", &pic);
 						printf("Input the line number: ");
 						scanf("%d", &line);
 						if(!flag){
