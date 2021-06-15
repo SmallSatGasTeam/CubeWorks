@@ -389,9 +389,8 @@ class packetProcessing:
 
 
 	def deleteData(self):
-		dataDir = "flightlogicdata/"
+		dataDir = "flightLogicData/"
 		os.system("cd; cd " + dataDir + ";sudo rm Attitude_Data.txt bootRecords.txt backupBootRecords.txt Deploy_Data.txt TTNC_Data.txt")
-		dataDir.close()
 
 	def enableAudioBeacon(self):
 		pass
