@@ -376,7 +376,7 @@ class packetProcessing:
 	#processPacket('0000000F007801000000')
 
 	def deletePictures(self):
-		picDir = "home/pi/flightLogicData/Pictures"
+		picDir = "flightLogicData/Pictures"
 		fileChecker.checkFile(picDir)
 		pictureFile = open(picDir)
 		for picFiles in os.listdir(picDir):
