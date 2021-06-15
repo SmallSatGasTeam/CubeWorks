@@ -152,7 +152,7 @@ class packetProcessing:
 
 			# Validate HMAC Hash
 			# Note, hash is 16 bytes (128 bits). Command packet is 1 byte (8 bits)
-			receivedHash = binaryData[72:]
+			receivedHash = binaryData[-32:]
 			print("Received Hash: ", receivedHash)
 
 			# Generated hash from received data
