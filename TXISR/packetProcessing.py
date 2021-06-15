@@ -368,3 +368,11 @@ class packetProcessing:
 	# processPacket('C8')
 	# TX Window Packet
 	#processPacket('0000000F007801000000')
+
+	def deletePictures():
+		picDir = "home/pi/flightLogicData/Pictures"
+		fileChecker.checkFile(picDir)
+		pictureFile = open(picDir, "w+")
+		for picFile in os.listdir(picDir):
+			os.remove(os.path.join(dir,picFile))
+		close(picDir)
