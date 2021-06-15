@@ -389,7 +389,7 @@ class packetProcessing:
 
 
 	def deleteData(self):
-		dataDir = "home/pi/flightlogicdata/"
+		dataDir = "flightlogicdata/"
 		os.system("cd; cd " + dataDir + ";sudo rm Attitude_Data.txt bootRecords.txt backupBootRecords.txt Deploy_Data.txt TTNC_Data.txt")
 		dataDir.close()
 
