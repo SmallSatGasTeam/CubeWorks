@@ -378,14 +378,12 @@ class packetProcessing:
 	def deletePictures(self):
 		picDir = "../../flightLogicData/Pictures"
 		fileChecker.checkFile(picDir)
-		pictureFile = open(picDir)
 		for picFiles in os.listdir(picDir):
 			picPath = os.path.join(picDir, picFiles)
 			try:
 				shutil.rmtree(picPath)
 			except OSError:
 				os.remove(picPath)
-		picDir.close()
 
 
 	def deleteData(self):
