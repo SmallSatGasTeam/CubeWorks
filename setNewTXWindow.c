@@ -29,7 +29,7 @@ int main(int argc, char * argv[])
 
 		while(1){
 			printf("1:\tCreate single new txWindow.\n"
-			"2:\tCreate multiple txWindows with varying time inbetween.\n"
+			"2:\tCreate multiple txWindows with varying time in between.\n"
 			"0:\tClose\nInput: ");
 			scanf("%d", &input);
 			switch(input){
@@ -41,9 +41,9 @@ int main(int argc, char * argv[])
 					scanf("%d", &windowLength);
 					printf("Input the data type: ");
 					scanf("%d", &dataType);
-					printf("Input the picture number:");
+					printf("Input the picture number: ");
 					scanf("%d", &pic);
-					printf("Input line to start from:");
+					printf("Input the line number: ");
 					scanf("%d", &line);
 					txTime = time(NULL);
 					Time = (long int) txTime + length;
@@ -61,7 +61,7 @@ int main(int argc, char * argv[])
 						scanf("%d", &windowLength);
 						printf("Input the data type: ");
 						scanf("%d", &dataType);
-						printf("Input the picture number:");
+						printf("Input the picture number: ");
 						scanf("%d", &pic);
 						printf("Input the line number: ");
 						scanf("%d", &line);
