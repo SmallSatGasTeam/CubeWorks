@@ -21,6 +21,7 @@ from flightLogic.missionModes.transmitting import Transmitting
 import subprocess
 import asyncio
 import linecache
+from os import listdir, remove, join
 
 fileChecker = FileReset()
 windows = Queue('/home/pi/TXISRData/txWindows.txt')
