@@ -231,7 +231,7 @@ class packetProcessing:
 						bootRecords.write(str(reboots) + "\n1\n4\n")
 						bootRecords.close()
 
-				if binaryData[56:64] == '00000000':
+				if binaryData[64:72] == '00000000':
 					# Keep Pictures
 					print("Keeping Pictures")
 				else:
@@ -239,7 +239,7 @@ class packetProcessing:
 					print("Deleting Pictures")
 					self.deletePictures()
 
-				if binaryData[64:72] == '00000000':
+				if binaryData[72:80] == '00000000':
 					# Keep Data
 					print("Keeping Data")
 				else:
@@ -247,7 +247,7 @@ class packetProcessing:
 					print("Deleting Data")
 					self.deleteData()
 
-				if binaryData[72:80] == '00000000':
+				if binaryData[80:88] == '00000000':
 					# Disable Beacon
 					print("Disable Beacon")
 					self.disableBeacon()
@@ -256,7 +256,7 @@ class packetProcessing:
 					print("Enable Beacon")
 					self.enableBeacon()
 
-				if binaryData[80:88] == '00000000':
+				if binaryData[88:96] == '00000000':
 					# Disable Audio Beacon
 					print("Enable Audio Beacon")
 					self.disableAudioBeacon()
