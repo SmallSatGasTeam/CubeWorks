@@ -376,7 +376,7 @@ class packetProcessing:
 	#processPacket('0000000F007801000000')
 
 	def deletePictures(self):
-		picDir = "flightLogicData/Pictures"
+		picDir = "../../flightLogicData/Pictures"
 		fileChecker.checkFile(picDir)
 		pictureFile = open(picDir)
 		for picFiles in os.listdir(picDir):
@@ -389,7 +389,6 @@ class packetProcessing:
 
 
 	def deleteData(self):
-		os.system("pwd")
 		os.system("cd ../../flightLogicData/; sudo rm Attitude_Data.txt bootRecords.txt backupBootRecords.txt Deploy_Data.txt TTNC_Data.txt")
 
 	def enableAudioBeacon(self):
