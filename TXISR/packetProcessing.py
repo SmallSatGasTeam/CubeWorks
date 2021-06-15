@@ -389,7 +389,8 @@ class packetProcessing:
 
 
 	def deleteData(self):
-		os.system("cd flightLogicData/; sudo rm Attitude_Data.txt bootRecords.txt backupBootRecords.txt Deploy_Data.txt TTNC_Data.txt")
+		os.system("pwd")
+		os.system("cd home/pi/flightLogicData/; sudo rm Attitude_Data.txt bootRecords.txt backupBootRecords.txt Deploy_Data.txt TTNC_Data.txt")
 
 	def enableAudioBeacon(self):
 		pass
