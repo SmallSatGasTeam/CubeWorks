@@ -376,7 +376,7 @@ class packetProcessing:
 	#processPacket('0000000F007801000000')
 
 	def deletePictures(self):
-		picDir = "home/pi/flightLogicData/Pictures"
+		picDir = "flightLogicData/Pictures"
 		fileChecker.checkFile(picDir)
 		pictureFile = open(picDir)
 		for picFiles in os.listdir(picDir):
@@ -389,9 +389,8 @@ class packetProcessing:
 
 
 	def deleteData(self):
-		dataDir = "home/pi/flightlogicdata/"
-		os.system("cd; cd " + dataDir + ";sudo rm Attitude_Data.txt bootRecords.txt backupBootRecords.txt Deploy_Data.txt TTNC_Data.txt")
-		dataDir.close()
+		os.system("pwd")
+		os.system("cd home/pi/flightLogicData/; sudo rm Attitude_Data.txt bootRecords.txt backupBootRecords.txt Deploy_Data.txt TTNC_Data.txt")
 
 	def enableAudioBeacon(self):
 		pass
