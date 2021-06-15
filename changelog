@@ -193,3 +193,7 @@ be repoerted.
 #28 <Created windowProtection in fileProtection>
     "protectionProticol/fileProtection.py" Line 115
         This deletes everything in txWindows.txt that is not a valid transmission window
+
+#29 <Eddited Window Protection so that valid windows were not deleted>
+    "protectionProticol/fileProtection.py" line 197
+    isnumeric does not accept anything that is not digit 0-9. Negatives are not accepted
