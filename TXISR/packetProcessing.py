@@ -376,15 +376,7 @@ class packetProcessing:
 	#processPacket('0000000F007801000000')
 
 	def deletePictures(self):
-		picDir = "../../flightLogicData/Pictures"
-		fileChecker.checkFile(picDir)
-		for picFiles in os.listdir(picDir):
-			picPath = os.path.join(picDir, picFiles)
-			try:
-				shutil.rmtree(picPath)
-			except OSError:
-				os.remove(picPath)
-
+		os.system("cd ../../flightLogicData/; sudo rm -rf Pictures")
 
 	def deleteData(self):
 		os.system("cd ../../flightLogicData/; sudo rm Attitude_Data.txt bootRecords.txt backupBootRecords.txt Deploy_Data.txt TTNC_Data.txt")
