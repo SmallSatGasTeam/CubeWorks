@@ -22,7 +22,6 @@ import subprocess
 import asyncio
 import linecache
 import os
-import OSError
 import shutil
 
 fileChecker = FileReset()
