@@ -205,9 +205,7 @@ class packetProcessing:
 				else:
 					#Send reboot command to Beetle
 					print("Reboot")
-					bus = smbus.SMBus(1)
-					address = 0x08
-					bus.write_byte(address, 1)
+					os.system("sudo reboot")
 
 				if binaryData[48:56] == '00000000':
 					# Turn off AX25
@@ -230,6 +228,7 @@ class packetProcessing:
 						bootRecords = open(self.__bootRecordsPath, 'w+')
 						bootRecords.write(str(reboots) + "\n1\n4\n")
 						bootRecords.close()
+						os.system("sudo reboot")
 
 				if binaryData[64:72] == '00000000':
 					# Keep Pictures
