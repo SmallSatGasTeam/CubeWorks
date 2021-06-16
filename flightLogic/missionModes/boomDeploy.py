@@ -12,7 +12,7 @@ from flightLogic.missionModes.heartBeat import heart_beat
 DONTMURDERBEN = False
 #safeModeObject was deleted below in the init parameters after saveObject
 class boomMode:
-	def __init__(self, saveObject, transmitObject, cam):
+	def __init__(self, saveObject, transmitObject, cam, packetObj):
 		self.__getTTNCData = TTNCData(saveObject)
 		self.__getAttitudeData = AttitudeData(saveObject)
 		self.__getDeployData = DeployData(saveObject)
@@ -23,11 +23,12 @@ class boomMode:
 		self.__packetProcessing = packet(transmitObject, cam)
 		self.__heartBeatObj = heart_beat()
 		self.__cam = cam
+		self.__packetProcessing = packetObj
 
 	async def run(self):
 		# Setting up background processes
 		self.__tasks.append(asyncio.create_task(self.__heartBeatObj.heartBeatRun()))
-		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt(self.__transmit)))
+		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt(self.__transmit, self.__packetProcessing)))
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(3)))  # Boom deploy is mode 3
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__getDeployData.collectDeployData()))
