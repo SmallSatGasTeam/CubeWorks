@@ -37,7 +37,7 @@ class Camera(Driver):
         self.pictureNumber = len(listdir(self.pictureDirectoryPath))
         #count number of folders in directory, add 1 for current pic
 
-        self.cam = PiCamera()
+        self.cam = E
         self.cam.resolution = self.lowRes
         sleep(2)
         makedirs(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes", exist_ok=True)
