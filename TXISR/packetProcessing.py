@@ -152,11 +152,11 @@ class packetProcessing:
 
 			# Validate HMAC Hash
 			# Note, hash is 16 bytes (128 bits). Command packet is 1 byte (8 bits)
-			receivedHash = binaryData[64:]
+			receivedHash = binaryData[-128:]
 			print("Received Hash: ", receivedHash)
 
 			# Generated hash from received data
-			generatedHash = hmac.new(secretKey, bytes(binaryData[0:64], 'utf-8'), digestmod=hashlib.md5)
+			generatedHash = hmac.new(secretKey, bytes(binaryData[0:-128], 'utf-8'), digestmod=hashlib.md5)
 			generatedHashHex = generatedHash.hexdigest()
 			generatedHashLength = len(generatedHashHex) * 4
 			generatedHashBinary = format(int(generatedHashHex,16), 'b').zfill(generatedHashLength)
@@ -231,7 +231,7 @@ class packetProcessing:
 						bootRecords.write(str(reboots) + "\n1\n4\n")
 						bootRecords.close()
 
-				if binaryData[56:64] == '00000000':
+				if binaryData[64:72] == '00000000':
 					# Keep Pictures
 					print("Keeping Pictures")
 				else:
@@ -239,7 +239,7 @@ class packetProcessing:
 					print("Deleting Pictures")
 					self.deletePictures()
 
-				if binaryData[64:72] == '00000000':
+				if binaryData[72:80] == '00000000':
 					# Keep Data
 					print("Keeping Data")
 				else:
@@ -247,7 +247,7 @@ class packetProcessing:
 					print("Deleting Data")
 					self.deleteData()
 
-				if binaryData[72:80] == '00000000':
+				if binaryData[80:88] == '00000000':
 					# Disable Beacon
 					print("Disable Beacon")
 					self.disableBeacon()
@@ -256,13 +256,13 @@ class packetProcessing:
 					print("Enable Beacon")
 					self.enableBeacon()
 
-				if binaryData[80:88] == '00000000':
+				if binaryData[88:96] == '00000000':
 					# Disable Audio Beacon
-					print("Enable Audio Beacon")
+					print("Disable Audio Beacon")
 					self.disableAudioBeacon()
 				else:
 					# Enable Audio Beacon
-					print("Disable Audio Beacon")
+					print("Enable Audio Beacon")
 					self.enableAudioBeacon()
 					
 			else:
@@ -376,22 +376,10 @@ class packetProcessing:
 	#processPacket('0000000F007801000000')
 
 	def deletePictures(self):
-		picDir = "home/pi/flightLogicData/Pictures"
-		fileChecker.checkFile(picDir)
-		pictureFile = open(picDir)
-		for picFiles in os.listdir(picDir):
-			picPath = os.path.join(picDir, picFiles)
-			try:
-				shutil.rmtree(picPath)
-			except OSError:
-				os.remove(picPath)
-		picDir.close()
-
+		os.system("cd ../../flightLogicData/; sudo rm -rf Pictures")
 
 	def deleteData(self):
-		dataDir = "home/pi/flightlogicdata/"
-		os.system("~cd " + dataDir + ";sudo rm Attitude_Data.txt bootRecords.txt backupBootRecords.txt Deploy_Data.txt TTNC_Data.txt")
-		dataDir.close()
+		os.system("cd ../../flightLogicData/; sudo rm Attitude_Data.txt Deploy_Data.txt TTNC_Data.txt")
 
 	def enableAudioBeacon(self):
 		pass
