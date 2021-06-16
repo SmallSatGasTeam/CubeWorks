@@ -17,6 +17,7 @@ from protectionProticol.fileProtection import FileReset
 import asyncio
 from TXISR import pythonInterrupt
 from TXISR.packetProcessing import packetProcessing
+from Drivers.camera import Camera
 
 
 
@@ -44,6 +45,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	
 	baseFile = open("/home/pi/lastBase.txt")
 	codeBase = int(baseFile.read())
+	cameraObj = Camera()
 	# Variable setup
 	delay = 1*60  # 35 minute delay
 	boot = True
@@ -53,13 +55,14 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	attitudeData = getDriverData.AttitudeData(saveObject)
 	# safeModeObject = safe.safe(saveObject)
 	transmitObject = Transmitting(codeBase)
-	packet = packetProcessing(transmitObject)
+	packet = packetProcessing(transmitObject, cameraObj)
 	heartBeatObj = heart_beat()
+	
 
 	print('Starting data collection') #Setting up Background tasks for BOOT mode
 	tasks=[]
 	tasks.append(asyncio.create_task(heartBeatObj.heartBeatRun()))
-	tasks.append(asyncio.create_task(pythonInterrupt.interrupt(transmitObject)))
+	tasks.append(asyncio.create_task(pythonInterrupt.interrupt(transmitObject, packet)))
 	tasks.append(asyncio.create_task(ttncData.collectTTNCData(0))) #Boot Mode is classified as 0
 	tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
 	# tasks.append(asyncio.create_task(safeModeObject.thresholdCheck()))
@@ -71,7 +74,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	antennaDeploy = antennaMode(saveObject, transmitObject)
 	preBoomDeploy = preBoomMode(saveObject, transmitObject)
 	postBoomDeploy = postBoomMode(saveObject, transmitObject)
-	boomDeploy = boomMode(saveObject, transmitObject)
+	boomDeploy = boomMode(saveObject, transmitObject, cameraObj)
 
 	if(readData() == (None, None, None)):
 		print('Files are empty')
