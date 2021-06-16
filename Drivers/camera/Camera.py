@@ -13,7 +13,7 @@ class Camera(Driver):
         """
         Takes a picture
         """
-        # super().__init__("Camera")
+        super().__init__("Camera")
 
         self.highRes = (3280, 2464)
         self.lowRes = (640, 480)
@@ -37,7 +37,7 @@ class Camera(Driver):
         self.pictureNumber = len(listdir(self.pictureDirectoryPath))
         #count number of folders in directory, add 1 for current pic
 
-        self.cam = E
+        self.cam = PiCamera()
         self.cam.resolution = self.lowRes
         sleep(2)
         makedirs(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes", exist_ok=True)
