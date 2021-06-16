@@ -29,8 +29,8 @@ windows = Queue('/home/pi/TXISRData/txWindows.txt')
 #These file paths are slightly different from the ones in transmitting.py
 
 class packetProcessing:
-	def __init__(self, transmitObject):
-		self.__cam = Camera()
+	def __init__(self, transmitObject, cam):
+		self.__cam = cam
 		self.__bootRecordsPath = ("/home/pi/flightLogicData/bootRecords.txt")
 		self.__filePaths = ["/home/pi/CubeWorks0/TXISR/", "/home/pi/CubeWorks1/TXISR/", "/home/pi/CubeWorks2/TXISR/", "/home/pi/CubeWorks3/TXISR/", "/home/pi/CubeWorks4/TXISR/"]
 		self.__transmit = transmitObject
