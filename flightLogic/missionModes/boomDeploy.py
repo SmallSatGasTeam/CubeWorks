@@ -46,7 +46,6 @@ class boomMode:
 			deployer = DummyBoomDeployer()
 		else:
 			deployer = boomDeployer.BoomDeployer()
-		cam = self.__cam
 		await deployer.deploy() #From LOGAN: Deployer.deploy is now an asyncio method, run it like the others
 		
 		if await self.skipToPostBoom():
@@ -54,7 +53,7 @@ class boomMode:
 
 		try:
 			print("Taking picture")
-			cam.takePicture()
+			self.__cam.takePicture()
 		except Exception as e:
 			print("Failed to take a picture because we received excpetion:", repr(e))
 		await asyncio.sleep(5)
