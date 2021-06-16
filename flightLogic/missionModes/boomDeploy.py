@@ -4,7 +4,6 @@ sys.path.append('../../')
 import asyncio
 from flightLogic.getDriverData import *
 import Drivers.boomDeployer as boomDeployer
-from Drivers.camera import Camera
 from TXISR import pythonInterrupt
 from TXISR.packetProcessing import packetProcessing as packet
 from DummyDrivers.boomDeployer.BoomDeployer import BoomDeployer as DummyBoomDeployer
@@ -13,7 +12,7 @@ from flightLogic.missionModes.heartBeat import heart_beat
 DONTMURDERBEN = False
 #safeModeObject was deleted below in the init parameters after saveObject
 class boomMode:
-	def __init__(self, saveObject, transmitObject):
+	def __init__(self, saveObject, transmitObject, cam):
 		self.__getTTNCData = TTNCData(saveObject)
 		self.__getAttitudeData = AttitudeData(saveObject)
 		self.__getDeployData = DeployData(saveObject)
@@ -23,6 +22,7 @@ class boomMode:
 		self.__transmit = transmitObject
 		self.__packetProcessing = packet(transmitObject)
 		self.__heartBeatObj = heart_beat()
+		self.__cam = cam
 
 	async def run(self):
 		# Setting up background processes
@@ -46,7 +46,7 @@ class boomMode:
 			deployer = DummyBoomDeployer()
 		else:
 			deployer = boomDeployer.BoomDeployer()
-		cam = Camera()
+		cam = self.__cam
 		await deployer.deploy() #From LOGAN: Deployer.deploy is now an asyncio method, run it like the others
 		
 		if await self.skipToPostBoom():
