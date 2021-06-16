@@ -13,7 +13,7 @@ class Camera(Driver):
         """
         Takes a picture
         """
-        #super().__init__("Camera")
+        super().__init__("Camera")
 
         self.highRes = (3280, 2464)
         self.lowRes = (640, 480)
