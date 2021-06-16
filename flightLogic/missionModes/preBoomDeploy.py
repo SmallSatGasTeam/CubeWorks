@@ -97,7 +97,6 @@ class preBoomMode:
 
 		while True:
 			print("checking for sunlight")
-			print("Returned value: " +  self.sunlightData)
 			if ((self.sunlightData > self.darkVoltage) and self.batteryStatusOk == True):
 				self.cancelAllTasks(self.__tasks) #Cancel all background processes, this depolys the boom basically
 				print('Returning and exiting')
