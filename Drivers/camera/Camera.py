@@ -20,7 +20,6 @@ class Camera(Driver):
         #self.pictureDirectoryPath = expanduser('~/Pictures')
         #self.pictureDirectoryPath = str(Path(__file__).parent / "../../Pictures")
         self.pictureDirectoryPath = "/home/pi/flightLogicData/Pictures"
-        self.cam = None
         self.pictureNumber = 0
 
     def read(self):
@@ -37,15 +36,15 @@ class Camera(Driver):
         self.pictureNumber = len(listdir(self.pictureDirectoryPath))
         #count number of folders in directory, add 1 for current pic
 
-        self.cam = PiCamera()
-        self.cam.resolution = self.lowRes
+        cam = PiCamera()
+        cam.resolution = self.lowRes
         sleep(2)
         makedirs(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes", exist_ok=True)
-        self.cam.capture(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/LowResOriginal"+str(self.pictureNumber)+".jpg")
-        self.cam.resolution = self.highRes
+        cam.capture(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/LowResOriginal"+str(self.pictureNumber)+".jpg")
+        cam.resolution = self.highRes
         makedirs(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes", exist_ok=True)
-        self.cam.capture(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".jpg")
-        self.cam = None
+        cam.capture(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".jpg")
+        del(cam)
         return self.pictureNumber
 
     def compressLowResToFiles(self, pictureNumber):
