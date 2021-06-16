@@ -73,8 +73,8 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	"safeModeObject was deleted below in the init parameters after saveObject"
 	antennaDeploy = antennaMode(saveObject, transmitObject, packet)
 	preBoomDeploy = preBoomMode(saveObject, transmitObject, packet)
-	postBoomDeploy = postBoomMode(saveObject, transmitObject)
-	boomDeploy = boomMode(saveObject, transmitObject, cameraObj)
+	postBoomDeploy = postBoomMode(saveObject, transmitObject, packet)
+	boomDeploy = boomMode(saveObject, transmitObject, cameraObj, packet)
 
 	if(readData() == (None, None, None)):
 		print('Files are empty')
