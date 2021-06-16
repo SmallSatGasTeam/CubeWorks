@@ -86,7 +86,7 @@ def prepareData(duration, dataType, startFrom):
 		while dataSize < numPackets:
 			line = linecache.getline(dataFilePath, lineNumber)
 			if (line == "") | (lineNumber == 0):
-				print("End of the line, resetting.")
+				#print("End of the line, resetting.")
 				lineNumber = 1
 				continue
 			else:
