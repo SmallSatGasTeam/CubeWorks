@@ -29,8 +29,12 @@ windows = Queue('/home/pi/TXISRData/txWindows.txt')
 #These file paths are slightly different from the ones in transmitting.py
 
 class packetProcessing:
+<<<<<<< HEAD
 	def __init__(self, transmitObject, cam):
 		self.__cam = cam
+=======
+	def __init__(self, transmitObject):
+>>>>>>> 18a6f14c66f8e1b7d83beac8f2333197894c1c39
 		self.__bootRecordsPath = ("/home/pi/flightLogicData/bootRecords.txt")
 		self.__filePaths = ["/home/pi/CubeWorks0/TXISR/", "/home/pi/CubeWorks1/TXISR/", "/home/pi/CubeWorks2/TXISR/", "/home/pi/CubeWorks3/TXISR/", "/home/pi/CubeWorks4/TXISR/"]
 		self.__transmit = transmitObject
@@ -187,8 +191,9 @@ class packetProcessing:
 					print("Do not take picture")
 				else:
 					# Take picture
+					cam = Camera()
 					print("Take picture")
-					self.__cam.takePicture()
+					cam.takePicture()
 
 				if binaryData[32:40] == '00000000':
 					# Do not deploy boom
