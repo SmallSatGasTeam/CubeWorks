@@ -25,7 +25,7 @@ class antennaMode:
 	Instantiated in mainFlightLogic.
 	"""
 	"safeModeObject was deleted below in the init parameters after saveObject"
-	def __init__(self, saveObject, transmitObject):
+	def __init__(self, saveObject, transmitObject, packetObj):
 		self.deployVoltage = 3 #Threshold voltage to deploy
 		self.maximumWaitTime = 30 #Maximum time to wait for deployment before going to SAFE
 		self.timeWaited = 0 #Time already waited - zero
@@ -36,7 +36,7 @@ class antennaMode:
 		self.__antennaDeployer = BackupAntennaDeployer()
 		self.__antennaDoor = AntennaDoor()
 		self.__transmit = transmitObject
-		self.__packetProcessing = packet(transmitObject)
+		self.__packetProcessing = packetObj
 		self.__heartBeatObj = heart_beat()
 
 
@@ -48,7 +48,7 @@ class antennaMode:
 		"""
 		print('Antenna Deploy Running!')
 		self.__tasks.append(asyncio.create_task(self.__heartBeatObj.heartBeatRun()))
-		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt(self.__transmit)))
+		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt(self.__transmit, self.__packetProcessing)))
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(1))) #Antenna deploy is mission mode 1
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		# self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck())) #Check battery conditions, run safe mode if battery drops below safe level

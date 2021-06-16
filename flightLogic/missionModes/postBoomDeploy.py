@@ -10,7 +10,7 @@ REBOOT_WAIT_TIME = 900 #15 minutes, 900 seconds
 
 "safeModeObject was deleted below in the init parameters after saveObject"
 class postBoomMode:
-	def __init__(self, saveObject, transmitObject):
+	def __init__(self, saveObject, transmitObject, packetObj):
 		self.__transmit = transmitObject
 		self.__getTTNCData = TTNCData(saveObject)
 		self.__getAttitudeData =  AttitudeData(saveObject)
@@ -18,12 +18,13 @@ class postBoomMode:
 		self.__tasks = [] # List will be populated with all background tasks
 		# self.__safeMode = safeModeObject
 		print("Initialized postBoomDeploy")
+		self.__packet = packetObj
 
 	async def run(self):
 		#Set up background processes
 		print("Inside of run in postBoomDeploy")
 		self.__tasks.append(asyncio.create_task(self.__heartBeatObj.heartBeatRun()))
-		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt(self.__transmit)))
+		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt(self.__transmit, self.__packet)))
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(4))) #Post-boom is mode 4
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		# self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))

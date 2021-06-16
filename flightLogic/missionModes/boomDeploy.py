@@ -20,7 +20,7 @@ class boomMode:
 		# self.__safeMode = safeModeObject
 		self.__saveObject = saveObject
 		self.__transmit = transmitObject
-		self.__packetProcessing = packet(transmitObject)
+		self.__packetProcessing = packet(transmitObject, cam)
 		self.__heartBeatObj = heart_beat()
 		self.__cam = cam
 

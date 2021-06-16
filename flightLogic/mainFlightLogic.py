@@ -71,8 +71,8 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	# NOTE: the comms-tx is the only exception to this rule as it is to be handled differently than other mission modes
 	# NOTE: Boot Mode is defined and executed in this document, instead of a separate mission mode
 	"safeModeObject was deleted below in the init parameters after saveObject"
-	antennaDeploy = antennaMode(saveObject, transmitObject)
-	preBoomDeploy = preBoomMode(saveObject, transmitObject)
+	antennaDeploy = antennaMode(saveObject, transmitObject, packet)
+	preBoomDeploy = preBoomMode(saveObject, transmitObject, packet)
 	postBoomDeploy = postBoomMode(saveObject, transmitObject)
 	boomDeploy = boomMode(saveObject, transmitObject, cameraObj)
 
