@@ -27,7 +27,7 @@ class Transmitting:
     mission mode to transmit. Instantiated in mainFlightLogic and passed to
     each mission mode.
     """
-    def __init__(self, codeBase):
+    def __init__(self, codeBase, camObj):
         fileChecker.checkFile("/home/pi/TXISRData/transmissionFlag.txt")
         self.__transmissionFlagFile = open('/home/pi/TXISRData/transmissionFlag.txt')
         self.__txWindowsPath = ('/home/pi/TXISRData/txWindows.txt')
@@ -42,7 +42,7 @@ class Transmitting:
         self.__sendData = []
         self.__inProgress = False
         self.__nextWindow = -1
-
+        self.__camObj = camObj
 
     async def readNextTransferWindow(self):
         """
@@ -76,7 +76,7 @@ class Transmitting:
                         else:
                             print(">>> Preparing data 3 - 4 <<<")
                             print("Transimtting.py:", self.__duration, self.__datatype, self.__pictureNumber)
-                            prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__index)
+                            prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__index, self.__camObj)
                     else:
                         print(self.__sendData)
                         print("sendData is incorrect.")

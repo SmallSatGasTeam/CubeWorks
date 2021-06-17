@@ -114,13 +114,13 @@ def prepareData(duration, dataType, startFrom):
 	progressFile.close()
 	txDataFile.close()
 
-def preparePicture(duration, dataType, pictureNumber, index):
+def preparePicture(duration, dataType, pictureNumber, index, camObj):
 	if dataType == 3: #HQ Picture
-		cam = Camera()
+		cam = camObj
 		cam.compressHighResToFiles(pictureNumber)
 		dataFilePath = '/home/pi/flightLogicData/Pictures/'+str(pictureNumber)+'/HighRes/HighResOriginal'+str(pictureNumber)+'.bin'
 	else: #LQ picture
-		cam = Camera()
+		cam = camObj
 		cam.compressLowResToFiles(pictureNumber)
 		dataFilePath = '/home/pi/flightLogicData/Pictures/'+str(pictureNumber)+'/LowRes/LowResOriginal'+str(pictureNumber)+'.bin'
 

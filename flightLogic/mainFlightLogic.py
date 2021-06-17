@@ -54,7 +54,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	ttncData = getDriverData.TTNCData(saveObject)
 	attitudeData = getDriverData.AttitudeData(saveObject)
 	# safeModeObject = safe.safe(saveObject)
-	transmitObject = Transmitting(codeBase)
+	transmitObject = Transmitting(codeBase, cameraObj)
 	packet = packetProcessing(transmitObject, cameraObj)
 	heartBeatObj = heart_beat()
 	
