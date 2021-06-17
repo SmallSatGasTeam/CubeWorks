@@ -145,4 +145,3 @@ def findOccurences(str1, str2): #Finds all occurences of String 2 in String 1, r
 		else:
 			break
 	return occurenceList
-
