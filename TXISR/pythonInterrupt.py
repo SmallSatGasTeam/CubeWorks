@@ -17,7 +17,7 @@ To defray the possibility of half a packet being in the buffer, any half-packets
 """
 
 async def interrupt(transmitObject, packetObj):
-	packet = packetObj
+	packet = packetProcessing()
 	fileChecker.fullReset()
 	try:
 		serialport = serial.Serial('/dev/serial0', 115200) #Open serial port. Currently /dev/serial0, might change to the PL011 port for flight article
