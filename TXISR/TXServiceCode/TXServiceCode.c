@@ -26,7 +26,7 @@
 //this defines are for the data types
 #define MAX_BYTES_PER_LINE 256
 #define MAX_NUM_OF_DATA_TYPES 5
-#define DELAY_UNTIL_TX_WINDOW 5000
+#define DELAY_UNTIL_TX_WINDOW 0
 #define SIZE_OF_TIME_STAMP 10
 #define PHOTO_TYPE 3
 #define TIME_DEVISOR ':'
