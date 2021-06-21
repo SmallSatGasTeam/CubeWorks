@@ -79,6 +79,7 @@ class Transmitting:
                                 print("Transimtting.py:", self.__duration, self.__datatype, self.__pictureNumber)
                                 prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__index, self.__camObj)
                         else:
+                            self.__inProgress = False
                             print(self.__sendData)
                             print("sendData is incorrect.")
                     except:
