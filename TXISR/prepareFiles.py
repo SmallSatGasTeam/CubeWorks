@@ -118,7 +118,11 @@ def preparePicture(duration, dataType, pictureNumber, index, camObj):
 	if dataType == 3: #HQ Picture
 		cam = camObj
 		cam.compressHighResToFiles(pictureNumber)
-		dataFilePath = '/home/pi/flightLogicData/Pictures/'+str(pictureNumber)+'/HighRes/HighResOriginal'+str(pictureNumber)+'.bin'
+		try:
+			dataFilePath = '/home/pi/flightLogicData/Pictures/'+str(pictureNumber)+'/HighRes/HighResOriginal'+str(pictureNumber)+'.bin'
+		except:
+			print("Bad picture number")
+			return 
 	else: #LQ picture
 		cam = camObj
 		cam.compressLowResToFiles(pictureNumber)
