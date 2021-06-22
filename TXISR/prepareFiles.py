@@ -70,7 +70,7 @@ def prepareData(duration, dataType, startFrom):
 		return
 	#This is where the new code starts_________________________________________
 	#If -1 is passed to StartFrom then search for the furthest transmitted data
-	if startFrom == -1:
+	if (startFrom == -1) and (transmissionProgress != 0):
 		print("Starting from last transmitted line.")
 		lineNumber = 0
 		for index, line in enumerate(dataFile):
