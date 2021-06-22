@@ -56,6 +56,7 @@ def prepareData(duration, dataType, startFrom):
 		transmissionProgress = 0
 		print("Progress list didn't exist.")
 		progressFile.write("0\n0\n0\n0\n0\n")
+		return False
 
 #NOTE: This is a new section of code to try and allow indexing in the file_____
 	fileChecker.checkFile(dataFilePath)
@@ -67,7 +68,7 @@ def prepareData(duration, dataType, startFrom):
 		pass
 	else:
 		print("not enough data")
-		return
+		return False
 	#This is where the new code starts_________________________________________
 	#If -1 is passed to StartFrom then search for the furthest transmitted data
 	if startFrom == -1:
@@ -113,6 +114,7 @@ def prepareData(duration, dataType, startFrom):
 
 	progressFile.close()
 	txDataFile.close()
+	return True
 
 def preparePicture(duration, dataType, pictureNumber, index, camObj):
 	if dataType == 3: #HQ Picture
