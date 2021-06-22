@@ -63,30 +63,33 @@ class Transmitting:
                     line = self.__queue.dequeue(True)
                     self.__sendData = line.split(',')
                     #If sendData has the right number of members
-                    if self.__sendData.__len__() == 5:
-                        print(self.__sendData)
-                        #Assign the variables appropriately
-                        self.__duration = int(self.__sendData[1])
-                        self.__datatype = int(self.__sendData[2])
-                        self.__pictureNumber = int(self.__sendData[3])
-                        self.__index = int(self.__sendData[4])
-                        if self.__datatype < 3:#Attitude, TTNC, or Deployment data respectively
-                            print(">>> Preparing data 0 - 2 <<<")
-                            prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
+                    try :
+                        if self.__sendData.__len__() == 5:
+                            print(self.__sendData)
+                            #Assign the variables appropriately
+                            self.__duration = int(self.__sendData[1])
+                            self.__datatype = int(self.__sendData[2])
+                            self.__pictureNumber = int(self.__sendData[3])
+                            self.__index = int(self.__sendData[4])
+                            if self.__datatype < 3:#Attitude, TTNC, or Deployment data respectively
+                                print(">>> Preparing data 0 - 2 <<<")
+                                prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
+                            else:
+                                print(">>> Preparing data 3 - 4 <<<")
+                                print("Transimtting.py:", self.__duration, self.__datatype, self.__pictureNumber)
+                                prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__index, self.__camObj)
                         else:
-                            print(">>> Preparing data 3 - 4 <<<")
-                            print("Transimtting.py:", self.__duration, self.__datatype, self.__pictureNumber)
-                            prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__index, self.__camObj)
-                    else:
-                        self.__inProgress = False
-                        print(self.__sendData)
-                        print("sendData is incorrect.")
+                            self.__inProgress = False
+                            print(self.__sendData)
+                            print("sendData is incorrect.")
+                    except:
+                        print("Bad data")
                 await asyncio.sleep(5)
 
     #this func will get call right before the tx window is ready, it calls the c code when everything is ready
     async def getReadyForWindows (self):
         print(">>> Preparing c code <<<")
-        while self.__inProgress:
+        while True:
                 if (self.__timeToNextTXwindowVar <= 5) and (self.__timeToNextTXwindowVar > -5):
                     print(">>> Calling c code <<<")
                     fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
