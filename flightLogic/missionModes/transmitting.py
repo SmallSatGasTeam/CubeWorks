@@ -72,11 +72,11 @@ class Transmitting:
                         self.__index = int(self.__sendData[4])
                         if self.__datatype < 3:#Attitude, TTNC, or Deployment data respectively
                             print(">>> Preparing data 0 - 2 <<<")
-                            prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
+                            self.__inProgress = prepareFiles.prepareData(self.__duration, self.__datatype, self.__index)
                         else:
                             print(">>> Preparing data 3 - 4 <<<")
                             print("Transimtting.py:", self.__duration, self.__datatype, self.__pictureNumber)
-                            prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__index, self.__camObj)
+                            self.__inProgress = prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__index, self.__camObj)
                     else:
                         self.__inProgress = False
                         print(self.__sendData)
