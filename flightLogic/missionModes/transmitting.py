@@ -87,7 +87,7 @@ class Transmitting:
     async def getReadyForWindows (self):
         print(">>> Preparing c code <<<")
         while True:
-                if (self.__timeToNextTXwindowVar <= 5) and (self.__timeToNextTXwindowVar > -5):
+                if (self.__timeToNextTXwindowVar <= 5) and (self.__timeToNextTXwindowVar > -5) and self.__inProgress:
                     print(">>> Calling c code <<<")
                     fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
                     self.__transmissionFlagFile.seek(0)
