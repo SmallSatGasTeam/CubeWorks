@@ -76,7 +76,7 @@ class Transmitting:
                         else:
                             print(">>> Preparing data 3 - 4 <<<")
                             print("Transimtting.py:", self.__duration, self.__datatype, self.__pictureNumber)
-                            self.__inProgress = prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__index, self.__camObj)
+                            prepareFiles.preparePicture(self.__duration, self.__datatype, self.__pictureNumber, self.__index, self.__camObj)
                     else:
                         self.__inProgress = False
                         print(self.__sendData)

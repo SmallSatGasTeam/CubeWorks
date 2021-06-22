@@ -122,7 +122,7 @@ def preparePicture(duration, dataType, pictureNumber, index, camObj):
 			dataFilePath = '/home/pi/flightLogicData/Pictures/'+str(pictureNumber)+'/HighRes/HighResOriginal'+str(pictureNumber)+'.bin'
 		except:
 			print("Bad picture number")
-			return False
+			return
 	else: #LQ picture
 		cam = camObj
 		cam.compressLowResToFiles(pictureNumber)
@@ -173,4 +173,3 @@ def preparePicture(duration, dataType, pictureNumber, index, camObj):
 	progressFile.close() #Close files
 	pictureFile.close()
 	txDataFile.close()
-	return True
