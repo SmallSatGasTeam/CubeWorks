@@ -86,7 +86,7 @@ class Transmitting:
     #this func will get call right before the tx window is ready, it calls the c code when everything is ready
     async def getReadyForWindows (self):
         print(">>> Preparing c code <<<")
-        while True:
+        while self.__inProgress:
                 if (self.__timeToNextTXwindowVar <= 5) and (self.__timeToNextTXwindowVar > -5):
                     print(">>> Calling c code <<<")
                     fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
