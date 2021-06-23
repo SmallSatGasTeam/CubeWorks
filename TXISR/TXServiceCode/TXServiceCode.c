@@ -73,14 +73,6 @@ intmax_t millis()
 int main(int argc,char* argv[])
 {
     DEBUG_P(Began main)
-    /////TODO/////
-    /*
-    *debug the time check on transmissionWindow 
-    *debug the wait after each transmission 
-    *Write the time to the flags file
-    *Add in any set up commucation to the radio
-    * TEST, UART, and the bash commands
-    */
     intmax_t startTime = millis();
     intmax_t currentTime = millis();
     intmax_t startTimeTX = 0;
@@ -201,8 +193,6 @@ int main(int argc,char* argv[])
         {
             line[i] = '0';
         }
-        
-        //DEBUG_P(Im in the main loop)
 
         do {
             if(feof(txFile)) break;
@@ -252,10 +242,6 @@ int main(int argc,char* argv[])
             else {
                 line[charCount++] = temp;
             }
-            // PRINT_DEBUG_c(ch)
-            // PRINT_DEBUG_c(chl)
-            // PRINT_DEBUG(charCount)
-            // DEBUG_P(Im in the sub loop)
         }
         
         // DEBUG_P(leaving loop)
@@ -298,34 +284,33 @@ int main(int argc,char* argv[])
                 currentTimeTX = millis();
                 if(!written)
                 {
-                    
-                        //delete the existing data
-                        //fclose(recordFile);
-                        if (recordFile = fopen(FLAG_FILE,"w"))
+                    //delete the existing data
+                    //fclose(recordFile);
+                    if (recordFile = fopen(FLAG_FILE,"w"))
+                    {
+                        //if succesfull we will print it and set the written to true else we will try again.
+                        //reprint it
+                        //print the last sent time
+                        for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
                         {
-                            //if succesfull we will print it and set the written to true else we will try again.
-                            //reprint it
-                            //print the last sent time
-                            for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
-                            {
-                                fprintf(recordFile, "%ld\n", flags[g]);
-                            }
-                            //set written to true
-                            written = 1;
+                            fprintf(recordFile, "%ld\n", flags[g]);
                         }
-                        //if we fail recreate the file
-                        else
+                        //set written to true
+                        written = 1;
+                    }
+                    //if we fail recreate the file
+                    else
+                    {
+                        remove(FLAG_FILE);
+                        //recreate the file
+                        recordFile = fopen(FLAG_FILE,"w");
+                        for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
                         {
-                            remove(FLAG_FILE);
-                            //recreate the file
-                            recordFile = fopen(FLAG_FILE,"w");
-                            for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
-                            {
-                                fprintf(recordFile, "%ld\n", flags[g]);
-                            }
-                            //set written to true
-                            written = 1;
+                            fprintf(recordFile, "%ld\n", flags[g]);
                         }
+                        //set written to true
+                        written = 1;
+                    }
                     //delete the existing data
                     fclose(recordFile);
                 }
@@ -342,15 +327,7 @@ int main(int argc,char* argv[])
         }
         
     } 
-exit(0);
-     //give control of the port back to linuxs
-    //  int disable = system(DISABLE);
-    //  //if we fail reboot
-    //  if(disable != 0) 
-    //  {
-    //      DEBUG_P(Failed to release tx uart pin)
-    //      exit(1);
-    //  } 
+    exit(0);
 }
 
 /*******************************************************************************************

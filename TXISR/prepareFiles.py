@@ -15,6 +15,7 @@ This file sets up 2 methods, prepareData and preparePicture. prepareData is used
 Both prepare functions reset /TXISR/TXServiceCode/txFile.txt, and write to it the duration of the transmission window.
 Then, each line consists of a 10-letter string with the timestamp or index of the packet, folowed by ':' and then the hex content of the packet
 """
+#NOTE: each function trys to prepare the data, if it is successful it returns true, other wise it returns false
 def prepareData(duration, dataType, startFrom):
 	try :
 		if (dataType == 0): #Attitude Data
@@ -118,6 +119,8 @@ def prepareData(duration, dataType, startFrom):
 	except :
 		print("Failed to prepare flight data")
 		return False
+
+# this function prepares the pictures, NOTE: it compresses the picture file each time it runs
 def preparePicture(duration, dataType, pictureNumber, index, camObj):
 	try :
 		if dataType == 3: #HQ Picture

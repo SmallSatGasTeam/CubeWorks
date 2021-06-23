@@ -285,13 +285,7 @@ class packetProcessing:
 						+ str(dataType) + ',' + str(pictureNumber) + ','
 						+ str(index) + '\n')
 		windows.enqueue(txWindow)
-		# TXWindow_File.write(str(windowStartTime)+',')
-		# TXWindow_File.write(str(windowDuration)+',')
-		# TXWindow_File.write(str(dataType)+',')
-		# TXWindow_File.write(str(pictureNumber)+',')
-		# TXWindow_File.write(str(index))
-		# TXWindow_File.write('\n')
-		
+			
 		# close file
 		TXWindow_File.close()
 		
@@ -369,11 +363,7 @@ class packetProcessing:
 		else:
 			return False
 
-	# Command packet
-	# processPacket('C8')
-	# TX Window Packet
-	#processPacket('0000000F007801000000')
-
+	
 	def deletePictures(self):
 		os.system("cd ../../flightLogicData/; sudo rm -rf Pictures")
 

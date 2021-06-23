@@ -47,7 +47,7 @@ class boomMode:
 			deployer = DummyBoomDeployer()
 		else:
 			deployer = boomDeployer.BoomDeployer()
-		await deployer.deploy() #From LOGAN: Deployer.deploy is now an asyncio method, run it like the others
+		await deployer.deploy() 
 		
 		if await self.skipToPostBoom():
 			return True

@@ -37,8 +37,6 @@ class Queue():
         file = open(self.__filepath, "r") 
         contents = file.read().splitlines()
         file.close()
-        #print("finished reading the files")
-        #print("Printing contents", contents)
         if(len(contents) == 0):
             return -1
         line = contents[0].split(',')
@@ -53,7 +51,6 @@ class Queue():
                         minLine = i
             contents.remove(minLine)
             self.__fileChecher.checkFile(self.__filepath)
-            #print("repopulating file")
             file = open(self.__filepath, "w")
             if(not delete):
                 file.write(minLine + "\n")
@@ -63,7 +60,6 @@ class Queue():
                     if(int(line[0]) >= 0):
                         file.write(j + "\n")
             file.close()
-        #print("finished the short code")
         if(not delete):
             return int (min[0])
         else :
@@ -74,21 +70,3 @@ class Queue():
         self.__fileChecher.windowProtection()
         file = open(self.__filepath, "w")
         file.close()
-
-
-#this is for testing
-# def main():
-#     test = Queue("temp.txt")
-#     test.enqueue("5,0,0,00000000")
-#     test.enqueue("4,0,0,00000000")
-#     test.enqueue("3,0,0,00000000")
-#     test.enqueue("2,0,0,00000000")
-#     test.enqueue("-1,0,0,00000000")
-
-#     #test.clearQueue()
-#     print(test.dequeue(True))
-#     print(test.dequeue(True))
-#     print(test.dequeue(False))
-#     print(test.dequeue(False))
-
-# main()
