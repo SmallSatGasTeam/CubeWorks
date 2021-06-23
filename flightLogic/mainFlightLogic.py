@@ -72,12 +72,15 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 	postBoomDeploy = postBoomMode(saveObject, transmitObject, packet)
 	boomDeploy = boomMode(saveObject, transmitObject, cameraObj, packet)
 
+	# Check the boot record if it doesn't exist recreate it 
 	if(readData() == (None, None, None)):
 		print('Files are empty')
 		bootCount, antennaDeployed, lastMode = 0,False,0
+	# otherwise save the last mission mode
 	else:
 		bootCount, antennaDeployed, lastMode = readData()  
 	bootCount += 1  # Increment boot count
+	# save data
 	recordData(bootCount, antennaDeployed, lastMode)
 
 	if lastMode not in range(0,7): #Mission Mode invalid
