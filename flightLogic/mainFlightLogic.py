@@ -69,7 +69,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	# Initialize all mission mode objects
 	# NOTE: the comms-tx is the only exception to this rule as it is to be handled differently than other mission modes
 	# NOTE: Boot Mode is defined and executed in this document, instead of a separate mission mode
-	"safeModeObject was deleted below in the init parameters after saveObject"
+	# safeModeObject was deleted below in the init parameters after saveObject 
 	antennaDeploy = antennaMode(saveObject, transmitObject, packet)
 	preBoomDeploy = preBoomMode(saveObject, transmitObject, packet)
 	postBoomDeploy = postBoomMode(saveObject, transmitObject, packet)
@@ -129,13 +129,11 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 		print('Running Post Boom Deploy')
 		lastMode = 4
 		recordData(bootCount, antennaDeployed, lastMode)  # Save into files
-		# TRY/EXCEPT postBoomDeploys
 		await asyncio.gather(postBoomDeploy.run())
 	else:
 		print('Running preBoom Deploy')
 		lastMode = 2
 		recordData(bootCount, antennaDeployed, lastMode)  # Save into files
-		# TRY/EXCEPT preBoomDeploys
 		await asyncio.gather(preBoomDeploy.run())
 		if not packet.skip():
 			lastMode = 3
@@ -154,20 +152,17 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 			print('Running pre-Boom deploy')
 			lastMode = 2
 			recordData(bootCount, antennaDeployed, lastMode)
-			# TRY/EXCEPT
 			await asyncio.gather(preBoomDeploy.run())  # Execute pre-boom deploy, then move to post-boom deploy
 			print("Finished preBoomDeploy")
 			lastMode = 3
 			recordData(bootCount, antennaDeployed, lastMode)
 		elif antennaDeployed == True and lastMode == 3:
 			print('Running Boom Deploy')
-			# TRY/EXCEPT
 			await asyncio.gather(boomDeploy.run())  # Execute boom deployment, start post-boom deploy
 			lastMode = 4
 			recordData(bootCount, antennaDeployed, lastMode)
 		else:  # Post-Boom Deploy
 			print('Running post-Boom Deploy')
-			# TRY/EXCEPT
 			recordData(bootCount, antennaDeployed, lastMode)  # Save into files
 			await asyncio.gather(postBoomDeploy.run())
 
