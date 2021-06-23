@@ -103,7 +103,7 @@ def prepareData(duration, dataType, startFrom):
 		
 			while dataSize < numPackets:
 				line = linecache.getline(dataFilePath, lineNumber)
-				if (line == "") | (lineNumber == 0):
+				if (line == "") or (lineNumber == 0):
 					print("At the end of the file, going back to the beginning")
 					lineNumber = 1
 					continue

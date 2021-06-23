@@ -31,8 +31,6 @@ from Drivers.camera import Camera
 # First, this function sets up the TXISR and then checks the boot conditions
 # Then, it runs a mission mode, and then loops forever, constantly checking to run the next mission mode.
 # NOTE: Each mission mode evaluates their exit conditions to leave the mission mode.
-# NOTE: Each mission mode calls safe if it is necessary
-# NOTE: DO NOTE record safe mode in the bootRecords file
 ##################################################################################################################
 fileChecker = FileReset()
 
@@ -40,13 +38,13 @@ def __main__():
 	asyncio.run(executeFlightLogic())
 
 
-async def executeFlightLogic():  # Open the file save object, start TXISR, and start Boot Mode data collection
+async def executeFlightLogic():  # Open the file save object, start TXISR, camera obj, and start Boot Mode data collection
 	
 	baseFile = open("/home/pi/lastBase.txt")
 	codeBase = int(baseFile.read())
 	cameraObj = Camera()
 	# Variable setup
-	delay = 1*60  # 35 minute delay
+	delay = 1*60  # 35 minute delay #TODO: set this delay to 35 min
 	boot = True
 	saveObject = saveTofiles.save()
 	# startTXISR(save)
@@ -57,13 +55,12 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	packet = packetProcessing(transmitObject, cameraObj)
 	heartBeatObj = heart_beat()
 	
-
 	print('Starting data collection') #Setting up Background tasks for BOOT mode
 	tasks=[]
-	tasks.append(asyncio.create_task(heartBeatObj.heartBeatRun()))
-	tasks.append(asyncio.create_task(pythonInterrupt.interrupt(transmitObject, packet)))
-	tasks.append(asyncio.create_task(ttncData.collectTTNCData(0))) #Boot Mode is classified as 0
-	tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
+	tasks.append(asyncio.create_task(heartBeatObj.heartBeatRun()))  # starting heart beat
+	tasks.append(asyncio.create_task(pythonInterrupt.interrupt(transmitObject, packet)))  # starting rx monitoring 
+	tasks.append(asyncio.create_task(ttncData.collectTTNCData(0)))  # Boot Mode is classified as 0
+	tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))  # collecting attitude data
 	# tasks.append(asyncio.create_task(safeModeObject.thresholdCheck()))
 
 	# Initialize all mission mode objects
