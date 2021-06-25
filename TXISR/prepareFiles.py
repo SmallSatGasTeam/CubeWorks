@@ -158,10 +158,13 @@ def preparePicture(duration, dataType, pictureNumber, index, camObj):
 		except:
 			print("Failed to read the flags file")
 			fileChecker.__reset(progressFilePath)
-			progressList = progressFile.read().splitlines()	
+			progressList = progressFile.read().splitlines()
 		# If Start From Beginning flag is false, set transmissionProgress to the last transmitted packet. Else, set to true to start from beginning.
 		if(index == -1):
-			transmissionProgress = int(progressList[dataType])
+			try:
+				transmissionProgress = int(progressList[dataType])
+			except:
+				transmissionProgress = 0
 		else:
 			transmissionProgress = 0
 
