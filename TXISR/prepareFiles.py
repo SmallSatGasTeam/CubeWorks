@@ -152,6 +152,11 @@ def preparePicture(duration, dataType, pictureNumber, index, camObj):
 		progressFilePath = ('/home/pi/TXISRData/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
 		fileChecker.checkFile(progressFilePath)
 		progressFile = open(progressFilePath) #Opens progress file as read only
+		try:
+			if progressFile.read() == "":
+			progressFile.write("0\n0\n0\n0\n0\n")
+		except:
+			print("Unable to read or write to flagsFile.txt")
 		progressList = progressFile.read().splitlines()
 		# If Start From Beginning flag is false, set transmissionProgress to the last transmitted packet. Else, set to true to start from beginning.
 		if(index == -1):
