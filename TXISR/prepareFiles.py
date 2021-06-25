@@ -154,9 +154,9 @@ def preparePicture(duration, dataType, pictureNumber, index, camObj):
 		progressFile = open(progressFilePath) #Opens progress file as read only
 		try:
 			if progressFile.read() == "":
-			progressFile.write("0\n0\n0\n0\n0\n")
+				fileChecker.__reset(progressFilePath)
 		except:
-			print("Unable to read or write to flagsFile.txt")
+			print("Failed to reset the flagsFile")
 		progressList = progressFile.read().splitlines()
 		# If Start From Beginning flag is false, set transmissionProgress to the last transmitted packet. Else, set to true to start from beginning.
 		if(index == -1):
