@@ -144,11 +144,12 @@ def preparePicture(duration, dataType, pictureNumber, index, camObj):
 			os.remove(transmissionFilePath) #Remove txFile
 		except:
 			pass #FileNotFoundError is thrown if file doesn't exist
-		print('got here')
+		print("Opening the transmission file")
 		fileChecker.checkFile(transmissionFilePath)
 		txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
 		txDataFile.write(str(duration*1000) + '\n') #Write first line to txData. Duration of window in milliseconds
 
+		print("Opening the flags file")
 		progressFilePath = ('/home/pi/TXISRData/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
 		fileChecker.checkFile(progressFilePath)
 		progressFile = open(progressFilePath) #Opens progress file as read only
