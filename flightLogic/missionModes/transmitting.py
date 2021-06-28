@@ -118,20 +118,24 @@ class Transmitting:
         self.__inProgress = False
 
     async def upDateTime(self):
-        while True :
-            print(">>> Updating time to tx window <<<")
-            #this will delete past windows, it should be called first
-            if(self.__queue.dequeue(False) - time.time() <= -10):
-                print(">>> removing old window <<<")
-                self.__queue.dequeue(True)
-            #count down the time
-            #set new window if one is not inprogress
-            if(not self.__inProgress):
-                print(">>> finding next window <<<")
-                self.__nextWindow = self.__queue.dequeue(False)
-            #print("Last window", self.__nextWindow)
-            self.__timeToNextTXwindowVar = self.__nextWindow - time.time()
-            print("Time to next window:", self.__timeToNextTXwindowVar)
+        try:
+            while True :
+                print(">>> Updating time to tx window <<<")
+                #this will delete past windows, it should be called first
+                if(self.__queue.dequeue(False) - time.time() <= -10):
+                    print(">>> removing old window <<<")
+                    self.__queue.dequeue(True)
+                #count down the time
+                #set new window if one is not inprogress
+                if(not self.__inProgress):
+                    print(">>> finding next window <<<")
+                    self.__nextWindow = self.__queue.dequeue(False)
+                #print("Last window", self.__nextWindow)
+                self.__timeToNextTXwindowVar = self.__nextWindow - time.time()
+                print("Time to next window:", self.__timeToNextTXwindowVar)
+                await asyncio.sleep(2.5)
+        except:
+            print("Failed to pull window")
             await asyncio.sleep(2.5)
 
     def isRunning(self): #Other transmission are authorized though self.__inProgress which is set by transmissionRunning
