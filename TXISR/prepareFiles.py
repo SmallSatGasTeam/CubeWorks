@@ -47,6 +47,7 @@ def prepareData(duration, dataType, startFrom):
 
 		progressFilePath = ('/home/pi/TXISRData/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
 		fileChecker.checkFile(transmissionFilePath)	
+		fileChecker.checkFile(progressFilePath)
 		progressFile = open(progressFilePath, 'r+') #Opens progress file as read only
 		progressList = progressFile.read().splitlines()
 		print("Made it through progress FilePath.")
