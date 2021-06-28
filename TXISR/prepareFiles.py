@@ -78,10 +78,13 @@ def prepareData(duration, dataType, startFrom):
 			lineNumber = 0
 			for index, line in enumerate(dataFile):
 				print("Index:", index, "Line:", int(line[1:10]), "Searching for:", transmissionProgress)
-				if int(line[1:10]) == transmissionProgress:
-					print("Found the correct line")
-					lineNumber = int(index) + 1
-					break
+				try:
+					if int(line[1:10]) == transmissionProgress:
+						print("Found the correct line")
+						lineNumber = int(index) + 1
+						break
+				except:
+					print("Invalid line format for iteration")
 			print("The lineNumber found is", lineNumber)
 			dataFile.close()
 
