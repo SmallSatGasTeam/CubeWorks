@@ -145,23 +145,29 @@ def preparePicture(duration, dataType, pictureNumber, index, camObj):
 			os.remove(transmissionFilePath) #Remove txFile
 		except:
 			pass #FileNotFoundError is thrown if file doesn't exist
-		print('got here')
+		print("Opening the transmission file")
 		fileChecker.checkFile(transmissionFilePath)
 		txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
 		txDataFile.write(str(duration*1000) + '\n') #Write first line to txData. Duration of window in milliseconds
 
+		print("Opening the flags file")
 		progressFilePath = ('/home/pi/TXISRData/flagsFile.txt') #File Path to Shawn's flag file, which stores transmission progress
 		fileChecker.checkFile(progressFilePath)
 		progressFile = open(progressFilePath) #Opens progress file as read only
 		try:
-			if progressFile.read() == "":
-				fileChecker.__reset(progressFilePath)
+			progressList = progressFile.read().splitlines()	
 		except:
-			print("Failed to reset the flagsFile")
-		progressList = progressFile.read().splitlines()
+			print("Failed to read the flags file")
+			fileChecker.individualReset(progressFilePath)
+			progressList = progressFile.read().splitlines()
 		# If Start From Beginning flag is false, set transmissionProgress to the last transmitted packet. Else, set to true to start from beginning.
 		if(index == -1):
-			transmissionProgress = int(progressList[dataType])
+			try:
+				transmissionProgress = int(progressList[dataType])
+			except:
+				transmissionProgress = 0
+				# reset the flags file
+				fileChecker.individualReset(progressFilePath)
 		else:
 			transmissionProgress = 0
 
