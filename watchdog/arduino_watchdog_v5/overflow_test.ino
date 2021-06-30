@@ -41,4 +41,5 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   wait(60000);
+  Serial.println("Wait function ended.");
 }
