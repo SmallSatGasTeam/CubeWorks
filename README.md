@@ -58,14 +58,14 @@ This file structure comprises the major compoments of CubeWorks.
 6. Reboot the pi
 
 ### Setting the time on the chronodot
-1. Set the time with the command `sudo date -s "29 AUG 2010 13:00:00"`
+1. Set the time with the command `sudo date -s "29 AUG 2010 13:00:00"` 
 2. Update the chronodot time with the command `sudo hwclock -w`
 3. Note: The pi reads the time from the chronodot on boot and sets its internal clock to match that time. If you change the pi time, you have to update the chronodot as well or the updated time will be lost on a boot cycle.
 
 
 ### setting up the Cammera 
-1.use `sudo raspi-config`
-2.go to go to the `interface` tab
+1.use `sudo raspi-config` 
+2.go to go to the `interface` tab 
 3.Enable cammera in settings
 
 ##seting up the serial interface
