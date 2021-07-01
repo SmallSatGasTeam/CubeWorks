@@ -64,14 +64,20 @@ This file structure comprises the major compoments of CubeWorks.
 
 
 ### setting up the Cammera 
+
 1.use `sudo raspi-config` 
+
 2.go to go to the `interface` tab 
+
 3.Enable cammera in settings
 
-##seting up the serial interface
+## seting up the serial interface
 1.use `sudo raspi-config`
+
 2.go to go to the `interface` tab
+
 3.On the first tab select `no`
+
 4.ON the second tab select `yes`
 
 
