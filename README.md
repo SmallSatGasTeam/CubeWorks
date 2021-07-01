@@ -44,6 +44,37 @@ This file structure comprises the major compoments of CubeWorks.
 ### Important Notes:
 -TX windows have to be seperated by at least 25 seconds. This is the time from ending one window to the start time of the next window. If it is not separated by this buffer, then it is NOT guaranted that the TX window will be serviced. 
 
+### Setting up chronodot
+1. Ensure chronodot is connected to the pi and is powered on.
+2. Edit the file `/etc/modules` and add `rtc-ds1307` to the bottom
+3. Reboot the pi
+4. Edit the file `/etc/rc.local` and add the following lines before the `exit 0` line:
+	- `echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-1/new_device
+	hwclock -s`
+5. The end of the file should look like:
+	- `echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-1/new_device
+	hwclock -s
+	exit0`
+6. Reboot the pi
+
+### Setting the time on the chronodot
+1. Set the time with the command `sudo date -s "29 AUG 2010 13:00:00"`
+2. Update the chronodot time with the command `sudo hwclock -w`
+3. Note: The pi reads the time from the chronodot on boot and sets its internal clock to match that time. If you change the pi time, you have to update the chronodot as well or the updated time will be lost on a boot cycle.
+
+
+### setting up the Cammera 
+1.use `sudo raspi-config`
+2.go to go to the `interface` tab
+3.Enable cammera in settings
+
+##seting up the serial interface
+1.use `sudo raspi-config`
+2.go to go to the `interface` tab
+3.On the first tab select `no`
+4.ON the second tab select `yes`
+
+
 
 ```
 Pi system
