@@ -529,7 +529,7 @@ class AttitudeData():
 			await self.writeData()
 			print("getting attitude data")
 			# Sleep for 1 second (1 Hz)
-			await asyncio.sleep(1)
+			await asyncio.sleep(.9)#I dropped the wait time so that we will collect data more consitently 
 
 def float4tohex(num):
 	#takes a 4 byte float, returns a hex representation of it
