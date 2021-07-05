@@ -56,15 +56,17 @@ def prepareData(duration, dataType, startFromBeginning):
 	while True:
 		line = dataFile.readline()
 		print(line)
-		if(line==''):
-			lineNumber = 0
-			break
+		try :
+			if(line==''):
+				lineNumber = 0
+				break
 
-		if(int(line[:10])>transmissionProgress): #This line is further ahead than the transmission progress, transmit going from this line forwards.
-			break
+			if(int(line[:10])>transmissionProgress): #This line is further ahead than the transmission progress, transmit going from this line forwards.
+				break
+			lineNumber += 1 #Advance by one line
+		continue :
+			lineNumber += 1 #Advance by one line
 
-
-		lineNumber += 1 #Advance by one line
 
 	dataFile.seek(0) #Reset progress in file and go to the right line. This is an inefficient way of doing this, but it *will* work
 	i=0
