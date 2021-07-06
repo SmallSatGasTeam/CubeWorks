@@ -96,9 +96,10 @@ def prepareData(duration, dataType, startFrom):
 					lineNumber = 1
 					continue
 				else:
+					line.strip('\n')
 					if (len(line) >= 10 or (line != '')):
 						print(line)
-						txDataFile.write(line)
+						txDataFile.writeln(line)
 					dataSize += 1
 					lineNumber += 1
 					#Does this line need to be here? Woudln't it just do nothing? 
