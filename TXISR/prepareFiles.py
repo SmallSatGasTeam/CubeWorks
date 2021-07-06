@@ -96,7 +96,7 @@ def prepareData(duration, dataType, startFrom):
 					lineNumber = 1
 					continue
 				else:
-					if(line != "\n") :
+					if(line != '\n') :
 						txDataFile.write(line)
 					dataSize += 1
 					lineNumber += 1
