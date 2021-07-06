@@ -84,7 +84,6 @@ def prepareData(duration, dataType, startFrom):
 						lineNumber = int(index) + 1
 						break
 				except:
-					lineNumber = int(index) + 1
 					print("Invalid line format for iteration")
 			print("The lineNumber found is", lineNumber)
 			dataFile.close()
