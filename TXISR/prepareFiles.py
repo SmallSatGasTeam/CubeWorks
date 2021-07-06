@@ -85,7 +85,6 @@ def prepareData(duration, dataType, startFrom):
 						break
 				except:
 					print("Invalid line format for iteration")
-				await(0.01) #small await
 			print("The lineNumber found is", lineNumber)
 			dataFile.close()
 
