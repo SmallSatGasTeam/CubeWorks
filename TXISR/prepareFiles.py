@@ -79,7 +79,7 @@ def prepareData(duration, dataType, startFrom):
 			for index, line in enumerate(dataFile):
 				try:
 					print("Index:", index, "Line:", int(line[1:10]), "Searching for:", transmissionProgress)
-					if int(line[1:10]) == transmissionProgress:
+					if int(line[1:10]) >= transmissionProgress:
 						print("Found the correct line")
 						lineNumber = int(index) + 1
 						break
