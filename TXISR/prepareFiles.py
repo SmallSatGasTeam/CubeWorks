@@ -96,7 +96,7 @@ def prepareData(duration, dataType, startFrom):
 					lineNumber = 1
 					continue
 				else:
-					if (len(line) >= 10):
+					if (len(line) >= 10 or (line != '')):
 						txDataFile.write(line)
 					dataSize += 1
 					lineNumber += 1
