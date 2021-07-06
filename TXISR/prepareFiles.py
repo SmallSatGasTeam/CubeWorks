@@ -104,7 +104,8 @@ def prepareData(duration, dataType, startFrom):
 						dataSize += 1
 						lineNumber += 1
 					except : 
-						pass
+						dataSize += 1
+						lineNumber += 1
 					#Does this line need to be here? Woudln't it just do nothing? 
 					continue
 		else:
