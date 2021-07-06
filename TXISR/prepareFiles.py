@@ -96,12 +96,15 @@ def prepareData(duration, dataType, startFrom):
 					lineNumber = 1
 					continue
 				else:
-					line.strip('\n')
-					if (len(line) >= 10 or (line != '')):
-						print(line)
-						txDataFile.writeln(line)
-					dataSize += 1
-					lineNumber += 1
+					try :
+						line.strip('\n')
+						if (len(line) >= 10 or (line != '')):
+							print(line)
+							txDataFile.writeln(line)
+						dataSize += 1
+						lineNumber += 1
+					except : 
+						pass
 					#Does this line need to be here? Woudln't it just do nothing? 
 					continue
 		else:
