@@ -96,7 +96,7 @@ def prepareData(duration, dataType, startFrom):
 					lineNumber = 1
 					continue
 				else:
-					txDataFile.write(line)
+					if(line != "\n") txDataFile.write(line)
 					dataSize += 1
 					lineNumber += 1
 					#Does this line need to be here? Woudln't it just do nothing? 
