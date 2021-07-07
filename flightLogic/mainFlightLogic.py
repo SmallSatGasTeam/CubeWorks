@@ -86,22 +86,13 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 	if lastMode not in range(0,7): #Mission Mode invalid
 		lastMode = 0
 		antennaDeployed = False
-	if packet.skip(): # Check if we're skipping to Post Boom Deploy
-		lastMode = 4
-		antennaDeployed = True
+	
 	recordData(bootCount, antennaDeployed, lastMode)
 
 	# This is the implementation of the BOOT mode logic.
 	if not antennaDeployed:  # First, sleep for 35 minutes
 		print('Antenna is undeployed, waiting 60 seconds')
 		await asyncio.sleep(delay)  # Sleep for 35 minutes
-
-	try:  # Cancels attitude collection tasks
-		for t in tasks:
-			t.cancel()
-		print('Successfully cancelled BOOT mode background tasks')
-	except asyncio.exceptions.CancelledError:
-		print("Exception thrown cancelling task - This is normal")
 
 	# how do we check if the antenna doors are open?
 	# TODO, check of antenna doors are open
@@ -117,8 +108,14 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 
 	recordData(bootCount, antennaDeployed, lastMode)
 
-	if packet.skip(): # Check if we're skipping to Post Boom Deploy
-		lastMode = 4
+	
+	try:  # Cancels attitude collection tasks
+		for t in tasks:
+			t.cancel()
+		print('Successfully cancelled BOOT mode background tasks')
+	except asyncio.exceptions.CancelledError:
+		print("Exception thrown cancelling task - This is normal")
+		
 	if not antennaDeployed:
 		await asyncio.gather(antennaDeploy.run())
 		print('Running Antenna Deployment Mode')
@@ -135,19 +132,15 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 		lastMode = 2
 		recordData(bootCount, antennaDeployed, lastMode)  # Save into files
 		await asyncio.gather(preBoomDeploy.run())
-		if not packet.skip():
-			lastMode = 3
-			recordData(bootCount, antennaDeploy, lastMode)
+		lastMode = 3
+		recordData(bootCount, antennaDeploy, lastMode)
 		print("Finished running preBoomDeploy")
 
 
 	while True: # This loop executes the rest of the flight logic
 	# pre boom deploy
 		print("Entered the loop that chooses the next mission mode.")
-		if packet.skip(): # Check if we're skipping to Post Boom Deploy
-			print("Skipping to post boom")
-			lastMode = 4
-			recordData(bootCount, antennaDeployed, lastMode)  # Save into files
+		recordData(bootCount, antennaDeployed, lastMode)  # Save into files
 		if antennaDeployed == True and lastMode not in (3,4):
 			print('Running pre-Boom deploy')
 			lastMode = 2

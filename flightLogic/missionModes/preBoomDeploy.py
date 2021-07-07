@@ -127,18 +127,6 @@ class preBoomMode:
 				t.cancel()
 		except asyncio.exceptions.CancelledException:
 			print("Caught thrown exception in cancelling background task")
-	
-	async def skipToPostBoom(self):
-		"""
-		Skips to postBoomDeploy mode if the command is received from the ground
-		station.
-		"""
-		print("Inside skipToPostBoom, skipping value is:", self.__packetProcessing.skip())
-		if self.__packetProcessing.skip():
-			self.cancelAllTasks(self.__tasks)
-			return True
-		else:
-			await asyncio.sleep(1)
 
 class unexpectedValue(Exception):
 	print("Received unexpected value.")
