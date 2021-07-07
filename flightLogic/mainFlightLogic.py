@@ -96,13 +96,6 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 		print('Antenna is undeployed, waiting 60 seconds')
 		await asyncio.sleep(delay)  # Sleep for 35 minutes
 
-	try:  # Cancels attitude collection tasks
-		for t in tasks:
-			t.cancel()
-		print('Successfully cancelled BOOT mode background tasks')
-	except asyncio.exceptions.CancelledError:
-		print("Exception thrown cancelling task - This is normal")
-
 	# how do we check if the antenna doors are open?
 	# TODO, check of antenna doors are open
 	print('Moving on to check antenna door status')
@@ -118,7 +111,15 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 	recordData(bootCount, antennaDeployed, lastMode)
 
 	if packet.skip(): # Check if we're skipping to Post Boom Deploy
-		lastMode = 4
+		lastMode = 4	
+	
+	try:  # Cancels attitude collection tasks
+		for t in tasks:
+			t.cancel()
+		print('Successfully cancelled BOOT mode background tasks')
+	except asyncio.exceptions.CancelledError:
+		print("Exception thrown cancelling task - This is normal")
+		
 	if not antennaDeployed:
 		await asyncio.gather(antennaDeploy.run())
 		print('Running Antenna Deployment Mode')
