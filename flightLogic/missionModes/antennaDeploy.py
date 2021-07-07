@@ -52,7 +52,6 @@ class antennaMode:
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(1))) #Antenna deploy is mission mode 1
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		# self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck())) #Check battery conditions, run safe mode if battery drops below safe level
-		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.getReadyForWindows()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.upDateTime()))
@@ -103,16 +102,3 @@ class antennaMode:
 				t.cancel()
 		except asyncio.exceptions.CancelledException:
 			print("Caught thrown exception in cancelling background task")
-
-	async def skipToPostBoom(self):
-		"""
-		Skips to postBoomDeploy mode if the command is received from the ground
-		station.
-		"""
-		print("Inside skipToPostBoom, skipping value is:", self.__packetProcessing.skip())
-		#If the command has been received to skip to postBoom
-		if self.__packetProcessing.skip():
-			self.cancelAllTasks(self.__tasks) #Cancel all tasks
-			return True #Finish this mode and move on
-		else:
-			await asyncio.sleep(1)

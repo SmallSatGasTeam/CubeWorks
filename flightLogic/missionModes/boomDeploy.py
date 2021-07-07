@@ -33,7 +33,6 @@ class boomMode:
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__getDeployData.collectDeployData()))
 		# self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
-		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.getReadyForWindows()))
 		self.__tasks.append(asyncio.create_task(self.__transmit.upDateTime()))
@@ -67,15 +66,3 @@ class boomMode:
 				t.cancel()
 		except asyncio.exceptions.CancelledException:
 			print("Caught thrown exception in cancelling background task")
-
-	async def skipToPostBoom(self):
-		"""
-		Skips to postBoomDeploy mode if the command is received from the ground
-		station.
-		"""
-		print("Inside skipToPostBoom, skipping value is:", self.__packetProcessing.skip())
-		if self.__packetProcessing.skip():
-			self.cancelAllTasks(self.__tasks)
-			return True
-		else:
-			await asyncio.sleep(1)
