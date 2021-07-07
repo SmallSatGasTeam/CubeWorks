@@ -89,7 +89,7 @@ class Transmitting:
         while True:
                 if (self.__timeToNextTXwindowVar <= 5) and (self.__timeToNextTXwindowVar > -5) and self.__inProgress:
                     print(">>> Calling c code <<<")
-                    fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
+                    fileChecker.checkFile('/home/pi/TXISRData/transmissionFlag.txt')
                     self.__transmissionFlagFile.seek(0)
                     if self.__transmissionFlagFile.readline() == 'Enabled':
                         txisrCodePath = filePaths[self.__codeBase]
