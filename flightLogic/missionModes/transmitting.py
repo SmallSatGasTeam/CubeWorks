@@ -112,10 +112,6 @@ class Transmitting:
                         self.__inProgress = False
                 await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
     
-    async def transmissionRunning(self):
-        self.__inProgress = True
-        await asyncio.sleep(self.__duration + 5)
-        self.__inProgress = False
 
     async def upDateTime(self):
         try:

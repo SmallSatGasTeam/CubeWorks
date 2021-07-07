@@ -28,6 +28,9 @@ async def interrupt(transmitObject, packetObj):
 	leftoversEmpty = True
 	gaspacsHex = str(b'GASPACS'.hex())
 	while True:
+		if transmitObject.isRunning():
+			await asyncio.sleep(5)
+			continue
 		try:
 			if serialport == None:
 				print("Reopening serial port")
