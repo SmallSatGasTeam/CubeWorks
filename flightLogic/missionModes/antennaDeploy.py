@@ -2,7 +2,6 @@
 Contains the antennaMode class and the functions: run, cancelAllTasks, and
 skipToPostBoom
 """
-
 import sys
 #import subprocess
 import os
@@ -16,8 +15,10 @@ import flightLogic.getDriverData as getDriverData
 from TXISR import pythonInterrupt
 from TXISR.packetProcessing import packetProcessing as packet
 from flightLogic.missionModes.heartBeat import heart_beat
+from inspect import currentframe, getframeinfo
 
-
+getBusVoltageMin = 3.5
+getBusVoltageMax = 5.1
 
 class antennaMode:
 	"""
@@ -62,7 +63,14 @@ class antennaMode:
 		# if await self.skipToPostBoom():
 		# 	return True	#Finish this mode and move on
 		while True: #Runs antenna deploy loop
-			if (eps.getBusVoltage()>self.deployVoltage): #If the bus voltage is high enough
+			try:
+				BusVoltage = eps.getBusVoltage()
+				if(BusVoltage < getBusVoltageMin) | (BusVoltage > getBusVoltageMax):
+					raise unexpectedValue
+			except Exception as e:
+				BusVoltage = 4.18
+				print("Failed to retrieve BusVoltage, got", BusVoltage)
+			if (BusVoltage >self.deployVoltage): #If the bus voltage is high enough
 				await asyncio.gather(self.__antennaDeployer.deployPrimary()) #Fire Primary Backup Resistor
 				doorStatus = self.__antennaDoor.readDoorStatus() #Check Door status
 				if doorStatus == (1,1,1,1): #NOTE: probably need to change this to actually work
