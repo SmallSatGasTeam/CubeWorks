@@ -39,8 +39,6 @@ class boomMode:
 
 		print("Starting boom deploy")
 		# Deploy boom, take picture
-		if await self.skipToPostBoom():
-			return True
 		await asyncio.sleep(5)
 		if DONTMURDERBEN:
 			deployer = DummyBoomDeployer()
@@ -48,8 +46,6 @@ class boomMode:
 			deployer = boomDeployer.BoomDeployer()
 		await deployer.deploy() 
 		
-		if await self.skipToPostBoom():
-			return True
 
 		try:
 			print("Taking picture")
