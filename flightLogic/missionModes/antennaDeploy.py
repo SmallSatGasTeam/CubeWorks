@@ -67,15 +67,11 @@ class antennaMode:
 				doorStatus = self.__antennaDoor.readDoorStatus() #Check Door status
 				if doorStatus == (1,1,1,1): #NOTE: probably need to change this to actually work
 					#If ground station has sent command to skip to post boom					
-					if await self.skipToPostBoom():
-						return True #Finish this mode and move on
 					self.cancelAllTasks(self.__tasks)
 					print('Doors are open, returning true')
 					return True
 				else:
 					#If ground station has sent command to skip to post boom
-					if await self.skipToPostBoom():
-						return True #Finish this mode and move on
 					print('Firing secondary, primary did not work. Returning True')
 					await asyncio.gather(self.__antennaDeployer.deploySecondary())
 					self.cancelAllTasks(self.__tasks)
