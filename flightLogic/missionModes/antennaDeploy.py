@@ -81,9 +81,6 @@ class antennaMode:
 					self.cancelAllTasks(self.__tasks)
 					return True
 			else:
-				#If ground station has sent command to skip to post boom
-				if await self.skipToPostBoom():
-					return True #Finish this mode and move on
 				if(self.timeWaited > self.maximumWaitTime):
 					# self.__safeMode.run(10) #1 hour
 					await asyncio.sleep(5) #This is an artifact of testing, and will not matter for the actual flight software
