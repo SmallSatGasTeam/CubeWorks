@@ -25,7 +25,7 @@ async def interrupt(transmitObject, packetObj):
 		print("Failed to open serialport. Exception:", repr(e))
 		serialport = None
 	leftovers = '' #Stores any half-packets for evaluation the next loop
-	leftoversEmpty = True
+	# leftoversEmpty = True
 	gaspacsHex = str(b'GASPACS'.hex())
 	while True:
 		if transmitObject.isRunning():
@@ -41,40 +41,31 @@ async def interrupt(transmitObject, packetObj):
 				print('Data in waiting')
 				data = str(serialport.read(serialport.in_waiting).hex()) #This produces a list of nibbles (half bytes)
 				data = leftovers + data #Append any leftover data for evaluation
-				if leftovers is not '':
-					leftoverEmpty = False
-					# print(leftovers, leftoverEmpty)
-				commands, ax25Packets = [], []
-				commands, ax25Packets, leftovers = parseData(data, gaspacsHex)
+
+				commands = []
+				commands,  leftovers = parseData(data, gaspacsHex)
 				print("Commands:" + str(commands))
-				print("ax25Packets:" + str(ax25Packets))
-				if leftovers is not '' and leftoversEmpty is False:
-					#Something is sticking around in leftovers, let's clear it
-					#Operates on the assumption that 2 consecutive partial packets is practically impossible
-					leftovers = ''
+
 				for command in commands:
 					# print(command)
 					await packet.processPacket(command) #Process Command Packets
-				for ax25 in ax25Packets:
-					await packet.processPacket(ax25) #Process AX.25 Packets
 				print("Made it all the way. Leftovers: ", leftovers)
-				serialport.reset_input_buffer()
+				# serialport.reset_input_buffer()
 				await asyncio.sleep(5)
 			else: #No contents in serial buffer
 				print('buffer empty')
-				await asyncio.sleep(3)
+				await asyncio.sleep(5)
 				
 			# serialport.close()
 		except Exception as e:
 			print("Failure to run interrupt. Exception:", repr(e))
-			await asyncio.sleep(3)
+			await asyncio.sleep(5)
 
 def parseData(data, bracket): #Takes data string, in the form of hex, from async read serial function. Spits out all AX.25 packets and GASPACS packets contained inside, as well as remaining data to be put into the leftovers
 	# fileChecker.fullReset()
 	try:
 		searching = True
 		gaspacsPackets = []
-		ax25Packets = []
 		modifiedString = data
 		while searching: #Searching for packets bracketed by Hex-bytes of 'GASPACS'
 			content = None
@@ -82,38 +73,9 @@ def parseData(data, bracket): #Takes data string, in the form of hex, from async
 			if searching:
 				gaspacsPackets.append(content)
 
-		searching = True
-		while searching: #Searching for packets bracketed by AX.25 header and footer, as described in Endurosat UHF Transceiver II User Manual Rev. 1.8
-			content = None
-			content, modifiedString, searching = searchAX25(modifiedString)
-			if searching:
-				ax25Packets.append(content)
-
-		return gaspacsPackets, ax25Packets, modifiedString
+		return gaspacsPackets, modifiedString
 	except Exception as e:
 		print("Failed in parse Data. Error:", e)
-		return 0, 0, 0
-
-def searchAX25(data): #Finds AX.25 packets stored in the data string, which is a string of hex. Removes it from data, returns AX.25 packet, modified data and whether or not anything was changed
-	try:
-		flag = '7e'
-		changed = False
-		modifiedString = ''
-		content = []
-		modifiedString = ''
-		startIndex = data.find(flag)
-		endIndex = data.find(flag, 2)
-		if startIndex is not -1:
-			#AX25 prefix exists
-			# endIndex = data.find(postfix, startIndex+17) I don't know why this was here, this seems to require it to be super long but Shawn said that when in doubt read it in and spit it back out
-			if endIndex is not -1:
-				#Both exist
-				content = data[startIndex:endIndex+len(flag)]
-				changed = True
-				modifiedString = data[0:startIndex] + data[endIndex+len(flag):]
-		return content, modifiedString, changed
-	except Exception as e:
-		print("Error in search AX25, Error", e)
 		return 0, 0, 0
 
 
@@ -142,7 +104,7 @@ def findOccurences(str1, str2): #Finds all occurences of String 2 in String 1, r
 	minIndex = 0
 	while True:
 		foundIndex = str1.find(str2, minIndex)
-		if(foundIndex is not -1):
+		if(foundIndex != -1):
 			minIndex = foundIndex + 1
 			occurenceList.append(foundIndex)
 		else:

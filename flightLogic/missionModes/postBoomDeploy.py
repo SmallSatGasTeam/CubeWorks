@@ -5,10 +5,7 @@ from flightLogic.getDriverData import *
 from TXISR import pythonInterrupt
 from flightLogic.missionModes.heartBeat import heart_beat
 
-
-REBOOT_WAIT_TIME = 900 #15 minutes, 900 seconds
-
-"safeModeObject was deleted below in the init parameters after saveObject"
+# safeModeObject was deleted below in the init parameters after saveObject
 class postBoomMode:
 	def __init__(self, saveObject, transmitObject, packetObj):
 		self.__transmit = transmitObject
@@ -34,7 +31,7 @@ class postBoomMode:
 
 		print("Initalized all tasks.")
 		while True:
-			#Don't remove this print statement, the while loop is an integral part
+			# Don't remove this print statement, the while loop is an integral part
 			# of making sure that postBoomDeploy doesn't crash and it needs to
 			# have something in there so it doesn't crash and suffer
 			print('This is post Boom Deploy')
