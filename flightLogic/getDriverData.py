@@ -142,6 +142,7 @@ class TTNCData:
 		try:
 			EPSMCUTemp = float4tohex(self.EPS.getMCUTemp())
 			if ((EPSMCUTemp < float4tohex(EPSMCUMin)) or (EPSMCUTemp > float4tohex(EPSMCUMax))):
+				print("unexpected value eps mcu temp")
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve EPSMCUTemp. Exception: ", repr(e), 
@@ -151,6 +152,7 @@ class TTNCData:
 		try:
 			Cell1Temp = float4tohex(self.EPS.getCell1Temp())
 			if ((Cell1Temp < float4tohex(Cell1TempMin)) or (Cell1Temp > float4tohex(Cell1TempMax))):
+				print("Unexpected value recieved from cell temp 1")
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve Cell1Temp. Exception: ", repr(e), 
@@ -160,6 +162,7 @@ class TTNCData:
 		try:
 			Cell2Temp = float4tohex(self.EPS.getCell2Temp())
 			if ((Cell2Temp < float4tohex(Cell2TempMin)) or (Cell2Temp > float4tohex(Cell2TempMax))):
+				print("unexpected value recieved from cell temp 2")
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve Cell2Temp. Exception: ", repr(e), 
