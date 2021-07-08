@@ -102,8 +102,10 @@ class TTNCData:
 		reboot_count = int2tohex(readBootCount())
 		#No need for await on these, since they're not sleeping
 		try:
-			boombox_uv = float4tohex(self.UVDriver.read()) 
-			if (boombox_uv < float4tohex(boombox_uvMin)) or (boombox_uv > float4tohex(boombox_uvMax)):
+			boombox_uv_Int = self.UVDriver.read()
+			boombox_uv = float4tohex(boombox_uv_Int)
+			if (boombox_uv_Int < boombox_uvMin) or (boombox_uv_Int > boombox_uvMax):
+				print("boombox_uv: ", boombox_uv, "boombox_uv_Int: ", boombox_uv_Int)
 				raise unexpectedValue
 		except Exception as e:
 			# add redundant UVDriver TRY/EXCEPT
@@ -129,8 +131,10 @@ class TTNCData:
 		SP_Z_Plus_Temp = float4tohex(SP_Z_Plus_Temp)
 
 		try:
-			piTemp = float4tohex(self.CpuTempSensor.read())
-			if (piTemp < float4tohex(piTempMin)) or (piTemp > float4tohex(piTempMax)):
+			piTempInt = self.CpuTempSensor.read()
+			piTemp = float4tohex(piTempInt)
+			if (piTempInt < piTempMin) or (piTempInt > piTempMax):
+				print("piTempInt: ", piTempInt,"piTemp: ", piTemp)
 				raise unexpectedValue
 		except Exception as e:
 			# add redundant CpuTempSensor TRY/EXCEPT
@@ -140,8 +144,11 @@ class TTNCData:
 			piTemp = float4tohex(piTempMax + 1)
 
 		try:
-			EPSMCUTemp = float4tohex(self.EPS.getMCUTemp())
-			if ((EPSMCUTemp < float4tohex(EPSMCUMin)) or (EPSMCUTemp > float4tohex(EPSMCUMax))):
+			EPSMCUTempInt = self.EPS.getMCUTemp()
+			EPSMCUTemp = float4tohex(EPSMCUTempInt)
+			if ((EPSMCUTempInt < EPSMCUMin) or (EPSMCUTempInt > EPSMCUMax)):
+				print("unexpected value eps mcu temp: ", EPSMCUTempInt)
+				print(EPSMCUTemp)
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve EPSMCUTemp. Exception: ", repr(e), 
@@ -149,8 +156,11 @@ class TTNCData:
 			EPSMCUTemp = float4tohex(EPSMCUMax + 1)
 
 		try:
-			Cell1Temp = float4tohex(self.EPS.getCell1Temp())
-			if ((Cell1Temp < float4tohex(Cell1TempMin)) or (Cell1Temp > float4tohex(Cell1TempMax))):
+			Cell1TempInt = self.EPS.getCell1Temp()
+			Cell1Temp = float4tohex(Cell1TempInt)
+			if ((Cell1TempInt < Cell1TempMin) or (Cell1Temp > Cell1TempMax)):
+				print(Cell1Temp)
+				print("Unexpected value recieved from cell temp 1: ", Cell1TempInt)
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve Cell1Temp. Exception: ", repr(e), 
@@ -158,8 +168,11 @@ class TTNCData:
 			Cell1Temp = float4tohex(Cell1TempMax + 1)
 
 		try:
-			Cell2Temp = float4tohex(self.EPS.getCell2Temp())
-			if ((Cell2Temp < float4tohex(Cell2TempMin)) or (Cell2Temp > float4tohex(Cell2TempMax))):
+			Cell2TempInt = self.EPS.getCell2Temp()
+			Cell2Temp = float4tohex(Cell2TempInt)
+			if ((Cell2TempInt < Cell2TempMin) or (Cell2TempInt > Cell2TempMax)):
+				print(Cell2Temp)
+				print("unexpected value recieved from cell temp 2: ", Cell2TempInt)
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve Cell2Temp. Exception: ", repr(e), 
@@ -168,8 +181,10 @@ class TTNCData:
 
 		try:
 			print("BattVoltage: ", self.EPS.getBusVoltage())
-			BattVoltage = float4tohex(self.EPS.getBusVoltage())
-			if ((BattVoltage < float4tohex(BattVoltageMin)) or (BattVoltage > float4tohex(BattVoltageMax))):
+			BattVoltageInt = self.EPS.getBusVoltage()
+			BattVoltage = float4tohex(BattVoltageInt)
+			if ((BattVoltageInt < BattVoltageMin) or (BattVoltageInt > BattVoltageMax)):
+				print("BattVoltageInt: ", BattVoltageInt, "BattVoltage: ", BattVoltage)
 				raise unexpectedValue
 		except Exception as e:
 			BattVoltage = float4tohex(BattVoltageMax + 1)
@@ -178,8 +193,10 @@ class TTNCData:
 			"Received: ", BattVoltage)
 
 		try:
-			BattCurrent = float4tohex(self.EPS.getBusCurrent())
-			if (BattCurrent < float4tohex(BattCurrentMin)) or (BattCurrent > float4tohex(BattCurrentMax)):
+			BattCurrentInt = self.EPS.getBusCurrent()
+			BattCurrent = float4tohex(BattCurrentInt)
+			if (BattCurrentInt < BattCurrentMin) or (BattCurrentInt > BattCurrentMax):
+				print("BattCurrentInt: ", BattCurrentInt, "BattCurrent: ", BattCurrent)
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve BattCurrent. Exception: ", repr(e), 
