@@ -180,10 +180,12 @@ def preparePicture(duration, dataType, pictureNumber, index, camObj):
 				# reset the flags file
 				fileChecker.individualReset(progressFilePath)
 		if index == 1:
+			print("Preparing picture from line 1")
 			transmissionProgress == 0
 		else:
 			transmissionProgress = int(index)
 
+		print("About to run file checker")
 		fileChecker.checkFile(dataFilePath)
 		pictureFile = open(dataFilePath, 'rb')
 		pictureContent = hexlify(pictureFile.read()) #Picture content is now a string with the hex data of the file in it
