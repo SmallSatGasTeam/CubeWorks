@@ -182,7 +182,6 @@ def preparePicture(duration, dataType, pictureNumber, index, camObj):
 		else:
 			transmissionProgress = int(index)
 
-		print("About to run file checker")
 		fileChecker.checkFile(dataFilePath)
 		pictureFile = open(dataFilePath, 'rb')
 		pictureContent = hexlify(pictureFile.read()) #Picture content is now a string with the hex data of the file in it
