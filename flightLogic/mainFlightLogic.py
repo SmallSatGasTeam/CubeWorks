@@ -160,7 +160,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 			await asyncio.gather(postBoomDeploy.run())
 
 
-def recordData(bootCount, antennaDeployed, lastMode):saveTofiles
+def recordData(bootCount, antennaDeployed, lastMode):
 	# write to the boot file, "w" option in write overwrites the file
 	fileChecker.checkFile("/home/pi/flightLogicData/bootRecords.txt")
 	new = open("/home/pi/flightLogicData/bootRecords.txt", "w+")

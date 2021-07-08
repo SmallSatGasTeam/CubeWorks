@@ -447,7 +447,7 @@ class AttitudeData():
 			sunSensor1, sunSensor2, sunSensor3, sunSensor4, sunSensor5 = [allSunSensors[i] for i in range(5)]
 
 			if(sunSensor1 < sunSensorMin) or (sunSensor1 > sunSensorMax):
-					raise unexpectedValue
+				raise unexpectedValue
 
 			if(sunSensor2 < sunSensorMin) or (sunSensor2 > sunSensorMax):
 				raise unexpectedValue
