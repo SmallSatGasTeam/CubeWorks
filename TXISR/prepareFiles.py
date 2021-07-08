@@ -179,8 +179,10 @@ def preparePicture(duration, dataType, pictureNumber, index, camObj):
 				transmissionProgress = 0
 				# reset the flags file
 				fileChecker.individualReset(progressFilePath)
+		if index == 1:
+			transmissionProgress == 0
 		else:
-			transmissionProgress = 0
+			transmissionProgress = int(index)
 
 		fileChecker.checkFile(dataFilePath)
 		pictureFile = open(dataFilePath, 'rb')
