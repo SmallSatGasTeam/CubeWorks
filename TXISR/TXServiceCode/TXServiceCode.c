@@ -31,9 +31,9 @@
 #define PHOTO_TYPE 3
 #define TIME_DEVISOR ':'
 
-//NOTE: becasue of how we have to set the boud rate I cannot use a define for it in ceritian places, just do a contrl f and look for BOUD_RATE
+//NOTE: Because of how we have to set the boud rate, I cannot use a define for it in certain places, just do a ctrl-f and look for BOUD_RATE
 //it is place next to every place that the boud rate is used, you also need to change the define as it is used as well.
-//NOTE: this boud rate (9600) is the radio speed. We talk to it with a diffrent speed, in other words the 9600 is our divisor for the delay
+//NOTE: this boud rate (9600) is the radio speed. We talk to it with a different speed, in other words the 9600 is our divisor for the delay
 #define BOUD_RATE 9600
 
 int changeCharToInt(char a);
