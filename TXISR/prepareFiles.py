@@ -179,6 +179,9 @@ def preparePicture(duration, dataType, pictureNumber, index, camObj):
 				transmissionProgress = 0
 				# reset the flags file
 				fileChecker.individualReset(progressFilePath)
+		elif (index == 1):
+			#It wasn't happy when I set it equal to one so I'm leaving it - Alex
+			transmissionProgress = int(index-1)
 		else:
 			transmissionProgress = int(index)
 
