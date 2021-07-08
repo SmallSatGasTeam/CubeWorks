@@ -93,7 +93,7 @@ def searchGASPACS(data, str): #Must be passed as a string of hex, for both param
 			startIndex = occurences[i]+len(str)
 			endIndex = occurences[i+1]
 			content = (data[startIndex:endIndex])
-			modifiedString = data[0:startIndex-len(str)] + data[endIndex+len(str):]
+			modifiedString = data[endIndex+len(str):]
 		return content, modifiedString, changed
 	except Exception as e:
 		print("Error in searchGASPACS. Error:", e)

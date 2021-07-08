@@ -4,7 +4,6 @@ The pythonInterrupt.py file monitors the UART buffer, and when data is received 
 The header and footer is the Hex representation of 'GASPACS'. The pythonInterrupt.py takes the packet data located in between the header and footer and then calls the processPacket() method located in this file, passing in an argument containing the packet data.
 processPacket() will convert the packet data to binary, and then go through bit by bit and perform the functionality specified in the packet.
 '''
-# NOTE: This code is not asyncronous currently.
 import hashlib
 import sys
 sys.path.append('../')
@@ -35,54 +34,6 @@ class packetProcessing:
 		self.__bootRecordsPath = ("/home/pi/flightLogicData/bootRecords.txt")
 		self.__filePaths = ["/home/pi/CubeWorks0/TXISR/", "/home/pi/CubeWorks1/TXISR/", "/home/pi/CubeWorks2/TXISR/", "/home/pi/CubeWorks3/TXISR/", "/home/pi/CubeWorks4/TXISR/"]
 		self.__transmit = transmitObject
-
-	async def processAX25(self, AX25):  #Placeholder function
-		"""
-		processAX25 is called once the packet is identified as an AX25 packet. 
-		It references what codeBase is being used. It then creates or opens for writing the txFile within the correct base.
-		The AX25Flag is checked to see if it is enabled or disabled.
-		The AX25packet is written to the txFile and then we run the TXServiceCode to transmit it back
-		(This function requires further testing on the stack as of 5/27/21. We need to try running some AX25 packets over the serial port.)
-		"""
-		print(">>>Starting AX25 packet processing.")
-		#Check AX25 Transmission flag, if it is OK then open a pyserial connection and transmit the content of the packet
-		try:	
-			fileChecker.checkFile("/home/pi/TXISRData/AX25Flag.txt")
-			AX25Flag_File = open("/home/pi/TXISRData/AX25Flag.txt", "r")
-			baseFile = open("/home/pi/lastBase.txt")
-			codeBase = int(baseFile.read())
-			txisrCodePath = self.__filePaths[codeBase]
-			if self.__transmit.nextTXTime() > -1:
-				timeToNextWindow = self.__transmit.nextTXTime()
-			else:
-				timeToNextWindow = 3133685166
-			print(">>>Initialized all variables<<<")
-
-			transmissionFilePath = txisrCodePath + 'data/txFile.txt' #File path to txFile. This is where data will be stored
-			fileChecker.checkFile(transmissionFilePath)	
-			txDataFile = open(transmissionFilePath, 'w+') #Create and open TX File
-			AX25Flag = AX25Flag_File.readline()
-			print(AX25Flag)
-			print(">>>About to enter infinite loop.")
-			print(timeToNextWindow -time.time())
-			if (timeToNextWindow - time.time() >= 25) and (not self.__transmit.isRunning()):	
-				if AX25Flag == "Enabled":
-					print(">>>Processing AX25 Packet")
-					txDataFile.write("10000\n")
-					txDataFile.write("0000000000:" + AX25 + "\n") #Write to txData.
-					txDataFile.close()
-					subprocess.Popen(['sudo', './TXService.run'], cwd = str(txisrCodePath + "TXServiceCode/")) #This might not work
-				elif AX25Flag == "Disabled":
-					print(">>>AX25 Packets are disabled")
-				else:
-					print(">>>AX25Flag.txt contains unrecognized data")
-		except Exception as e:
-			print(">>>Error in AX25 processing:", e)
-			print(">>>txFile.txt is full or next txWindow is too close to transmit")
-		await asyncio.sleep(3)
-
-		AX25Flag_File.close()
-		txDataFile.close()
 
 	async def processPacket(self, packetData):
 		print('Processing packet')
@@ -140,13 +91,6 @@ class packetProcessing:
 
 			else:
 				print("Hashes do not match, will not save window!")
-		
-		elif binaryData[0:8] == "01111110":
-			# This is an AX25 packet
-			print("AX25 Packet")
-			await self.processAX25(packetData)
-
-
 		else:
 			# This is a command packet
 			print("Command packet")
@@ -207,15 +151,6 @@ class packetProcessing:
 					#Send reboot command to Beetle
 					print("Reboot")
 					os.system("sudo reboot")
-
-				if binaryData[48:56] == '00000000':
-					# Turn off AX25
-					print("Turn off AX25")
-					self.disableAX25()
-				else:
-					#Turn on AX25
-					print("Turn on AX25")
-					self.enableAX25()
 
 				fileChecker.checkFile(self.__bootRecordsPath)
 				reboots = int(linecache.getline(self.__bootRecordsPath, 1))
@@ -314,28 +249,6 @@ class packetProcessing:
 		# close file
 		transmissionFlag_File.close()
 		
-	def disableAX25(self):
-		fileChecker.checkFile("/home/pi/TXISRData/AX25Flag.txt")
-		# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
-		AX25Flag_File = open("/home/pi/TXISRData/AX25Flag.txt", "w")
-		
-		# write the data to the file,
-		AX25Flag_File.write("Disabled")
-		
-		# close the file
-		AX25Flag_File.close()
-		
-	def enableAX25(self):
-		fileChecker.checkFile("/home/pi/TXISRData/AX25Flag.txt")
-		# This function will set a flag that will disable the radio transmissions. We will check the flag before making any transmissions.
-		AX25Flag_File = open("/home/pi/TXISRData/AX25Flag.txt", "w")
-		
-		# write the data to the file,
-		AX25Flag_File.write("Enabled")
-		
-		# close file
-		AX25Flag_File.close()
-		
 	def clearTXFile(self):
 		fileChecker.checkFile("/home/pi/TXISRData/txWindows.txt")
 		# This function clears the TX windows file
@@ -353,35 +266,10 @@ class packetProcessing:
 		progressFile.write('0\n')
 		progressFile.write('0\n')
 		progressFile.write('0\n')
-
-	def skip(self):
-		fileChecker.checkFile(self.__bootRecordsPath)
-		bootRecords = open(self.__bootRecordsPath, "r")
-		bootRecords.readline()
-		bootRecords.readline()
-		skip = int(bootRecords.readline())
-		bootRecords.close()
-		if skip == 4:
-			return True
-		else:
-			return False
-
 	
 	def deletePictures(self):
 		os.system("cd ../../flightLogicData/; sudo rm -rf Pictures")
 
 	def deleteData(self):
 		os.system("cd ../../flightLogicData/; sudo rm Attitude_Data.txt Deploy_Data.txt TTNC_Data.txt")
-
-	def enableAudioBeacon(self):
-		pass
-	
-	def disableAudioBeacon(self):
-		pass
-
-	def enableBeacon(self):
-		pass
-
-	def disableBeacon(self):
-		pass
 

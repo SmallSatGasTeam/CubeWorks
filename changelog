@@ -219,3 +219,5 @@ be repoerted.
         1: I ran flight logic normally, I first sent a command for a picture, it successfuly took a picture. Then I had it run though boom deploy it successfuly 
             ran. 
         2: I unplug the cammera from the pi and ran the 1st test again. It ran though successfuly however no pictures were tacken. 
+#34 <AX25>
+    We removed the AX25 packets as they are not working and we don't know the format well. 
