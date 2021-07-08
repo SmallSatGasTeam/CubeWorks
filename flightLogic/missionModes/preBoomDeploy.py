@@ -26,11 +26,9 @@ DEBUG = False
 class preBoomMode:
 	def __init__(self, saveObject, transmitObject, packetObj):
 		self.thresholdVoltage = 3.5 #Threshold voltage to deploy AeroBoom.
-		self.criticalVoltage = 3.1 #Critical voltage, below this go to SAFE
 		self.darkVoltage = .1 #Average voltage from sunsors that, if below this, indicates GASPACS is in darkness
 		self.lightMinimumMinutes = 1 #Minimum amount of time GASPACS must be on light side of orbit before deploying
 		self.batteryStatusOk = False
-		self.maximumWaitTime = 240 #Max time GASPACS can wait, charging batteries, before SAFEing
 		self.sunlightData = 0
 		self.__getTTNCData = TTNCData(saveObject)
 		self.__getAttitudeData = AttitudeData(saveObject)
@@ -93,6 +91,7 @@ class preBoomMode:
 		while True: #Checking the battery voltage to see if it's ready for deployment, if it is too low for too long --> SAFE
 			try:
 				BusVoltage = eps.getBusVoltage()
+				#NOTE: This line is for testing! DO NOT 
 				if(BusVoltage < getBusVoltageMin) or (BusVoltage > getBusVoltageMax):
 					raise unexpectedValue
 			except Exception as e:
