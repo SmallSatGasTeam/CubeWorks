@@ -158,7 +158,7 @@ class TTNCData:
 		try:
 			Cell1TempInt = self.EPS.getCell1Temp()
 			Cell1Temp = float4tohex(Cell1TempInt)
-			if ((Cell1TempInt < Cell1TempMin) or (Cell1Temp > Cell1TempMax)):
+			if ((Cell1TempInt < Cell1TempMin) or (Cell1TempInt > Cell1TempMax)):
 				print(Cell1Temp)
 				print("Unexpected value recieved from cell temp 1: ", Cell1TempInt)
 				raise unexpectedValue
