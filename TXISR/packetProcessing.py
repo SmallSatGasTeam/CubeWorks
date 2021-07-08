@@ -287,15 +287,3 @@ class packetProcessing:
 	def deleteData(self):
 		os.system("cd ../../flightLogicData/; sudo rm Attitude_Data.txt Deploy_Data.txt TTNC_Data.txt")
 
-	def enableAudioBeacon(self):
-		pass
-	
-	def disableAudioBeacon(self):
-		pass
-
-	def enableBeacon(self):
-		pass
-
-	def disableBeacon(self):
-		pass
-
