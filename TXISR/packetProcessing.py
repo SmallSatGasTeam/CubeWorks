@@ -267,19 +267,6 @@ class packetProcessing:
 		progressFile.write('0\n')
 		progressFile.write('0\n')
 		progressFile.write('0\n')
-
-	def skip(self):
-		fileChecker.checkFile(self.__bootRecordsPath)
-		bootRecords = open(self.__bootRecordsPath, "r")
-		bootRecords.readline()
-		bootRecords.readline()
-		skip = int(bootRecords.readline())
-		bootRecords.close()
-		if skip == 4:
-			return True
-		else:
-			return False
-
 	
 	def deletePictures(self):
 		os.system("cd ../../flightLogicData/; sudo rm -rf Pictures")
