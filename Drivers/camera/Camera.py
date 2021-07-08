@@ -21,7 +21,10 @@ class Camera(Driver):
         #self.pictureDirectoryPath = str(Path(__file__).parent / "../../Pictures")
         self.pictureDirectoryPath = "/home/pi/flightLogicData/Pictures"
         self.pictureNumber = 0
-        self.__cam = PiCamera()
+        try:
+            self.__cam = PiCamera()
+        except: 
+            self.__cam = None
 
     def read(self):
         pass
@@ -30,21 +33,25 @@ class Camera(Driver):
         """
         Takes the picture
         """
-        #the way to count folders in directory is len(os.listdir(path of directory to count in))
-        #you have to import OS
-        #This also counts files in the total, but with the file structure we came up with this shouldn't be a problem
-        makedirs(self.pictureDirectoryPath, exist_ok=True)
-        self.pictureNumber = len(listdir(self.pictureDirectoryPath))
-        #count number of folders in directory, add 1 for current pic
+        try :
+            #the way to count folders in directory is len(os.listdir(path of directory to count in))
+            #you have to import OS
+            #This also counts files in the total, but with the file structure we came up with this shouldn't be a problem
+            makedirs(self.pictureDirectoryPath, exist_ok=True)
+            self.pictureNumber = len(listdir(self.pictureDirectoryPath))
+            #count number of folders in directory, add 1 for current pic
 
-        self.__cam.resolution = self.lowRes
-        sleep(2)
-        makedirs(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes", exist_ok=True)
-        self.__cam.capture(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/LowResOriginal"+str(self.pictureNumber)+".jpg")
-        self.__cam.resolution = self.highRes
-        makedirs(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes", exist_ok=True)
-        self.__cam.capture(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".jpg")
-        return self.pictureNumber
+            self.__cam.resolution = self.lowRes
+            sleep(2)
+            makedirs(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes", exist_ok=True)
+            self.__cam.capture(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/LowResOriginal"+str(self.pictureNumber)+".jpg")
+            self.__cam.resolution = self.highRes
+            makedirs(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes", exist_ok=True)
+            self.__cam.capture(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".jpg")
+            return self.pictureNumber
+        except:
+            #return neg 1 if no picture was taken
+            return -1
 
     def compressLowResToFiles(self, pictureNumber):
         """

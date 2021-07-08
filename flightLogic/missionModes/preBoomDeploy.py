@@ -26,14 +26,9 @@ DEBUG = False
 class preBoomMode:
 	def __init__(self, saveObject, transmitObject, packetObj):
 		self.thresholdVoltage = 3.5 #Threshold voltage to deploy AeroBoom.
-		self.criticalVoltage = 3.1 #Critical voltage, below this go to SAFE
 		self.darkVoltage = .1 #Average voltage from sunsors that, if below this, indicates GASPACS is in darkness
-		self.darkMinutes = .2 #How many minutes GASPACS must be on the dark side for before moving forward
 		self.lightMinimumMinutes = 1 #Minimum amount of time GASPACS must be on light side of orbit before deploying
-		self.lightMaximumMinutes = 60 #Maximum amount of time GASPACS may be on light side of orbit before deploying, must be less than 90 by a fair margin since less than half of orbit can be sun
 		self.batteryStatusOk = False
-		self.maximumWaitTime = 240 #Max time GASPACS can wait, charging batteries, before SAFEing
-		self.timeWaited = 0
 		self.sunlightData = 0
 		self.__getTTNCData = TTNCData(saveObject)
 		self.__getAttitudeData = AttitudeData(saveObject)
@@ -80,7 +75,7 @@ class preBoomMode:
 					print("Pre boom deploy sun sensor values: ", vList)
 				size = 0
 				while size < 5:
-					if (vList[size] < sunSensorMin) | (vList[size] > sunSensorMax):
+					if (vList[size] < sunSensorMin) or (vList[size] > sunSensorMax):
 				 		raise unexpectedValue
 					size += 1
 			except Exception as e:
@@ -96,7 +91,8 @@ class preBoomMode:
 		while True: #Checking the battery voltage to see if it's ready for deployment, if it is too low for too long --> SAFE
 			try:
 				BusVoltage = eps.getBusVoltage()
-				if(BusVoltage < getBusVoltageMin) | (BusVoltage > getBusVoltageMax):
+				#NOTE: This line is for testing! DO NOT 
+				if(BusVoltage < getBusVoltageMin) or (BusVoltage > getBusVoltageMax):
 					raise unexpectedValue
 			except Exception as e:
 				BusVoltage = 4.18
@@ -106,20 +102,12 @@ class preBoomMode:
 			if (BusVoltage > self.thresholdVoltage):
 				print('Battery above threshold voltage for deployment')
 				self.batteryStatusOk=True
-				self.timeWaited = 0
 				await asyncio.sleep(5)
 			else:
 				self.batteryStatusOk=False
 
-				if(self.timeWaited*12 > self.maximumWaitTime): #5 seconds every wait
-						# self.__safeMode.run(10) #1 hour
-						print('Battery too low for too long. Rebooting')
-						self.timeWaited = 0
-						await asyncio.sleep(5)
-				else:
-					#Wait 5 more seconds
-					self.timeWaited = self.timeWaited+1
-					await asyncio.sleep(5) #Check battery every 5 seconds
+			#Wait 5 more seconds
+			await asyncio.sleep(5) #Check battery every 5 seconds
 
 	def cancelAllTasks(self, taskList): #Isn't used in this class, but here anyways
 		try:
@@ -127,18 +115,6 @@ class preBoomMode:
 				t.cancel()
 		except asyncio.exceptions.CancelledException:
 			print("Caught thrown exception in cancelling background task")
-	
-	async def skipToPostBoom(self):
-		"""
-		Skips to postBoomDeploy mode if the command is received from the ground
-		station.
-		"""
-		print("Inside skipToPostBoom, skipping value is:", self.__packetProcessing.skip())
-		if self.__packetProcessing.skip():
-			self.cancelAllTasks(self.__tasks)
-			return True
-		else:
-			await asyncio.sleep(1)
 
 class unexpectedValue(Exception):
 	print("Received unexpected value.")

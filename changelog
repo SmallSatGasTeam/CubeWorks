@@ -211,3 +211,11 @@ be repoerted.
     "TXISR/packetProcessing.py" line 391
     This function should delete all data files from flightLogicData.
     The other functions for the data and enabling beacons have not been added yet   
+
+#33 <Fixed cammera driver>
+    "Drivers/camera/Camera.py" lines 24,26,36,52
+    I added try except statements to the code so if the camera driver is not present the code can still run normally
+    Test:
+        1: I ran flight logic normally, I first sent a command for a picture, it successfuly took a picture. Then I had it run though boom deploy it successfuly 
+            ran. 
+        2: I unplug the cammera from the pi and ran the 1st test again. It ran though successfuly however no pictures were tacken. 

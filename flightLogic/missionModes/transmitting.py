@@ -89,7 +89,7 @@ class Transmitting:
         while True:
                 if (self.__timeToNextTXwindowVar <= 5) and (self.__timeToNextTXwindowVar > -5) and self.__inProgress:
                     print(">>> Calling c code <<<")
-                    fileChecker.checkFile('/home/pi/TXISRData/transmissionsFlag.txt')
+                    fileChecker.checkFile('/home/pi/TXISRData/transmissionFlag.txt')
                     self.__transmissionFlagFile.seek(0)
                     if self.__transmissionFlagFile.readline() == 'Enabled':
                         txisrCodePath = filePaths[self.__codeBase]
@@ -112,26 +112,26 @@ class Transmitting:
                         self.__inProgress = False
                 await asyncio.sleep(0.1) #Check at 10Hz until the window time gap is less than 5 seconds
     
-    async def transmissionRunning(self):
-        self.__inProgress = True
-        await asyncio.sleep(self.__duration + 5)
-        self.__inProgress = False
 
     async def upDateTime(self):
-        while True :
-            print(">>> Updating time to tx window <<<")
-            #this will delete past windows, it should be called first
-            if(self.__queue.dequeue(False) - time.time() <= -10):
-                print(">>> removing old window <<<")
-                self.__queue.dequeue(True)
-            #count down the time
-            #set new window if one is not inprogress
-            if(not self.__inProgress):
-                print(">>> finding next window <<<")
-                self.__nextWindow = self.__queue.dequeue(False)
-            #print("Last window", self.__nextWindow)
-            self.__timeToNextTXwindowVar = self.__nextWindow - time.time()
-            print("Time to next window:", self.__timeToNextTXwindowVar)
+        try:
+            while True :
+                print(">>> Updating time to tx window <<<")
+                #this will delete past windows, it should be called first
+                if(self.__queue.dequeue(False) - time.time() <= -10):
+                    print(">>> removing old window <<<")
+                    self.__queue.dequeue(True)
+                #count down the time
+                #set new window if one is not inprogress
+                if(not self.__inProgress):
+                    print(">>> finding next window <<<")
+                    self.__nextWindow = self.__queue.dequeue(False)
+                #print("Last window", self.__nextWindow)
+                self.__timeToNextTXwindowVar = self.__nextWindow - time.time()
+                print("Time to next window:", self.__timeToNextTXwindowVar)
+                await asyncio.sleep(2.5)
+        except:
+            print("Failed to pull window")
             await asyncio.sleep(2.5)
 
     def isRunning(self): #Other transmission are authorized though self.__inProgress which is set by transmissionRunning
