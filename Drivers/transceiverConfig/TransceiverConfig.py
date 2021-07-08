@@ -9,7 +9,7 @@ class TransceiverConfig(Driver):
     We need the ability to turn on and off the beacon, turn on low power mode, and read the internal temp sensor.
     See Page 25 of the Endurosat UHF Transceiver Type II Manual Rev 1.8 document for the SCW bit description.
     
-    ***Note: ALL ES+ commands need to be changed to reflect the address of the transceiver - currently set to 23***
+    ***Note: ALL ES+ commands need to be changed to reflect the address of the transceiver - currently set to 22***
     ***Potentially need to add CRC32 checksum functionality***
     """
     super().__init__("TransceiverConfig")
