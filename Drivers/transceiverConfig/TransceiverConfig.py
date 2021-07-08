@@ -59,11 +59,11 @@ class TransceiverConfig(Driver):
     """
     Turns on Low Power Mode. Note: Any ESTTC command can be used to bring the transceiver out of low power mode
     """
-    self.writeData(b'ES+W23F4\r')
+    self.writeData(b'ES+W22F4\r')
 
   def read(self):
     """
     Returns the temperature from the transceiver internal temp sensor
     """
-    temp = self.writeData(b'ES+R230A\r')
+    temp = self.writeData(b'ES+R220A\r')
     return temp
