@@ -13,6 +13,7 @@ import os.path
 from os import system
 from Drivers.camera import Camera
 import Drivers.boomDeployer as boomDeployer
+import Drivers.transceiverConfig as transceiverConfig
 import smbus
 import hmac
 from protectionProticol.fileProtection import FileReset
@@ -246,23 +247,25 @@ class packetProcessing:
 					print("Deleting Data")
 					self.deleteData()
 
+				transceiver = transceiverConfig.TransceiverConfig()
+				
 				if binaryData[80:88] == '00000000':
 					# Disable Beacon
 					print("Disable Beacon")
-					self.disableBeacon()
+					transceiver.setBeaconOff()
 				else:
 					#Enable Beacon
 					print("Enable Beacon")
-					self.enableBeacon()
+					transceiver.setBeaconOn()
 
 				if binaryData[88:96] == '00000000':
 					# Disable Audio Beacon
 					print("Disable Audio Beacon")
-					self.disableAudioBeacon()
+					transceiver.setAudioBeaconOff()
 				else:
 					# Enable Audio Beacon
 					print("Enable Audio Beacon")
-					self.enableAudioBeacon()
+					transceiver.setAudioBeaconOn()
 					
 			else:
 				print("Hashes do not match, will not execute commands!")
