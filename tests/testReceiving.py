@@ -2,12 +2,12 @@ import serial
 import asyncio
 import sys
 sys.path.append('../')
-import watchdog.Heartbeat.Heartbeat as heartbeat
+from flightLogic.missionModes.heartBeat import heart_beat
 
 async def receive():
+    heartBeatObj = heart_beat()
     print("Starting receive.")
-    heartbeat.setUp()
-    asyncio.create_task(heartbeat.longTap())
+    asyncio.create_task(heartBeatObj.heartBeatRun())
 
     try:
         serialport = serial.Serial('/dev/serial0', 115200)
