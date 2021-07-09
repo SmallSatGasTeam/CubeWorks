@@ -90,7 +90,7 @@ class Transmitting:
                     print(">>> Calling c code <<<")
                     fileChecker.checkFile('/home/pi/TXISRData/transmissionFlag.txt')
                     self.__transmissionFlagFile.seek(0)
-                    if self.__transmissionFlagFile.readline() == 'Enabled':
+                    if (self.__transmissionFlagFile.readline() != "Disabled"):
                         txisrCodePath = filePaths[self.__codeBase]
                         #These two are old code that we may potentially have to come back to
                         #subprocess.Popen([txisrCodePath, str(self.__datatype)])
