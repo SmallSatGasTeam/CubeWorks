@@ -20,18 +20,18 @@ fileChecker = FileReset()
 
 class save:
     def __init__(self):
-        """ check the file to make sure it is their        
-         fileChecker.checkFile("/home/pi/flightLogicData/TTNC_Data.txt")
-         open the file when the calls is instantiated
-         self.__TTNC_File = open("/home/pi/flightLogicData/TTNC_Data.txt", "a+")
-         check the file to make sure it is their
-         fileChecker.checkFile("/home/pi/flightLogicData/Deploy_Data.txt")
-         open the file when the calls is instantiated
-         self.__Deploy_File = open("/home/pi/flightLogicData/Deploy_Data.txt", "a+")
-         check the file to make sure it is their
-         fileChecker.checkFile("/home/pi/flightLogicData/Attitude_Data.txt")
-         open the file when the calls is instantiated
-         self.__Attitude_File = open("/home/pi/flightLogicData/Attitude_Data.txt", "a+")"""
+        #  check the file to make sure it is their        
+        #  fileChecker.checkFile("/home/pi/flightLogicData/TTNC_Data.txt")
+        #  open the file when the calls is instantiated
+        #  self.__TTNC_File = open("/home/pi/flightLogicData/TTNC_Data.txt", "a+")
+        #  check the file to make sure it is their
+        #  fileChecker.checkFile("/home/pi/flightLogicData/Deploy_Data.txt")
+        #  open the file when the calls is instantiated
+        #  self.__Deploy_File = open("/home/pi/flightLogicData/Deploy_Data.txt", "a+")
+        #  check the file to make sure it is their
+        #  fileChecker.checkFile("/home/pi/flightLogicData/Attitude_Data.txt")
+        #  open the file when the calls is instantiated
+        #  self.__Attitude_File = open("/home/pi/flightLogicData/Attitude_Data.txt", "a+")
         pass
 
     #write the data to the file,
@@ -95,14 +95,3 @@ class save:
             if (int(i[0]) >= time):
                 temp += i
         return temp
-
-    #this will check if it is time to tx or not and then return a bool
-    #TODO: how are we saving tx times?
-    def checkTxWindow(self):
-        fileChecker.checkFile("/home/pi/TXISRData/txWindows.txt")
-        txWindows = open("/home/pi/TXISRData/txWindows.txt")
-        timeToTx = txWindows.readlines()
-        for i in timeToTx:
-            if (i - 10000) <= round(time.time() * 1000):
-                return True
-        return False

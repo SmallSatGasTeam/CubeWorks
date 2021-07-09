@@ -98,7 +98,7 @@ class Transmitting:
                         startTime = time.time()
                         subprocess.Popen(['sudo', './TXService.run', str(self.__datatype)], cwd = str(txisrCodePath))
                         while(self.__duration >= time.time() - startTime):
-                            print("\tWaiting for TX to finish", self.__duration >= time.time() - startTime)
+                            print("\tWaiting for TX to finish ", self.__duration >= time.time() - startTime)
                             await asyncio.sleep(2)
                         #turn off tx in progress flag
                         print("\n\nResetting the TX Service code\n\n")
