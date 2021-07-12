@@ -19,6 +19,15 @@ Framework components are designed to be modular, and easy to add to and remove f
 4. Log in (email coordinator@gas.usu.edu if you do not have the login password)
 5. run "./install.exe"
 
+### INSTALLING SSDV
+1. `git clone https://github.com/SmallSatGasTeam/ssdv`
+2. `cd ssdv`
+3. `make`
+4. `nano ~/.bashrc`
+5. Add the following line to the bashrc file:
+	`export PATH=$PATH:/home/pi/ssdv/ssdv`
+6. Reboot the pi, and make sure you can run `ssdv` from any spot on the pi
+
 ### MANUAL Installation Process (How the CubeWorks Image was created)
 1. Image a Raspberry Pi with Raspbian lite and boot the Pi
 2. Use `sudo raspi-config` to set the proper network settings, set a user password, localisation options.
