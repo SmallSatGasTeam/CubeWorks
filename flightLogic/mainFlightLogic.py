@@ -44,7 +44,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 	codeBase = int(baseFile.read())
 	cameraObj = Camera()
 	# Variable setup
-	delay = 1*60  # 35 minute delay #TODO: set this delay to 35 min
+	delay = 35*60  # 35 minute delay #TODO: set this delay to 35 min
 	boot = True
 	saveObject = saveTofiles.save()
 	# startTXISR(save)
