@@ -146,7 +146,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 	# pre boom deploy
 		print("Entered the loop that chooses the next mission mode.")
 		recordData(bootCount, antennaDeployed, lastMode)  # Save into files
-		if antennaDeployed == True and lastMode not in (3,4):
+		if ((antennaDeployed == True) and (lastMode != 3) and (lastMode != 4)):
 			print('Running pre-Boom deploy')
 			lastMode = 2
 			recordData(bootCount, antennaDeployed, lastMode)
@@ -154,7 +154,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 			print("Finished preBoomDeploy")
 			lastMode = 3
 			recordData(bootCount, antennaDeployed, lastMode)
-		elif antennaDeployed == True and lastMode == 3:
+		elif ((antennaDeployed == True) and (lastMode == 3)):
 			print('Running Boom Deploy')
 			await asyncio.gather(boomDeploy.run())  # Execute boom deployment, start post-boom deploy
 			lastMode = 4
