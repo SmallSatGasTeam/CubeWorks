@@ -25,7 +25,7 @@ Framework components are designed to be modular, and easy to add to and remove f
 3. `make`
 4. `nano ~/.bashrc`
 5. Add the following line to the bashrc file:
-	`export PATH=$PATH:/home/pi/ssdv/ssdv`
+	`export PATH=$PATH:/home/pi/ssdv`
 6. Reboot the pi, and make sure you can run `ssdv` from any spot on the pi
 
 ### MANUAL Installation Process (How the CubeWorks Image was created)
