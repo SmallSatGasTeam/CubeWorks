@@ -62,6 +62,9 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 	tasks.append(asyncio.create_task(ttncData.collectTTNCData(0)))  # Boot Mode is classified as 0
 	tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))  # collecting attitude data
 	# tasks.append(asyncio.create_task(safeModeObject.thresholdCheck()))
+	tasks.append(asyncio.create_task(transmitObject.readNextTransferWindow()))
+	tasks.append(asyncio.create_task(transmitObject.getReadyForWindows()))
+	tasks.append(asyncio.create_task(transmitObject.upDateTime()))
 
 	# Initialize all mission mode objects
 	# NOTE: the comms-tx is the only exception to this rule as it is to be handled differently than other mission modes
