@@ -95,7 +95,8 @@ class TTNCData:
 				raise unexpectedValue
 		except Exception as e:
 			print("Failure to create timestamp. Exception: ", repr(e), 
-			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)				
+			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
+			timestamp = int4tohex(0000000000)
 		
 		packetType = int1tohex(1)
 		mode = int1tohex(missionMode)
