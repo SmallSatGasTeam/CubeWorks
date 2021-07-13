@@ -57,8 +57,7 @@ def prepareData(duration, dataType, startFrom):
 		except:
 			transmissionProgress = 0
 			print("Progress list didn't exist.")
-			os.remove(progressFile)
-			fileChecker.checkFile(progressFilePath)
+			fileChecker.individualReset(progressFilePath)
 
 	#NOTE: This is a new section of code to try and allow indexing in the file_____
 		fileChecker.checkFile(dataFilePath)
