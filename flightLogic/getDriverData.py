@@ -410,7 +410,7 @@ class DeployData():
 		try:
 			boombox_uvFloat = self.UVDriver.read()
 			boombox_uv = float4tohex(boombox_uvFloat)
-			if (boombox_uvFloat < boombox_uvMin) or (boombox_uv > boombox_uvMax):
+			if (boombox_uvFloat < boombox_uvMin) or (boombox_uvFloat > boombox_uvMax):
 				print("boombox_uvFloat: ", boombox_uvFloat, "boombox_uv: ", boombox_uv)
 				raise unexpectedValue
 		except Exception as e:
