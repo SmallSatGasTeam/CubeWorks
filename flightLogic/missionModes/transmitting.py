@@ -53,7 +53,7 @@ class Transmitting:
             print(">>> Monitoring windows <<<")
             #if close enough, prep files
             #wait until 5 seconds before, return True
-            if((self.__timeToNextTXwindowVar > 10) and (self.__timeToNextTXwindowVar<20) and (not self.__inProgress)): #If next window is in 20 seconds or less
+            if((self.__timeToNextTXwindowVar > 10) and (self.__timeToNextTXwindowVar<40) and (not self.__inProgress)): #If next window is in 20 seconds or less
                 #get the data 
                 print(">>> Getting data from the queue <<<")
                 #turn on tx in progress flag
