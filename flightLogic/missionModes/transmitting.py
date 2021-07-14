@@ -29,7 +29,7 @@ class Transmitting:
     """
     def __init__(self, codeBase, camObj):
         fileChecker.checkFile("/home/pi/TXISRData/transmissionFlag.txt")
-        self.__transmissionFlagFile = open('/home/pi/TXISRData/transmissionFlag.txt')
+        self.__transmissionFlagFile = open('/home/pi/TXISRData/transmissionFlag.txt') #you need to reboot on every tx enable disable command
         self.__txWindowsPath = ('/home/pi/TXISRData/txWindows.txt')
         fileChecker.checkFile(self.__txWindowsPath)
         self.__queue = Queue(self.__txWindowsPath)
