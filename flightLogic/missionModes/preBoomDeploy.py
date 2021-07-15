@@ -43,7 +43,6 @@ class preBoomMode:
 		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt(self.__transmit, self.__packetProcessing)))
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(2))) #Pre-Boom is mode 2
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
-		# self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
 		self.__tasks.append(asyncio.create_task(self.sunCheck()))
 		self.__tasks.append(asyncio.create_task(self.batteryCheck()))
 
@@ -53,7 +52,6 @@ class preBoomMode:
 			print("checking for sunlight")
 
 			if ((self.sunlightData > self.darkVoltage) and self.batteryStatusOk == True):
-				# Dont cancel task until we are done transmitting
 				self.cancelAllTasks(self.__tasks) #Cancel all background processes, this depolys the boom basically
 				print('Returning and exiting')
 				return True #Go on to Boom Deploy Mode if the battery is Ok

@@ -75,108 +75,109 @@ class FileReset():
 
     # This check a single file to see if it will open or not if not it resets it 
     def checkFile(self, newFile):
-        self.__filePath = newFile
+        pass
+    #     self.__filePath = newFile
         
-        self.dirProtection()
+    #     self.dirProtection()
 
-        try:
-            file = open(self.__filePath)
-        except OSError:
-            self.__reset()
-            #print("File being reset " + self.__filePath)
-        else:
-            file.close()
-            #print("File is ok " + self.__filePath)
+    #     try:
+    #         file = open(self.__filePath)
+    #     except OSError:
+    #         self.__reset()
+    #         #print("File being reset " + self.__filePath)
+    #     else:
+    #         file.close()
+    #         #print("File is ok " + self.__filePath)
 
-    # This checks a single directory to see if it exists
-    def checkDir(self, path):
-        isdir = os.path.isdir(path)    
-        return isdir
+    # # This checks a single directory to see if it exists
+    # def checkDir(self, path):
+    #     isdir = os.path.isdir(path)    
+    #     return isdir
 
-    # This makes the diretory if it files
-    def dirProtection(self):  
-        count = 0
-        # Find the directory path
-        for i in range(len(self.__filePath)):
-            if self.__filePath[-i-1] == "/":
-                break
-            count += 1
-        dirPath = self.__filePath[:len(self.__filePath) - count]
-        #print(dirPath)
+    # # This makes the diretory if it files
+    # def dirProtection(self):  
+    #     count = 0
+    #     # Find the directory path
+    #     for i in range(len(self.__filePath)):
+    #         if self.__filePath[-i-1] == "/":
+    #             break
+    #         count += 1
+    #     dirPath = self.__filePath[:len(self.__filePath) - count]
+    #     #print(dirPath)
         
-        # Check directory
-        # The dir doesnt exist recreate it
-        if(not self.checkDir(dirPath)):
-            try:
-                os.mkdir(dirPath)
-            except:
-                print("Error trying to make directory ", dirPath)
+    #     # Check directory
+    #     # The dir doesnt exist recreate it
+    #     if(not self.checkDir(dirPath)):
+    #         try:
+    #             os.mkdir(dirPath)
+    #         except:
+    #             print("Error trying to make directory ", dirPath)
     
-    def windowProtection(self):
-        # Deletes everything in txWindows.txt that is not a valid window
-        print("<Checking txWindows>")
-        file = open(self.__windowFilePath, 'r')
-        file.seek(0)
+    # def windowProtection(self):
+    #     # Deletes everything in txWindows.txt that is not a valid window
+    #     print("<Checking txWindows>")
+    #     file = open(self.__windowFilePath, 'r')
+    #     file.seek(0)
 
-        TXwindows = file.readlines()
-        count = 0
-        for line in TXwindows:
-            window = line.split(',')
+    #     TXwindows = file.readlines()
+    #     count = 0
+    #     for line in TXwindows:
+    #         window = line.split(',')
 
-            # Check if window has five elements
-            if len(window) != 5:
-                # If not then erase it and skip current iteration
-                TXwindows[count] = ""
-                count += 1
-                print("Removing bad window: ", window, " code: 0")
-                continue
+    #         # Check if window has five elements
+    #         if len(window) != 5:
+    #             # If not then erase it and skip current iteration
+    #             TXwindows[count] = ""
+    #             count += 1
+    #             print("Removing bad window: ", window, " code: 0")
+    #             continue
 
-            # All of these are checking if values are positive integers
-            # Check if TXflag is 10 characters long
-            if (not window[0].isnumeric()) or int(window[0]) < 0 or len(window[0]) != 10:
-                # If not then erase it and skip current iteration
-                TXwindows[count] = ""
-                count += 1
-                print("Removing bad window: ", window, " code: 1")
-                continue
+    #         # All of these are checking if values are positive integers
+    #         # Check if TXflag is 10 characters long
+    #         if (not window[0].isnumeric()) or int(window[0]) < 0 or len(window[0]) != 10:
+    #             # If not then erase it and skip current iteration
+    #             TXwindows[count] = ""
+    #             count += 1
+    #             print("Removing bad window: ", window, " code: 1")
+    #             continue
 
-            # Check if window length is less than or equal to 3600
-            if (not window[1].isnumeric()) or int(window[1]) < 0 or int(window[1]) > 3600:
-                # If not then erase it and skip current iteration
-                TXwindows[count] = ""
-                count += 1
-                print("Removing bad window: ", window, " code: 2")
-                continue
+    #         # Check if window length is less than or equal to 3600
+    #         if (not window[1].isnumeric()) or int(window[1]) < 0 or int(window[1]) > 3600:
+    #             # If not then erase it and skip current iteration
+    #             TXwindows[count] = ""
+    #             count += 1
+    #             print("Removing bad window: ", window, " code: 2")
+    #             continue
 
-            # Check if type is less than or equal to five
-            if (not window[2].isnumeric()) or int(window[2]) < 0 or int(window[2]) > 5:
-                # If not then erase it and skip current iteration
-                TXwindows[count] = ""
-                count += 1
-                print("Removing bad window: ", window, " code: 3")
-                continue
+    #         # Check if type is less than or equal to five
+    #         if (not window[2].isnumeric()) or int(window[2]) < 0 or int(window[2]) > 5:
+    #             # If not then erase it and skip current iteration
+    #             TXwindows[count] = ""
+    #             count += 1
+    #             print("Removing bad window: ", window, " code: 3")
+    #             continue
 
-            # This is the picture number (not number of pictures), don't put limits on it
-            if (not window[3].isnumeric()) or int(window[3]) < 0:
-                TXwindows[count] = ""
-                count += 1
-                print("Removing bad window: ", window, " code: 4")
-                continue
+    #         # This is the picture number (not number of pictures), don't put limits on it
+    #         if (not window[3].isnumeric()) or int(window[3]) < 0:
+    #             TXwindows[count] = ""
+    #             count += 1
+    #             print("Removing bad window: ", window, " code: 4")
+    #             continue
 
-            # This is the TX flag, don't put limits on it
-            TXflagStripped = window[4].strip('\n') # .isnumeric won't work on '\n' or '-', so we strip both
-            TXflagDoubleStripped = TXflagStripped.strip('-')
-            if (not TXflagDoubleStripped.isnumeric()) or int(TXflagStripped) < -1:
-                TXwindows[count] = ""
-                count += 1
-                print("Removing bad window: ", window, " code: 5")
-                continue
-            count += 1
-        file = open(self.__windowFilePath, 'w')
-        file.writelines(TXwindows)
-        file.seek(0)
-        for line in TXwindows:
-            if line == "\n":
-                print("Removing bad window: ", window, " code: 6")
-                del line
-        file.close()
+    #         # This is the TX flag, don't put limits on it
+    #         TXflagStripped = window[4].strip('\n') # .isnumeric won't work on '\n' or '-', so we strip both
+    #         TXflagDoubleStripped = TXflagStripped.strip('-')
+    #         if (not TXflagDoubleStripped.isnumeric()) or int(TXflagStripped) < -1:
+    #             TXwindows[count] = ""
+    #             count += 1
+    #             print("Removing bad window: ", window, " code: 5")
+    #             continue
+    #         count += 1
+    #     file = open(self.__windowFilePath, 'w')
+    #     file.writelines(TXwindows)
+    #     file.seek(0)
+    #     for line in TXwindows:
+    #         if line == "\n":
+    #             print("Removing bad window: ", window, " code: 6")
+    #             del line
+    #     file.close()
