@@ -56,6 +56,9 @@ class preBoomMode:
 			print("checking for sunlight")
 
 			if ((self.sunlightData > self.darkVoltage) and self.batteryStatusOk == True):
+				# Dont cancel task until we are done transmitting
+				while(self.__transmit.isRunning()):
+					await asyncio.sleep(60) #sleep if a transmission is running
 				self.cancelAllTasks(self.__tasks) #Cancel all background processes, this depolys the boom basically
 				print('Returning and exiting')
 				return True #Go on to Boom Deploy Mode if the battery is Ok

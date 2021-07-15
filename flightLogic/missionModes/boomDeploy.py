@@ -53,6 +53,9 @@ class boomMode:
 		except Exception as e:
 			print("Failed to take a picture because we received excpetion:", repr(e))
 		await asyncio.sleep(5)
+		# Dont cancel task until we are done transmitting
+		while(self.__transmit.isRunning()):
+			await asyncio.sleep(60) #sleep if a transmission is running
 		self.cancelAllTasks(self.__tasks) # Cancel all background tasks
 		return True  # Go to post-boom deploy
 
