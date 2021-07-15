@@ -229,6 +229,9 @@ be repoerted.
 #36 <getDriverData.py>
     Added timestamp variable in exception on line 99 of getDriverData.py
 
+#37 <Transmitting.py>
+    prepare time was changed from 20 to 40 seconds 
+
 #37 <all mission modes>
     The transmission process was changed to call its async function in the __init__, insted of having all the mission modes call the async functions of the transmissions. This change 
     was made beacuse the transistion between mission modes would cause transmission failure. Commit: 5b1516c4a9dbbf452bf594904864d9c94840e409
