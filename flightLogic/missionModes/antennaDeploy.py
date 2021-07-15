@@ -53,9 +53,9 @@ class antennaMode:
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(1))) #Antenna deploy is mission mode 1
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		# self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck())) #Check battery conditions, run safe mode if battery drops below safe level
-		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
-		self.__tasks.append(asyncio.create_task(self.__transmit.getReadyForWindows()))
-		self.__tasks.append(asyncio.create_task(self.__transmit.upDateTime()))
+		# self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
+		# self.__tasks.append(asyncio.create_task(self.__transmit.getReadyForWindows()))
+		# self.__tasks.append(asyncio.create_task(self.__transmit.upDateTime()))
 
 		
 		eps=EPS()
@@ -76,13 +76,15 @@ class antennaMode:
 				if doorStatus == (1,1,1,1): #NOTE: probably need to change this to actually work
 					#If ground station has sent command to skip to post boom	
 					# Dont cancel task until we are done transmitting
-					while(self.__transmit.isRunning()):
-						await asyncio.sleep(60) #sleep if a transmission is running				
+					# while(self.__transmit.isRunning()):
+					# 	await asyncio.sleep(60) #sleep if a transmission is running				
 					self.cancelAllTasks(self.__tasks)
 					print('Doors are open, returning true')
 					return True
 				else:
 					print('Firing secondary, primary did not work. Returning True')
+					# while(self.__transmit.isRunning()):
+					# 	await asyncio.sleep(60) #sleep if a transmission is running	
 					await asyncio.gather(self.__antennaDeployer.deploySecondary())
 					self.cancelAllTasks(self.__tasks)
 					return True
@@ -92,8 +94,8 @@ class antennaMode:
 					doorStatus = self.__antennaDoor.readDoorStatus() #Check Door status
 					if doorStatus == (1,1,1,1): #NOTE: probably need to change this to actually work	
 						# Dont cancel task until we are done transmitting
-						while(self.__transmit.isRunning()):
-							await asyncio.sleep(60) #sleep if a transmission is running				
+						# while(self.__transmit.isRunning()):
+						# 	await asyncio.sleep(60) #sleep if a transmission is running				
 						self.cancelAllTasks(self.__tasks)
 						print('Doors are open, returning true')
 						return True
@@ -101,8 +103,8 @@ class antennaMode:
 						print('Firing secondary, primary did not work. Returning True')
 						await asyncio.gather(self.__antennaDeployer.deploySecondary())
 						# Dont cancel task until we are done transmitting
-						while(self.__transmit.isRunning()):
-							await asyncio.sleep(60) #sleep if a transmission is running
+						# while(self.__transmit.isRunning()):
+						# 	await asyncio.sleep(60) #sleep if a transmission is running
 						self.cancelAllTasks(self.__tasks)
 						return True
 				else:

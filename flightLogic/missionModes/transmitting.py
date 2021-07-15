@@ -43,6 +43,11 @@ class Transmitting:
         self.__inProgress = False
         self.__nextWindow = -1
         self.__camObj = camObj
+        self.__tasks = []
+        #start the task in for checking transmissions
+        self.__tasks.append(asyncio.create_task(self.readNextTransferWindow()))
+        self.__tasks.append(asyncio.create_task(self.getReadyForWindows()))
+        self.__tasks.append(asyncio.create_task(self.upDateTime()))
 
     async def readNextTransferWindow(self):
         """

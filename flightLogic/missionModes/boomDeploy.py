@@ -33,9 +33,9 @@ class boomMode:
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__getDeployData.collectDeployData()))
 		# self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
-		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
-		self.__tasks.append(asyncio.create_task(self.__transmit.getReadyForWindows()))
-		self.__tasks.append(asyncio.create_task(self.__transmit.upDateTime()))
+		# self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
+		# self.__tasks.append(asyncio.create_task(self.__transmit.getReadyForWindows()))
+		# self.__tasks.append(asyncio.create_task(self.__transmit.upDateTime()))
 
 		print("Starting boom deploy")
 		# Deploy boom, take picture
@@ -54,8 +54,8 @@ class boomMode:
 			print("Failed to take a picture because we received excpetion:", repr(e))
 		await asyncio.sleep(5)
 		# Dont cancel task until we are done transmitting
-		while(self.__transmit.isRunning()):
-			await asyncio.sleep(60) #sleep if a transmission is running
+		# while(self.__transmit.isRunning()):
+		# 	await asyncio.sleep(60) #sleep if a transmission is running
 		self.cancelAllTasks(self.__tasks) # Cancel all background tasks
 		return True  # Go to post-boom deploy
 
