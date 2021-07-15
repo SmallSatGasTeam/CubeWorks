@@ -32,9 +32,6 @@ class boomMode:
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(3)))  # Boom deploy is mode 3
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
 		self.__tasks.append(asyncio.create_task(self.__getDeployData.collectDeployData()))
-		# self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
-		# self.__tasks.append(asyncio.create_task(self.__transmit.getReadyForWindows()))
-		# self.__tasks.append(asyncio.create_task(self.__transmit.upDateTime()))
 
 		print("Starting boom deploy")
 		# Deploy boom, take picture
@@ -52,8 +49,6 @@ class boomMode:
 		except Exception as e:
 			print("Failed to take a picture because we received excpetion:", repr(e))
 		await asyncio.sleep(5)
-		# Dont cancel task until we are done transmitting
-		# while(self.__transmit.isRunning()):
 		# 	await asyncio.sleep(60) #sleep if a transmission is running
 		self.cancelAllTasks(self.__tasks) # Cancel all background tasks
 		return True  # Go to post-boom deploy

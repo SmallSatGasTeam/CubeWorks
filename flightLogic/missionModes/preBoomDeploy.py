@@ -46,9 +46,6 @@ class preBoomMode:
 		# self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
 		self.__tasks.append(asyncio.create_task(self.sunCheck()))
 		self.__tasks.append(asyncio.create_task(self.batteryCheck()))
-		# self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
-		# self.__tasks.append(asyncio.create_task(self.__transmit.getReadyForWindows()))
-		# self.__tasks.append(asyncio.create_task(self.__transmit.upDateTime()))
 
 		"""This code was intended to find out when to deploy the boom based on how long GASPACS was in the light. 
 		This was commented out because there is no need for this functionality if there is no resin in the boom"""
@@ -57,8 +54,6 @@ class preBoomMode:
 
 			if ((self.sunlightData > self.darkVoltage) and self.batteryStatusOk == True):
 				# Dont cancel task until we are done transmitting
-				# while(self.__transmit.isRunning()):
-				# 	await asyncio.sleep(60) #sleep if a transmission is running
 				self.cancelAllTasks(self.__tasks) #Cancel all background processes, this depolys the boom basically
 				print('Returning and exiting')
 				return True #Go on to Boom Deploy Mode if the battery is Ok
