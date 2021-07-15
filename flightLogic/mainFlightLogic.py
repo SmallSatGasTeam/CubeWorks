@@ -61,7 +61,6 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 	tasks.append(asyncio.create_task(pythonInterrupt.interrupt(transmitObject, packet)))  # starting rx monitoring 
 	tasks.append(asyncio.create_task(ttncData.collectTTNCData(0)))  # Boot Mode is classified as 0
 	tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))  # collecting attitude data
-	# tasks.append(asyncio.create_task(safeModeObject.thresholdCheck()))
 	tasks.append(asyncio.create_task(transmitObject.readNextTransferWindow()))
 	tasks.append(asyncio.create_task(transmitObject.getReadyForWindows()))
 	tasks.append(asyncio.create_task(transmitObject.upDateTime()))
@@ -96,8 +95,8 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 	if not antennaDeployed:  # First, sleep for 35 minutes
 		print('Antenna is undeployed, waiting 60 seconds')
 		await asyncio.sleep(delay)  # Sleep for 35 minutes
-		# while(transmitObject.isRunning()):
-		# 	await asyncio.sleep(60) #sleep if a transmission is running
+		while(transmitObject.isRunning()):
+			await asyncio.sleep(60) #sleep if a transmission is running
 
 	# how do we check if the antenna doors are open?
 	# TODO, check of antenna doors are open
