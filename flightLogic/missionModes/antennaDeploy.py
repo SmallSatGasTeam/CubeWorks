@@ -52,9 +52,9 @@ class antennaMode:
 		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt(self.__transmit, self.__packetProcessing)))
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(1))) #Antenna deploy is mission mode 1
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
-		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
-		self.__tasks.append(asyncio.create_task(self.__transmit.getReadyForWindows()))
-		self.__tasks.append(asyncio.create_task(self.__transmit.upDateTime()))
+		# self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
+		# self.__tasks.append(asyncio.create_task(self.__transmit.getReadyForWindows()))
+		# self.__tasks.append(asyncio.create_task(self.__transmit.upDateTime()))
 
 		
 		eps=EPS()
