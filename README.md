@@ -17,7 +17,17 @@ Framework components are designed to be modular, and easy to add to and remove f
 2. Flash image onto 8GB micro SD card
 3. Run image on Raspberry Pi Zero W
 4. Log in (email coordinator@gas.usu.edu if you do not have the login password)
-5. run "./install.exe"
+5. Run `./install.exe`
+6. Use `htop` and check to see in main flight logic is running
+
+### INSTALLING SSDV
+1. `git clone https://github.com/SmallSatGasTeam/ssdv`
+2. `cd ssdv`
+3. `make`
+4. `nano ~/.bashrc`
+5. Add the following line to the bashrc file:
+	`export PATH=$PATH:/home/pi/ssdv/ssdv`
+6. Reboot the pi, and make sure you can run `ssdv` from any spot on the pi
 
 ### INSTALLING SSDV
 1. `git clone https://github.com/SmallSatGasTeam/ssdv`
@@ -50,6 +60,7 @@ This file structure comprises the major compoments of CubeWorks.
 2. use this command `gcc upDateCode.c -o upDateCode.exe ; cp upDateCode.exe ~/ ; rm upDateCode.exe`
 3. return to the root and then use `./upDateCode.exe`
 
+<<<<<<< HEAD
 ### Important Notes:
 -TX windows have to be seperated by at least 25 seconds. This is the time from ending one window to the start time of the next window. If it is not separated by this buffer, then it is NOT guaranted that the TX window will be serviced. 
 
@@ -91,6 +102,12 @@ This file structure comprises the major compoments of CubeWorks.
 
 
 
+=======
+
+### Important Notes:
+-TX windows have to be seperated by at least 25 seconds. This is the time from ending one window to the start time of the next window. If it is not separated by this buffer, then it is NOT guaranted that the TX window will be serviced. 
+
+>>>>>>> b51ad4c349b9ed4e0823de27d9a7a0f8628b1c58
 ```
 Pi system
 ├──Home
