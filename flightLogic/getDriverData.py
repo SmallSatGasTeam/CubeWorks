@@ -477,6 +477,8 @@ class AttitudeData():
 		self.__attitudeData = None
 		self.sunSensor = Drivers.sunSensors.sunSensorDriver.sunSensor()
 		self.Magnetometer = Drivers.Magnetometer()
+		self.__dataSamples = 1800
+		self.__collectedData = 0
 
 	async def getData(self):
 		#gets all Attitude data
@@ -582,13 +584,16 @@ class AttitudeData():
 
 	async def collectAttitudeData(self):
 		# Data collection loop
-		while True:
+		
+		#this change will make it so that attitude data only collects 1800 times and then stops colleting 
+		while self.__dataSamples >= self.__collectedData:
 			# Get Attitude data
 			await self.getData()
 			# Write data to file
 			await self.writeData()
 			print("getting attitude data")
 			# Sleep for 1 second (1 Hz)
+			self.__collectedData += 1
 			await asyncio.sleep(.9)#I dropped the wait time so that we will collect data more consitently 
 
 def float4tohex(num):
