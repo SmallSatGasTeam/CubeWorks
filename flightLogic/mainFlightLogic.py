@@ -23,7 +23,7 @@ from Drivers.camera import Camera
 
 
 # from TXISR import interrupt
-# NOTE: The TXISR needs to run as a separate thread, and is not asyncio
+# NOTE: This Code has past unit testing
 
 ##################################################################################################################
 # executeFlightLogic()

@@ -8,11 +8,11 @@ char crontabComand [] ="@reboot sudo runuser pi -c ./startup.exe";
 
 
 //to change the branch take out the -b codeBase for master or change it to a different branch.
-char cammand0 [] = "git clone -b codeBase https://github.com/SmallSatGasTeam/CubeWorks.git CubeWorks0/";
-char cammand1 [] = "git clone -b codeBase https://github.com/SmallSatGasTeam/CubeWorks.git CubeWorks1/";
-char cammand2 [] = "git clone -b codeBase https://github.com/SmallSatGasTeam/CubeWorks.git CubeWorks2/";
-char cammand3 [] = "git clone -b codeBase https://github.com/SmallSatGasTeam/CubeWorks.git CubeWorks3/";
-char cammand4 [] = "git clone -b codeBase https://github.com/SmallSatGasTeam/CubeWorks.git CubeWorks4/";
+char cammand0 [] = "git clone https://github.com/SmallSatGasTeam/CubeWorks.git CubeWorks0/";
+char cammand1 [] = "git clone https://github.com/SmallSatGasTeam/CubeWorks.git CubeWorks1/";
+char cammand2 [] = "git clone https://github.com/SmallSatGasTeam/CubeWorks.git CubeWorks2/";
+char cammand3 [] = "git clone https://github.com/SmallSatGasTeam/CubeWorks.git CubeWorks3/";
+char cammand4 [] = "git clone https://github.com/SmallSatGasTeam/CubeWorks.git CubeWorks4/";
 
 //this code compiles the c code that is need to run transmission. 
 char branchCommand0 [] = "cd ; cd CubeWorks0/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
