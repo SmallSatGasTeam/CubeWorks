@@ -5,10 +5,7 @@ from flightLogic.getDriverData import *
 from TXISR import pythonInterrupt
 from flightLogic.missionModes.heartBeat import heart_beat
 
-
-REBOOT_WAIT_TIME = 900 #15 minutes, 900 seconds
-
-"safeModeObject was deleted below in the init parameters after saveObject"
+# safeModeObject was deleted below in the init parameters after saveObject
 class postBoomMode:
 	def __init__(self, saveObject, transmitObject, packetObj):
 		self.__transmit = transmitObject
@@ -27,14 +24,10 @@ class postBoomMode:
 		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt(self.__transmit, self.__packet)))
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(4))) #Post-boom is mode 4
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
-		# self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck()))
-		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
-		self.__tasks.append(asyncio.create_task(self.__transmit.getReadyForWindows()))
-		self.__tasks.append(asyncio.create_task(self.__transmit.upDateTime()))
 
 		print("Initalized all tasks.")
 		while True:
-			#Don't remove this print statement, the while loop is an integral part
+			# Don't remove this print statement, the while loop is an integral part
 			# of making sure that postBoomDeploy doesn't crash and it needs to
 			# have something in there so it doesn't crash and suffer
 			print('This is post Boom Deploy')

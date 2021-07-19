@@ -211,3 +211,27 @@ be repoerted.
     "TXISR/packetProcessing.py" line 391
     This function should delete all data files from flightLogicData.
     The other functions for the data and enabling beacons have not been added yet   
+
+#33 <Fixed cammera driver>
+    "Drivers/camera/Camera.py" lines 24,26,36,52
+    I added try except statements to the code so if the camera driver is not present the code can still run normally
+    Test:
+        1: I ran flight logic normally, I first sent a command for a picture, it successfuly took a picture. Then I had it run though boom deploy it successfuly 
+            ran. 
+        2: I unplug the cammera from the pi and ran the 1st test again. It ran though successfuly however no pictures were tacken. 
+#34 <AX25>
+    We removed the AX25 packets as they are not working and we don't know the format well. Commmits 5b2eac480e32e348967c667cce341b2e1cd35506 and 1b3bd53c448b186c75b7a45b08511823e55fad43 on codeBase
+
+#35 Removed a lot of code that was not being used. See commits f0fb7596adfaf03cf39776c59ac4b82d42f12173, ceee274edca21cd15de2a477d98367d5cc899599, 1992053ec596cf38a6cf4bb9fbe0ce6f33bb291e,
+    379d664f6cae99fd6d21cad810f5baebf24f2fc5, c18935fb696c9ce662276cf5d31634794f775df8, f5a89ab665980945bda8fc230904cc3400435913, 1b5445292c40dd17363e413b09becea9a481f704
+    and 5b51fd6164d6cc65018e59c911bdfeabfe053d9e on the codeBase branch.
+    
+#36 <getDriverData.py>
+    Added timestamp variable in exception on line 99 of getDriverData.py
+
+#37 <Transmitting.py>
+    prepare time was changed from 20 to 40 seconds 
+
+#37 <all mission modes>
+    The transmission process was changed to call its async function in the __init__, insted of having all the mission modes call the async functions of the transmissions. This change 
+    was made beacuse the transistion between mission modes would cause transmission failure. Commit: 5b1516c4a9dbbf452bf594904864d9c94840e409

@@ -13,11 +13,20 @@ Framework components are designed to be modular, and easy to add to and remove f
 ## Installation
 
 ### PREFERRED Installation Process with CubeWorks Image 
-1. Download the [CubeWorks Raspbian Lite image](https://drive.google.com/file/d/1HayKQmH7LOljnG0bI8ov7oj3vNJvfH41/view?usp=sharing)
+1. Download the [CubeWorks Raspbian Lite image V4](https://drive.google.com/file/d/1-jNVDHcIE_7zDRPWbrRaGp8059E-vmpi/view?usp=sharing)
 2. Flash image onto 8GB micro SD card
 3. Run image on Raspberry Pi Zero W
 4. Log in (email coordinator@gas.usu.edu if you do not have the login password)
 5. run "./install.exe"
+
+### INSTALLING SSDV
+1. `git clone https://github.com/SmallSatGasTeam/ssdv`
+2. `cd ssdv`
+3. `make`
+4. `nano ~/.bashrc`
+5. Add the following line to the bashrc file:
+	`export PATH=$PATH:/home/pi/ssdv`
+6. Reboot the pi, and make sure you can run `ssdv` from any spot on the pi
 
 ### MANUAL Installation Process (How the CubeWorks Image was created)
 1. Image a Raspberry Pi with Raspbian lite and boot the Pi
@@ -43,6 +52,43 @@ This file structure comprises the major compoments of CubeWorks.
 
 ### Important Notes:
 -TX windows have to be seperated by at least 25 seconds. This is the time from ending one window to the start time of the next window. If it is not separated by this buffer, then it is NOT guaranted that the TX window will be serviced. 
+
+### Setting up chronodot
+1. Ensure chronodot is connected to the pi and is powered on.
+2. Edit the file `/etc/modules` and add `rtc-ds1307` to the bottom
+3. Reboot the pi
+4. Edit the file `/etc/rc.local` and add the following lines before the `exit 0` line:
+	- `echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-1/new_device
+	hwclock -s`
+5. The end of the file should look like:
+	- `echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-1/new_device
+	hwclock -s
+	exit0`
+6. Reboot the pi
+
+### Setting the time on the chronodot
+1. Set the time with the command `sudo date -s "29 AUG 2010 13:00:00"` 
+2. Update the chronodot time with the command `sudo hwclock -w`
+3. Note: The pi reads the time from the chronodot on boot and sets its internal clock to match that time. If you change the pi time, you have to update the chronodot as well or the updated time will be lost on a boot cycle.
+
+
+### setting up the Cammera 
+
+1.use `sudo raspi-config` 
+
+2.go to go to the `interface` tab 
+
+3.Enable cammera in settings
+
+## seting up the serial interface
+1.use `sudo raspi-config`
+
+2.go to go to the `interface` tab
+
+3.On the first tab select `no`
+
+4.ON the second tab select `yes`
+
 
 
 ```

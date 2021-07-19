@@ -9,7 +9,7 @@ class TransceiverConfig(Driver):
     We need the ability to turn on and off the beacon, turn on low power mode, and read the internal temp sensor.
     See Page 25 of the Endurosat UHF Transceiver Type II Manual Rev 1.8 document for the SCW bit description.
     
-    ***Note: ALL ES+ commands need to be changed to reflect the address of the transceiver - currently set to 23***
+    ***Note: ALL ES+ commands need to be changed to reflect the address of the transceiver - currently set to 22***
     ***Potentially need to add CRC32 checksum functionality***
     """
     super().__init__("TransceiverConfig")
@@ -31,7 +31,7 @@ class TransceiverConfig(Driver):
     Binary SCW: 11001101000001
     Hex SCW: 3341
     """
-    self.writeData(b'ES+W23003341\r')
+    self.writeData(b'ES+W22003341\r')
   
   def setBeaconOff(self):
     """
@@ -39,17 +39,31 @@ class TransceiverConfig(Driver):
     Binary SCW: 11001100000001
     Hex SCW: 3301
     """
-    self.writeData(b'ES+W23003301\r')
+    self.writeData(b'ES+W22003301\r')
+
+  def setAudioBeaconOn(self):
+    """
+    Turn on audio beacon. Note, the last 4 characters represent the period between beacon transmissions
+    encoded in hex. This command sets the period to 120 seconds. To turn off the audio beacon, set
+    the period to 0 seconds
+    """
+    self.writeData(b'ES+W22080078\r')
+  
+  def setAudioBeaconOff(self):
+    """
+    Turns off the audio beacon.
+    """
+    self.writeData(b'ES+W220800000\r')
 
   def setLowPowerMode(self):
     """
     Turns on Low Power Mode. Note: Any ESTTC command can be used to bring the transceiver out of low power mode
     """
-    self.writeData(b'ES+W23F4\r')
+    self.writeData(b'ES+W22F4\r')
 
   def read(self):
     """
     Returns the temperature from the transceiver internal temp sensor
     """
-    temp = self.writeData(b'ES+R230A\r')
+    temp = self.writeData(b'ES+R220A\r')
     return temp

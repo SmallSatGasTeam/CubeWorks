@@ -2,7 +2,6 @@
 Contains the antennaMode class and the functions: run, cancelAllTasks, and
 skipToPostBoom
 """
-
 import sys
 #import subprocess
 import os
@@ -16,8 +15,10 @@ import flightLogic.getDriverData as getDriverData
 from TXISR import pythonInterrupt
 from TXISR.packetProcessing import packetProcessing as packet
 from flightLogic.missionModes.heartBeat import heart_beat
+from inspect import currentframe, getframeinfo
 
-
+getBusVoltageMin = 3.5
+getBusVoltageMax = 5.1
 
 class antennaMode:
 	"""
@@ -51,11 +52,6 @@ class antennaMode:
 		self.__tasks.append(asyncio.create_task(pythonInterrupt.interrupt(self.__transmit, self.__packetProcessing)))
 		self.__tasks.append(asyncio.create_task(self.__getTTNCData.collectTTNCData(1))) #Antenna deploy is mission mode 1
 		self.__tasks.append(asyncio.create_task(self.__getAttitudeData.collectAttitudeData()))
-		# self.__tasks.append(asyncio.create_task(self.__safeMode.thresholdCheck())) #Check battery conditions, run safe mode if battery drops below safe level
-		self.__tasks.append(asyncio.create_task(self.skipToPostBoom()))
-		self.__tasks.append(asyncio.create_task(self.__transmit.readNextTransferWindow()))
-		self.__tasks.append(asyncio.create_task(self.__transmit.getReadyForWindows()))
-		self.__tasks.append(asyncio.create_task(self.__transmit.upDateTime()))
 
 		
 		eps=EPS()
@@ -63,31 +59,39 @@ class antennaMode:
 		# if await self.skipToPostBoom():
 		# 	return True	#Finish this mode and move on
 		while True: #Runs antenna deploy loop
-			if (eps.getBusVoltage()>self.deployVoltage): #If the bus voltage is high enough
+			try:
+				BusVoltage = eps.getBusVoltage()
+				if(BusVoltage < getBusVoltageMin) | (BusVoltage > getBusVoltageMax):
+					raise unexpectedValue
+			except Exception as e:
+				BusVoltage = 4.18
+				print("Failed to retrieve BusVoltage, got", BusVoltage)
+			if (BusVoltage >self.deployVoltage): #If the bus voltage is high enough
 				await asyncio.gather(self.__antennaDeployer.deployPrimary()) #Fire Primary Backup Resistor
 				doorStatus = self.__antennaDoor.readDoorStatus() #Check Door status
 				if doorStatus == (1,1,1,1): #NOTE: probably need to change this to actually work
-					#If ground station has sent command to skip to post boom					
-					if await self.skipToPostBoom():
-						return True #Finish this mode and move on
+					#If ground station has sent command to skip to post boom			
 					self.cancelAllTasks(self.__tasks)
 					print('Doors are open, returning true')
 					return True
 				else:
-					#If ground station has sent command to skip to post boom
-					if await self.skipToPostBoom():
-						return True #Finish this mode and move on
 					print('Firing secondary, primary did not work. Returning True')
 					await asyncio.gather(self.__antennaDeployer.deploySecondary())
 					self.cancelAllTasks(self.__tasks)
 					return True
 			else:
-				#If ground station has sent command to skip to post boom
-				if await self.skipToPostBoom():
-					return True #Finish this mode and move on
 				if(self.timeWaited > self.maximumWaitTime):
-					# self.__safeMode.run(10) #1 hour
-					await asyncio.sleep(5) #This is an artifact of testing, and will not matter for the actual flight software
+					await asyncio.gather(self.__antennaDeployer.deployPrimary()) #Fire Primary Backup Resistor
+					doorStatus = self.__antennaDoor.readDoorStatus() #Check Door status
+					if doorStatus == (1,1,1,1): #NOTE: probably need to change this to actually work		
+						self.cancelAllTasks(self.__tasks)
+						print('Doors are open, returning true')
+						return True
+					else:
+						print('Firing secondary, primary did not work. Returning True')
+						await asyncio.gather(self.__antennaDeployer.deploySecondary())
+						self.cancelAllTasks(self.__tasks)
+						return True
 				else:
 					#Wait 1 minute
 					print('Waiting 1 minute until battery status resolves')
@@ -103,16 +107,3 @@ class antennaMode:
 				t.cancel()
 		except asyncio.exceptions.CancelledException:
 			print("Caught thrown exception in cancelling background task")
-
-	async def skipToPostBoom(self):
-		"""
-		Skips to postBoomDeploy mode if the command is received from the ground
-		station.
-		"""
-		print("Inside skipToPostBoom, skipping value is:", self.__packetProcessing.skip())
-		#If the command has been received to skip to postBoom
-		if self.__packetProcessing.skip():
-			self.cancelAllTasks(self.__tasks) #Cancel all tasks
-			return True #Finish this mode and move on
-		else:
-			await asyncio.sleep(1)

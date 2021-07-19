@@ -91,19 +91,22 @@ class TTNCData:
 		# gets all TTNC data - need to pass in missionMode when calling it
 		try:
 			timestamp = int4tohex(self.RTC.readSeconds())
-			if (self.RTC.readSeconds() < RTCMin) | (self.RTC.readSeconds() > RTCMax):
+			if (self.RTC.readSeconds() < RTCMin) or (self.RTC.readSeconds() > RTCMax):
 				raise unexpectedValue
 		except Exception as e:
 			print("Failure to create timestamp. Exception: ", repr(e), 
-			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)				
+			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
+			timestamp = int4tohex(0000000000)
 		
 		packetType = int1tohex(1)
 		mode = int1tohex(missionMode)
 		reboot_count = int2tohex(readBootCount())
 		#No need for await on these, since they're not sleeping
 		try:
-			boombox_uv = float4tohex(self.UVDriver.read()) 
-			if (boombox_uv < float4tohex(boombox_uvMin)) | (boombox_uv > float4tohex(boombox_uvMax)):
+			boombox_uv_Int = self.UVDriver.read()
+			boombox_uv = float4tohex(boombox_uv_Int)
+			if (boombox_uv_Int < boombox_uvMin) or (boombox_uv_Int > boombox_uvMax):
+				print("boombox_uv: ", boombox_uv, "boombox_uv_Int: ", boombox_uv_Int)
 				raise unexpectedValue
 		except Exception as e:
 			# add redundant UVDriver TRY/EXCEPT
@@ -114,8 +117,8 @@ class TTNCData:
 
 		try:
 			SP_X_Plus_Temp, SP_Z_Plus_Temp = self.TempSensor.read() 
-			if ((SP_X_Plus_Temp < SP_Plus_TempMin) | (SP_X_Plus_Temp > SP_Plus_TempMax) |
-			 (SP_Z_Plus_Temp < SP_Plus_TempMin) | (SP_Z_Plus_Temp > SP_Plus_TempMax)):
+			if ((SP_X_Plus_Temp < SP_Plus_TempMin) or (SP_X_Plus_Temp > SP_Plus_TempMax) or
+			 (SP_Z_Plus_Temp < SP_Plus_TempMin) or (SP_Z_Plus_Temp > SP_Plus_TempMax)):
 				raise unexpectedValue
 		except Exception as e:
 			# add redundant TempSensor TRY/EXCEPT
@@ -129,8 +132,10 @@ class TTNCData:
 		SP_Z_Plus_Temp = float4tohex(SP_Z_Plus_Temp)
 
 		try:
-			piTemp = float4tohex(self.CpuTempSensor.read())
-			if (piTemp < float4tohex(piTempMin)) | (piTemp > float4tohex(piTempMax)):
+			piTempInt = self.CpuTempSensor.read()
+			piTemp = float4tohex(piTempInt)
+			if (piTempInt < piTempMin) or (piTempInt > piTempMax):
+				print("piTempInt: ", piTempInt,"piTemp: ", piTemp)
 				raise unexpectedValue
 		except Exception as e:
 			# add redundant CpuTempSensor TRY/EXCEPT
@@ -140,8 +145,11 @@ class TTNCData:
 			piTemp = float4tohex(piTempMax + 1)
 
 		try:
-			EPSMCUTemp = float4tohex(self.EPS.getMCUTemp())
-			if ((EPSMCUTemp < float4tohex(EPSMCUMin)) & (EPSMCUTemp > str(80000000))) | ((EPSMCUTemp > float4tohex(EPSMCUMax)) & (EPSMCUTemp < str(80000000))):
+			EPSMCUTempInt = self.EPS.getMCUTemp()
+			EPSMCUTemp = float4tohex(EPSMCUTempInt)
+			if ((EPSMCUTempInt < EPSMCUMin) or (EPSMCUTempInt > EPSMCUMax)):
+				print("unexpected value eps mcu temp: ", EPSMCUTempInt)
+				print(EPSMCUTemp)
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve EPSMCUTemp. Exception: ", repr(e), 
@@ -149,8 +157,11 @@ class TTNCData:
 			EPSMCUTemp = float4tohex(EPSMCUMax + 1)
 
 		try:
-			Cell1Temp = float4tohex(self.EPS.getCell1Temp())
-			if ((Cell1Temp < float4tohex(Cell1TempMin)) & (Cell1Temp > str(80000000))) | ((Cell1Temp > float4tohex(Cell1TempMax)) & (Cell1Temp < str(80000000))):
+			Cell1TempInt = self.EPS.getCell1Temp()
+			Cell1Temp = float4tohex(Cell1TempInt)
+			if ((Cell1TempInt < Cell1TempMin) or (Cell1TempInt > Cell1TempMax)):
+				print(Cell1Temp)
+				print("Unexpected value recieved from cell temp 1: ", Cell1TempInt)
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve Cell1Temp. Exception: ", repr(e), 
@@ -158,8 +169,11 @@ class TTNCData:
 			Cell1Temp = float4tohex(Cell1TempMax + 1)
 
 		try:
-			Cell2Temp = float4tohex(self.EPS.getCell2Temp())
-			if ((Cell2Temp < float4tohex(Cell2TempMin)) & (Cell2Temp > str(80000000))) | ((Cell2Temp > float4tohex(Cell2TempMax)) & (Cell2Temp < str(80000000))):
+			Cell2TempInt = self.EPS.getCell2Temp()
+			Cell2Temp = float4tohex(Cell2TempInt)
+			if ((Cell2TempInt < Cell2TempMin) or (Cell2TempInt > Cell2TempMax)):
+				print(Cell2Temp)
+				print("unexpected value recieved from cell temp 2: ", Cell2TempInt)
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve Cell2Temp. Exception: ", repr(e), 
@@ -168,8 +182,10 @@ class TTNCData:
 
 		try:
 			print("BattVoltage: ", self.EPS.getBusVoltage())
-			BattVoltage = float4tohex(self.EPS.getBusVoltage())
-			if ((BattVoltage < float4tohex(BattVoltageMin)) & (BattVoltage > str(80000000))) | ((BattVoltage > float4tohex(BattVoltageMax)) & (BattVoltage < str(80000000))):
+			BattVoltageInt = self.EPS.getBusVoltage()
+			BattVoltage = float4tohex(BattVoltageInt)
+			if ((BattVoltageInt < BattVoltageMin) or (BattVoltageInt > BattVoltageMax)):
+				print("BattVoltageInt: ", BattVoltageInt, "BattVoltage: ", BattVoltage)
 				raise unexpectedValue
 		except Exception as e:
 			BattVoltage = float4tohex(BattVoltageMax + 1)
@@ -178,8 +194,10 @@ class TTNCData:
 			"Received: ", BattVoltage)
 
 		try:
-			BattCurrent = float4tohex(self.EPS.getBusCurrent())
-			if (BattCurrent < float4tohex(BattCurrentMin)) | (BattCurrent > float4tohex(BattCurrentMax)):
+			BattCurrentInt = self.EPS.getBusCurrent()
+			BattCurrent = float4tohex(BattCurrentInt)
+			if (BattCurrentInt < BattCurrentMin) or (BattCurrentInt > BattCurrentMax):
+				print("BattCurrentInt: ", BattCurrentInt, "BattCurrent: ", BattCurrent)
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve BattCurrent. Exception: ", repr(e), 
@@ -188,8 +206,10 @@ class TTNCData:
 
 		try:
 			print("getDriverData: ", self.EPS.getBCRVoltage())
-			BCRVoltage = float4tohex(self.EPS.getBCRVoltage())
-			if ((BCRVoltage < float4tohex(BCRVoltageMin)) & (BCRVoltage > str(80000000))) | ((BCRVoltage > float4tohex(BCRVoltageMax)) & (BCRVoltage < str(80000000))):
+			BCRVoltageInt = self.EPS.getBCRVoltage()
+			BCRVoltage = float4tohex(BCRVoltageInt)
+			if ((BCRVoltageInt < BCRVoltageMin) or (BCRVoltageInt > BCRVoltageMax)):
+				print("BCRVoltageInt: ", BCRVoltageInt, "BCRVoltage: ", BCRVoltage)
 				raise unexpectedValue
 		except Exception as e:
 			BCRVoltage = float4tohex(BCRVoltageMax + 1)
@@ -198,8 +218,10 @@ class TTNCData:
 			"Received: ", BCRVoltage)
 
 		try:
-			BCRCurrent = float4tohex(self.EPS.getBCRCurrent())
-			if (BCRCurrent < float4tohex(BCRCurrentMin)) | (BCRCurrent > float4tohex(BCRCurrentMax)):
+			BCRCurrentInt = self.EPS.getBCRCurrent()
+			BCRCurrent = float4tohex(BCRCurrentInt)
+			if (BCRCurrentInt < BCRCurrentMin) or (BCRCurrentInt > BCRCurrentMax):
+				print("BCRCurrentInt: ", BCRCurrentInt, "BCRCurrent: ", BCRCurrent)
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve BCRCurrent. Exception: ", repr(e), 
@@ -207,8 +229,10 @@ class TTNCData:
 			BCRCurrent = float4tohex(BCRCurrentMax + 1)
 
 		try:
-			EPS3V3Current = float4tohex(self.EPS.get3V3Current())
-			if (EPS3V3Current < float4tohex(EPS3V3CurrentMin)) | (EPS3V3Current > float4tohex(EPS3V3CurrentMax)):
+			EPS3V3CurrentInt = self.EPS.get3V3Current()
+			EPS3V3Current = float4tohex(EPS3V3CurrentInt)
+			if (EPS3V3CurrentInt < EPS3V3CurrentMin) or (EPS3V3CurrentInt > EPS3V3CurrentMax):
+				print("EPS3V3CurrentInt: ", EPS3V3CurrentInt, "EPS3V3Current: ", EPS3V3Current)
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve EPS3V3Current. Exception: ", repr(e), 
@@ -216,8 +240,10 @@ class TTNCData:
 			EPS3V3Current = float4tohex(EPS3V3CurrentMax + 1)
 
 		try:
-			EPS5VCurrent = float4tohex(self.EPS.get5VCurrent())
-			if (EPS5VCurrent < float4tohex(EPS5VCurrentMin)) | (EPS5VCurrent > float4tohex(EPS5VCurrentMax)):
+			EPS5VCurrentInt = self.EPS.get5VCurrent()
+			EPS5VCurrent = float4tohex(EPS5VCurrentInt)
+			if (EPS5VCurrentInt < EPS5VCurrentMin) or (EPS5VCurrentInt > EPS5VCurrentMax):
+				print("EPS5VCurrentInt:", EPS5VCurrentInt, "EPS5VCurrent: ", EPS5VCurrent )
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve EPS5VCurrent. Exception: ", repr(e), 
@@ -225,8 +251,10 @@ class TTNCData:
 			EPS5VCurrent = float4tohex(EPS5VCurrentMax + 1)
 
 		try:
-			SP_X_Voltage = float4tohex(self.EPS.getSPXVoltage())
-			if (SP_X_Voltage < float4tohex(SP_VoltageMin)) | (SP_X_Voltage > float4tohex(SP_VoltageMax)):
+			SP_X_VoltageInt = self.EPS.getSPXVoltage()
+			SP_X_Voltage = float4tohex(SP_X_VoltageInt)
+			if (SP_X_VoltageInt < SP_VoltageMin) or (SP_X_VoltageInt > SP_VoltageMax):
+				print("SP_X_VoltageInt: ", SP_X_VoltageInt, "SP_X_Voltage: ", SP_X_Voltage)
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve SP_X_Voltage. Exception: ", repr(e), 
@@ -234,8 +262,10 @@ class TTNCData:
 			SP_X_Voltage = float4tohex(SP_VoltageMax + 1)
 
 		try:
-			SP_X_Plus_Current = float4tohex(self.EPS.getSPXPlusCurrent())
-			if (SP_X_Plus_Current < float4tohex(SP_Plus_CurrentMin)) | (SP_X_Plus_Current > float4tohex(SP_Plus_CurrentMax)):
+			SP_X_Plus_CurrentInt = self.EPS.getSPXPlusCurrent()
+			SP_X_Plus_Current = float4tohex(SP_X_Plus_CurrentInt)
+			if (SP_X_Plus_CurrentInt < SP_Plus_CurrentMin) or (SP_X_Plus_CurrentInt > SP_Plus_CurrentMax):
+				print("SP_X_Plus_CurrentInt: ", SP_X_Plus_CurrentInt, "SP_X_Plus_Current: ", SP_X_Plus_Current)
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve SP_X_Plus_Current. Exception: ", repr(e), 
@@ -243,8 +273,10 @@ class TTNCData:
 			SP_X_Plus_Current = float4tohex(SP_Plus_CurrentMax + 1)
 
 		try:
-			SP_X_Minus_Current = float4tohex(self.EPS.getSPXMinusCurrent())
-			if (SP_X_Minus_Current < float4tohex(SP_Minus_CurrentMin)) | (SP_X_Minus_Current > float4tohex(SP_Minus_CurrentMax)):
+			SP_X_Minus_CurrentInt = self.EPS.getSPXMinusCurrent()
+			SP_X_Minus_Current = float4tohex(SP_X_Minus_CurrentInt)
+			if (SP_X_Minus_CurrentInt < SP_Minus_CurrentMin) or (SP_X_Minus_CurrentInt > SP_Minus_CurrentMax):
+				print("SP_X_Minus_CurrentInt: ", SP_X_Minus_CurrentInt, "SP_X_Minus_Current: ", SP_X_Minus_Current)
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve SP_X_Minus_Current. Exception: ", repr(e), 
@@ -252,8 +284,10 @@ class TTNCData:
 			SP_X_Minus_Current = float4tohex(SP_Minus_CurrentMax + 1)
 
 		try:
-			SP_Y_Voltage = float4tohex(self.EPS.getSPYVoltage())
-			if (SP_Y_Voltage < float4tohex(SP_VoltageMin)) | (SP_Y_Voltage > float4tohex(SP_VoltageMax)):
+			SP_Y_VoltageInt = self.EPS.getSPYVoltage()
+			SP_Y_Voltage = float4tohex(SP_Y_VoltageInt)
+			if (SP_Y_VoltageInt < SP_VoltageMin) or (SP_Y_VoltageInt > SP_VoltageMax):
+				print("SP_Y_VoltageInt: ", SP_Y_VoltageInt, "SP_Y_Voltage", SP_Y_Voltage)
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve SP_Y_Voltage. Exception: ", repr(e), 
@@ -261,8 +295,10 @@ class TTNCData:
 			SP_Y_Voltage = float4tohex(SP_VoltageMax + 1)
 
 		try:
-			SP_Y_Plus_Current = float4tohex(self.EPS.getSPYPlusCurrent())
-			if(SP_Y_Plus_Current < float4tohex(SP_Plus_CurrentMin)) | (SP_Y_Plus_Current > float4tohex(SP_Plus_CurrentMax)):
+			SP_Y_Plus_CurrentInt = self.EPS.getSPYPlusCurrent()
+			SP_Y_Plus_Current = float4tohex(SP_Y_Plus_CurrentInt)
+			if (SP_Y_Plus_CurrentInt < SP_Plus_CurrentMin) or (SP_Y_Plus_CurrentInt > SP_Plus_CurrentMax):
+				print("SP_Y_Plus_CurrentInt: ", SP_Y_Plus_CurrentInt, "SP_Y_Plus_Current: ", SP_Y_Plus_Current)
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve SP_Y_Plus_Current. Exception: ", repr(e), 
@@ -270,8 +306,10 @@ class TTNCData:
 			SP_Y_Plus_Current = float4tohex(SP_Plus_CurrentMax + 1)
 
 		try:
-			SP_Y_Minus_Current = float4tohex(self.EPS.getSPYMinusCurrent())
-			if(SP_Y_Minus_Current < float4tohex(SP_Minus_CurrentMin)) | (SP_Y_Minus_Current > float4tohex(SP_Minus_CurrentMax)):
+			SP_Y_Minus_CurrentInt = self.EPS.getSPYMinusCurrent()
+			SP_Y_Minus_Current = float4tohex(SP_Y_Minus_CurrentInt)
+			if(SP_Y_Minus_CurrentInt < SP_Minus_CurrentMin) or (SP_Y_Minus_CurrentInt > SP_Minus_CurrentMax):
+				print("SP_Y_Minus_CurrentInt: ", SP_Y_Minus_CurrentInt, "SP_Y_Minus_Current: ", SP_Y_Minus_Current)
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve SP_Y_Minus_Current. Exception: ", repr(e), 
@@ -279,8 +317,10 @@ class TTNCData:
 			SP_Y_Minus_Current = float4tohex(SP_Minus_CurrentMax + 1)
 
 		try:
-			SP_Z_Voltage = float4tohex(self.EPS.getSPZVoltage())
-			if (SP_Z_Voltage < float4tohex(SP_VoltageMin)) | (SP_Z_Voltage > float4tohex(SP_VoltageMax)):
+			SP_Z_VoltageInt = self.EPS.getSPZVoltage()
+			SP_Z_Voltage = float4tohex(SP_Z_VoltageInt)
+			if (SP_Z_VoltageInt < SP_VoltageMin) or (SP_Z_VoltageInt > SP_VoltageMax):
+				print("SP_Z_VoltageInt: ", SP_Z_VoltageInt, "SP_Z_Voltage: ", SP_Z_Voltage)
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve SP_Z_Voltage. Exception: ", repr(e), 
@@ -288,8 +328,10 @@ class TTNCData:
 			SP_Z_Voltage = float4tohex(SP_VoltageMax + 1)
 
 		try:
-			SP_Z_Plus_Current = float4tohex(self.EPS.getSPZPlusCurrent())
-			if (SP_Z_Plus_Current < float4tohex(SP_Plus_CurrentMin)) | (SP_Z_Plus_Current > float4tohex(SP_Plus_CurrentMax)):
+			SP_Z_Plus_CurrentInt = self.EPS.getSPZPlusCurrent()
+			SP_Z_Plus_Current = float4tohex(SP_Z_Plus_CurrentInt)
+			if (SP_Z_Plus_CurrentInt < SP_Plus_CurrentMin) or (SP_Z_Plus_CurrentInt > SP_Plus_CurrentMax):
+				print("SP_Z_Plus_CurrentInt: ", SP_Z_Plus_CurrentInt, "SP_Z_Plus_Current: ", SP_Z_Plus_Current)
 				raise unexpectedValue
 		except Exception as e:
 			print("failed to retrieve SP_Z_Current. Exception: ", repr(e), 
@@ -312,10 +354,13 @@ class TTNCData:
 		Cell2Temp + BattVoltage + BattCurrent + BCRVoltage + BCRCurrent + EPS3V3Current + 
 		EPS5VCurrent + SP_X_Voltage + SP_X_Plus_Current + SP_X_Minus_Current + SP_Y_Voltage + 
 		SP_Y_Plus_Current + SP_Y_Minus_Current + SP_Z_Voltage + SP_Z_Plus_Current + gaspacsBytes)
+		
+		RTCInt = self.RTC.readSeconds()
 		try:
-			if (self.RTC.readSeconds() < RTCMin) | (self.RTC.readSeconds() > RTCMax):
+			if (RTCInt< RTCMin) or (RTCInt > RTCMax):
+				print("RTCInt: ", RTCInt)
 				raise unexpectedValue
-			packetTimestamp = str(int(self.RTC.readSeconds())).zfill(10)+':'
+			packetTimestamp = str(RTCInt).zfill(10)+':'
 		except Exception as e:
 			print("Failed to pull from RTC. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
@@ -351,8 +396,10 @@ class DeployData():
 		packet = ''
 
 		try:
-			timestamp = int8tohex(self.RTC.readMilliseconds())
-			if (timestamp < int8tohex(RTCMinMil)) | (timestamp > int8tohex(RTCMaxMil)):
+			timestampInt = self.RTC.readMilliseconds()
+			timestamp = int8tohex(timestampInt)
+			if (timestampInt < RTCMinMil) or (timestampInt > RTCMaxMil):
+				print("timestampInt: ", timestampInt, "timestamp: ", timestamp)
 				raise unexpectedValue
 		except Exception as e:
 			print("Failed to pull clock data from RTC. Exception: ", repr(e), 
@@ -361,8 +408,10 @@ class DeployData():
 		packetType = int1tohex(2)
 
 		try:
-			boombox_uv = float4tohex(self.UVDriver.read())
-			if (boombox_uv < float4tohex(boombox_uvMin)) | (boombox_uv > float4tohex(boombox_uvMax)):
+			boombox_uvFloat = self.UVDriver.read()
+			boombox_uv = float4tohex(boombox_uvFloat)
+			if (boombox_uvFloat < boombox_uvMin) or (boombox_uvFloat > boombox_uvMax):
+				print("boombox_uvFloat: ", boombox_uvFloat, "boombox_uv: ", boombox_uv)
 				raise unexpectedValue
 		except Exception as e:
 			# add redundant UVDriver try/except
@@ -373,8 +422,8 @@ class DeployData():
 
 		try:
 			accelX, accelY, accelZ = self.Accelerometer.read()
-			if ((accelX < accelMin) | (accelX > accelMax) | (accelY < accelMin) | (accelY > accelMax) |
-		(accelZ < accelMin) | (accelZ > accelMax)):
+			if ((accelX < accelMin) or (accelX > accelMax) or (accelY < accelMin) or (accelY > accelMax) or (accelZ < accelMin) or (accelZ > accelMax)):
+				print("accelX: ", accelX, "accelY: ", accelY, "accelZ: ", accelZ)
 				raise unexpectedValue
 		except Exception as e:
 			# add redundant UVDriver try/except
@@ -390,9 +439,11 @@ class DeployData():
 		packet += gaspacsBytes + packetType + timestamp + boombox_uv + accelX + accelY + accelZ + gaspacsBytes
 		
 		try:
-			if (self.RTC.readSeconds() < RTCMin) | (self.RTC.readSeconds() > RTCMax):
+			RTCInt = self.RTC.readSeconds()
+			if (RTCInt < RTCMin) or (RTCInt > RTCMax):
+				print("RTCInt: ", RTCInt)
 				raise unexpectedValue
-			packetTimestamp = str(int(self.RTC.readSeconds())).zfill(10)+':'
+			packetTimestamp = str(RTCInt).zfill(10)+':'
 		except Exception as e:
 			# add redundant RTC try/except
 			# if no RTC iterations work, continue with exception
@@ -432,8 +483,10 @@ class AttitudeData():
 		packet = ''
 
 		try:
-			timestamp = int4tohex(self.RTC.readSeconds())
-			if (self.RTC.readSeconds() < RTCMin) | (self.RTC.readSeconds() > RTCMax):
+			timestampInt = self.RTC.readSeconds()
+			timestamp = int4tohex(timestampInt)
+			if (timestampInt < RTCMin) or (timestampInt > RTCMax):
+				print("timestampInt: ", timestampInt)
 				raise unexpectedValue
 		except Exception as e:
 			# redundant RTC try/except
@@ -447,19 +500,24 @@ class AttitudeData():
 			allSunSensors = self.sunSensor.read() 
 			sunSensor1, sunSensor2, sunSensor3, sunSensor4, sunSensor5 = [allSunSensors[i] for i in range(5)]
 
-			if(sunSensor1 < sunSensorMin) | (sunSensor1 > sunSensorMax):
-					raise unexpectedValue
-
-			if(sunSensor2 < sunSensorMin) | (sunSensor2 > sunSensorMax):
+			if(sunSensor1 < sunSensorMin) or (sunSensor1 > sunSensorMax):
+				print("sunSensor1: ", sunSensor1)
 				raise unexpectedValue
 
-			if(sunSensor3 < sunSensorMin) | (sunSensor3 > sunSensorMax):
+			if(sunSensor2 < sunSensorMin) or (sunSensor2 > sunSensorMax):
+				print("sunSensor2: ", sunSensor2)
 				raise unexpectedValue
 
-			if(sunSensor4 < sunSensorMin) | (sunSensor4 > sunSensorMax):
+			if(sunSensor3 < sunSensorMin) or (sunSensor3 > sunSensorMax):
+				print("sunSensor3: ", sunSensor3)
 				raise unexpectedValue
 
-			if(sunSensor5 < sunSensorMin) | (sunSensor5 > sunSensorMax):
+			if(sunSensor4 < sunSensorMin) or (sunSensor4 > sunSensorMax):
+				print("sunSensor4: ", sunSensor4)
+				raise unexpectedValue
+
+			if(sunSensor5 < sunSensorMin) or (sunSensor5 > sunSensorMax):
+				print("sunSensor5: ", sunSensor5)
 				raise unexpectedValue
 		except Exception as e:
 			# redundant sunSensor try/except, if none work, continue with exception
@@ -479,9 +537,9 @@ class AttitudeData():
 
 		try:
 			mag1, mag2, mag3 = self.Magnetometer.read()
-			if ((mag1 < magnetometerMin) | (mag1 > magnetometerMax) | (mag2 < magnetometerMin) | (mag2 > magnetometerMax) |
-			(mag3 < magnetometerMin) | (mag3 > magnetometerMax)):
-			    raise unexpectedValue
+			if ((mag1 < magnetometerMin) or (mag1 > magnetometerMax) or (mag2 < magnetometerMin) or (mag2 > magnetometerMax) or (mag3 < magnetometerMin) or (mag3 > magnetometerMax)):
+				print("mag1: ", mag1, "mag2: ", mag2, "mag3: ", mag3)
+				raise unexpectedValue
 		except Exception as e:
 			# redundant Magnetometers try/except
 			mag1, mag2, mag3 = magnetometerMax + 1, magnetometerMax + 1, magnetometerMax + 1
@@ -504,9 +562,11 @@ class AttitudeData():
 		# "\nsunSensor5 :", sunSensor5, "\nmag1: ", mag1, "\nmag2: ", mag2, 
 		# "\nmag3: ", mag3)
 		try:
-			if (self.RTC.readSeconds() < RTCMin) | (self.RTC.readSeconds() > RTCMax):
+			RTCInt = self.RTC.readSeconds()
+			if (RTCInt < RTCMin) or (RTCInt > RTCMax):
+				print("RTCInt: ", RTCInt)
 				raise unexpectedValue
-			packetTimestamp = str(int(self.RTC.readSeconds())).zfill(10)+':'
+			packetTimestamp = str(RTCInt).zfill(10)+':'
 		except Exception as e:
 			# redundant rtc try/except
 			print("Failed to pull clock data from RTC. Exception: ", repr(e), 
@@ -529,7 +589,7 @@ class AttitudeData():
 			await self.writeData()
 			print("getting attitude data")
 			# Sleep for 1 second (1 Hz)
-			await asyncio.sleep(1)
+			await asyncio.sleep(.9)#I dropped the wait time so that we will collect data more consitently 
 
 def float4tohex(num):
 	#takes a 4 byte float, returns a hex representation of it

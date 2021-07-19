@@ -12,10 +12,6 @@
 #define DEBUG
 #include "debug.h"
 
-//enable and disable are set up in the make file,
-#define ENABLE "./configPinsTXISR"
-#define DISABLE "./configPinsTXISRDone"
-
 #define FLAG_FILE "/home/pi/TXISRData/flagsFile.txt" //change this later for the real program
 #define FORMAT_FILE "../data/txFile.txt" //this is the file that dallan will creat 
 #define UART_PORT "/dev/serial0" //this is serial port name, make sure this is correct for the final code
@@ -31,9 +27,9 @@
 #define PHOTO_TYPE 3
 #define TIME_DEVISOR ':'
 
-//NOTE: becasue of how we have to set the boud rate I cannot use a define for it in ceritian places, just do a contrl f and look for BOUD_RATE
+//NOTE: Because of how we have to set the boud rate, I cannot use a define for it in certain places, just do a ctrl-f and look for BOUD_RATE
 //it is place next to every place that the boud rate is used, you also need to change the define as it is used as well.
-//NOTE: this boud rate (9600) is the radio speed. We talk to it with a diffrent speed, in other words the 9600 is our divisor for the delay
+//NOTE: this boud rate (9600) is the radio speed. We talk to it with a different speed, in other words the 9600 is our divisor for the delay
 #define BOUD_RATE 9600
 
 int changeCharToInt(char a);
@@ -73,14 +69,6 @@ intmax_t millis()
 int main(int argc,char* argv[])
 {
     DEBUG_P(Began main)
-    /////TODO/////
-    /*
-    *debug the time check on transmissionWindow 
-    *debug the wait after each transmission 
-    *Write the time to the flags file
-    *Add in any set up commucation to the radio
-    * TEST, UART, and the bash commands
-    */
     intmax_t startTime = millis();
     intmax_t currentTime = millis();
     intmax_t startTimeTX = 0;
@@ -201,8 +189,6 @@ int main(int argc,char* argv[])
         {
             line[i] = '0';
         }
-        
-        //DEBUG_P(Im in the main loop)
 
         do {
             if(feof(txFile)) break;
@@ -252,10 +238,6 @@ int main(int argc,char* argv[])
             else {
                 line[charCount++] = temp;
             }
-            // PRINT_DEBUG_c(ch)
-            // PRINT_DEBUG_c(chl)
-            // PRINT_DEBUG(charCount)
-            // DEBUG_P(Im in the sub loop)
         }
         
         // DEBUG_P(leaving loop)
@@ -293,39 +275,38 @@ int main(int argc,char* argv[])
             PRINT_LONG(flags[dataType])
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence. 
-            while((currentTimeTX - startTimeTX) < DELAY_tx + (charCount / BOUD_RATE))
+            while((currentTimeTX - startTimeTX) < DELAY_tx)
             { 
                 currentTimeTX = millis();
                 if(!written)
                 {
-                    
-                        //delete the existing data
-                        //fclose(recordFile);
-                        if (recordFile = fopen(FLAG_FILE,"w"))
+                    //delete the existing data
+                    //fclose(recordFile);
+                    if (recordFile = fopen(FLAG_FILE,"w"))
+                    {
+                        //if succesfull we will print it and set the written to true else we will try again.
+                        //reprint it
+                        //print the last sent time
+                        for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
                         {
-                            //if succesfull we will print it and set the written to true else we will try again.
-                            //reprint it
-                            //print the last sent time
-                            for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
-                            {
-                                fprintf(recordFile, "%ld\n", flags[g]);
-                            }
-                            //set written to true
-                            written = 1;
+                            fprintf(recordFile, "%ld\n", flags[g]);
                         }
-                        //if we fail recreate the file
-                        else
+                        //set written to true
+                        written = 1;
+                    }
+                    //if we fail recreate the file
+                    else
+                    {
+                        remove(FLAG_FILE);
+                        //recreate the file
+                        recordFile = fopen(FLAG_FILE,"w");
+                        for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
                         {
-                            remove(FLAG_FILE);
-                            //recreate the file
-                            recordFile = fopen(FLAG_FILE,"w");
-                            for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
-                            {
-                                fprintf(recordFile, "%ld\n", flags[g]);
-                            }
-                            //set written to true
-                            written = 1;
+                            fprintf(recordFile, "%ld\n", flags[g]);
                         }
+                        //set written to true
+                        written = 1;
+                    }
                     //delete the existing data
                     fclose(recordFile);
                 }
@@ -342,15 +323,7 @@ int main(int argc,char* argv[])
         }
         
     } 
-exit(0);
-     //give control of the port back to linuxs
-    //  int disable = system(DISABLE);
-    //  //if we fail reboot
-    //  if(disable != 0) 
-    //  {
-    //      DEBUG_P(Failed to release tx uart pin)
-    //      exit(1);
-    //  } 
+    exit(0);
 }
 
 /*******************************************************************************************

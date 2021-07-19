@@ -1,8 +1,8 @@
-import sys
-sys.path.append("../")
 import asyncio
-from flightLogic.missionModes import safe
+from flightLogic.missionModes.heartBeat import heart_beat
 
-safeMode = safe.safe(None)
-asyncio.run(safeMode.heartBeat())
+""" Tests if heartbeat is working """
 
+heartBeatObj = heart_beat()
+print("Starting receive.")
+asyncio.create_task(heartBeatObj.heartBeatRun())

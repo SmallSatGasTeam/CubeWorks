@@ -32,8 +32,6 @@ from Drivers.camera import Camera
 # First, this function sets up the TXISR and then checks the boot conditions
 # Then, it runs a mission mode, and then loops forever, constantly checking to run the next mission mode.
 # NOTE: Each mission mode evaluates their exit conditions to leave the mission mode.
-# NOTE: Each mission mode calls safe if it is necessary
-# NOTE: DO NOTE record safe mode in the bootRecords file
 ##################################################################################################################
 fileChecker = FileReset()
 
@@ -41,13 +39,13 @@ def __main__():
 	asyncio.run(executeFlightLogic())
 
 
-async def executeFlightLogic():  # Open the file save object, start TXISR, and start Boot Mode data collection
+async def executeFlightLogic():  # Open the file save object, start TXISR, camera obj, and start Boot Mode data collection
 	
 	baseFile = open("/home/pi/lastBase.txt")
 	codeBase = int(baseFile.read())
 	cameraObj = Camera()
 	# Variable setup
-	delay = 1*60  # 35 minute delay
+	delay = 35*60  # 35 minute delay #TODO: set this delay to 35 min
 	boot = True
 	saveObject = saveTofiles.save()
 	# startTXISR(save)
@@ -58,51 +56,45 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 	packet = packetProcessing(transmitObject, cameraObj)
 	heartBeatObj = heart_beat()
 	
-
 	print('Starting data collection') #Setting up Background tasks for BOOT mode
 	tasks=[]
-	tasks.append(asyncio.create_task(heartBeatObj.heartBeatRun()))
-	tasks.append(asyncio.create_task(pythonInterrupt.interrupt(transmitObject, packet)))
-	tasks.append(asyncio.create_task(ttncData.collectTTNCData(0))) #Boot Mode is classified as 0
-	tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))
-	# tasks.append(asyncio.create_task(safeModeObject.thresholdCheck()))
+	tasks.append(asyncio.create_task(heartBeatObj.heartBeatRun()))  # starting heart beat
+	tasks.append(asyncio.create_task(pythonInterrupt.interrupt(transmitObject, packet)))  # starting rx monitoring 
+	tasks.append(asyncio.create_task(ttncData.collectTTNCData(0)))  # Boot Mode is classified as 0
+	tasks.append(asyncio.create_task(attitudeData.collectAttitudeData()))  # collecting attitude data
 
 	# Initialize all mission mode objects
 	# NOTE: the comms-tx is the only exception to this rule as it is to be handled differently than other mission modes
 	# NOTE: Boot Mode is defined and executed in this document, instead of a separate mission mode
-	"safeModeObject was deleted below in the init parameters after saveObject"
+	# safeModeObject was deleted below in the init parameters after saveObject 
 	antennaDeploy = antennaMode(saveObject, transmitObject, packet)
 	preBoomDeploy = preBoomMode(saveObject, transmitObject, packet)
 	postBoomDeploy = postBoomMode(saveObject, transmitObject, packet)
 	boomDeploy = boomMode(saveObject, transmitObject, cameraObj, packet)
 
+	# Check the boot record if it doesn't exist recreate it 
 	if(readData() == (None, None, None)):
 		print('Files are empty')
 		bootCount, antennaDeployed, lastMode = 0,False,0
+	# otherwise save the last mission mode
 	else:
 		bootCount, antennaDeployed, lastMode = readData()  
 	bootCount += 1  # Increment boot count
+	# save data
 	recordData(bootCount, antennaDeployed, lastMode)
 
 	if lastMode not in range(0,7): #Mission Mode invalid
 		lastMode = 0
 		antennaDeployed = False
-	if packet.skip(): # Check if we're skipping to Post Boom Deploy
-		lastMode = 4
-		antennaDeployed = True
+	
 	recordData(bootCount, antennaDeployed, lastMode)
 
 	# This is the implementation of the BOOT mode logic.
 	if not antennaDeployed:  # First, sleep for 35 minutes
 		print('Antenna is undeployed, waiting 60 seconds')
 		await asyncio.sleep(delay)  # Sleep for 35 minutes
-
-	try:  # Cancels attitude collection tasks
-		for t in tasks:
-			t.cancel()
-		print('Successfully cancelled BOOT mode background tasks')
-	except asyncio.exceptions.CancelledError:
-		print("Exception thrown cancelling task - This is normal")
+		while(transmitObject.isRunning()):
+			await asyncio.sleep(60) #sleep if a transmission is running
 
 	# how do we check if the antenna doors are open?
 	# TODO, check of antenna doors are open
@@ -118,57 +110,59 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, and s
 
 	recordData(bootCount, antennaDeployed, lastMode)
 
-	if packet.skip(): # Check if we're skipping to Post Boom Deploy
-		lastMode = 4
+	
+	try:  # Cancels attitude collection tasks
+		for t in tasks:
+			t.cancel()
+		print('Successfully cancelled BOOT mode background tasks')
+	except asyncio.exceptions.CancelledError:
+		print("Exception thrown cancelling task - This is normal")
+		
 	if not antennaDeployed:
 		await asyncio.gather(antennaDeploy.run())
 		print('Running Antenna Deployment Mode')
 		antennaDeployed = True
 		print("Antenna Deployed = ", antennaDeployed)
 		recordData(bootCount, antennaDeployed, lastMode)  # Save into files
+	elif lastMode == 3:
+		print('Running Boom Deploy')
+		lastMode = 3
+		recordData(bootCount, antennaDeployed, lastMode)  # Save into files
+		await asyncio.gather(boomDeploy.run())
 	elif lastMode == 4:
 		print('Running Post Boom Deploy')
 		lastMode = 4
 		recordData(bootCount, antennaDeployed, lastMode)  # Save into files
-		# TRY/EXCEPT postBoomDeploys
 		await asyncio.gather(postBoomDeploy.run())
 	else:
 		print('Running preBoom Deploy')
 		lastMode = 2
 		recordData(bootCount, antennaDeployed, lastMode)  # Save into files
-		# TRY/EXCEPT preBoomDeploys
 		await asyncio.gather(preBoomDeploy.run())
-		if not packet.skip():
-			lastMode = 3
-			recordData(bootCount, antennaDeploy, lastMode)
+		lastMode = 3
+		recordData(bootCount, antennaDeploy, lastMode)
 		print("Finished running preBoomDeploy")
 
 
 	while True: # This loop executes the rest of the flight logic
 	# pre boom deploy
 		print("Entered the loop that chooses the next mission mode.")
-		if packet.skip(): # Check if we're skipping to Post Boom Deploy
-			print("Skipping to post boom")
-			lastMode = 4
-			recordData(bootCount, antennaDeployed, lastMode)  # Save into files
-		if antennaDeployed == True and lastMode not in (3,4):
+		recordData(bootCount, antennaDeployed, lastMode)  # Save into files
+		if ((antennaDeployed == True) and (lastMode != 3) and (lastMode != 4)):
 			print('Running pre-Boom deploy')
 			lastMode = 2
 			recordData(bootCount, antennaDeployed, lastMode)
-			# TRY/EXCEPT
 			await asyncio.gather(preBoomDeploy.run())  # Execute pre-boom deploy, then move to post-boom deploy
 			print("Finished preBoomDeploy")
 			lastMode = 3
 			recordData(bootCount, antennaDeployed, lastMode)
-		elif antennaDeployed == True and lastMode == 3:
+		elif ((antennaDeployed == True) and (lastMode == 3)):
 			print('Running Boom Deploy')
-			# TRY/EXCEPT
 			await asyncio.gather(boomDeploy.run())  # Execute boom deployment, start post-boom deploy
 			lastMode = 4
 			recordData(bootCount, antennaDeployed, lastMode)
 		else:  # Post-Boom Deploy
 			print('Running post-Boom Deploy')
-			# TRY/EXCEPT
 			recordData(bootCount, antennaDeployed, lastMode)  # Save into files
 			await asyncio.gather(postBoomDeploy.run())
 

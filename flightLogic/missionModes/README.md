@@ -22,18 +22,17 @@ Functionality:
 		The Boom Deployment Mode will run after all the checks performed by the Pre-Boom Deployment mode. The Boom Deployment mode will run the Boom Deployer Driver and then the Camera Driver. (see GASPACA Software I: the Drivers)
 
 Post-Boom Deploy mode:
---
+---
 Location: ../flightLogic/missionModes/postBoomDeploy.py
 
 Functionality:
 		This is the last mission mode the Raspberry Pi enters. Once all modes have been run this mode will run a Reboot loop. This loop will cause a reboot every twenty-four hours. This mode will monitor the battery power and other basic functions to keep our satellite from dying. This is also the mode that transmission will take place in. 
-
-
-SAFE:
---
-Location: ../flightLogic/missionModes/safe.py
+Heartbeat:
+---
 
 Functionality:
-	This mode will turn the Raspberry Pi off. It does this by sending a signal to the Arduino Beetle to turn it off. This is to protect against damage to the Pi and lose of data.
+	The code in Heartbeat.py is the ‘Heartbeat’ of the Raspberry Pi. It sends a five macro-second pulse every four seconds over a pin that connects theRaspberry Pi to the Arduino Beetle where the Watchdog ‘listens’ for the pulse. 
 
-
+Transmitting:
+---
+	This code handles watching the tx windows, preparing the data 20 seconds before it is time to transmit, and calling the transmission runtine when it is time to transmit.
