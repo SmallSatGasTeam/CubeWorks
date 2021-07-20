@@ -75,6 +75,7 @@ class antennaMode:
 				try:
 					doorStatus = self.__antennaDoor.readDoorStatus() #Returns True if all doors are deployed
 				except:
+					doorStatus = False
 					print("Failed to check door status")
 				if doorStatus == True: 
 					self.cancelAllTasks(self.__tasks)
