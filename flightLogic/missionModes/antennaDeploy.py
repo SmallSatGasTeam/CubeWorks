@@ -66,7 +66,7 @@ class antennaMode:
 					raise unexpectedValue
 			except Exception as e:
 				BattVoltage = 4.18
-				print("Failed to retrieve BusVoltage, got", BusVoltage)
+				print("Failed to retrieve BusVoltage, got", BusVoltage
 				getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno, "Received: ", BattVoltage)
 			
 			if (BattVoltage > self.deployVoltage): #If the bus voltage is high enough
