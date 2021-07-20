@@ -30,7 +30,7 @@ class AntennaDoor(Driver):
         print("bitwise", temp)
         if((doorBits | b'00001111') == b'11111111'):
             deployed = True
-        else
+        else :
             deployed = False
         #doorStatus = (1,1,1,1)
         print("deployed", deployed)
