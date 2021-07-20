@@ -266,12 +266,6 @@ int main(int argc,char* argv[])
             if(!(dataType == -1)){
                 flags[dataType] = atoi(timeStamp);
             }
-            //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
-            //cause this will make no diffrence.
-            //this stores the last sent data time
-            if(!(dataType == -1)){
-                flags[dataType] = atoi(timeStamp);
-            }
             PRINT_LONG(flags[dataType])
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence. 
@@ -310,7 +304,7 @@ int main(int argc,char* argv[])
                     //delete the existing data
                     fclose(recordFile);
                 }
-                sleep((DELAY_tx + (charCount / BOUD_RATE))/1000);
+                sleep((DELAY_tx);
             }
             charCount = 0;
             DEBUG_P(TX end Time: )
