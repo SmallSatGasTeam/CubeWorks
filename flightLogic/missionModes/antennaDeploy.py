@@ -72,7 +72,10 @@ class antennaMode:
 			
 			if (BattVoltage > self.deployVoltage): #If the bus voltage is high enough
 				await asyncio.gather(self.__antennaDeployer.deployPrimary()) #Fire Primary Backup Resistor
-				doorStatus = self.__antennaDoor.readDoorStatus() #Returns True if all doors are deployed
+				try:
+					doorStatus = self.__antennaDoor.readDoorStatus() #Returns True if all doors are deployed
+				except:
+					print("Failed to check door status")
 				if doorStatus == True: 
 					self.cancelAllTasks(self.__tasks)
 					print('Doors are open, returning true')
@@ -85,7 +88,10 @@ class antennaMode:
 			else:
 				if(self.timeWaited > self.maximumWaitTime):
 					await asyncio.gather(self.__antennaDeployer.deployPrimary()) #Fire Primary Backup Resistor
-					doorStatus = self.__antennaDoor.readDoorStatus() #Returns True if all doors are deployed
+					try:
+						doorStatus = self.__antennaDoor.readDoorStatus() #Returns True if all doors are deployed
+					except:
+						print("Failed to check door status")
 					if doorStatus == True:		
 						self.cancelAllTasks(self.__tasks)
 						print('Doors are open, returning true')
