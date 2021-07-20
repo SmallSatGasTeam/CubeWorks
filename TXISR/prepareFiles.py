@@ -34,7 +34,7 @@ def prepareData(duration, dataType, startFrom):
 			print("Deploy Data selected")
 		minFileSize = packetLength*2+12 #Minimum characters in file
 
-		packetTime = 120 + packetLength*8/9600 #Transmission time for 1 packet of size packetLength
+		packetTime = 120  #Transmission time for 1 packet of size packetLength
 		numPackets = ceil(duration*1000/packetTime) + 15 #For safety, 15 extra packets compared to the number that will likely be transmitted
 
 		transmissionFilePath = ('../TXISR/data/txFile.txt') #File path to txFile. This is where data will be stored
@@ -147,7 +147,7 @@ def preparePicture(duration, dataType, pictureNumber, index, camObj):
 			cam.compressLowResToFiles(pictureNumber)
 			dataFilePath = '/home/pi/flightLogicData/Pictures/'+str(pictureNumber)+'/LowRes/LowResOriginal'+str(pictureNumber)+'.bin'
 
-		numPackets = ceil(duration*1000/(120 + 128*8/9600)) + 15 #How many picture packets can we transmit in the window? + 15 for safety
+		numPackets = ceil(duration*1000/120) + 15 #How many picture packets can we transmit in the window? + 15 for safety
 
 		transmissionFilePath = ('../TXISR/data/txFile.txt') #File path to txFile. This is where data will be stored
 		fileChecker.checkFile(transmissionFilePath)
