@@ -23,6 +23,9 @@ char branchCommand9 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; rm TXService.
 //compile testing code
 char testingCommand [] = "cd ; cd CubeWorks0/ ; gcc setNewTXWindow.c -o setNewTXWindow.exe ; sudo cp setNewTXWindow.exe ~/TXISRData ; rm setNewTXWindow.exe";
 
+char configCommand1 [] = "gcc flightConfig.c -o flightConfig.exe";
+char configCommand2 [] = "gcc flightConfigWifi.c -o flightConfigWifi.exe";
+
 
 void main()
 {
@@ -51,6 +54,10 @@ void main()
     system(branchCommand4);
     printf("\n>>>Compiling testing code<<<\n");
     system(testingCommand);
+
+    printf("\n>>>Building configuration code<<<\n");
+    system(configCommand1);
+    system(configCommand2);
 
     printf(">>>Everything is up to date\n");
 }
