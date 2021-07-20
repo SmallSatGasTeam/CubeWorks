@@ -128,12 +128,12 @@ flightLogic/backupBootRecords
 ~/flightLogicData/*
 ~/TXISRData/*
 flightLogic/TXISR/TXServiceCode/TXService.run
+install.exe
+upDataCode.exe
+flightConfig.exe
+flightConfigWifi.exe
 
 # TXISR Data Files
 TXISR/data/*
 # Picture Files
 Pictures/*
-
-# Ground Station data files
-GroundStation/Data
-GroundStation/Pictures
