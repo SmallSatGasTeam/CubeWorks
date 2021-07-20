@@ -235,3 +235,6 @@ be repoerted.
 #37 <all mission modes>
     The transmission process was changed to call its async function in the __init__, insted of having all the mission modes call the async functions of the transmissions. This change 
     was made beacuse the transistion between mission modes would cause transmission failure. Commit: 5b1516c4a9dbbf452bf594904864d9c94840e409
+
+#38 <fixing wait time across code base, and fixing attena door driver>
+    We are getting ready for finial config Commit: 99010c9b0010554bbe85d59e07c85a17a05b4e18
