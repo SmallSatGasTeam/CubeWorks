@@ -17,8 +17,8 @@ from TXISR.packetProcessing import packetProcessing as packet
 from flightLogic.missionModes.heartBeat import heart_beat
 from inspect import currentframe, getframeinfo
 
-getBusVoltageMin = 3.5
-getBusVoltageMax = 5.1
+BattVoltageMin = 3.5
+BattVoltageMax = 5.1
 
 class antennaMode:
 	"""
@@ -60,17 +60,19 @@ class antennaMode:
 		# 	return True	#Finish this mode and move on
 		while True: #Runs antenna deploy loop
 			try:
-				BusVoltage = eps.getBusVoltage()
-				if(BusVoltage < getBusVoltageMin) | (BusVoltage > getBusVoltageMax):
+				BattVoltage = eps.getBusVoltage()
+				if ((BattVoltage < BattVoltageMin) or (BattVoltage > BattVoltageMax)):
+					print("BattVoltageInt: ", BattVoltage, "BattVoltage: ", BattVoltage)
 					raise unexpectedValue
 			except Exception as e:
-				BusVoltage = 4.18
+				BattVoltage = 4.18
 				print("Failed to retrieve BusVoltage, got", BusVoltage)
-			if (BusVoltage >self.deployVoltage): #If the bus voltage is high enough
+				getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno, "Received: ", BattVoltage)
+			
+			if (BattVoltage > self.deployVoltage): #If the bus voltage is high enough
 				await asyncio.gather(self.__antennaDeployer.deployPrimary()) #Fire Primary Backup Resistor
-				doorStatus = self.__antennaDoor.readDoorStatus() #Check Door status
-				if doorStatus == (1,1,1,1): #NOTE: probably need to change this to actually work
-					#If ground station has sent command to skip to post boom			
+				doorStatus = self.__antennaDoor.readDoorStatus() #Returns True if all doors are deployed
+				if doorStatus == True: 
 					self.cancelAllTasks(self.__tasks)
 					print('Doors are open, returning true')
 					return True
@@ -82,8 +84,8 @@ class antennaMode:
 			else:
 				if(self.timeWaited > self.maximumWaitTime):
 					await asyncio.gather(self.__antennaDeployer.deployPrimary()) #Fire Primary Backup Resistor
-					doorStatus = self.__antennaDoor.readDoorStatus() #Check Door status
-					if doorStatus == (1,1,1,1): #NOTE: probably need to change this to actually work		
+					doorStatus = self.__antennaDoor.readDoorStatus() #Returns True if all doors are deployed
+					if doorStatus == True:		
 						self.cancelAllTasks(self.__tasks)
 						print('Doors are open, returning true')
 						return True
