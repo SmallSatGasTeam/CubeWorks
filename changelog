@@ -238,3 +238,6 @@ be repoerted.
 
 #37 <Shutting Down Attitude data collection after 30 min>
     Due to limited data storage and due to limited transmission time we are only going to collect data for 30 minutes everday. Commit: e92d4d6be407bb0898e864be181497bc345a6361
+
+#38 <fixing wait time across code base, and fixing attena door driver>
+    We are getting ready for finial config Commit: 6f523bb69f9639599d81df15c97a23a955f5b897
