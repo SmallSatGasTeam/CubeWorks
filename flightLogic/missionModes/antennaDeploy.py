@@ -60,13 +60,9 @@ class antennaMode:
 		# 	return True	#Finish this mode and move on
 		while True: #Runs antenna deploy loop
 			try:
-				BusVoltage = eps.getBusVoltage()
-				if(BusVoltage < getBusVoltageMin) | (BusVoltage > getBusVoltageMax):
-					raise unexpectedValue
-				BattVoltageInt = eps.getBusVoltage()
-				BattVoltage = float4tohex(BattVoltageInt)
-				if ((BattVoltageInt < BattVoltageMin) or (BattVoltageInt > BattVoltageMax)):
-					print("BattVoltageInt: ", BattVoltageInt, "BattVoltage: ", BattVoltage)
+				BattVoltage = eps.getBusVoltage()
+				if ((BattVoltage < BattVoltageMin) or (BattVoltage > BattVoltageMax)):
+					print("BattVoltageInt: ", BattVoltage, "BattVoltage: ", BattVoltage)
 					raise unexpectedValue
 			except Exception as e:
 				BattVoltage = 4.18
