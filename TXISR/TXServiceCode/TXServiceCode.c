@@ -310,7 +310,7 @@ int main(int argc,char* argv[])
                     //delete the existing data
                     fclose(recordFile);
                 }
-                sleep((DELAY_tx + (charCount / BOUD_RATE))/1000);
+                sleep((DELAY_tx);
             }
             charCount = 0;
             DEBUG_P(TX end Time: )
