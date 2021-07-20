@@ -266,12 +266,6 @@ int main(int argc,char* argv[])
             if(!(dataType == -1)){
                 flags[dataType] = atoi(timeStamp);
             }
-            //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
-            //cause this will make no diffrence.
-            //this stores the last sent data time
-            if(!(dataType == -1)){
-                flags[dataType] = atoi(timeStamp);
-            }
             PRINT_LONG(flags[dataType])
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence. 
