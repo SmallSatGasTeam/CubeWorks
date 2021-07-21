@@ -92,10 +92,7 @@ def prepareData(duration, dataType, startFrom):
 					continue
 				else:
 					try :
-						line.strip('\n')
-						if ((line != '')):
-							#print(line)
-							txDataFile.write(line + "\n")
+						txDataFile.write(line)
 						dataSize += 1
 						lineNumber += 1
 					except : 
