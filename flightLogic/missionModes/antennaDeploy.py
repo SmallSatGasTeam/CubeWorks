@@ -66,15 +66,17 @@ class antennaMode:
 					raise unexpectedValue
 			except Exception as e:
 				BattVoltage = 4.18
-				print("Failed to retrieve BusVoltage, got", BusVoltage)
-				getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno, "Received: ", BattVoltage)
+				print("failed to retrieve BattVoltage. Exception: ", repr(e), 
+				getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno,
+				"Received: ", BattVoltage)
 			
 			if (BattVoltage > self.deployVoltage): #If the bus voltage is high enough
 				await asyncio.gather(self.__antennaDeployer.deployPrimary()) #Fire Primary Backup Resistor
 				try:
 					doorStatus = self.__antennaDoor.readDoorStatus() #Returns True if all doors are deployed
 				except:
-					print("Failed to read door status")
+					doorStatus = False
+					print("Failed to check door status")
 				if doorStatus == True: 
 					self.cancelAllTasks(self.__tasks)
 					print('Doors are open, returning true')
@@ -90,7 +92,7 @@ class antennaMode:
 					try:
 						doorStatus = self.__antennaDoor.readDoorStatus() #Returns True if all doors are deployed
 					except:
-						print("Failed to read door status")
+						print("Failed to check door status")
 					if doorStatus == True:		
 						self.cancelAllTasks(self.__tasks)
 						print('Doors are open, returning true')

@@ -23,7 +23,6 @@
 #define MAX_BYTES_PER_LINE 256
 #define MAX_NUM_OF_DATA_TYPES 5
 #define DELAY_UNTIL_TX_WINDOW 0
-#define SIZE_OF_TIME_STAMP 10
 #define PHOTO_TYPE 3
 #define TIME_DEVISOR ':'
 
@@ -108,7 +107,7 @@ int main(int argc,char* argv[])
 
     //this is where we will store the last transmission
     //5 data types
-    long flags[MAX_NUM_OF_DATA_TYPES];
+    int flags[MAX_NUM_OF_DATA_TYPES];
     //pop the data types
     DEBUG_P(opening file)
     //NOTE: WE HAVE TO MAKE THE FLAGS FILE RIGHT OR WE WILL GET SYSTEM FAILURE.
@@ -135,14 +134,15 @@ int main(int argc,char* argv[])
     char ch = 1;
     //set up array for tx, the max is 256, so we better not exceed that anyways so using an array of 256 is fine.
     char line[MAX_BYTES_PER_LINE] = {0};
-    char timeStamp[SIZE_OF_TIME_STAMP];
+    int lineNumber = 0;
     //get tx time
     if(!feof(txFile)){
         fscanf(txFile, "%d", &transmissionWindow);
     }
     PRINT_DEBUG(transmissionWindow)
     if(!feof(txFile)){
-        fgetc(txFile);
+        char dumb = fgetc(txFile);
+        PRINT_DEBUG_c(dumb);
     }
     currentTime = millis();
     
@@ -172,7 +172,7 @@ int main(int argc,char* argv[])
         if((currentTime - startTime) > transmissionWindow) 
         {
             PRINT_TIME(currentTime - startTime)
-            DEBUG_P(\nEnding>>>)
+            DEBUG_P(\nInvaild time Ending>>>)
             break;
         }
 
@@ -183,29 +183,27 @@ int main(int argc,char* argv[])
         //get the size of each line in the file
         int charCount = 0;
         int end = 0;
-        int charTimeCount = 0;
         char chl = '0';
         for (int i = 0; i < MAX_BYTES_PER_LINE; i++)
         {
             line[i] = '0';
         }
 
-        do {
+        while(!end && !feof(txFile))
+        {
             if(feof(txFile)) break;
             ch = fgetc(txFile);
-            //this collects the time stamp
-
-            timeStamp[charTimeCount++] = ch;
-            // printf("Finding the timestamp.\n");
-            // PRINT_DEBUG_c(ch)
-
             if (ch == TIME_DEVISOR)
             {
                 end = 1;
-                //if you dont wanna send the : uncommit the next line into the code
-                //continue;
+                break;
             }
-        } while(!end && !feof(txFile));
+            //this collects the time stamp
+            lineNumber *= 10;
+            lineNumber += changeCharToInt(ch);
+            // printf("Finding the timestamp: ");
+            // PRINT_DEBUG_c(ch)
+        } 
 
         // DEBUG_P(Found a colon and leaving the first loop)
 
@@ -216,13 +214,16 @@ int main(int argc,char* argv[])
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
             ch = fgetc(txFile);
-            chl = fgetc(txFile);
             /*If we hit a new line character, break out of the loop so we don't
             ever run the code beneath it*/
-            if((ch == '\n') || (chl == '\n')){
+            if(ch == '\n'){
                 break;
             }
-            else temp = convertCharToHex(chl, ch);
+            chl = fgetc(txFile);
+            if(chl == '\n'){
+                break;
+            }
+            temp = convertCharToHex(chl, ch);
             //If we receive a bad value
             if(temp == -1){
                 char trash[256];
@@ -264,9 +265,10 @@ int main(int argc,char* argv[])
             int written = 0;
             //this stores the last sent data time
             if(!(dataType == -1)){
-                flags[dataType] = atoi(timeStamp);
+                flags[dataType] = lineNumber;
+                lineNumber = 0;
             }
-            PRINT_LONG(flags[dataType])
+            PRINT_DEBUG(flags[dataType])
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
             //cause this will make no diffrence. 
             while((currentTimeTX - startTimeTX) < DELAY_tx)
@@ -304,7 +306,7 @@ int main(int argc,char* argv[])
                     //delete the existing data
                     fclose(recordFile);
                 }
-                sleep(DELAY_tx);
+                sleep(DELAY_tx/1000);
             }
             charCount = 0;
             DEBUG_P(TX end Time: )
@@ -313,7 +315,6 @@ int main(int argc,char* argv[])
             PRINT_TIME(startTimeTX)
             DEBUG_P(Delta T: )
             PRINT_TIME(currentTimeTX - startTimeTX)
-        
         }
         
     } 

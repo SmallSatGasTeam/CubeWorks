@@ -54,6 +54,7 @@ def prepareData(duration, dataType, startFrom):
 		# Try reading transmission progress from file, if that fails (file is blank) set progress to 0 and write 5 lines of 0's
 		try:
 			transmissionProgress = int(progressList[dataType])
+			print("transmissionProgress: ", str(transmissionProgress))
 		except:
 			transmissionProgress = 0
 			print("Progress list didn't exist.")
@@ -72,35 +73,26 @@ def prepareData(duration, dataType, startFrom):
 			return False
 		#This is where the new code starts_________________________________________
 		#If -1 is passed to StartFrom then search for the furthest transmitted data
+		startFrom -= 1
+		print("Start: ", str(startFrom))
 		if (startFrom == -1) and (transmissionProgress != 0):
-			print("Starting from last transmitted line.")
-			lineNumber = 0
-			for index, line in enumerate(dataFile):
-				try:
-					print("Index:", index, "Line:", int(line[1:10]), "Searching for:", transmissionProgress)
-					if (int(line[1:10])) >= transmissionProgress:
-					#if ((((int(line[0:10])) >= transmissionProgress) or ((int(line[1:10])) >= transmissionProgress))):
-						print("Found the correct line")
-						lineNumber = int(index) + 1
-						break
-				except:
-					print("Invalid line format for iteration")
-			print("The lineNumber found is", lineNumber)
-			dataFile.close()
-
+			lineNumber = transmissionProgress + 1
+			print("line number:", lineNumber)
 			dataSize = 0
-			while dataSize < numPackets:
-				line = linecache.getline(dataFilePath, lineNumber)
-				if (line == "") or (lineNumber == 0):
+		else:
+			dataSize = 0
+			lineNumber = startFrom
+			print("Starting from the provided line:", str(lineNumber))
+
+		while dataSize < numPackets:
+				line =  str(lineNumber) + ":" + linecache.getline(dataFilePath, lineNumber)
+				if (line == (str(lineNumber) + ":" + '')) or (lineNumber == 0):
 					#print("End of the line, resetting.")
 					lineNumber = 1
 					continue
 				else:
 					try :
-						line.strip('\n')
-						if (len(line) >= 10 or (line != '')):
-							#print(line)
-							txDataFile.write(line + "\n")
+						txDataFile.write(line)
 						dataSize += 1
 						lineNumber += 1
 					except : 
@@ -108,21 +100,6 @@ def prepareData(duration, dataType, startFrom):
 						lineNumber += 1
 					#Does this line need to be here? Woudln't it just do nothing? 
 					continue
-		else:
-			dataSize = 0
-			lineNumber = startFrom
-			print("Starting from the provided line:", lineNumber)
-		
-			while dataSize < numPackets:
-				line = linecache.getline(dataFilePath, lineNumber)
-				if (line == "") or (lineNumber == 0):
-					print("At the end of the file, going back to the beginning")
-					lineNumber = 1
-					continue
-				else:
-					txDataFile.write(line)
-					lineNumber+=1
-					dataSize+=1
 
 		progressFile.close()
 		txDataFile.close()
