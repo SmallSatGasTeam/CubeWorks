@@ -107,7 +107,7 @@ int main(int argc,char* argv[])
 
     //this is where we will store the last transmission
     //5 data types
-    long flags[MAX_NUM_OF_DATA_TYPES];
+    int flags[MAX_NUM_OF_DATA_TYPES];
     //pop the data types
     DEBUG_P(opening file)
     //NOTE: WE HAVE TO MAKE THE FLAGS FILE RIGHT OR WE WILL GET SYSTEM FAILURE.
@@ -140,6 +140,10 @@ int main(int argc,char* argv[])
         fscanf(txFile, "%d", &transmissionWindow);
     }
     PRINT_DEBUG(transmissionWindow)
+    if(!feof(txFile)){
+        char dumb = fgetc(txFile);
+        PRINT_DEBUG_c(dumb);
+    }
     currentTime = millis();
     
     DEBUG_P(Waiting for tx window>>>)
@@ -168,7 +172,7 @@ int main(int argc,char* argv[])
         if((currentTime - startTime) > transmissionWindow) 
         {
             PRINT_TIME(currentTime - startTime)
-            DEBUG_P(\nEnding>>>)
+            DEBUG_P(\nInvaild time Ending>>>)
             break;
         }
 
@@ -191,8 +195,8 @@ int main(int argc,char* argv[])
             //this collects the time stamp
 
             lineNumber += changeCharToInt(ch);
-            // printf("Finding the timestamp.\n");
-            // PRINT_DEBUG_c(ch)
+            printf("Finding the timestamp.\n");
+            PRINT_DEBUG_c(ch)
 
             if (ch == TIME_DEVISOR)
             {
