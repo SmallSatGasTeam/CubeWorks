@@ -92,7 +92,6 @@ def prepareData(duration, dataType, startFrom):
 					continue
 				else:
 					try :
-						print(line)
 						txDataFile.write(line)
 						dataSize += 1
 						lineNumber += 1

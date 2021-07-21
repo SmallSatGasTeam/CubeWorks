@@ -264,6 +264,7 @@ int main(int argc,char* argv[])
             int written = 0;
             //this stores the last sent data time
             if(!(dataType == -1)){
+                DEBUG_P(timeStamp);
                 flags[dataType] = atoi(timeStamp);
             }
             PRINT_LONG(flags[dataType])
