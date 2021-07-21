@@ -189,7 +189,8 @@ int main(int argc,char* argv[])
             line[i] = '0';
         }
 
-        do {
+        while(!end && !feof(txFile))
+        {
             if(feof(txFile)) break;
             ch = fgetc(txFile);
             //this collects the time stamp
@@ -202,7 +203,7 @@ int main(int argc,char* argv[])
             {
                 end = 1;
             }
-        } while(!end && !feof(txFile));
+        } 
 
         // DEBUG_P(Found a colon and leaving the first loop)
 
