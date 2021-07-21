@@ -140,9 +140,6 @@ int main(int argc,char* argv[])
         fscanf(txFile, "%d", &transmissionWindow);
     }
     PRINT_DEBUG(transmissionWindow)
-    if(!feof(txFile)){
-        fgetc(txFile);
-    }
     currentTime = millis();
     
     DEBUG_P(Waiting for tx window>>>)
