@@ -23,7 +23,6 @@
 #define MAX_BYTES_PER_LINE 256
 #define MAX_NUM_OF_DATA_TYPES 5
 #define DELAY_UNTIL_TX_WINDOW 0
-#define SIZE_OF_TIME_STAMP 10
 #define PHOTO_TYPE 3
 #define TIME_DEVISOR ':'
 
@@ -135,7 +134,7 @@ int main(int argc,char* argv[])
     char ch = 1;
     //set up array for tx, the max is 256, so we better not exceed that anyways so using an array of 256 is fine.
     char line[MAX_BYTES_PER_LINE] = {0};
-    char timeStamp[SIZE_OF_TIME_STAMP] = {0};
+    int lineNumber = 0;
     //get tx time
     if(!feof(txFile)){
         fscanf(txFile, "%d", &transmissionWindow);
@@ -183,7 +182,6 @@ int main(int argc,char* argv[])
         //get the size of each line in the file
         int charCount = 0;
         int end = 0;
-        int charTimeCount = 0;
         char chl = '0';
         for (int i = 0; i < MAX_BYTES_PER_LINE; i++)
         {
@@ -195,8 +193,7 @@ int main(int argc,char* argv[])
             ch = fgetc(txFile);
             //this collects the time stamp
 
-            timeStamp[SIZE_OF_TIME_STAMP - charTimeCount] = ch;
-            charTimeCount++;
+            lineNumber += changeCharToInt(ch);
             // printf("Finding the timestamp.\n");
             // PRINT_DEBUG_c(ch)
 
@@ -265,7 +262,7 @@ int main(int argc,char* argv[])
             int written = 0;
             //this stores the last sent data time
             if(!(dataType == -1)){
-                flags[dataType] = atoi(timeStamp);
+                flags[dataType] = lineNumber;
             }
             PRINT_LONG(flags[dataType])
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
