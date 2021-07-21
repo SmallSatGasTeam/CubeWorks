@@ -195,7 +195,8 @@ int main(int argc,char* argv[])
             ch = fgetc(txFile);
             //this collects the time stamp
 
-            timeStamp[charTimeCount++] = ch;
+            timeStamp[SIZE_OF_TIME_STAMP - charTimeCount] = ch;
+            charTimeCount++;
             // printf("Finding the timestamp.\n");
             // PRINT_DEBUG_c(ch)
 
@@ -264,7 +265,6 @@ int main(int argc,char* argv[])
             int written = 0;
             //this stores the last sent data time
             if(!(dataType == -1)){
-                DEBUG_P(timeStamp);
                 flags[dataType] = atoi(timeStamp);
             }
             PRINT_LONG(flags[dataType])
