@@ -241,3 +241,9 @@ be repoerted.
 
 #38 <fixing wait time across code base, and fixing attena door driver>
     We are getting ready for finial config Commit: 6f523bb69f9639599d81df15c97a23a955f5b897
+
+#39 Update antenna door driver to decimal values
+    We thought the antenna door i2c read would return a hex value representing the door status, 
+    but it returned a decimal value. We updated the code to take the decimal value and perform a bitwise
+    operation with a bitmask of 00001111, which is a decimal 15. The driver has been tested with an undeployed
+    antenna and works, but still needs to be tested with a deployed antenna.

@@ -1,5 +1,6 @@
 from Drivers.Driver import Driver
 import smbus
+from time import sleep
 
 class AntennaDoor(Driver):
 
@@ -10,28 +11,28 @@ class AntennaDoor(Driver):
         """
         self.DEVICE_BUS = 1
         self.DEVICE_ADDR = 0x33
-        self.RegisterADR = 0x00
         self.bus = smbus.SMBus(self.DEVICE_BUS)
-      
+        sleep(1)
+
     def readDoorStatus(self):
         """
-        Reads the I2C response from the antenna. Takes the first byte of the response. 
+        Reads the I2C response from the antenna.
         The first 4 bits of the first byte represent the 4 antenna doors. 0 is not deployed, 1 is deployed. 
         Uses bitwise "or" to check if all 4 antenna doors are deployed. If yes, set deployed True. If any
         doors are undeployed, set deployed False.
         """
-        # This command passes in the device address, register address, and "4" because we expect a 4 byte response
-        doorStatus = self.bus.read_i2c_block_data(self.DEVICE_ADDR, self.RegisterADR, 4)
-        print(doorStatus)
-        doorBits = doorStatus[0]
-        print("doorBits", doorBits)
+        # This command returns one byte from the antenna. Check the antenna manual for an explanation of the bytes.
+        doorStatus = self.bus.read_byte(self.DEVICE_ADDR)
+        doorBits = doorStatus
+        print("Decimal value from antenna: ", doorBits)
         deployed = False
-        temp = (doorBits | b'00001111')
-        print("bitwise", temp)
-        if((doorBits | b'00001111') == b'11111111'):
+        # decimal representation of 00001111
+        bitmask = 15
+        bitwise = (doorBits | bitmask)
+        print("Bitwise result: ", bitwise)
+        if(bitwise == 255):
             deployed = True
         else :
             deployed = False
-        #doorStatus = (1,1,1,1)
         print("deployed", deployed)
         return deployed
