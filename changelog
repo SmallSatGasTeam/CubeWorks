@@ -247,3 +247,7 @@ be repoerted.
     but it returned a decimal value. We updated the code to take the decimal value and perform a bitwise
     operation with a bitmask of 00001111, which is a decimal 15. The driver has been tested with an undeployed
     antenna and works, but still needs to be tested with a deployed antenna.
+
+#40 Update Transceiver config driver to fix audio beacon.
+    The audio beacon on and off commands did not have enough zero's - that's why they weren't working. The proper format is "ES+W22080000XXXX", 
+    where you replace the 'XXXX' with the time period between audio beacons, encoded in HEX. Set the time period to '0000' to disable the audio beacon.
