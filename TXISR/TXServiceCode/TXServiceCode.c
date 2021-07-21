@@ -135,7 +135,7 @@ int main(int argc,char* argv[])
     char ch = 1;
     //set up array for tx, the max is 256, so we better not exceed that anyways so using an array of 256 is fine.
     char line[MAX_BYTES_PER_LINE] = {0};
-    char timeStamp[SIZE_OF_TIME_STAMP];
+    char timeStamp[SIZE_OF_TIME_STAMP] = {0};
     //get tx time
     if(!feof(txFile)){
         fscanf(txFile, "%d", &transmissionWindow);
