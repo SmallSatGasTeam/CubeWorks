@@ -23,8 +23,8 @@ char branchCommand9 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; rm TXService.
 //compile testing code
 char testingCommand [] = "cd ; cd CubeWorks0/ ; gcc setNewTXWindow.c -o setNewTXWindow.exe ; sudo cp setNewTXWindow.exe ~/TXISRData ; rm setNewTXWindow.exe";
 
-char configCommand1 [] = "cd ; cd CubeWorks0/ ; gcc flightConfig.c -o flightConfig.exe";
-char configCommand2 [] = "cd ; cd CubeWorks0/ ; gcc flightConfigWifi.c -o flightConfigWifi.exe";
+char configCommand1 [] = "cd ; cd CubeWorks0/ ; gcc flightConfig.c -o flightConfig.exe ; cp flightConfig.exe ~/ ; rm flightConfig.exe";
+char configCommand2 [] = "cd ; cd CubeWorks0/ ; gcc flightConfigWifi.c -o flightConfigWifi.exe ; cp flightConfigWifi.exe ~/ ; rm flightConfigWifi.exe";
 
 
 void main()
