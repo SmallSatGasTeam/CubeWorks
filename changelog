@@ -236,18 +236,18 @@ be repoerted.
     The transmission process was changed to call its async function in the __init__, insted of having all the mission modes call the async functions of the transmissions. This change 
     was made beacuse the transistion between mission modes would cause transmission failure. Commit: 5b1516c4a9dbbf452bf594904864d9c94840e409
 
-#37 <Shutting Down Attitude data collection after 30 min>
+#38 <Shutting Down Attitude data collection after 30 min>
     Due to limited data storage and due to limited transmission time we are only going to collect data for 30 minutes everday. Commit: e92d4d6be407bb0898e864be181497bc345a6361
 
-#38 <fixing wait time across code base, and fixing attena door driver>
+#39 <fixing wait time across code base, and fixing attena door driver>
     We are getting ready for finial config Commit: 6f523bb69f9639599d81df15c97a23a955f5b897
 
-#39 Update antenna door driver to decimal values
+#40 Update antenna door driver to decimal values
     We thought the antenna door i2c read would return a hex value representing the door status, 
     but it returned a decimal value. We updated the code to take the decimal value and perform a bitwise
     operation with a bitmask of 00001111, which is a decimal 15. The driver has been tested with an undeployed
     antenna and works, but still needs to be tested with a deployed antenna.
 
-#40 Update Transceiver config driver to fix audio beacon.
+#41 Update Transceiver config driver to fix audio beacon.
     The audio beacon on and off commands did not have enough zero's - that's why they weren't working. The proper format is "ES+W22080000XXXX", 
     where you replace the 'XXXX' with the time period between audio beacons, encoded in HEX. Set the time period to '0000' to disable the audio beacon.

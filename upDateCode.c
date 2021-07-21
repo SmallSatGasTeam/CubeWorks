@@ -26,7 +26,6 @@ char testingCommand [] = "cd ; cd CubeWorks0/ ; gcc setNewTXWindow.c -o setNewTX
 char configCommand1 [] = "cd ; cd CubeWorks0/ ; gcc flightConfig.c -o flightConfig.exe ; cp flightConfig.exe ~/ ; rm flightConfig.exe";
 char configCommand2 [] = "cd ; cd CubeWorks0/ ; gcc flightConfigWifi.c -o flightConfigWifi.exe ; cp flightConfigWifi.exe ~/ ; rm flightConfigWifi.exe";
 
-
 void main()
 {
     system(cammand0);
