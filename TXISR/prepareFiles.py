@@ -86,14 +86,14 @@ def prepareData(duration, dataType, startFrom):
 
 		while dataSize < numPackets:
 				line =  str(lineNumber) + ":" + linecache.getline(dataFilePath, lineNumber)
-				if (line == "") or (lineNumber == 0):
+				if (line == '') or (lineNumber == 0):
 					#print("End of the line, resetting.")
 					lineNumber = 1
 					continue
 				else:
 					try :
 						line.strip('\n')
-						if (len(line) >= 10 or (line != '')):
+						if ((line != '')):
 							#print(line)
 							txDataFile.write(line + "\n")
 						dataSize += 1
