@@ -201,8 +201,8 @@ int main(int argc,char* argv[])
             //this collects the time stamp
             lineNumber *= 10;
             lineNumber += changeCharToInt(ch);
-            printf("Finding the timestamp: ");
-            PRINT_DEBUG_c(ch)
+            // printf("Finding the timestamp: ");
+            // PRINT_DEBUG_c(ch)
         } 
 
         // DEBUG_P(Found a colon and leaving the first loop)
