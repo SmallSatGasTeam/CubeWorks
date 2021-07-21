@@ -54,6 +54,7 @@ def prepareData(duration, dataType, startFrom):
 		# Try reading transmission progress from file, if that fails (file is blank) set progress to 0 and write 5 lines of 0's
 		try:
 			transmissionProgress = int(progressList[dataType])
+			print("transmissionProgress: ", str(transmissionProgress))
 		except:
 			transmissionProgress = 0
 			print("Progress list didn't exist.")
@@ -79,7 +80,7 @@ def prepareData(duration, dataType, startFrom):
 		else:
 			dataSize = 0
 			lineNumber = startFrom
-			print("Starting from the provided line:", lineNumber)
+			print("Starting from the provided line:", str(lineNumber))
 
 		while dataSize < numPackets:
 				line =  str(lineNumber) + ":" + linecache.getline(dataFilePath, lineNumber)
