@@ -195,14 +195,12 @@ int main(int argc,char* argv[])
             //this collects the time stamp
 
             lineNumber += changeCharToInt(ch);
-            // printf("Finding the timestamp.\n");
-            // PRINT_DEBUG_c(ch)
+            printf("Finding the timestamp: ");
+            PRINT_DEBUG_c(ch)
 
             if (ch == TIME_DEVISOR)
             {
                 end = 1;
-                //if you dont wanna send the : uncommit the next line into the code
-                //continue;
             }
         } while(!end && !feof(txFile));
 
