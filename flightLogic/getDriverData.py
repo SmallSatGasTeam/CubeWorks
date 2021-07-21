@@ -364,8 +364,6 @@ class TTNCData:
 		except Exception as e:
 			print("Failed to pull from RTC. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
-
-		packet = packetTimestamp + packet
 		self.__ttncData = packet
 
 	async def writeData(self):
@@ -450,7 +448,6 @@ class DeployData():
 			print("Failed to pull clock data from RTC. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 
-		packet = packetTimestamp + packet
 		self.__deployData = packet
 		print("Collected deploy data.")
 
@@ -573,8 +570,6 @@ class AttitudeData():
 			# redundant rtc try/except
 			print("Failed to pull clock data from RTC. Exception: ", repr(e), 
 			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
-		
-		packet = packetTimestamp + packet
 		self.__attitudeData = packet
 		print("Got attitude data.")
 

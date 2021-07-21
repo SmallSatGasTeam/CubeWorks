@@ -73,21 +73,7 @@ def prepareData(duration, dataType, startFrom):
 		#This is where the new code starts_________________________________________
 		#If -1 is passed to StartFrom then search for the furthest transmitted data
 		if (startFrom == -1) and (transmissionProgress != 0):
-			print("Starting from last transmitted line.")
-			lineNumber = 0
-			for index, line in enumerate(dataFile):
-				try:
-					print("Index:", index, "Line:", int(line[1:10]), "Searching for:", transmissionProgress)
-					if (int(line[1:10])) >= transmissionProgress:
-					#if ((((int(line[0:10])) >= transmissionProgress) or ((int(line[1:10])) >= transmissionProgress))):
-						print("Found the correct line")
-						lineNumber = int(index) + 1
-						break
-				except:
-					print("Invalid line format for iteration")
-			print("The lineNumber found is", lineNumber)
-			dataFile.close()
-
+			lineNumber = transmissionProgress + 1
 			dataSize = 0
 			while dataSize < numPackets:
 				line = linecache.getline(dataFilePath, lineNumber)
@@ -114,7 +100,7 @@ def prepareData(duration, dataType, startFrom):
 			print("Starting from the provided line:", lineNumber)
 		
 			while dataSize < numPackets:
-				line = linecache.getline(dataFilePath, lineNumber)
+				line = lineNumber + ":" + linecache.getline(dataFilePath, lineNumber)
 				if (line == "") or (lineNumber == 0):
 					print("At the end of the file, going back to the beginning")
 					lineNumber = 1
