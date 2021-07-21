@@ -73,7 +73,8 @@ def prepareData(duration, dataType, startFrom):
 			return False
 		#This is where the new code starts_________________________________________
 		#If -1 is passed to StartFrom then search for the furthest transmitted data
-		print("Strat: ", str(startFrom))
+		startFrom -= 1
+		print("Start: ", str(startFrom))
 		if (startFrom == -1) and (transmissionProgress != 0):
 			lineNumber = transmissionProgress + 1
 			print("line number:", lineNumber)
