@@ -74,9 +74,15 @@ def prepareData(duration, dataType, startFrom):
 		#If -1 is passed to StartFrom then search for the furthest transmitted data
 		if (startFrom == -1) and (transmissionProgress != 0):
 			lineNumber = transmissionProgress + 1
+			print("line number:", lineNumber)
 			dataSize = 0
-			while dataSize < numPackets:
-				line = linecache.getline(dataFilePath, lineNumber)
+		else:
+			dataSize = 0
+			lineNumber = startFrom
+			print("Starting from the provided line:", lineNumber)
+
+		while dataSize < numPackets:
+				line =  lineNumber + ":" + linecache.getline(dataFilePath, lineNumber)
 				if (line == "") or (lineNumber == 0):
 					#print("End of the line, resetting.")
 					lineNumber = 1
@@ -94,21 +100,6 @@ def prepareData(duration, dataType, startFrom):
 						lineNumber += 1
 					#Does this line need to be here? Woudln't it just do nothing? 
 					continue
-		else:
-			dataSize = 0
-			lineNumber = startFrom
-			print("Starting from the provided line:", lineNumber)
-		
-			while dataSize < numPackets:
-				line = lineNumber + ":" + linecache.getline(dataFilePath, lineNumber)
-				if (line == "") or (lineNumber == 0):
-					print("At the end of the file, going back to the beginning")
-					lineNumber = 1
-					continue
-				else:
-					txDataFile.write(line)
-					lineNumber+=1
-					dataSize+=1
 
 		progressFile.close()
 		txDataFile.close()
