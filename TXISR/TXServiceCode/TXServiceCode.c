@@ -213,13 +213,16 @@ int main(int argc,char* argv[])
             //save all the data in that line
             //this if lets us not send the line number if this is a photo file
             ch = fgetc(txFile);
-            chl = fgetc(txFile);
             /*If we hit a new line character, break out of the loop so we don't
             ever run the code beneath it*/
-            if((ch == '\n') || (chl == '\n')){
+            if(ch == '\n'){
                 break;
             }
-            else temp = convertCharToHex(chl, ch);
+            chl = fgetc(txFile);
+            if(chl == '\n'){
+                break;
+            }
+            temp = convertCharToHex(chl, ch);
             //If we receive a bad value
             if(temp == -1){
                 char trash[256];
@@ -310,7 +313,6 @@ int main(int argc,char* argv[])
             PRINT_TIME(startTimeTX)
             DEBUG_P(Delta T: )
             PRINT_TIME(currentTimeTX - startTimeTX)
-        
         }
         
     } 
