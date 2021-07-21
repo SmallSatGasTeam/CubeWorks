@@ -194,8 +194,8 @@ int main(int argc,char* argv[])
             ch = fgetc(txFile);
             //this collects the time stamp
 
-            lineNumber += changeCharToInt(ch);
-            printf("Finding the timestamp: ");
+            // lineNumber += changeCharToInt(ch);
+            // printf("Finding the timestamp: ");
             PRINT_DEBUG_c(ch)
 
             if (ch == TIME_DEVISOR)
@@ -265,6 +265,7 @@ int main(int argc,char* argv[])
             //this stores the last sent data time
             if(!(dataType == -1)){
                 flags[dataType] = lineNumber;
+                lineNumber = 0;
             }
             PRINT_LONG(flags[dataType])
             //delay the right amount of time for the radio, 120 millisecod + the amount of bytes / by the boud_rate, in almost 
