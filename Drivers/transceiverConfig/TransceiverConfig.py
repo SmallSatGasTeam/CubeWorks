@@ -44,16 +44,16 @@ class TransceiverConfig(Driver):
   def setAudioBeaconOn(self):
     """
     Turn on audio beacon. Note, the last 4 characters represent the period between beacon transmissions
-    encoded in hex. This command sets the period to 120 seconds. To turn off the audio beacon, set
+    encoded in hex. This command sets the period to 300 seconds. To turn off the audio beacon, set
     the period to 0 seconds
     """
-    self.writeData(b'ES+W22080078\r')
+    self.writeData(b'ES+W22080000012C\r')
   
   def setAudioBeaconOff(self):
     """
     Turns off the audio beacon.
     """
-    self.writeData(b'ES+W220800000\r')
+    self.writeData(b'ES+W220800000000\r')
 
   def setLowPowerMode(self):
     """
