@@ -199,7 +199,8 @@ def preparePicture(duration, dataType, pictureNumber, index, camObj):
 				substringOfData += pictureContent[0:position].decode()
 			else: #Nominal situation
 				position=position+256
-			txDataFile.write(str(transmissionProgress).zfill(10)+':'+substringOfData+'\n')
+			packetNum = int(substringOfData[14:18], 16)
+			txDataFile.write(str(packetNum) +':'+substringOfData+'\n')
 			dataSize+=1
 			transmissionProgress += 1
 
