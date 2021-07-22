@@ -69,7 +69,10 @@ class packetProcessing:
 
 			#Get index
 			print("index will be:", int(binaryData[80:112], 2))
-			index = int(binaryData[80:112], 2)
+			if int(binaryData[80:112], 2) == 0:
+				index = -1
+			else:
+				index = int(binaryData[80:112], 2)
 			print("Indexing to:", index)
 
 			# Get the appended hash - it is a 16 byte (128 bit) value
