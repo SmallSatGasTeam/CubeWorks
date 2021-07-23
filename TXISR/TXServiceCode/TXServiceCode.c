@@ -265,7 +265,7 @@ int main(int argc,char* argv[])
             int written = 0;
             //this stores the last sent data time
             if(!(dataType == -1)){
-                printf(lineNumber);
+                printf("%ld", lineNumber);
                 flags[dataType] = lineNumber;
                 lineNumber = 0;
             }
