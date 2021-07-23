@@ -192,6 +192,7 @@ int main(int argc,char* argv[])
         while(!end && !feof(txFile))
         {
             if(feof(txFile)) break;
+            printf("%c", ch);
             ch = fgetc(txFile);
             if (ch == TIME_DEVISOR)
             {
@@ -199,6 +200,7 @@ int main(int argc,char* argv[])
                 break;
             }
             //this collects the time stamp
+            printf("%d", lineNumber);
             lineNumber *= 10;
             lineNumber += changeCharToInt(ch);
             // printf("Finding the timestamp: ");
