@@ -286,7 +286,7 @@ int main(int argc,char* argv[])
                         //print the last sent time
                         for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
                         {
-                            fprint("%ls\n", flags[g]);
+                            printf("%ls\n", flags[g]);
                             fprintf(recordFile, "%ld\n", flags[g]);
                         }
                         //set written to true
