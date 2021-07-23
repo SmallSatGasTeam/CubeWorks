@@ -192,6 +192,7 @@ int main(int argc,char* argv[])
         while(!end && !feof(txFile))
         {
             if(feof(txFile)) break;
+            printf("%c", ch);
             ch = fgetc(txFile);
             if (ch == TIME_DEVISOR)
             {
@@ -199,6 +200,7 @@ int main(int argc,char* argv[])
                 break;
             }
             //this collects the time stamp
+            printf("%ld", lineNumber);
             lineNumber *= 10;
             lineNumber += changeCharToInt(ch);
             // printf("Finding the timestamp: ");
@@ -286,7 +288,7 @@ int main(int argc,char* argv[])
                         //print the last sent time
                         for(int g = 0; g < MAX_NUM_OF_DATA_TYPES; g++)
                         {
-                            printf("%ls\n", flags[g]);
+                            printf("%ld\n", flags[g]);
                             fprintf(recordFile, "%ld\n", flags[g]);
                         }
                         //set written to true
