@@ -39,4 +39,5 @@ class AntennaDoor(Driver):
     
     #this is the command to deploy the anntenna
     def deployAntennaMain(self):
+        print("\t____Deploying the Antenna____")
         self.bus.write_byte(self.DEVICE_ADDR,0x1F)
