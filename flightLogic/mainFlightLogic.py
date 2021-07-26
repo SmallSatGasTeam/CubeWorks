@@ -99,7 +99,8 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 	print('Moving on to check antenna door status')
 	#deploy the antenna, if it fails we will do nothing
 	try: 
-		antennaDoorObj.deployAntennaMain()
+		antennaDoorObj.deployAntennaMain() #wait for the antenna to deploy
+		await asyncio.sleep(60)
 	except :
 		pass
 	# status is set True if all 4 doors are deployed, else it is False
