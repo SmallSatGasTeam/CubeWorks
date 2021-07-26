@@ -54,6 +54,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 	transmitObject = Transmitting(codeBase, cameraObj)
 	packet = packetProcessing(transmitObject, cameraObj)
 	heartBeatObj = heart_beat()
+	antennaDoorObj = antennaDoor()
 	
 	print('Starting data collection') #Setting up Background tasks for BOOT mode
 	tasks=[]
@@ -98,12 +99,12 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 	print('Moving on to check antenna door status')
 	#deploy the antenna, if it fails we will do nothing
 	try: 
-		antennaDoor.deployAntenna()
+		antennaDoorObj.deployAntenna()
 	except :
 		pass
 	# status is set True if all 4 doors are deployed, else it is False
 	try:
-		status = antennaDoor.readDoorStatus()
+		status = antennaDoorObj.readDoorStatus()
 	except:
 		status = False
 		print("Failed to check antenna door status")
