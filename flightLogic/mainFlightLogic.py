@@ -103,7 +103,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 		pass
 	# status is set True if all 4 doors are deployed, else it is False
 	try:
-		status = antennaDoor().readDoorStatus()
+		status = antennaDoor.readDoorStatus()
 	except:
 		status = False
 		print("Failed to check antenna door status")
