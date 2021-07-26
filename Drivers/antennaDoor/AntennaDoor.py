@@ -38,5 +38,5 @@ class AntennaDoor(Driver):
         return deployed
     
     #this is the command to deploy the anntenna
-    def deployAntenna(self):
+    def deployAntennaMain(self):
         self.bus.write_byte(self.DEVICE_ADDR,0x1F)
