@@ -48,9 +48,11 @@ class Camera(Driver):
             self.__cam.resolution = self.highRes
             makedirs(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes", exist_ok=True)
             self.__cam.capture(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".jpg")
+            print("Took pictures")
             return self.pictureNumber
         except:
             #return neg 1 if no picture was taken
+            print("Failed to take a picture")
             return -1
 
     def compressLowResToFiles(self, pictureNumber):
