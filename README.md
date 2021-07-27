@@ -108,6 +108,7 @@ This file structure comprises the major compoments of CubeWorks.
 
 ### To put the stack in flight configuration
 -run the code called flightConfig.exe, `Warning: This will disable, wifi, hdmi, and the leds. You will have to reflash the sd if you want to commicate with the pi again.`
+
 -If you want to still have wifi run flightConfigWifi.exe `Warning: This is for testing ONLY`
 ```
 Pi system
