@@ -39,14 +39,20 @@ class Camera(Driver):
             #This also counts files in the total, but with the file structure we came up with this shouldn't be a problem
             makedirs(self.pictureDirectoryPath, exist_ok=True)
             self.pictureNumber = len(listdir(self.pictureDirectoryPath))
+            print("Picture number:", self.pictureNumber)
             #count number of folders in directory, add 1 for current pic
 
             self.__cam.resolution = self.lowRes
+            print("Resolution:", self.__cam.resolution)
             sleep(2)
             makedirs(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes", exist_ok=True)
+            print("Made LowDir")
             self.__cam.capture(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/LowRes/LowResOriginal"+str(self.pictureNumber)+".jpg")
+            print("Captured Low")
             self.__cam.resolution = self.highRes
+            print("Res:", self.__cam.resolution)
             makedirs(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes", exist_ok=True)
+            print("Made HighDir")
             self.__cam.capture(self.pictureDirectoryPath+"/"+str(self.pictureNumber)+"/HighRes/HighResOriginal"+str(self.pictureNumber)+".jpg")
             print("Took pictures")
             return self.pictureNumber
