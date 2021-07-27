@@ -105,6 +105,10 @@ This file structure comprises the major compoments of CubeWorks.
 ### Important Notes:
 -TX windows have to be seperated by at least 25 seconds. This is the time from ending one window to the start time of the next window. If it is not separated by this buffer, then it is NOT guaranted that the TX window will be serviced. 
 
+
+### To put the stack in flight configuration
+-run the code called flightConfig.exe, `Warning: This will disable, wifi, hdmi, and the leds. You will have to reflash the sd if you want to commicate with the pi again.`
+-If you want to still have wifi run flightConfigWifi.exe `Warning: This is for testing ONLY`
 ```
 Pi system
 ├──Home
