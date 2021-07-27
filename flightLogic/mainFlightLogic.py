@@ -96,7 +96,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 		while(transmitObject.isRunning()):
 			await asyncio.sleep(60) #sleep if a transmission is running
 
-	print('Moving on to check antenna door status')
+	print("Moving on to check antenna door status")
 	#deploy the antenna, if it fails we will do nothing
 	try: 
 		antennaDoorObj.deployAntennaMain() #wait for the antenna to deploy
