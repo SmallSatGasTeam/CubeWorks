@@ -90,7 +90,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 	recordData(bootCount, antennaDeployed, lastMode)
 
 	# This is the implementation of the BOOT mode logic.
-	if antennaDeployed != 1:  # First, sleep for 35 minutes
+	if not antennaDeployed:  # First, sleep for 35 minutes
 		print('Antenna is undeployed, waiting 60 seconds')
 		await asyncio.sleep(delay)  # Sleep for 35 minutes
 		while(transmitObject.isRunning()):
@@ -99,8 +99,9 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 	print("Moving on to check antenna door status")
 	#deploy the antenna, if it fails we will do nothing
 	try: 
-		antennaDoorObj.deployAntennaMain() #wait for the antenna to deploy
-		await asyncio.sleep(60)
+		if not antennaDeployed:
+			antennaDoorObj.deployAntennaMain() #wait for the antenna to deploy
+			await asyncio.sleep(60)
 	except :
 		print("____Failed to deploy the antenna_____")
 	# status is set True if all 4 doors are deployed, else it is False
