@@ -17,9 +17,9 @@ char cammand4 [] = "git -b codeBase clone https://github.com/SmallSatGasTeam/Cub
 //this code compiles the c code that is need to run transmission. 
 char branchCommand0 [] = "cd ; cd CubeWorks0/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
 char branchCommand1 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
-char branchCommand2 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
-char branchCommand3 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
-char branchCommand4 [] = "cd ; cd CubeWorks1/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
+char branchCommand2 [] = "cd ; cd CubeWorks2/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
+char branchCommand3 [] = "cd ; cd CubeWorks3/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
+char branchCommand4 [] = "cd ; cd CubeWorks4/TXISR/TXServiceCode ; gcc TXServiceCode.c -o TXService.run; cd ;";
 
 char upDateCommand [] = "cd ; cd CubeWorks0/ ; gcc upDateCode.c -o upDateCode.exe ; cp upDateCode.exe ~/ ; rm upDateCode.exe";
 
