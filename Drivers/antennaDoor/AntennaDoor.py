@@ -41,3 +41,4 @@ class AntennaDoor(Driver):
     def deployAntennaMain(self):
         print("\t____Deploying the Antenna____")
         self.bus.write_byte(self.DEVICE_ADDR,0x1F)
+        print("\t____Deployed the Antenna____")
