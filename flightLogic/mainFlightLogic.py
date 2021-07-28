@@ -101,7 +101,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 	#deploy the antenna, if it fails we will do nothing
 	eps = EPS()
 	try: 
-		while:
+		while True:
 			BusVoltage = eps.getBusVoltage()
 			if (not antennaDeployed) and (BusVoltage > 3.7):
 				antennaDoorObj.deployAntennaMain() #wait for the antenna to deploy
