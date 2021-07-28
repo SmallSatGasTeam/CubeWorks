@@ -18,6 +18,7 @@ import asyncio
 from TXISR import pythonInterrupt
 from TXISR.packetProcessing import packetProcessing
 from Drivers.camera import Camera
+from Drivers.eps import EPS as EPS
 
 
 
@@ -98,10 +99,16 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 
 	print("Moving on to check antenna door status")
 	#deploy the antenna, if it fails we will do nothing
+	eps = EPS()
 	try: 
-		if not antennaDeployed:
-			antennaDoorObj.deployAntennaMain() #wait for the antenna to deploy
-			await asyncio.sleep(60)
+		while:
+			BusVoltage = eps.getBusVoltage()
+			if (not antennaDeployed) and (BusVoltage > 3.7):
+				antennaDoorObj.deployAntennaMain() #wait for the antenna to deploy
+				await asyncio.sleep(60)
+				break
+			else:
+				await asyncio.sleep(10)
 	except :
 		print("____Failed to deploy the antenna_____")
 	# status is set True if all 4 doors are deployed, else it is False
