@@ -22,8 +22,10 @@ class Camera(Driver):
         self.pictureDirectoryPath = "/home/pi/flightLogicData/Pictures"
         self.pictureNumber = 0
         try:
+            print("made cam object")
             self.__cam = PiCamera()
         except: 
+            print("failed to make cam object")
             self.__cam = None
 
     def read(self):
