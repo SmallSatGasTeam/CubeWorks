@@ -23,7 +23,9 @@ class Camera(Driver):
         self.pictureNumber = 0
         try:
             self.__cam = PiCamera()
+            print("made cam object")
         except: 
+            print("failed to make cam object")
             self.__cam = None
 
     def read(self):
