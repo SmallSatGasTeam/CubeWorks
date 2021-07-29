@@ -35,11 +35,11 @@ async def interrupt(transmitObject, packetObj):
 			if serialport == None:
 				print("Reopening serial port")
 				serialport = serial.Serial('/dev/serial0', 115200) #Open serial port. Currently /dev/serial0, might change to the PL011 port for flight article
-			print("Python interrupt.", serialport.in_waiting())
+			print("Python interrupt.", serialport.in_waiting)
 			if serialport.in_waiting: #If there is content in the serial buffer, read it and act on it
 			#if True: #This is a testing line
 				print('Data in waiting')
-				data = str(serialport.read(serialport.in_waiting()).hex()) #This produces a list of nibbles (half bytes)
+				data = str(serialport.read(serialport.in_waiting).hex()) #This produces a list of nibbles (half bytes)
 				data = leftovers + data #Append any leftover data for evaluation
 
 				commands = []
