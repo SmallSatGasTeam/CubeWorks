@@ -1,3 +1,5 @@
+import sys
+sys.path.append('../')
 import asyncio
 from flightLogic.missionModes.heartBeat import heart_beat
 
@@ -5,4 +7,4 @@ from flightLogic.missionModes.heartBeat import heart_beat
 
 heartBeatObj = heart_beat()
 print("Starting receive.")
-asyncio.create_task(heartBeatObj.heartBeatRun())
+asyncio.run(heartBeatObj.heartBeatRun())
