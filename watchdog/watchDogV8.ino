@@ -1,4 +1,4 @@
-//Includes deep sleep functionality
+ //Includes deep sleep functionality
 #include "LowPower.h"
 //this lets us save to flash memory so we don't lose the no heart beet count on reboot
 #include <EEPROM.h>
@@ -9,7 +9,7 @@ const int MOSFET = 10;
 const int MAX_REBOOTS = /*5; */ 100;
 
 //Time that the watchdog will wait without input from Pi before shutting off (in milliseconds)
-const long PI_CHECK_TIME = /*6000;*/30000;
+const long PI_CHECK_TIME = 4000; //30000;
 
 /*
 //Custom delay times (in milliseconds)
@@ -26,7 +26,7 @@ int noHeartbeatBootCount = 0;
 bool bootInProgress = false;
 
 //Standard Boot delay time
-const long BOOT_DELAY_TIME = /*2000;*/120000;
+const long BOOT_DELAY_TIME = 2000;//120000;
 
 //Time the watchdog keeps the pi off
 const long PI_OFF_TIME = 5000;
@@ -50,7 +50,8 @@ void wait(long delayTime){
     }
 
     //go to low power for 1 second
-    LowPower.powerDown(SLEEP_1S, ADC_OFF, BOD_OFF);  
+    //LowPower.powerDown(SLEEP_1S, ADC_OFF, BOD_OFF);
+    delay(1000);  
   }
 }
 
@@ -75,7 +76,7 @@ bool isPiDead(){
 
     //check for overflow
     if(check_timer_start > check_timer){
-      Serial.println("Int overflow tripped, resetting timers");
+      //Serial.println("Int overflow tripped, resetting timers");
       check_timer_start = millis();
       check_timer = millis();
     }
@@ -103,7 +104,7 @@ bool isPiDead(){
     }
 
     //Put arduino into low power mode for 1 second
-    LowPower.powerDown(SLEEP_1S, ADC_OFF, BOD_OFF);  
+    delay(1000);
     
   }
 
@@ -138,11 +139,18 @@ bool twentyfour_Hour_Reboot(long currentSystemTime)
   }
 }
 
+void boot_delay(){
+    for(int i = 0; i < 3/*15*/; i++){
+      LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);  
+    }
+}
+
 
 void setup() {
 
   // initialize pins
   pinMode(MOSFET, OUTPUT);
+  //pinMode(LED_BUILTIN,OUTPUT);
   pinMode(HEARTBEAT, INPUT);
 
   //Set MOSFET to low by default
@@ -150,10 +158,8 @@ void setup() {
 
   //This is a work around to make the dual booting functional. In case the Arduino is reset when the Pi rebots, the Arduino will wait for the Boot time before beginning watchdog operations
   //This puts the arduino into deep sleep for 120 seconds. The longest we can put it into deep sleep is 8 seconds.
-  for(int i = 0; i < 15; i++){
-    LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);  
-  }
-  
+
+  boot_delay();
 }
 
 void loop() {
@@ -163,7 +169,8 @@ void loop() {
   
   //If we have lost signal from the Pi and are rebooting, or rebooting after a custom boot
   if(bootInProgress == true){
-    wait(BOOT_DELAY_TIME);
+    //wait(BOOT_DELAY_TIME);
+    boot_delay();
     bootInProgress = false;
   }
   
@@ -183,36 +190,32 @@ void loop() {
       //reset pi
       //pi off
       digitalWrite(MOSFET, HIGH);
-      // Serial.println("Pi is off");
-      //Go into low power mode for 8 seconds
-      LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);  
+//      Serial.println("Pi is off");
+      //Busy wait for 1 second so we don't loose control of the MOSFET pin
+      delay(1000); 
       //pi on
       digitalWrite(MOSFET, LOW);
-      // Serial.println("Pi on");
+//      Serial.println("Pi on");
     }
   }
   else 
   {
     //we are just going to keep checking to see if the pi comes back on, should we ever run into the case were we max out the reboots
-      //Serial.println("Waiting for pi to come back on>>>");
-      //Serial.print("Total reboot cycles waited: ");
-      //Serial.println(noHeartbeatBootCount);
-      //wait(BOOT_DELAY_TIME);
       isPiDead();
+     // boot_delay();
       if(twentyfour_Hour_Reboot(millis()) == true){
-       //  Serial.println("Rebooting Pi");
-//      Serial.print("Boot count without hearing a heartbeat: ");
       
         //reset pi
         //pi off
         digitalWrite(MOSFET, HIGH);
-        //  Serial.println("Pi is off");
-        //Go into low power mode for 8 seconds
-        LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);  
+        Serial.println("Pi is off");
+        //Busy wait for 1 second so we don't loose control of the MOSFET pin
+        wait(1000); 
         //pi on
         digitalWrite(MOSFET, LOW);
-        //  Serial.println("Pi on");
-        wait(BOOT_DELAY_TIME);
+        Serial.println("Pi on");
+        boot_delay();
+        //wait(BOOT_DELAY_TIME);
       }
   }
 }
