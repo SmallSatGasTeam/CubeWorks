@@ -25,6 +25,22 @@ class TransceiverConfig(Driver):
     ser.close()
     #return response
 
+  def setBeaconOn(self):
+    """
+    Turns on the morse beacon. Leaves all values at default except beacon.
+    Binary SCW: 11001101000001
+    Hex SCW: 3341
+    """
+    self.writeData(b'ES+W22003341\r')
+
+  def setBeaconOff(self):
+    """
+    Turns off the morse beacon. All values are back to default.
+    Binary SCW: 11001100000001
+    Hex SCW: 3301
+    """
+    self.writeData(b'ES+W22003301\r')
+
   def setLowPowerMode(self):
     """
     Turns on Low Power Mode. Note: Any ESTTC command can be used to bring the transceiver out of low power mode
