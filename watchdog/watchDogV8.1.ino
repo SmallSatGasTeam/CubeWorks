@@ -6,27 +6,19 @@
 //Pin numbers for the input Heartbeat and output to the MOSFET
 const int HEARTBEAT = 9;
 const int MOSFET = 10;
-const int MAX_REBOOTS = /*5; */ 100;
+const int MAX_REBOOTS = 100;
 
 //Time that the watchdog will wait without input from Pi before shutting off (in milliseconds)
-const long PI_CHECK_TIME = 4000; //30000;
+const long PI_CHECK_TIME = 30000;
 
-/*
-//Custom delay times (in milliseconds)
-const long DELAY1 = 60000;
-const long DELAY2 = 120000;
-const long DELAY3 = 180000;
-*/
-
-const long twentyfour_HOUR_REBOOT = 86400000;
-const long twentyfour_Hour_Window = 30000;
+const long twentyfour_HOUR_REBOOT = 86400000; //24 hours in milliseconds
+const long twentyfour_Hour_Window = 300000;    //5 minute window for the 24 hour reboot
 
 int noHeartbeatBootCount = 0;
 
 bool bootInProgress = false;
 
 //Standard Boot delay time
-const long BOOT_DELAY_TIME = 2000;//120000;
 
 //Time the watchdog keeps the pi off
 const long PI_OFF_TIME = 5000;
@@ -140,7 +132,7 @@ bool twentyfour_Hour_Reboot(long currentSystemTime)
 }
 
 void boot_delay(){
-    for(int i = 0; i < 3/*15*/; i++){
+    for(int i = 0; i < 15; i++){
       LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);  
     }
 }
@@ -159,7 +151,11 @@ void setup() {
   //This is a work around to make the dual booting functional. In case the Arduino is reset when the Pi rebots, the Arduino will wait for the Boot time before beginning watchdog operations
   //This puts the arduino into deep sleep for 120 seconds. The longest we can put it into deep sleep is 8 seconds.
 
-  boot_delay();
+  for(int i = 0; i < 120; i++){
+    delay(1000);
+  }
+  
+  //boot_delay();
 }
 
 void loop() {
@@ -169,7 +165,6 @@ void loop() {
   
   //If we have lost signal from the Pi and are rebooting, or rebooting after a custom boot
   if(bootInProgress == true){
-    //wait(BOOT_DELAY_TIME);
     boot_delay();
     bootInProgress = false;
   }
@@ -178,7 +173,7 @@ void loop() {
   else if (MAX_REBOOTS >= noHeartbeatBootCount){
     //Serial.println("Checking Pi...");
     bootInProgress = isPiDead();
-
+    boot_delay();
     //If there was no response, reset the Pi
     if(bootInProgress == true){
       //save the noHeartbeatBootCount into the eeprom memory
@@ -215,7 +210,6 @@ void loop() {
         digitalWrite(MOSFET, LOW);
         Serial.println("Pi on");
         boot_delay();
-        //wait(BOOT_DELAY_TIME);
       }
   }
 }
