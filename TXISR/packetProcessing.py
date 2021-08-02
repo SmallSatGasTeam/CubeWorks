@@ -181,26 +181,8 @@ class packetProcessing:
 					# Delete Data
 					print("Deleting Data")
 					self.deleteData()
-
-				transceiver = transceiverConfig.TransceiverConfig()
 				
-				if binaryData[80:88] == '00000000':
-					# Disable Beacon
-					print("Disable Beacon")
-					transceiver.setBeaconOff()
-				else:
-					#Enable Beacon
-					print("Enable Beacon")
-					transceiver.setBeaconOn()
-
-				if binaryData[88:96] == '00000000':
-					# Disable Audio Beacon
-					print("Disable Audio Beacon")
-					transceiver.setAudioBeaconOff()
-				else:
-					# Enable Audio Beacon
-					print("Enable Audio Beacon")
-					transceiver.setAudioBeaconOn()
+				#Beacon commands have been removed and now send directly to the transceiver
 					
 			else:
 				print("Hashes do not match, will not execute commands!")
