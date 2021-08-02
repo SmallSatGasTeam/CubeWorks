@@ -1,4 +1,4 @@
-### This file is intended to test a simple transmission between two transceivers. Run 'cat /dev/serial0' on the receiving system, and this code on the transmitting system ###
+### This file is intended to test a simple transmission between two transceivers. On the receiving system run 'stty -F /dev/serial0 115200' and then 'cat /dev/serial0' ###
 import serial
 from time import sleep
 ser = serial.Serial('/dev/serial0', 115200)
