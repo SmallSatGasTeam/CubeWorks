@@ -4,8 +4,6 @@ import asyncio
 from flightLogic.getDriverData import *
 from Drivers.eps import EPS as EPS
 from Drivers.sunSensors import sunSensorDriver
-"""DO NOT PUSH "from DummyDrivers.sunSensors import sunSensorDriver as DummySunSensorDriver" TO MASTER! THIS IS FOR TESTING PURPOSES ONLY."""
-from DummyDrivers.sunSensors import sunSensorDriver as DummySunSensorDriver
 from TXISR import pythonInterrupt
 
 from inspect import currentframe, getframeinfo
@@ -19,10 +17,9 @@ getBusVoltageMin = 3.5
 getBusVoltageMax = 5.1
 
 
-DummySunSensor = False
 DEBUG = False
 
-"safeModeObject was deleted below in the init parameters after saveObject"
+#safeModeObject was deleted below in the init parameters after saveObject
 class preBoomMode:
 	def __init__(self, saveObject, transmitObject, packetObj):
 		self.thresholdVoltage = 3.5 #Threshold voltage to deploy AeroBoom.
@@ -58,11 +55,7 @@ class preBoomMode:
 			await asyncio.sleep(5) #Run this whole while loop every 15 seconds
 
 	async def sunCheck(self):
-		"""DO NOT PUSH THIS IF STATEMENT TO MASTER. THIS IS FOR TESTING PURPOSES ONLY"""
-		if DummySunSensor:
-			sunSensor = DummySunSensorDriver.sunSensor()
-		else:
-			sunSensor = sunSensorDriver.sunSensor()
+		sunSensor = sunSensorDriver.sunSensor()
 		while True: #Monitor the sunlight, record it in list NOTE: could be improved to halve calls
 			try:
 				vList = [0.0, 0.0, 0.0, 0.0, 0.0]

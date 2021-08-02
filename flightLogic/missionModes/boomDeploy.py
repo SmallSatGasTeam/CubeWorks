@@ -6,10 +6,8 @@ from flightLogic.getDriverData import *
 import Drivers.boomDeployer as boomDeployer
 from TXISR import pythonInterrupt
 from TXISR.packetProcessing import packetProcessing as packet
-from DummyDrivers.boomDeployer.BoomDeployer import BoomDeployer as DummyBoomDeployer
 from flightLogic.missionModes.heartBeat import heart_beat
 
-DONTMURDERBEN = False
 #safeModeObject was deleted below in the init parameters after saveObject
 class boomMode:
 	def __init__(self, saveObject, transmitObject, cam, packetObj):
@@ -36,10 +34,8 @@ class boomMode:
 		print("Starting boom deploy")
 		# Deploy boom, take picture
 		await asyncio.sleep(5)
-		if DONTMURDERBEN:
-			deployer = DummyBoomDeployer()
-		else:
-			deployer = boomDeployer.BoomDeployer()
+
+		deployer = boomDeployer.BoomDeployer()
 		await deployer.deploy() 
 		
 

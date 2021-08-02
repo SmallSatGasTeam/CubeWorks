@@ -17,8 +17,9 @@ Framework components are designed to be modular, and easy to add to and remove f
 2. Flash image onto 8GB micro SD card
 3. Run image on Raspberry Pi Zero W
 4. Log in (email coordinator@gas.usu.edu if you do not have the login password)
-5. Run `./install.exe`
-6. Use `htop` and check to see in main flight logic is running
+5. IMPORTANT: Make sure to enable the Serial port via raspi-config. Also update the chronodot time (see Software Unit Testing Procedure document for instructions)
+6. Run `./install.exe`
+7. Use `htop` and check to see in main flight logic is running
 
 ### INSTALLING SSDV
 1. `git clone https://github.com/SmallSatGasTeam/ssdv`

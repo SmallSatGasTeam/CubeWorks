@@ -24,7 +24,7 @@ class TransceiverConfig(Driver):
     #response = ser.read(128)
     ser.close()
     #return response
-  
+
   def setBeaconOn(self):
     """
     Turns on the morse beacon. Leaves all values at default except beacon.
@@ -32,7 +32,7 @@ class TransceiverConfig(Driver):
     Hex SCW: 3341
     """
     self.writeData(b'ES+W22003341\r')
-  
+
   def setBeaconOff(self):
     """
     Turns off the morse beacon. All values are back to default.
@@ -40,20 +40,6 @@ class TransceiverConfig(Driver):
     Hex SCW: 3301
     """
     self.writeData(b'ES+W22003301\r')
-
-  def setAudioBeaconOn(self):
-    """
-    Turn on audio beacon. Note, the last 4 characters represent the period between beacon transmissions
-    encoded in hex. This command sets the period to 300 seconds. To turn off the audio beacon, set
-    the period to 0 seconds
-    """
-    self.writeData(b'ES+W22080000012C\r')
-  
-  def setAudioBeaconOff(self):
-    """
-    Turns off the audio beacon.
-    """
-    self.writeData(b'ES+W220800000000\r')
 
   def setLowPowerMode(self):
     """

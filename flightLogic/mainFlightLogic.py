@@ -115,6 +115,10 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 				antennaDoorObj.deployAntennaMain() #wait for the antenna to deploy
 				await asyncio.sleep(60)
 				break
+			elif ((antennaVoltageCheckWait/10) < voltageCount):
+				antennaDoorObj.deployAntennaMain() #wait for the antenna to deploy
+				await asyncio.sleep(60)
+				break
 			else:
 				voltageCount += 1
 				await asyncio.sleep(10)
