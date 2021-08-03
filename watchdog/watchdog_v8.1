@@ -95,7 +95,7 @@ bool isPiDead(){
       return reboot24;
     }
 
-    //Put arduino into low power mode for 1 second
+    //wait for 1 seconds
     delay(1000);
     
   }
@@ -149,8 +149,6 @@ void setup() {
   digitalWrite(MOSFET, LOW);
 
   //This is a work around to make the dual booting functional. In case the Arduino is reset when the Pi rebots, the Arduino will wait for the Boot time before beginning watchdog operations
-  //This puts the arduino into deep sleep for 120 seconds. The longest we can put it into deep sleep is 8 seconds.
-
   for(int i = 0; i < 120; i++){
     delay(1000);
   }
@@ -159,8 +157,7 @@ void setup() {
 }
 
 void loop() {
-//  wdt_enable(WDTO_8S);
-//the boot count is save in possition zero 
+//the boot count is saved in position zero of the EEPROM
   noHeartbeatBootCount =  EEPROM.read(0);
   
   //If we have lost signal from the Pi and are rebooting, or rebooting after a custom boot
@@ -173,15 +170,8 @@ void loop() {
   else if (MAX_REBOOTS >= noHeartbeatBootCount){
     //Serial.println("Checking Pi...");
     bootInProgress = isPiDead();
-    boot_delay();
     //If there was no response, reset the Pi
     if(bootInProgress == true){
-      //save the noHeartbeatBootCount into the eeprom memory
-      //EEPROM.write(0, noHeartbeatBootCount);
-      //Code to reboot Pi
-     // Serial.println("Rebooting Pi");
-//      Serial.print("Boot count without hearing a heartbeat: ");
-      
       //reset pi
       //pi off
       digitalWrite(MOSFET, HIGH);
@@ -191,6 +181,9 @@ void loop() {
       //pi on
       digitalWrite(MOSFET, LOW);
 //      Serial.println("Pi on");
+    }
+    else{
+      boot_delay();
     }
   }
   else 
