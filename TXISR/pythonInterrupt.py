@@ -58,7 +58,7 @@ async def interrupt(transmitObject, packetObj):
 				
 			# serialport.close()
 		except Exception as e:
-			print("Failure to run interrupt. holly big monkey butts of flamming glory! Exception:", repr(e))
+			print("Failure to run interrupt. Exception:", repr(e))
 			await asyncio.sleep(5)
 
 def parseData(data, bracket): #Takes data string, in the form of hex, from async read serial function. Spits out all AX.25 packets and GASPACS packets contained inside, as well as remaining data to be put into the leftovers

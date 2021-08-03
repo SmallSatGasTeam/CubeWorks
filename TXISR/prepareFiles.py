@@ -85,7 +85,9 @@ def prepareData(duration, dataType, startFrom):
 			print("Starting from the provided line:", str(lineNumber))
 
 		while dataSize < numPackets:
-				line =  str(lineNumber) + ":" + linecache.getline(dataFilePath, lineNumber)
+				unstrippedLine = linecache.getline(dataFilePath, lineNumber)
+				stripped = unstrippedLine.replace("\000", "")
+				line = str(lineNumber) + ":" + stripped
 				if (line == (str(lineNumber) + ":" + '')) or (lineNumber == 0):
 					#print("End of the line, resetting.")
 					lineNumber = 1
