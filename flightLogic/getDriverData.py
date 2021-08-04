@@ -355,8 +355,8 @@ class TTNCData:
 		EPS5VCurrent + SP_X_Voltage + SP_X_Plus_Current + SP_X_Minus_Current + SP_Y_Voltage + 
 		SP_Y_Plus_Current + SP_Y_Minus_Current + SP_Z_Voltage + SP_Z_Plus_Current + gaspacsBytes)
 		
-		RTCInt = self.RTC.readSeconds()
 		try:
+			RTCInt = self.RTC.readSeconds()
 			if (RTCInt< RTCMin) or (RTCInt > RTCMax):
 				print("RTCInt: ", RTCInt)
 				raise unexpectedValue
