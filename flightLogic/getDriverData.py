@@ -355,8 +355,8 @@ class TTNCData:
 		EPS5VCurrent + SP_X_Voltage + SP_X_Plus_Current + SP_X_Minus_Current + SP_Y_Voltage + 
 		SP_Y_Plus_Current + SP_Y_Minus_Current + SP_Z_Voltage + SP_Z_Plus_Current + gaspacsBytes)
 		
-		RTCInt = self.RTC.readSeconds()
 		try:
+			RTCInt = self.RTC.readSeconds()
 			if (RTCInt< RTCMin) or (RTCInt > RTCMax):
 				print("RTCInt: ", RTCInt)
 				raise unexpectedValue
@@ -414,8 +414,8 @@ class DeployData():
 		except Exception as e:
 			# add redundant UVDriver try/except
 			# if no UVDrivers work, continue with exception
-			# print("Failed to pull UVdriver data. Exception: ", repr(e), 
-			# getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
+			print("Failed to pull UVdriver data. Exception: ", repr(e), 
+			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 			boombox_uv = float4tohex(boombox_uvMax + 1)
 
 		try:
@@ -426,8 +426,8 @@ class DeployData():
 		except Exception as e:
 			# add redundant UVDriver try/except
 			# if no UVDrivers work, continue with exception
-			# print("Failed to pull Accelerometer. Exception: ", repr(e), 
-			# getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
+			print("Failed to pull Accelerometer. Exception: ", repr(e), 
+			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 			accelX, accelY, accelZ = accelMax + 1, accelMax + 1, accelMax + 1
 
 		accelX = float4tohex(accelX)
