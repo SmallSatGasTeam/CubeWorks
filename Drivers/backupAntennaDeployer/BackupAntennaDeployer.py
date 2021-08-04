@@ -39,12 +39,10 @@ class BackupAntennaDeployer(Driver):
                     self.PWMPRIMARY.ChangeDutyCycle(dc)
                     time.sleep(0.05)
                 await asyncio.sleep(self.burnTime)
-                
-                for dc in range(100, -1, -5):
-                    self. PWMPRIMARY.ChangeDutyCycle(dc)
-                    time.sleep(0.05)
-                
+
+                GPIO.output(self.primaryPin, GPIO.LOW)
                 self.PWMPRIMARY.stop()
+                
                 break
         except:
             print("Failed to use primary antenna deploy")
@@ -70,11 +68,9 @@ class BackupAntennaDeployer(Driver):
                     time.sleep(0.05)
                 await asyncio.sleep(self.burnTime)
                 
-                for dc in range(100, -1, -5):
-                    self. PWMSECONDARY.ChangeDutyCycle(dc)
-                    time.sleep(0.05)
-                
+                GPIO.output(self.secondaryPin, GPIO.LOW)
                 self.PWMSECONDARY.stop()
+                
                 break
         except:
             print("Failed to use secondary antenna deploy")
