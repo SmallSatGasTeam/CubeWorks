@@ -57,8 +57,8 @@ class preBoomMode:
 	async def sunCheck(self):
 		sunSensor = sunSensorDriver.sunSensor()
 		while True: #Monitor the sunlight, record it in list NOTE: could be improved to halve calls
+			vList = [0.0, 0.0, 0.0, 0.0, 0.0]
 			try:
-				vList = [0.0, 0.0, 0.0, 0.0, 0.0]
 				vList = sunSensor.read()
 				if DEBUG:
 					print("Pre boom deploy sun sensor values: ", vList)
@@ -70,7 +70,7 @@ class preBoomMode:
 			except Exception as e:
 				print("Failure to pull sunSensor data. Received error:", repr(e),
 				getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
-				vList[0] = sunSensorMax + 1
+				vList[0] = 1
 
 			self.sunlightData = max(vList)
 			await asyncio.sleep(5)
