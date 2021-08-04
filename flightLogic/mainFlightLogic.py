@@ -145,6 +145,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 		
 	if not antennaDeployed:
 		await asyncio.gather(antennaDeploy.run())
+		await asyncio.sleep(300)
 		print('Running Antenna Deployment Mode')
 		antennaDeployed = True
 		print("Antenna Deployed = ", antennaDeployed)
