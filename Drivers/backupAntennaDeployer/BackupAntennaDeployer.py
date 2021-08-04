@@ -1,5 +1,7 @@
+from asyncio.tasks import wait
 from Drivers.Driver import Driver
 import asyncio
+import time
 import RPi.GPIO as GPIO
 
 class BackupAntennaDeployer(Driver):
@@ -9,7 +11,7 @@ class BackupAntennaDeployer(Driver):
         """
         super().__init__("BackupAntennaDeployer")
         # Initial values
-        self.burnTime = 10
+        self.burnTime = 30
 
         # Set up the GPIO pins for use
         GPIO.setmode(GPIO.BCM)
@@ -28,18 +30,59 @@ class BackupAntennaDeployer(Driver):
         backup antenna burn.
         """
         #Burn primary backup, then turn off and wait
-        GPIO.output(self.primaryPin, GPIO.HIGH)
-        await asyncio.sleep(self.burnTime)
-        GPIO.output(self.primaryPin, GPIO.LOW)
+        self.PWMPRIMARY = GPIO.PWM(self.primaryPin, 500)
+        self.PWMPRIMARY.start(0)
+        try:
+            while True:
+
+                for dc in range(0, 101, 5):
+                    self.PWMPRIMARY.ChangeDutyCycle(dc)
+                    time.sleep(0.05)
+                await asyncio.sleep(self.burnTime)
+                
+                for dc in range(100, -1, -5):
+                    self. PWMPRIMARY.ChangeDutyCycle(dc)
+                    time.sleep(0.05)
+                
+                self.PWMPRIMARY.stop()
+                break
+        except:
+            print("Failed to use primary antenna deploy")
+
+        # GPIO.output(self.primaryPin, GPIO.HIGH)
+        # time.sleep()
+        # await asyncio.sleep(self.burnTime)
+        # GPIO.output(self.primaryPin, GPIO.LOW)
 
     async def deploySecondary(self):
         """
         Set secondary deploy pin to high for a specified time, triggering the
         backup antenna burn.
         """
-        GPIO.output(self.secondaryPin, GPIO.HIGH)
-        await asyncio.sleep(self.burnTime)
-        GPIO.output(self.secondaryPin, GPIO.LOW)
+
+        self.PWMSECONDARY = GPIO.PWM(self.secondaryPin, 500)
+        self.PWMSECONDARY.start(0)
+        try:
+            while True:
+
+                for dc in range(0, 101, 5):
+                    self.PWMSECONDARY.ChangeDutyCycle(dc)
+                    time.sleep(0.05)
+                await asyncio.sleep(self.burnTime)
+                
+                for dc in range(100, -1, -5):
+                    self. PWMSECONDARY.ChangeDutyCycle(dc)
+                    time.sleep(0.05)
+                
+                self.PWMSECONDARY.stop()
+                break
+        except:
+            print("Failed to use secondary antenna deploy")
+
+
+        # GPIO.output(self.secondaryPin, GPIO.HIGH)
+        # await asyncio.sleep(self.burnTime)
+        # GPIO.output(self.secondaryPin, GPIO.LOW)
 
     def read(self):
         """
