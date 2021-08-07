@@ -51,7 +51,7 @@ class BoomDeployer(Driver):
         self.PWM2 = GPIO.PWM(self.wireCutter2_high1, 500)
 	
 	#used to turn on the eps bus
-	self.Bus = EPS()
+        self.Bus = EPS()
 
     async def deploy(self):
         """
@@ -61,9 +61,9 @@ class BoomDeployer(Driver):
         """
 	
 	#this is turn onthe raw out put on the bus
-	try:
+        try:
                 self.Bus.enableRaw()
-	except: 
+        except: 
                 pass
 	
         for num in range(0, self.numTimes):
