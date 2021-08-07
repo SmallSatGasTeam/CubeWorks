@@ -60,9 +60,9 @@ class BoomDeployer(Driver):
         """
 	
 	#this is turn onthe raw out put on the bus
-	try:
+        try:
                 self.Bus.enableRaw()
-	except: 
+        except: 
                 pass
 	
         for num in range(0, self.numTimes):
