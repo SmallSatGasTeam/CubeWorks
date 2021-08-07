@@ -1,4 +1,5 @@
 from Drivers.Driver import Driver
+from Drivers import EPS
 import asyncio
 import RPi.GPIO as GPIO
 
@@ -47,7 +48,9 @@ class BoomDeployer(Driver):
         GPIO.setup(self.wireCutter2_high2,GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.wireCutter2_low1,GPIO.OUT, initial=GPIO.HIGH)
         self.PWM2 = GPIO.PWM(self.wireCutter2_high1, 500)
-
+	
+	#used to turn on the eps bus
+	self.Bus = EPS()
 
     async def deploy(self):
         """
@@ -55,6 +58,13 @@ class BoomDeployer(Driver):
 	the burn. Wait and then repeat with the other wirecutter mechanism.
 	Note: PWM is used on only one channel.
         """
+	
+	#this is turn onthe raw out put on the bus
+	try:
+                self.Bus.enableRaw()
+	except: 
+                pass
+	
         for num in range(0, self.numTimes):
 
             #Turn on Wire Cutter 1
