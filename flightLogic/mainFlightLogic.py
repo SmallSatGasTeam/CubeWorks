@@ -46,7 +46,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 	cameraObj = Camera()
 	# Variable setup
 	delay = 35*60  # 35 minute delay #TODO: set this delay to 35 min
-	antennaVoltageCheckWait = 180 # 3 minute wait for the voltage to increase past the threshold. This is arbitrary for now
+	antennaVoltageCheckWait = 22*60*60 # 22 hour wait for the voltage to increase past the threshold. This is arbitrary for now
 	boot = True
 	saveObject = saveTofiles.save()
 	# startTXISR(save)
@@ -109,15 +109,11 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 				break
 			elif (not antennaDeployed) and (BusVoltage > 3.7):
 				antennaDoorObj.deployAntennaMain() #wait for the antenna to deploy
-				await asyncio.sleep(60)
+				await asyncio.sleep(300)
 				break
 			elif ((antennaVoltageCheckWait/10) < voltageCount):
 				antennaDoorObj.deployAntennaMain() #wait for the antenna to deploy
-				await asyncio.sleep(60)
-				break
-			elif ((antennaVoltageCheckWait/10) < voltageCount):
-				antennaDoorObj.deployAntennaMain() #wait for the antenna to deploy
-				await asyncio.sleep(60)
+				await asyncio.sleep(300)
 				break
 			else:
 				voltageCount += 1
@@ -149,6 +145,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 		
 	if not antennaDeployed:
 		await asyncio.gather(antennaDeploy.run())
+		await asyncio.sleep(300)
 		print('Running Antenna Deployment Mode')
 		antennaDeployed = True
 		print("Antenna Deployed = ", antennaDeployed)
