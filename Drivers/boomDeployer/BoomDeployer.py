@@ -50,7 +50,7 @@ class BoomDeployer(Driver):
         self.PWM2 = GPIO.PWM(self.wireCutter2_high1, 500)
 	
 	#used to turn on the eps bus
-	self.Bus = EPS()
+        self.Bus = EPS()
 
     async def deploy(self):
         """
