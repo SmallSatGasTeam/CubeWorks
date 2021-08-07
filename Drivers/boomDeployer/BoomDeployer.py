@@ -55,6 +55,9 @@ class BoomDeployer(Driver):
 	the burn. Wait and then repeat with the other wirecutter mechanism.
 	Note: PWM is used on only one channel.
         """
+	
+	self.bus.write_byte_data(self.DEVICE_ADDR, 0x01, 0x03)
+	
         for num in range(0, self.numTimes):
 
             #Turn on Wire Cutter 1
