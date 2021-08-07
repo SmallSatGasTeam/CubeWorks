@@ -49,6 +49,7 @@ class BoomDeployer(Driver):
         GPIO.setup(self.wireCutter2_low1,GPIO.OUT, initial=GPIO.HIGH)
         self.PWM2 = GPIO.PWM(self.wireCutter2_high1, 500)
 	
+	#used to turn on the eps bus
 	self.bus = smbus.SMBus(self.DEVICE_BUS)
 
 
@@ -59,7 +60,11 @@ class BoomDeployer(Driver):
 	Note: PWM is used on only one channel.
         """
 	
-	self.bus.write_byte_data(self.DEVICE_ADDR, 0x01, 0x03)
+	#this is turn onthe raw out put on the bus
+	try:
+		self.bus.write_byte_data(self.DEVICE_ADDR, 0x01, 0x03)
+	except: 
+		pass
 	
         for num in range(0, self.numTimes):
 
