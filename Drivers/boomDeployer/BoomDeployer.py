@@ -1,5 +1,6 @@
 from Drivers.Driver import Driver
 import asyncio
+import smbus
 import RPi.GPIO as GPIO
 
 class BoomDeployer(Driver):
@@ -47,6 +48,8 @@ class BoomDeployer(Driver):
         GPIO.setup(self.wireCutter2_high2,GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.wireCutter2_low1,GPIO.OUT, initial=GPIO.HIGH)
         self.PWM2 = GPIO.PWM(self.wireCutter2_high1, 500)
+	
+	self.bus = smbus.SMBus(self.DEVICE_BUS)
 
 
     async def deploy(self):
