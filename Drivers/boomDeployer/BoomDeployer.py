@@ -60,7 +60,7 @@ class BoomDeployer(Driver):
 	Note: PWM is used on only one channel.
         """
 	
-	#this is turn onthe raw out put on the bus
+	#this is turn onthe raw out put on the bus, this is incase it turns off 
         try:
                 self.Bus.enableRaw()
         except: 
