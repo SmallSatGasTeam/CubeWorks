@@ -1,4 +1,5 @@
 from Drivers.Driver import Driver
+from Drivers import EPS
 import asyncio
 import smbus
 import RPi.GPIO as GPIO
@@ -50,8 +51,7 @@ class BoomDeployer(Driver):
         self.PWM2 = GPIO.PWM(self.wireCutter2_high1, 500)
 	
 	#used to turn on the eps bus
-	self.bus = smbus.SMBus(self.DEVICE_BUS)
-
+	self.Bus = EPS()
 
     async def deploy(self):
         """
@@ -62,9 +62,9 @@ class BoomDeployer(Driver):
 	
 	#this is turn onthe raw out put on the bus
 	try:
-		self.bus.write_byte_data(self.DEVICE_ADDR, 0x01, 0x03)
+                self.Bus.enableRaw()
 	except: 
-		pass
+                pass
 	
         for num in range(0, self.numTimes):
 
