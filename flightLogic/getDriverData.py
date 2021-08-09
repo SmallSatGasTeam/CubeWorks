@@ -372,7 +372,7 @@ class TTNCData:
 
 	async def collectTTNCData(self, mMode):
 		#we are going to wait 60 seconds after the pi boots before collecting data because the pi can be slow to update the system clock
-		await(60)
+		await asyncio.sleep(60)
 		# Data collection loop
 		while True:
 			# Get TTNC data
@@ -581,7 +581,7 @@ class AttitudeData():
 
 	async def collectAttitudeData(self):
 		#we are going to wait 60 seconds after the pi boots before collecting data because the pi can be slow to update the system clock
-		await(60)
+		await asyncio.sleep(60)
 		
 		# Data collection loop
 		#this change will make it so that attitude data only collects 1800 times and then stops colleting 
