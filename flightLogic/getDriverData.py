@@ -53,15 +53,15 @@ accelMax = 16
 EPS3V3CurrentMin = 0.0 
 EPS3V3CurrentMax = 3.0
 EPS5VCurrentMin = 0.0
-EPS5VCurrentMax = 2.0
+EPS5VCurrentMax = 3.0
 sunSensorMin = 0.0
 sunSensorMax = 3.3
 RTCMin = 0
 RTCMax = 4294967295
 RTCMinMil = 0
 RTCMaxMil = 4294967295 * 1000
-magnetometerMin = -49.151
-magnetometerMax = 49.152
+magnetometerMin = -100
+magnetometerMax = 100
 
 def readBootCount():
 	try:
