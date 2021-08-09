@@ -53,15 +53,15 @@ accelMax = 16
 EPS3V3CurrentMin = 0.0 
 EPS3V3CurrentMax = 3.0
 EPS5VCurrentMin = 0.0
-EPS5VCurrentMax = 2.0
+EPS5VCurrentMax = 3.0
 sunSensorMin = 0.0
 sunSensorMax = 3.3
 RTCMin = 0
 RTCMax = 4294967295
 RTCMinMil = 0
 RTCMaxMil = 4294967295 * 1000
-magnetometerMin = -49.151
-magnetometerMax = 49.152
+magnetometerMin = -100
+magnetometerMax = 100
 
 def readBootCount():
 	try:
@@ -371,6 +371,8 @@ class TTNCData:
 		await self.__save.writeTTNC(self.__ttncData) 
 
 	async def collectTTNCData(self, mMode):
+		#we are going to wait 60 seconds after the pi boots before collecting data because the pi can be slow to update the system clock
+		await asyncio.sleep(60)
 		# Data collection loop
 		while True:
 			# Get TTNC data
@@ -578,8 +580,10 @@ class AttitudeData():
 		await self.save.writeAttitude(self.__attitudeData) # filechecker?
 
 	async def collectAttitudeData(self):
-		# Data collection loop
+		#we are going to wait 60 seconds after the pi boots before collecting data because the pi can be slow to update the system clock
+		await asyncio.sleep(60)
 		
+		# Data collection loop
 		#this change will make it so that attitude data only collects 1800 times and then stops colleting 
 		while self.__dataSamples >= self.__collectedData:
 			# Get Attitude data

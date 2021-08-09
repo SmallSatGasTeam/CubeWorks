@@ -93,7 +93,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 
 	# This is the implementation of the BOOT mode logic.
 	if not antennaDeployed:  # First, sleep for 35 minutes
-		print('Antenna is undeployed, waiting 60 seconds')
+		print('Antenna is undeployed, waiting 35 minutes')
 		await asyncio.sleep(delay)  # Sleep for 35 minutes
 		while(transmitObject.isRunning()):
 			await asyncio.sleep(60) #sleep if a transmission is running
@@ -104,7 +104,11 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 	voltageCount = 0
 	try: 
 		while True:
-			BusVoltage = eps.getBusVoltage()
+			try :
+				BusVoltage = eps.getBusVoltage()
+			except :
+				#if we fail to check the bus voltage we will set it to the max value plus one
+				BusVoltage = 5.1 + 1
 			if antennaDeployed == True:
 				break
 			elif (not antennaDeployed) and (BusVoltage > 3.7):
@@ -145,7 +149,6 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 		
 	if not antennaDeployed:
 		await asyncio.gather(antennaDeploy.run())
-		await asyncio.sleep(300)
 		print('Running Antenna Deployment Mode')
 		antennaDeployed = True
 		print("Antenna Deployed = ", antennaDeployed)
