@@ -1,7 +1,9 @@
 from Drivers.Driver import Driver
 from Drivers import EPS
 import asyncio
+import smbus
 import RPi.GPIO as GPIO
+import time
 
 class BoomDeployer(Driver):
     def __init__(self):
@@ -15,6 +17,7 @@ class BoomDeployer(Driver):
         self.burnTimeWC2 = 5
         self.waitTime = 10
         self.numTimes = 3
+	#The duty cycles will specify the maximum duty cycle for the PWM for each wire burn
         self.dutyCycle1 = 75
         self.dutyCycle2 = 90
 
@@ -59,7 +62,7 @@ class BoomDeployer(Driver):
 	Note: PWM is used on only one channel.
         """
 	
-	#this is turn onthe raw out put on the bus
+	#this is turn onthe raw out put on the bus, this is incase it turns off 
         try:
                 self.Bus.enableRaw()
         except: 
@@ -67,41 +70,46 @@ class BoomDeployer(Driver):
 	
         for num in range(0, self.numTimes):
 
-            #Turn on Wire Cutter 1
-            GPIO.output(self.wireCutter1_high1, GPIO.HIGH)
-            GPIO.output(self.wireCutter1_high2, GPIO.HIGH)
-            GPIO.output(self.wireCutter1_low1, GPIO.LOW)
-            self.PWM1.start(self.dutyCycle1)
-            #Burn for set number of seconds
-            await asyncio.sleep(self.burnTimeWC1)
-            #Turn off Wire Cutter 1
-            GPIO.output(self.wireCutter1_high1, GPIO.LOW)
-            GPIO.output(self.wireCutter1_high2, GPIO.LOW)
-            GPIO.output(self.wireCutter1_low1, GPIO.HIGH)
-            self.PWM1.stop()
-            #Wait
-            await asyncio.sleep(self.waitTime)
+            	#Turn on Wire Cutter 1
+		#GPIO.output(self.wireCutter1_high1, GPIO.HIGH)
+            	GPIO.output(self.wireCutter1_high2, GPIO.HIGH)
+            	GPIO.output(self.wireCutter1_low1, GPIO.LOW)
+		self.PWM1.start(0)
+            	for dc in range(0, self.dutyCycle1, 5):
+			self.PWM1.ChangeDutyCycle(dc)
+			time.sleep(0.05)
+		#Burn for set number of seconds
+		await asyncio.sleep(self.burnTimeWC1)
+		self.PWM1.stop()
+            	#Turn off Wire Cutter 1
+            	GPIO.output(self.wireCutter1_high1, GPIO.LOW)
+            	GPIO.output(self.wireCutter1_high2, GPIO.LOW)
+            	GPIO.output(self.wireCutter1_low1, GPIO.HIGH)
+            	#Wait
+            	await asyncio.sleep(self.waitTime)
 
-            #Turn on Wire Cutter 2
-            GPIO.output(self.wireCutter2_high1, GPIO.HIGH)
-            GPIO.output(self.wireCutter2_high2, GPIO.HIGH)
-            GPIO.output(self.wireCutter2_low1, GPIO.LOW)
-            self.PWM2.start(self.dutyCycle2)
-            #Burn for set number of seconds
-            await asyncio.sleep(self.burnTimeWC2)
-            #Turn off Wire Cutter 2
-            GPIO.output(self.wireCutter2_high1, GPIO.LOW)
-            GPIO.output(self.wireCutter2_high2, GPIO.LOW)
-            GPIO.output(self.wireCutter2_low1, GPIO.HIGH)
-            self.PWM2.stop()
-            #Wait
-            await asyncio.sleep(self.waitTime)
+            	#Turn on Wire Cutter 2
+            	#GPIO.output(self.wireCutter2_high1, GPIO.HIGH)
+            	GPIO.output(self.wireCutter2_high2, GPIO.HIGH)
+            	GPIO.output(self.wireCutter2_low1, GPIO.LOW)
+            	self.PWM2.start(0)
+            	for dc in range(0, self.dutyCycle2, 5):
+			self.PWM2.ChangeDutyCycle(dc)
+			time.sleep(0.05)
+            	#Burn for set number of seconds
+            	await asyncio.sleep(self.burnTimeWC2)
+		self.PWM2.stop()
+            	#Turn off Wire Cutter 2
+            	GPIO.output(self.wireCutter2_high1, GPIO.LOW)
+            	GPIO.output(self.wireCutter2_high2, GPIO.LOW)
+            	GPIO.output(self.wireCutter2_low1, GPIO.HIGH)
+            	#Wait
+            	await asyncio.sleep(self.waitTime)
 
-            print('Loop executed once')
+            	print('Loop executed once')
 
     def read(self):
         """
         Left undefined as no data is collected by this component
         """
         pass
-
