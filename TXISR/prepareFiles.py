@@ -101,6 +101,7 @@ def prepareData(duration, dataType, startFrom):
 						lineNumber += 1
 					continue
 
+		linecache.clearcache()
 		progressFile.close()
 		txDataFile.close()
 		return True
