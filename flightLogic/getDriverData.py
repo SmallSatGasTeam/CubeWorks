@@ -371,6 +371,8 @@ class TTNCData:
 		await self.__save.writeTTNC(self.__ttncData) 
 
 	async def collectTTNCData(self, mMode):
+		#we are going to wait 60 seconds after the pi boots before collecting data because the pi can be slow to update the system clock
+		await(60)
 		# Data collection loop
 		while True:
 			# Get TTNC data
@@ -578,8 +580,10 @@ class AttitudeData():
 		await self.save.writeAttitude(self.__attitudeData) # filechecker?
 
 	async def collectAttitudeData(self):
-		# Data collection loop
+		#we are going to wait 60 seconds after the pi boots before collecting data because the pi can be slow to update the system clock
+		await(60)
 		
+		# Data collection loop
 		#this change will make it so that attitude data only collects 1800 times and then stops colleting 
 		while self.__dataSamples >= self.__collectedData:
 			# Get Attitude data
