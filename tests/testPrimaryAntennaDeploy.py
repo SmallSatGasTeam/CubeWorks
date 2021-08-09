@@ -1,11 +1,15 @@
 ### This test activates the primary antenna deployment system over I2C using Algorithm 2 ###
-import smbus
+import sys
+sys.path.append('../')
+from Drivers.antennaDoor import AntennaDoor
 from time import sleep
 
-DEVICE_BUS = 1
-DEVICE_ADDR = 0x33
-bus = smbus.SMBus(self.DEVICE_BUS)
-sleep(1)
-print("\t____Deploying the Antenna____")
-bus.write_byte(self.DEVICE_ADDR,0x2F)
-print("\t____Deployed the Antenna____")
+antennaDoor = AntennaDoor()
+print("WARNING THIS WILL DEPLOY THE ANTENNA!!!!") 
+for i in range(10):
+    print("Count down: ", 10 - i)
+while True:
+    print(antennaDoor.readDoorStatus())
+    sleep(1)
+    antennaDoor.deployAntennaMain()
+    sleep(1)
