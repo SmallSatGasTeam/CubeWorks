@@ -12,6 +12,7 @@ class AntennaDoor(Driver):
         self.DEVICE_BUS = 1
         self.DEVICE_ADDR = 0x33
         self.bus = smbus.SMBus(self.DEVICE_BUS)
+        self.doorStatus = -1
         sleep(1)
 
     def readDoorStatus(self):
@@ -22,8 +23,8 @@ class AntennaDoor(Driver):
         doors are undeployed, set deployed False.
         """
         # This command returns one byte from the antenna. Check the antenna manual for an explanation of the bytes.
-        doorStatus = self.bus.read_byte(self.DEVICE_ADDR)
-        doorBits = doorStatus
+        self.doorStatus = self.bus.read_byte(self.DEVICE_ADDR)
+        doorBits = self.doorStatus
         print("Decimal value from antenna: ", doorBits)
         deployed = False
         # decimal representation of 00001111
@@ -40,5 +41,8 @@ class AntennaDoor(Driver):
     #this is the command to deploy the anntenna
     def deployAntennaMain(self):
         print("\t____Deploying the Antenna____")
-        self.bus.write_byte(self.DEVICE_ADDR,0x2F)
+        if(self.doorStatus == 0):
+            self.bus.write_byte(self.DEVICE_ADDR,0x1F)
+        else :
+            self.bus.write_byte(self.DEVICE_ADDR,0x2F)
         print("\t____Deployed the Antenna____")
