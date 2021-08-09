@@ -40,6 +40,11 @@ class AntennaDoor(Driver):
     
     #this is the command to deploy the anntenna
     def deployAntennaMain(self):
+        try :
+            self.doorStatus = self.bus.read_byte(self.DEVICE_ADDR)
+        except :
+            self.doorStatus = -1
+            
         print("\t____Deploying the Antenna____")
         if(self.doorStatus == 0):
             try :
