@@ -93,7 +93,7 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 
 	# This is the implementation of the BOOT mode logic.
 	if not antennaDeployed:  # First, sleep for 35 minutes
-		print('Antenna is undeployed, waiting 60 seconds')
+		print('Antenna is undeployed, waiting 35 minutes')
 		await asyncio.sleep(delay)  # Sleep for 35 minutes
 		while(transmitObject.isRunning()):
 			await asyncio.sleep(60) #sleep if a transmission is running

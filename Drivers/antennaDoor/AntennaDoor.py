@@ -23,7 +23,10 @@ class AntennaDoor(Driver):
         doors are undeployed, set deployed False.
         """
         # This command returns one byte from the antenna. Check the antenna manual for an explanation of the bytes.
-        self.doorStatus = self.bus.read_byte(self.DEVICE_ADDR)
+        try:
+            self.doorStatus = self.bus.read_byte(self.DEVICE_ADDR)
+        except:
+            self.doorStatus = -1
         doorBits = self.doorStatus
         print("Decimal value from antenna: ", doorBits)
         deployed = False
