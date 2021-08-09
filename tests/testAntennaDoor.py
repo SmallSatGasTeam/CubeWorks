@@ -7,3 +7,6 @@ antennaDoor = AntennaDoor()
 while True:
     print(antennaDoor.readDoorStatus())
     sleep(1)
+    antennaDoor.deployAntennaMain()
+    sleep(1)
+
