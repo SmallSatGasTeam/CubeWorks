@@ -355,15 +355,6 @@ class TTNCData:
 		EPS5VCurrent + SP_X_Voltage + SP_X_Plus_Current + SP_X_Minus_Current + SP_Y_Voltage + 
 		SP_Y_Plus_Current + SP_Y_Minus_Current + SP_Z_Voltage + SP_Z_Plus_Current + gaspacsBytes)
 		
-		try:
-			RTCInt = self.RTC.readSeconds()
-			if (RTCInt< RTCMin) or (RTCInt > RTCMax):
-				print("RTCInt: ", RTCInt)
-				raise unexpectedValue
-			packetTimestamp = str(RTCInt).zfill(10)+':'
-		except Exception as e:
-			print("Failed to pull from RTC. Exception: ", repr(e), 
-			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 		self.__ttncData = packet
 
 	async def writeData(self):
@@ -437,18 +428,6 @@ class DeployData():
 		accelZ = float4tohex(accelZ)
 		packet = ''
 		packet += gaspacsBytes + packetType + timestamp + boombox_uv + accelX + accelY + accelZ + gaspacsBytes
-		
-		try:
-			RTCInt = self.RTC.readSeconds()
-			if (RTCInt < RTCMin) or (RTCInt > RTCMax):
-				print("RTCInt: ", RTCInt)
-				raise unexpectedValue
-			packetTimestamp = str(RTCInt).zfill(10)+':'
-		except Exception as e:
-			# add redundant RTC try/except
-			# if no RTC iterations work, continue with exception
-			print("Failed to pull clock data from RTC. Exception: ", repr(e), 
-			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
 
 		self.__deployData = packet
 		print("Collected deploy data.")
@@ -555,23 +534,7 @@ class AttitudeData():
 		packet += (gaspacsBytes + packetType + timestamp + sunSensor1 + 
 		sunSensor2 + sunSensor3 + sunSensor4 + sunSensor5 + mag1 + mag2 + mag3 
 		+ gaspacsBytes)
-		
-		#Print statement for debugging
-		#print("timestamp: ", timestamp, "\npacketType: ", packetType, 
-		# "\nsunSensor1: ", sunSensor1, "\nsunSensor2: ", sunSensor2, 
-		# "\nsunSensor3: ", sunSensor3, "\nsunSensor4: ", sunSensor4, 
-		# "\nsunSensor5 :", sunSensor5, "\nmag1: ", mag1, "\nmag2: ", mag2, 
-		# "\nmag3: ", mag3)
-		try:
-			RTCInt = self.RTC.readSeconds()
-			if (RTCInt < RTCMin) or (RTCInt > RTCMax):
-				print("RTCInt: ", RTCInt)
-				raise unexpectedValue
-			packetTimestamp = str(RTCInt).zfill(10)+':'
-		except Exception as e:
-			# redundant rtc try/except
-			print("Failed to pull clock data from RTC. Exception: ", repr(e), 
-			getframeinfo(currentframe()).filename, getframeinfo(currentframe()).lineno)
+
 		self.__attitudeData = packet
 		print("Got attitude data.")
 
