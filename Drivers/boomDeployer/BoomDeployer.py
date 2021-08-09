@@ -6,56 +6,56 @@ import RPi.GPIO as GPIO
 import time
 
 class BoomDeployer(Driver):
-    def __init__(self):
-        """
-        Calls parent constructor, Defines initial burn time, time to wait in between burns,
-        and how many times to burn before giving up.  Sets up the GPIO pin for use by the actuate method.
-        """
-        #super().__init__("BoomDeployer")
-        # Initial values
-        self.burnTimeWC1 = 5
-        self.burnTimeWC2 = 5
-        self.waitTime = 10
-        self.numTimes = 3
+	def __init__(self):
+		"""
+		Calls parent constructor, Defines initial burn time, time to wait in between burns,
+		and how many times to burn before giving up.  Sets up the GPIO pin for use by the actuate method.
+		"""
+		#super().__init__("BoomDeployer")
+		# Initial values
+		self.burnTimeWC1 = 5
+		self.burnTimeWC2 = 5
+		self.waitTime = 10
+		self.numTimes = 3
 	#The duty cycles will specify the maximum duty cycle for the PWM for each wire burn
-        self.dutyCycle1 = 75
-        self.dutyCycle2 = 90
+		self.dutyCycle1 = 75
+		self.dutyCycle2 = 90
 
         # Set up the GPIO pins for use
-        GPIO.setmode(GPIO.BCM)
+		GPIO.setmode(GPIO.BCM)
 
         # First Wirecutter
 	# BOARD 38 is GPIO 20
-        self.wireCutter1_high1 = 20
+		self.wireCutter1_high1 = 20
 	# BOARD 36 is GPIO 16
-        self.wireCutter1_high2 = 16
+		self.wireCutter1_high2 = 16
 	# BOARD 7 is GPIO 4
-        self.wireCutter1_low1 = 4
+		self.wireCutter1_low1 = 4
 
 	# Set up Wirecutter 1 pins
-        GPIO.setup(self.wireCutter1_high1, GPIO.OUT, initial=GPIO.LOW)
-        GPIO.setup(self.wireCutter1_high2,GPIO.OUT, initial=GPIO.LOW)
-        GPIO.setup(self.wireCutter1_low1,GPIO.OUT, initial=GPIO.HIGH)
-        self.PWM1 = GPIO.PWM(self.wireCutter1_high1, 500)
+		GPIO.setup(self.wireCutter1_high1, GPIO.OUT, initial=GPIO.LOW)
+		GPIO.setup(self.wireCutter1_high2,GPIO.OUT, initial=GPIO.LOW)
+		GPIO.setup(self.wireCutter1_low1,GPIO.OUT, initial=GPIO.HIGH)
+		self.PWM1 = GPIO.PWM(self.wireCutter1_high1, 500)
 
-        #Second Wirecutter
+		#Second Wirecutter
 	# BOARD 37 is GPIO 26
-        self.wireCutter2_high1 = 26
+		self.wireCutter2_high1 = 26
 	# BOARD 35 is GPIO 19
-        self.wireCutter2_high2 = 19
+		self.wireCutter2_high2 = 19
 	# BOARD 29 is GPIO 5
-        self.wireCutter2_low1 = 5
+		self.wireCutter2_low1 = 5
 
 	# Set up Wirecutter 2 pins
-        GPIO.setup(self.wireCutter2_high1, GPIO.OUT, initial=GPIO.LOW)
-        GPIO.setup(self.wireCutter2_high2,GPIO.OUT, initial=GPIO.LOW)
-        GPIO.setup(self.wireCutter2_low1,GPIO.OUT, initial=GPIO.HIGH)
-        self.PWM2 = GPIO.PWM(self.wireCutter2_high1, 500)
+		GPIO.setup(self.wireCutter2_high1, GPIO.OUT, initial=GPIO.LOW)
+		GPIO.setup(self.wireCutter2_high2,GPIO.OUT, initial=GPIO.LOW)
+		GPIO.setup(self.wireCutter2_low1,GPIO.OUT, initial=GPIO.HIGH)
+		self.PWM2 = GPIO.PWM(self.wireCutter2_high1, 500)
 	
 	#used to turn on the eps bus
-        self.Bus = EPS()
+		self.Bus = EPS()
 
-    async def deploy(self):
+	async def deploy(self):
 		"""
 		Loop a specified number of times, setting the correct GPIO pins to HIGH/LOW  to start/stop
 		the burn. Wait and then repeat with the other wirecutter mechanism.
@@ -112,8 +112,8 @@ class BoomDeployer(Driver):
 
 		print('Loop executed once')
 
-    def read(self):
-        """
-        Left undefined as no data is collected by this component
-        """
-        pass
+	def read(self):
+		"""
+		Left undefined as no data is collected by this component
+		"""
+		pass
