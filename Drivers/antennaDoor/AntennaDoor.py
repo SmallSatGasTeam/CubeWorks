@@ -42,7 +42,13 @@ class AntennaDoor(Driver):
     def deployAntennaMain(self):
         print("\t____Deploying the Antenna____")
         if(self.doorStatus == 0):
-            self.bus.write_byte(self.DEVICE_ADDR,0x1F)
+            try :
+                self.bus.write_byte(self.DEVICE_ADDR,0x1F)
+            except :
+                print("Failed to run 1")
         else :
-            self.bus.write_byte(self.DEVICE_ADDR,0x2F)
+            try :
+                self.bus.write_byte(self.DEVICE_ADDR,0x2F)
+            except :
+                print("Failed to run 2")
         print("\t____Deployed the Antenna____")
