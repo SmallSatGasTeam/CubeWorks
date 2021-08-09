@@ -104,7 +104,11 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 	voltageCount = 0
 	try: 
 		while True:
-			BusVoltage = eps.getBusVoltage()
+			try :
+				BusVoltage = eps.getBusVoltage()
+			except :
+				#if we fail to check the bus voltage we will set it to the max value plus one
+				BusVoltage = 5.1 + 1
 			if antennaDeployed == True:
 				break
 			elif (not antennaDeployed) and (BusVoltage > 3.7):
