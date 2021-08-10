@@ -28,7 +28,7 @@ class antennaMode:
 	"safeModeObject was deleted below in the init parameters after saveObject"
 	def __init__(self, saveObject, transmitObject, packetObj):
 		self.deployVoltage = 3 #Threshold voltage to deploy
-		self.maximumWaitTime = 30 #Maximum time to wait for deployment before going to SAFE
+		self.maximumWaitTime = 22 * 60 #Maximum time to wait for deployment before going to SAFE
 		self.timeWaited = 0 #Time already waited - zero
 		self.__getTTNCData = getDriverData.TTNCData(saveObject)
 		self.__getAttitudeData = getDriverData.AttitudeData(saveObject)
