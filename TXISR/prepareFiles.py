@@ -60,9 +60,8 @@ def prepareData(duration, dataType, startFrom):
 			print("Progress list didn't exist.")
 			fileChecker.individualReset(progressFilePath)
 
-	#NOTE: This is a new section of code to try and allow indexing in the file_____
+		#NOTE: This is a new section of code to try and allow indexing in the file_____
 		fileChecker.checkFile(dataFilePath)
-		dataFile = open(dataFilePath, "r")
 		print("data file size: ", os.stat(dataFilePath).st_size)
 		print("min file size: ", minFileSize)
 		if(os.stat(dataFilePath).st_size >= minFileSize): #File is of minimum length
@@ -100,9 +99,9 @@ def prepareData(duration, dataType, startFrom):
 					except : 
 						dataSize += 1
 						lineNumber += 1
-					#Does this line need to be here? Woudln't it just do nothing? 
 					continue
 
+		linecache.clearcache()
 		progressFile.close()
 		txDataFile.close()
 		return True
