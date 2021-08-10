@@ -8,6 +8,7 @@ antennaDoor = AntennaDoor()
 print("WARNING THIS WILL DEPLOY THE ANTENNA!!!!") 
 for i in range(10):
     print("Count down: ", 10 - i)
+    sleep(1)
 while True:
     print(antennaDoor.readDoorStatus())
     sleep(1)
