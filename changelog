@@ -264,5 +264,16 @@ be repoerted.
  #44 Attitude and TTNC data collection
     It was observed that when the OBC (pi) boots it takes more time then expected to update its system time from the cronodot so data collection was delayed by 60 seconds
     as to give more time for the system clock to update.
+
+#45 A PWM ramp was added to the boom deployer 
+    The ramp was add so that we don't trip a short cuirct state on the EPS
+
+#46 deployAntennaMain
+    A state was added to the deploy Antenna Main so that if the antenna is already deployed it will not deploy.
+
+
+The code has been tested and aproved, 08/10/21
+
+-Shawn Jones
  
        
