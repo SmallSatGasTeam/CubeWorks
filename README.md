@@ -13,7 +13,7 @@ Framework components are designed to be modular, and easy to add to and remove f
 ## Installation
 
 ### PREFERRED Installation Process with CubeWorks Image 
-1. Download the [CubeWorks Raspbian Lite image V4](https://drive.google.com/file/d/1-jNVDHcIE_7zDRPWbrRaGp8059E-vmpi/view?usp=sharing)
+1. Download the [CubeWorks Raspbian Lite image V6](https://drive.google.com/file/d/1ozvCZwbu9eHb0bZ5SgTERq1yh5yXUiuP/view)
 2. Flash image onto 8GB micro SD card
 3. Run image on Raspberry Pi Zero W
 4. Log in (email coordinator@gas.usu.edu if you do not have the login password)
