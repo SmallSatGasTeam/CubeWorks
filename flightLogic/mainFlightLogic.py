@@ -153,11 +153,6 @@ async def executeFlightLogic():  # Open the file save object, start TXISR, camer
 		antennaDeployed = True
 		print("Antenna Deployed = ", antennaDeployed)
 		recordData(bootCount, antennaDeployed, lastMode)  # Save into files
-	elif lastMode == 3:
-		print('Running Boom Deploy')
-		lastMode = 3
-		recordData(bootCount, antennaDeployed, lastMode)  # Save into files
-		await asyncio.gather(boomDeploy.run())
 	elif lastMode == 4:
 		print('Running Post Boom Deploy')
 		lastMode = 4
