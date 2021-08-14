@@ -270,6 +270,9 @@ be repoerted.
 
 #46 deployAntennaMain
     A state was added to the deploy Antenna Main so that if the antenna is already deployed it will not deploy.
+    
+#47 misison mode 3
+    Removed the ablitiy to boot into mission mode 3. This was done to avoid boot loops. 
 
 
 The code has been tested and aproved, 08/10/21
