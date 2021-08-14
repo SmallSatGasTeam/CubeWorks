@@ -271,9 +271,12 @@ be repoerted.
 #46 deployAntennaMain
     A state was added to the deploy Antenna Main so that if the antenna is already deployed it will not deploy.
 
-
+#47 changing boot ability
+    Removed an elif statement in main flight logic so it wont ever boot into boom deploy, causing it to attempt to deploy the boom twice in a row
+    
 The code has been tested and aproved, 08/10/21
 
 -Shawn Jones
+ 
  
        
