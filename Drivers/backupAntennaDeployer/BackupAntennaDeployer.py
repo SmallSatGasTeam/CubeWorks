@@ -11,7 +11,7 @@ class BackupAntennaDeployer(Driver):
         """
         super().__init__("BackupAntennaDeployer")
         # Initial values
-        self.burnTime = 30
+        self.burnTime = 10
 
         # Set up the GPIO pins for use
         GPIO.setmode(GPIO.BCM)
