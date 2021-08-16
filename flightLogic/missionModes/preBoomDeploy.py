@@ -22,7 +22,7 @@ DEBUG = False
 #safeModeObject was deleted below in the init parameters after saveObject
 class preBoomMode:
 	def __init__(self, saveObject, transmitObject, packetObj):
-		self.thresholdVoltage = 3.5 #Threshold voltage to deploy AeroBoom.
+		self.thresholdVoltage = 3.85 #Threshold voltage to deploy AeroBoom.
 		self.darkVoltage = 0.9 #Average voltage from sunsors that, if below this, indicates GASPACS is in darkness
 		self.lightMinimumMinutes = 1 #Minimum amount of time GASPACS must be on light side of orbit before deploying
 		self.batteryStatusOk = False
