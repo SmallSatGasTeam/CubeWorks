@@ -13,13 +13,13 @@ class BoomDeployer(Driver):
 		"""
 		#super().__init__("BoomDeployer")
 		# Initial values
-		self.burnTimeWC1 = 5
-		self.burnTimeWC2 = 5
+		self.burnTimeWC1 = 10
+		self.burnTimeWC2 = 10
 		self.waitTime = 10
 		self.numTimes = 3
 	#The duty cycles will specify the maximum duty cycle for the PWM for each wire burn
-		self.dutyCycle1 = 75
-		self.dutyCycle2 = 90
+		self.dutyCycle1 = 15
+		self.dutyCycle2 = 15
 
         # Set up the GPIO pins for use
 		GPIO.setmode(GPIO.BCM)
