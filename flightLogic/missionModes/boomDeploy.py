@@ -43,7 +43,7 @@ class boomMode:
 			print("Taking picture")
 			self.__cam.takePicture()
 		except Exception as e:
-			print("Failed to take a picture because we received excpetion:", repr(e))
+			print("Failed to take a picture because we received exception:", repr(e))
 		await asyncio.sleep(5)
 		# 	await asyncio.sleep(60) #sleep if a transmission is running
 		self.cancelAllTasks(self.__tasks) # Cancel all background tasks
