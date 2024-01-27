@@ -83,13 +83,13 @@ This file structure comprises the major compoments of CubeWorks.
 3. Note: The pi reads the time from the chronodot on boot and sets its internal clock to match that time. If you change the pi time, you have to update the chronodot as well or the updated time will be lost on a boot cycle.
 
 
-### setting up the Cammera 
+### setting up the Camera 
 
 1.use `sudo raspi-config` 
 
 2.go to go to the `interface` tab 
 
-3.Enable cammera in settings
+3.Enable camera in settings
 
 ## seting up the serial interface
 1.use `sudo raspi-config`
@@ -178,7 +178,7 @@ Cubeworks
 ![class](https://user-images.githubusercontent.com/27446370/118514932-23915500-b6f2-11eb-9dde-4a1bd2eee4df.png)
 
 
-###Data Flows:
+### Data Flows:
 
 [GAS software.pdf](https://github.com/SmallSatGasTeam/CubeWorks/files/6494865/GAS.software.pdf)
 
